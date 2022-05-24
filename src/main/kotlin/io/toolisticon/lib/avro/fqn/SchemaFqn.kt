@@ -15,8 +15,10 @@ import java.io.File
 data class SchemaFqn(override val namespace: Namespace, override val name: Name) :
   AbstractAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_SCHEMA) {
   companion object {
-    fun AvroFqn.schemaFqn() = SchemaFqn(namespace, name)
+    fun AvroFqn.schemaFqn() = AvroKotlinLib.schema(this)
   }
+
+  override fun toString(): String = super.toString()
 }
 
 

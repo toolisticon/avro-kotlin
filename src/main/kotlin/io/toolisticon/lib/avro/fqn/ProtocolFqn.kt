@@ -19,8 +19,10 @@ data class ProtocolFqn(override val namespace: Namespace, override val name: Nam
     /**
      * Converts [AvroFqn] to [ProtocolFqn].
      */
-    fun AvroFqn.protocolFqn() = ProtocolFqn(namespace = namespace, name = name)
+    fun AvroFqn.protocolFqn() = AvroKotlinLib.protocol(this)
   }
+
+  override fun toString(): String = super.toString()
 }
 
 /**

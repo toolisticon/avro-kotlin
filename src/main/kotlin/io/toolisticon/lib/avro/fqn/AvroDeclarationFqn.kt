@@ -36,6 +36,7 @@ abstract class AbstractAvroDeclarationFqn(override val namespace: Namespace, ove
     canonicalNameToPath(canonicalName, fileExtension)
   }
 
+  override fun toString() = "${this::class.simpleName}(namespace='$namespace', name='$name', extension='$fileExtension')"
 }
 
 

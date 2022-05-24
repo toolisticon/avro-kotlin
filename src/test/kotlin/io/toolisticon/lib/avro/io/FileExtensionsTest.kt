@@ -25,7 +25,7 @@ internal class FileExtensionsTest {
   }
 
   @Test
-  internal fun `resolve path under dir`() {
+  fun `resolve path under dir`() {
     val path = Path("foo/bar/File.txt")
 
     println(tmp)
