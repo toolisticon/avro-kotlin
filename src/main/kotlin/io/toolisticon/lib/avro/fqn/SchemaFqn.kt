@@ -4,10 +4,13 @@ import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.AvroKotlinLib.DEFAULT_CLASS_LOADER
 import io.toolisticon.lib.avro.Name
 import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.io.file
-import io.toolisticon.lib.avro.io.parseFromResource
+import io.toolisticon.lib.avro.exception.SchemaFqnMismatchException
+import io.toolisticon.lib.avro.ext.IoExt.file
+import io.toolisticon.lib.avro.ext.ResourceExt.parseFromResource
+import io.toolisticon.lib.avro.ext.SchemaExt.fqn
 import org.apache.avro.Schema
 import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * Represents a (json) avro [Schema] file. Based on this information the file can be read from resource and read/written from/to a file.
@@ -43,4 +46,20 @@ fun SchemaFqn.fromResource(
 /**
  * Read [Schema] from directory assuming file has canonical path.
  */
-fun SchemaFqn.fromDirectory(dir: File) : Schema = Schema.Parser().parse(dir.file(path).toFile())
+fun SchemaFqn.fromDirectory(dir: File, failOnFqnMismatch: Boolean = true): Schema {
+  val avscFile: File = dir.file(path).toFile()
+  if (!avscFile.exists() || avscFile.isDirectory) {
+    throw FileNotFoundException("could not read from file=$avscFile")
+  }
+
+  val schema: Schema = Schema.Parser().parse(avscFile)
+
+  if (failOnFqnMismatch) {
+    val schemaFqn = schema.fqn()
+    if (schemaFqn != this) {
+      throw SchemaFqnMismatchException(this, schemaFqn)
+    }
+  }
+
+  return schema
+}

@@ -1,12 +1,17 @@
-package io.toolisticon.lib.avro
+package io.toolisticon.lib.avro.ext
 
+import io.toolisticon.lib.avro.ext.SchemaExt.createGenericRecord
+import io.toolisticon.lib.avro.ext.SchemaExt.fileExtension
+import io.toolisticon.lib.avro.ext.SchemaExt.fingerprint
+import io.toolisticon.lib.avro.ext.SchemaExt.path
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import kotlin.io.path.Path
 
-internal class SchemaExtensionsTest {
+internal class SchemaExtTest {
 
   private val schemaFoo: Schema = SchemaBuilder
     .record("Foo")
@@ -28,7 +33,7 @@ internal class SchemaExtensionsTest {
 
   @Test
   fun `expected path of schema file`() {
-    assertThat(schemaFoo.path.toFile().path).isEqualTo("test/lib/Foo.avsc")
+    assertThat(schemaFoo.path).isEqualTo(Path("test/lib/Foo.avsc"))
   }
 
   @Test

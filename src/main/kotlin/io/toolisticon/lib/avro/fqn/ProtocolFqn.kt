@@ -4,8 +4,8 @@ import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.AvroKotlinLib.DEFAULT_CLASS_LOADER
 import io.toolisticon.lib.avro.Name
 import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.io.file
-import io.toolisticon.lib.avro.io.parseFromResource
+import io.toolisticon.lib.avro.ext.IoExt.file
+import io.toolisticon.lib.avro.ext.ResourceExt.parseFromResource
 import org.apache.avro.Protocol
 import java.io.File
 

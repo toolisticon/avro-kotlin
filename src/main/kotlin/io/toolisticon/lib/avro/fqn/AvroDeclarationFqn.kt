@@ -1,9 +1,9 @@
 package io.toolisticon.lib.avro.fqn
 
 import io.toolisticon.lib.avro.*
-import io.toolisticon.lib.avro.AvroKotlinLib.NAME_SEPARATOR
 import io.toolisticon.lib.avro.AvroKotlinLib.canonicalName
-import io.toolisticon.lib.avro.io.canonicalNameToPath
+import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
+import io.toolisticon.lib.avro.ext.IoExt.canonicalNameToPath
 import java.io.File
 import java.net.URL
 import java.nio.file.Path

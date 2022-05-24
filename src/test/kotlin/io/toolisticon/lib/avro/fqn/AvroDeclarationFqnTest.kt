@@ -1,7 +1,7 @@
 package io.toolisticon.lib.avro.fqn
 
-import TestFixtures.TestFixtures
 import io.toolisticon.lib.avro.AvroKotlinLib
+import io.toolisticon.lib.avro.TestFixtures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.nio.file.Path

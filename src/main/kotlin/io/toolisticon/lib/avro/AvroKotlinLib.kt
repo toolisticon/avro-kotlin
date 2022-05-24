@@ -1,13 +1,11 @@
 package io.toolisticon.lib.avro
 
+import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
 import io.toolisticon.lib.avro.fqn.AvroFqn
 import io.toolisticon.lib.avro.fqn.AvroFqnData
 import io.toolisticon.lib.avro.fqn.ProtocolFqn
 import io.toolisticon.lib.avro.fqn.SchemaFqn
-import org.apache.avro.Schema
 import java.io.File
-import java.nio.file.Path
-import kotlin.io.path.Path
 
 object AvroKotlinLib {
 
@@ -64,11 +62,6 @@ object AvroKotlinLib {
   const val EXTENSION_PROTOCOL: FileExtension = "avpr"
 
   /**
-   * Default separator used in canonical name.
-   */
-  const val NAME_SEPARATOR = "."
-
-  /**
    * Default charset to use is [Charsets#UTF_8]
    */
   val UTF_8 = Charsets.UTF_8
@@ -79,3 +72,42 @@ object AvroKotlinLib {
   val DEFAULT_CLASS_LOADER: ClassLoader = AvroKotlinLib::class.java.classLoader
 
 }
+
+
+/**
+ * An avro namespace.
+ */
+typealias Namespace = String
+
+/**
+ * An avro name.
+ */
+typealias Name = String
+
+/**
+ * Combining namespace and name as a [java.lang.Class#canonicalName].
+ */
+typealias CanonicalName = String
+
+/**
+ * A file extension.
+ */
+typealias FileExtension = String
+
+/**
+ * The Schema fingerprint.
+ */
+typealias Fingerprint = Long
+
+/**
+ * Message encoded as [Single Object](https://avro.apache.org/docs/current/spec.html#single_object_encoding) ByteArray.
+ */
+typealias SingleObjectEncoded = ByteArray
+
+/**
+ * The encoded message. This is only the payload data,
+ * so no marker header and encoded schemaId are present.
+ */
+typealias SingleObjectPayload = ByteArray
+
+typealias Directory = File

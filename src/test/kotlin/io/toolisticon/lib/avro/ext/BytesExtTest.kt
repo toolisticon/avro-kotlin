@@ -1,11 +1,15 @@
-package io.toolisticon.lib.avro.io
+package io.toolisticon.lib.avro.ext
 
+import io.toolisticon.lib.avro.ext.BytesExt.buffer
+import io.toolisticon.lib.avro.ext.BytesExt.extract
+import io.toolisticon.lib.avro.ext.BytesExt.split
+import io.toolisticon.lib.avro.ext.BytesExt.toHexString
 import mu.KLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
-internal class BytesExtensionTest {
+internal class BytesExtTest {
   companion object : KLogging()
 
   private val helloBytes: ByteArray = "Hello World!".encodeToByteArray()

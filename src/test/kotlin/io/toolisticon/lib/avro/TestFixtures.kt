@@ -1,4 +1,4 @@
-package TestFixtures
+package io.toolisticon.lib.avro
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.toolisticon.lib.avro.AvroKotlinLib
