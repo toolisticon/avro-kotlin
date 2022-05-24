@@ -15,7 +15,7 @@ This lib provides simplified access to avro schema and protocol files by giving 
 
 The assumption is, that the location of an avro file follows the java fqn/package convention, so when you have `namespace=com.acme.foo` and `name=MySchema`, the file/resource is expected under `com/acme/foo/MySchema.avsc`.  
 
-# how?
+## how?
 
 * store your schema files according to the package convention
 * Create an fqn wrapper `schema(namepace="com.acme.foo", name="MySchema")`
