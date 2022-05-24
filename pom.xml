@@ -4,7 +4,7 @@
 
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.11.0.0-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <description>avro-kotlin</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
