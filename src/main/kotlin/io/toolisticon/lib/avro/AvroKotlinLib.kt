@@ -25,6 +25,17 @@ object AvroKotlinLib {
   fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
 
   /**
+   * Marker bytes according to Avro schema specification v1.
+   */
+  @JvmField
+  val AVRO_V1_HEADER = byteArrayOf(-61, 1) // [C3 01]
+
+  /**
+   * Length of default avro header bytes.
+   */
+  val AVRO_HEADER_LENGTH = AVRO_V1_HEADER.size + Long.SIZE_BYTES
+
+  /**
    * Avro Schema files end with `.avsc`.
    */
   const val EXTENSION_SCHEMA: FileExtension = "avsc"

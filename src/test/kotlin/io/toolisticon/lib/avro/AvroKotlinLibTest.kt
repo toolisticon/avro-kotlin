@@ -8,6 +8,7 @@ import io.toolisticon.lib.avro.fqn.ProtocolFqn
 import io.toolisticon.lib.avro.fqn.SchemaFqn
 import io.toolisticon.lib.avro.fqn.fromDirectory
 import io.toolisticon.lib.avro.fqn.fromResource
+import io.toolisticon.lib.avro.io.toHexString
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
@@ -89,4 +90,8 @@ internal class AvroKotlinLibTest {
     assertThat(readFromFile).isEqualTo(protocol)
   }
 
+  @Test
+  fun `header bytes C3 01`() {
+    assertThat(AvroKotlinLib.AVRO_V1_HEADER.toHexString()).isEqualTo("[C3 01]")
+  }
 }

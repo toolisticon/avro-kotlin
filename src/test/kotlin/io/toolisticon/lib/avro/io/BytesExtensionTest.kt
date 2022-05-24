@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
-internal class ByteArrayExtensionTest {
+internal class BytesExtensionTest {
   companion object : KLogging()
 
   private val helloBytes: ByteArray = "Hello World!".encodeToByteArray()

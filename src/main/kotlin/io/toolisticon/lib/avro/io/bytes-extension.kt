@@ -1,6 +1,8 @@
 package io.toolisticon.lib.avro.io
 
+import io.toolisticon.lib.avro.AvroKotlinLib.AVRO_V1_HEADER
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 /**
  * Converts a byte array into its hexadecimal string representation
@@ -67,3 +69,12 @@ fun ByteBuffer.extract(position: Int, size: Int? = null): ByteArray {
     this.position(originalPosition)
   }
 }
+
+fun ByteArray.readLong(): Long {
+  require(this.size == Long.SIZE_BYTES) { "Size must be exactly Long.SIZE_BYTES (${Long.SIZE_BYTES}." }
+  return this.buffer().order(ByteOrder.LITTLE_ENDIAN).long
+}
+
+fun ByteBuffer.isAvroSingleObjectEncoded(): Boolean = extract(0, AVRO_V1_HEADER.size).contentEquals(AVRO_V1_HEADER)
+
+fun ByteArray.isAvroSingleObjectEncoded(): Boolean = buffer().isAvroSingleObjectEncoded()

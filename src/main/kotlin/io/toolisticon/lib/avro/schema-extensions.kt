@@ -7,6 +7,7 @@ import io.toolisticon.lib.avro.io.fqnToPath
 import io.toolisticon.lib.avro.io.writeText
 import org.apache.avro.Schema
 import org.apache.avro.SchemaNormalization
+import org.apache.avro.generic.GenericData
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Path
@@ -39,3 +40,11 @@ fun Schema.writeToDirectory(dir: File): Path {
 
   return target.toPath()
 }
+
+/**
+ * Creates a schema compliant generic record.
+ *
+ * @param receiver - a lambda that can modify the record (basically: use `put` to fill in data
+ * @return a schema compliant record instance
+ */
+fun Schema.createGenericRecord(receiver: GenericData.Record.() -> Unit) = GenericData.Record(this).apply { receiver.invoke(this) }
