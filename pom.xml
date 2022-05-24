@@ -2,26 +2,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>BASE_GROUP_ID</groupId>
-  <artifactId>BASE_ARTIFACT_ID</artifactId>
+  <groupId>io.toolisticon.lib</groupId>
+  <artifactId>avro-kotlin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <description>BASE_DESCRIPTION</description>
-  <url>https://github.com/GITHUB_ORGANIZATION/GITHUB_REPOSITORY/</url>
+  <description>avro-kotlin</description>
+  <url>https://github.com/toolisticon/avro-kotlin/</url>
 
   <properties>
-    <project.encoding>UTF-8</project.encoding>
-    <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-
+    <!-- JVM -->
     <kotlin.version>1.6.21</kotlin.version>
     <java.version>11</java.version>
+
+    <!-- PROJECT -->
+    <avro.version>1.11.0</avro.version>
 
     <!-- TEST -->
     <kotlin-logging.version>2.1.21</kotlin-logging.version>
     <junit5.version>5.8.2</junit5.version>
     <mockito.version>4.0.0</mockito.version>
     <assertj.version>3.22.0</assertj.version>
+    <jackson.version>2.13.3</jackson.version>
+
+    <!-- MAVEN -->
+    <project.encoding>UTF-8</project.encoding>
+    <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
   </properties>
 
   <dependencyManagement>
@@ -58,8 +64,31 @@
       <artifactId>kotlin-logging-jvm</artifactId>
       <version>${kotlin-logging.version}</version>
     </dependency>
+    <!-- /KOTLIN -->
 
-    <!-- TEST -->
+    <!-- AVRO (provided) -->
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${avro.version}</version>
+      <exclusions>
+        <exclusion>
+          <!-- databind 2.12.5 in avro 1.11.0 is vulnerable, so we exclude it and provide databind 2.13.3 instead -->
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- ____ TEST _________________________________________________________ -->
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
@@ -85,6 +114,20 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- include jackson to verify instances can be serialized -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <version>${jackson.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.11</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -598,9 +641,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</connection>
-    <url>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</url>
-    <developerConnection>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</developerConnection>
+    <connection>scm:git:git@github.com:toolisticon/avro-kotlin.git</connection>
+    <url>scm:git:git@github.com:toolisticon/avro-kotlin.git</url>
+    <developerConnection>scm:git:git@github.com:toolisticon/avro-kotlin.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

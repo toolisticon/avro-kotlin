@@ -1,0 +1,50 @@
+{
+  "namespace": "lib.test.query",
+  "protocol": "FindCurrentBalance",
+  "types": [
+    {
+      "name": "FindCurrentBalanceById",
+      "type": "record",
+      "fields": [
+        {
+          "name": "bankAccountId",
+          "type": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CurrentBalance",
+      "type": "record",
+      "fields": [
+        {
+          "name": "bankAccountId",
+          "type": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "currentBalance",
+          "type": {
+            "type": "int"
+          }
+        }
+      ]
+    }
+  ],
+  "messages": {
+    "findCurrentBalanceById": {
+      "request": [
+        {
+          "name": "query",
+          "type": "FindCurrentBalanceById"
+        }
+      ],
+      "response": [
+        "CurrentBalance",
+        "null"
+      ]
+    }
+  }
+}

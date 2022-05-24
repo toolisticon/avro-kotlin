@@ -1,0 +1,19 @@
+{
+  "namespace": "lib.test.event",
+  "name": "BankAccountCreated",
+  "type": "record",
+  "fields": [
+    {
+      "name": "bankAccountId",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "initialBalance",
+      "type": {
+        "type": "int"
+      }
+    }
+  ]
+}
