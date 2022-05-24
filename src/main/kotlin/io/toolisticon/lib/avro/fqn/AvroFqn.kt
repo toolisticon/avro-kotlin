@@ -36,5 +36,4 @@ data class AvroFqnData(override val namespace: Namespace, override val name: Nam
   override val canonicalName: CanonicalName by lazy {
     canonicalName(namespace, name)
   }
-
 }

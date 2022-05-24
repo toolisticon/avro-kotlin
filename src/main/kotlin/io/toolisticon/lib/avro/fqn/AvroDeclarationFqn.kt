@@ -1,11 +1,13 @@
 package io.toolisticon.lib.avro.fqn
 
 import io.toolisticon.lib.avro.*
+import io.toolisticon.lib.avro.AvroKotlinLib.NAME_SEPARATOR
 import io.toolisticon.lib.avro.AvroKotlinLib.canonicalName
 import io.toolisticon.lib.avro.io.canonicalNameToPath
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
+import kotlin.io.path.extension
 
 /**
  * Represents a concrete file or resource containing a (json) avro schema or protocol.
@@ -26,7 +28,8 @@ interface AvroDeclarationFqn : AvroFqn {
 /**
  * Abstract implementation of [AvroDeclarationFqn] providing default for canonicalName and path.
  */
-abstract class AbstractAvroDeclarationFqn(override val namespace: Namespace, override val name: Name, override val fileExtension: FileExtension) : AvroDeclarationFqn {
+abstract class AbstractAvroDeclarationFqn(override val namespace: Namespace, override val name: Name, override val fileExtension: FileExtension) :
+  AvroDeclarationFqn {
 
   override val canonicalName: CanonicalName by lazy {
     canonicalName(namespace, name)
@@ -39,6 +42,25 @@ abstract class AbstractAvroDeclarationFqn(override val namespace: Namespace, ove
   override fun toString() = "${this::class.simpleName}(namespace='$namespace', name='$name', extension='$fileExtension')"
 }
 
+data class AvroDeclarationFqnData(
+  override val namespace: Namespace,
+  override val name: Name,
+  override val fileExtension: FileExtension
+) : AbstractAvroDeclarationFqn(namespace, name, fileExtension) {
+
+  constructor(fqn: SchemaFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
+  constructor(fqn: ProtocolFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
+
+}
+
+fun Path.toFqn(): AvroDeclarationFqn {
+  val namespace = this.parent.toString().replace(File.separator, NAME_SEPARATOR)
+  val fileExtension = this.extension
+  val name = fileName.toString().substringBeforeLast(NAME_SEPARATOR)
+
+
+  return AvroDeclarationFqnData(namespace, name, fileExtension)
+}
 
 /**
  * URL of resource using path based on namespace and name.

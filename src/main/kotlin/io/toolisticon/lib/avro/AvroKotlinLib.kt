@@ -4,6 +4,10 @@ import io.toolisticon.lib.avro.fqn.AvroFqn
 import io.toolisticon.lib.avro.fqn.AvroFqnData
 import io.toolisticon.lib.avro.fqn.ProtocolFqn
 import io.toolisticon.lib.avro.fqn.SchemaFqn
+import org.apache.avro.Schema
+import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.Path
 
 object AvroKotlinLib {
 
@@ -23,6 +27,20 @@ object AvroKotlinLib {
    * Create [AvroFqn] based on namespace and name.
    */
   fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
+
+
+//  @Throws(AvroSchemaFqnMismatch::class)
+//  fun verifyPathAndSchemaFqnMatches(rootDirectory: File, avscFile: File, parser: Schema.Parser = Schema.Parser()): Schema {
+//    val subPath: Path = Path(avscFile.path.removePrefix("${rootDirectory.path}${File.separator}"))
+//
+//    val fileFqn: AvroFqn = fileToFqn(subPath)
+//
+//    if (fileFqn.namespace != schema.namespace || fileFqn.name != schema.name) {
+//      throw AvroSchemaFqnMismatch(schema.namespace, schema.name, subPath)
+//    }
+//
+//    return schema
+//  }
 
   /**
    * Marker bytes according to Avro schema specification v1.

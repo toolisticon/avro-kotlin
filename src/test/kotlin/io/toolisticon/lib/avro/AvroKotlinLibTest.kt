@@ -8,7 +8,9 @@ import io.toolisticon.lib.avro.fqn.ProtocolFqn
 import io.toolisticon.lib.avro.fqn.SchemaFqn
 import io.toolisticon.lib.avro.fqn.fromDirectory
 import io.toolisticon.lib.avro.fqn.fromResource
+import io.toolisticon.lib.avro.io.file
 import io.toolisticon.lib.avro.io.toHexString
+import io.toolisticon.lib.avro.io.writeText
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.Path
 import kotlin.io.path.isRegularFile
 
 internal class AvroKotlinLibTest {
@@ -93,5 +96,21 @@ internal class AvroKotlinLibTest {
   @Test
   fun `header bytes C3 01`() {
     assertThat(AvroKotlinLib.AVRO_V1_HEADER.toHexString()).isEqualTo("[C3 01]")
+  }
+
+
+  @Test
+  fun `schema fqn matches path - everything ok`() {
+    val schema = schema(TestFixtures.fqnBankAccountCreated).fromResource("avro")
+
+    val file = tmpDir.file(Path("foo.bar.BankAccountCreated.avsc")).toFile().writeText(schema.toString(true))
+
+//
+//    val avscFile: File = tmpDir.writeString("io.holixon.schema.bank.event", "BalanceChangedEvent.avsc", TestFixtures.balanceChangedEventAvsc)
+//
+//    val schema = verifyPathAndSchemaFqnMatches(tmpDir, avscFile, parser)
+//
+//    assertThat(schema.namespace).isEqualTo("io.holixon.schema.bank.event")
+//    assertThat(schema.name).isEqualTo("BalanceChangedEvent")
   }
 }
