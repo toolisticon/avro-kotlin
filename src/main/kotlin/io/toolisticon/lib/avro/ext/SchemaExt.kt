@@ -11,9 +11,11 @@ import io.toolisticon.lib.avro.fqn.SchemaFqn
 import org.apache.avro.Schema
 import org.apache.avro.SchemaNormalization
 import org.apache.avro.generic.GenericData
+import org.apache.avro.specific.SpecificData
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Path
+import kotlin.reflect.KClass
 
 object SchemaExt {
 
@@ -64,5 +66,11 @@ object SchemaExt {
 
     return file.writeText(toString(true))
   }
+
+  @JvmStatic
+  fun schemaForClass(recordClass: Class<*>): Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
+
+  @JvmStatic
+  fun schemaForClass(recordClass: KClass<*>): Schema = schemaForClass(recordClass.java)
 
 }

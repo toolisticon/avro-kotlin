@@ -13,18 +13,24 @@ object BytesExt {
    *
    * @param separator - what to print between the bytes, defaults to " "
    * @param prefix - start of string, defaults to "["
-   * @param suffix - end of string, defaults to "]"
+   * @param postfix - end of string, defaults to "]"
    * @return the hexadecimal string representation of the input byte array
    */
-  fun ByteArray.toHexString(): String = this.joinToString(
-    separator = " ",
-    prefix = "[",
-    postfix = "]"
+  @JvmStatic()
+  fun ByteArray.toHexString(
+    separator: String = " ",
+    prefix: String = "[",
+    postfix: String = "]",
+  ): String = this.joinToString(
+    separator = separator,
+    prefix = prefix,
+    postfix = postfix
   ) { "%02X".format(it) }
 
   /**
    * @return [ByteBuffer.wrap] for given array
    */
+  @JvmStatic()
   fun ByteArray.buffer(): ByteBuffer = ByteBuffer.wrap(this)
 
   /**
@@ -34,6 +40,7 @@ object BytesExt {
    * @param indexes - positive ints, must be sorted
    * @return list of `n+1` byte arrays, each having a size of the diff between the indexes.
    */
+  @JvmStatic()
   fun ByteArray.split(vararg indexes: Int): List<ByteArray> {
     require(indexes.none { it < 0 || it > size - 1 }) { "all indexes have to match '0 < index < size-1', was: indexes=${indexes.toList()}, size=$size" }
     require(indexes.toList() == indexes.sorted()) { "indexes must be ordered, was: ${indexes.toList()}" }
@@ -47,6 +54,7 @@ object BytesExt {
   /**
    * @see ByteArray.split(indexes)
    */
+  @JvmStatic()
   fun ByteBuffer.split(vararg indexes: Int): List<ByteArray> = this.array().split(*indexes)
 
   /**
@@ -55,8 +63,9 @@ object BytesExt {
    *
    * @param position - the position to start reading
    * @param size - how many bytes should be read. if not given, all remaining bytes are read
-   * @return bytesArray containg [size] bytes starting at [position]
+   * @return bytesArray containing [size] bytes starting at [position]
    */
+  @JvmStatic()
   fun ByteBuffer.extract(position: Int, size: Int? = null): ByteArray {
     val originalPosition = this.position()
     try {
@@ -73,13 +82,25 @@ object BytesExt {
     }
   }
 
+  /**
+   * Reads LITTLE_ENDIAN long value (fingerprint)
+   */
+  @JvmStatic()
   fun ByteArray.readLong(): Long {
     require(this.size == Long.SIZE_BYTES) { "Size must be exactly Long.SIZE_BYTES (${Long.SIZE_BYTES}." }
     return this.buffer().order(ByteOrder.LITTLE_ENDIAN).long
   }
 
-  fun ByteBuffer.isAvroSingleObjectEncoded(): Boolean = extract(0, AvroKotlinLib.AVRO_V1_HEADER.size).contentEquals(AvroKotlinLib.AVRO_V1_HEADER)
+  /**
+   * @return `true` if bytes start with [AvroKotlinLib#AVRO_V1_HEADER].
+   */
+  @JvmStatic()
+  fun ByteBuffer.isAvroSingleObjectEncoded(): Boolean = try { extract(0, AvroKotlinLib.AVRO_V1_HEADER.size).contentEquals(AvroKotlinLib.AVRO_V1_HEADER) } catch (e:Exception) { false }
 
+  /**
+   * @return `true` if bytes start with [AvroKotlinLib#AVRO_V1_HEADER].
+   */
+  @JvmStatic()
   fun ByteArray.isAvroSingleObjectEncoded(): Boolean = buffer().isAvroSingleObjectEncoded()
 
 }

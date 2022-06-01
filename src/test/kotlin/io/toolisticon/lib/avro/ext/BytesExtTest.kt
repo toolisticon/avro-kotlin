@@ -1,7 +1,9 @@
 package io.toolisticon.lib.avro.ext
 
+import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.ext.BytesExt.buffer
 import io.toolisticon.lib.avro.ext.BytesExt.extract
+import io.toolisticon.lib.avro.ext.BytesExt.isAvroSingleObjectEncoded
 import io.toolisticon.lib.avro.ext.BytesExt.split
 import io.toolisticon.lib.avro.ext.BytesExt.toHexString
 import mu.KLogging
@@ -76,5 +78,14 @@ internal class BytesExtTest {
     assertThat(parts[0].toHexString()).isEqualTo("[48 65 6C 6C 6F]")
     assertThat(parts[1].toHexString()).isEqualTo("[20 57 6F 72 6C]")
     assertThat(parts[2].toHexString()).isEqualTo("[64 21]")
+  }
+
+  @Test
+  fun `verify isAvroEncoded`() {
+    assertThat(AvroKotlinLib.AVRO_V1_HEADER.isAvroSingleObjectEncoded()).isTrue
+
+    assertThat(byteArrayOf(-1).isAvroSingleObjectEncoded()).isFalse
+
+    assertThat(helloBytes.isAvroSingleObjectEncoded()).isFalse
   }
 }
