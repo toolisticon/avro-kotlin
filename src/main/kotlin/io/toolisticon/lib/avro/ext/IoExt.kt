@@ -1,6 +1,7 @@
 package io.toolisticon.lib.avro.ext
 
 import io.toolisticon.lib.avro.*
+import io.toolisticon.lib.avro.fqn.DefaultAvroDeclarationFqn
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -20,6 +21,11 @@ object IoExt {
   fun String.dotToDash(): String = replace(NAME_SEPARATOR, File.separator)
 
   /**
+   * Replace path file-separator dash with namespace dots.
+   */
+  fun String.dashToDot() : String = replace(File.separator, NAME_SEPARATOR)
+
+  /**
    * [Namespace] to [Path] replacing `.` with [File#separator].
    */
   fun namespaceToPath(namespace: Namespace): Path = Path(namespace.dotToDash())
@@ -36,7 +42,7 @@ object IoExt {
    *
    * A `Schema(namespace=foo.bar, name=HelloWorld)` becomes `Path("foo/bar/HelloWorld.avsc")`.
    */
-  fun fqnToPath(namespace: Namespace, name: Name, fileExtension: FileExtension) = canonicalNameToPath(AvroKotlinLib.canonicalName(namespace, name), fileExtension)
+  fun fqnToPath(namespace: Namespace, name: Name, fileExtension: FileExtension) = DefaultAvroDeclarationFqn(namespace,name,fileExtension).path
 
 
   /**

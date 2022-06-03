@@ -1,17 +1,15 @@
 package io.toolisticon.lib.avro
 
-import io.toolisticon.lib.avro.AvroKotlinLib.canonicalName
+import io.toolisticon.lib.avro.AvroKotlinLib.fqn
 import io.toolisticon.lib.avro.AvroKotlinLib.protocol
 import io.toolisticon.lib.avro.AvroKotlinLib.schema
 import io.toolisticon.lib.avro.ext.BytesExt.toHexString
 import io.toolisticon.lib.avro.ext.ProtocolExt.writeToDirectory
 import io.toolisticon.lib.avro.ext.SchemaExt.writeToDirectory
-import io.toolisticon.lib.avro.fqn.ProtocolFqn
-import io.toolisticon.lib.avro.fqn.SchemaFqn
-import io.toolisticon.lib.avro.fqn.fromDirectory
-import io.toolisticon.lib.avro.fqn.fromResource
+import io.toolisticon.lib.avro.fqn.*
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -49,7 +47,7 @@ internal class AvroKotlinLibTest {
 
   @Test
   fun `concat canonicalName`() {
-    assertThat(canonicalName("foo.bar", "HelloWorld")).isEqualTo("foo.bar.HelloWorld")
+    assertThat(fqn("foo.bar", "HelloWorld").canonicalName).isEqualTo("foo.bar.HelloWorld")
   }
 
   @Test
@@ -97,4 +95,13 @@ internal class AvroKotlinLibTest {
   }
 
 
+
+  @Test
+  fun `test mismatch exception`() {
+
+    Assertions.assertThatThrownBy {
+      AvroKotlinLib.verifyPackagePathConvention(SchemaFqn("foo", "Baz"), SchemaFqn("foo.bar", "Baz"))
+    }.isInstanceOf(AvroDeclarationMismatchException::class.java)
+      .hasMessage("violation of package-path convention: found declaration fqn='foo.Baz' but was loaded from path='foo/bar/Baz.avsc'")
+  }
 }

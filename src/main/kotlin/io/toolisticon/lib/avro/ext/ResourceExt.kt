@@ -4,7 +4,7 @@ import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.FileExtension
 import io.toolisticon.lib.avro.Name
 import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.ext.IoExt.canonicalNameToPath
+import io.toolisticon.lib.avro.fqn.DefaultAvroDeclarationFqn
 import org.apache.avro.JsonProperties
 import java.io.File
 import java.io.InputStream
@@ -30,7 +30,8 @@ object ResourceExt {
     prefix: String? = null,
     classLoader: ClassLoader = AvroKotlinLib.DEFAULT_CLASS_LOADER
   ): URL {
-    val path = canonicalNameToPath(AvroKotlinLib.canonicalName(namespace, name), fileExtension)
+    val fqn = DefaultAvroDeclarationFqn(namespace, name, fileExtension)
+    val path = fqn.path
 
     val resource = (if (prefix != null) {
       "$prefix${File.separator}$path"

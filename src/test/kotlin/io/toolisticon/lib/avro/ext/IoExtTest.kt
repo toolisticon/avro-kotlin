@@ -2,6 +2,8 @@ package io.toolisticon.lib.avro.ext
 
 import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_SCHEMA
+import io.toolisticon.lib.avro.ext.IoExt.dashToDot
+import io.toolisticon.lib.avro.ext.IoExt.dotToDash
 import io.toolisticon.lib.avro.ext.IoExt.file
 import io.toolisticon.lib.avro.ext.IoExt.fqnToPath
 import io.toolisticon.lib.avro.ext.IoExt.namespaceToPath
@@ -45,5 +47,14 @@ internal class IoExtTest {
     println(AvroKotlinLib.DEFAULT_CLASS_LOADER.getResource(""))
 
     println(url)
+  }
+
+  @Test
+  fun `replace dots and dashes`() {
+    val dots = "io.acme.bar.Foo"
+    val dashes = dots.dotToDash()
+
+    assertThat(dashes).isEqualTo("io/acme/bar/Foo")
+    assertThat(dashes.dashToDot()).isEqualTo(dots)
   }
 }

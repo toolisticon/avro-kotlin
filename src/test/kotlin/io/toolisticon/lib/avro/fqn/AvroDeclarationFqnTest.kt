@@ -1,8 +1,10 @@
 package io.toolisticon.lib.avro.fqn
 
 import io.toolisticon.lib.avro.AvroKotlinLib
+import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_SCHEMA
 import io.toolisticon.lib.avro.TestFixtures
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 
@@ -19,4 +21,5 @@ internal class AvroDeclarationFqnTest {
     assertThat(fqn.fileExtension).isEqualTo(schemaFqn.fileExtension)
     assertThat(fqn.name).isEqualTo(schemaFqn.name)
   }
+
 }

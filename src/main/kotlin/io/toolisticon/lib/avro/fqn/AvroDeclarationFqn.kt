@@ -1,19 +1,28 @@
 package io.toolisticon.lib.avro.fqn
 
-import io.toolisticon.lib.avro.*
-import io.toolisticon.lib.avro.AvroKotlinLib.canonicalName
+import io.toolisticon.lib.avro.AvroKotlinLib
+import io.toolisticon.lib.avro.FileExtension
+import io.toolisticon.lib.avro.Name
+import io.toolisticon.lib.avro.Namespace
 import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
-import io.toolisticon.lib.avro.ext.IoExt.canonicalNameToPath
+import org.apache.avro.AvroRuntimeException
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
 import kotlin.io.path.extension
+import kotlin.jvm.Throws
+
+/**
+ * [AvroRuntimeException] expressing the the declared canonical name in the actual resource does not match the path of the resource.
+ */
+class AvroDeclarationMismatchException(actual: AvroDeclarationFqn, expected: AvroDeclarationFqn)
+  : AvroRuntimeException("violation of package-path convention: found declaration fqn='${actual.canonicalName}' but was loaded from path='${expected.path}'")
+
 
 /**
  * Represents a concrete file or resource containing a (json) avro schema or protocol.
  */
-interface AvroDeclarationFqn : AvroFqn {
-
+sealed interface AvroDeclarationFqn : AvroFqn {
   /**
    * The file suffix to use (avsc or avpr).
    */
@@ -25,28 +34,12 @@ interface AvroDeclarationFqn : AvroFqn {
   val path: Path
 }
 
-/**
- * Abstract implementation of [AvroDeclarationFqn] providing default for canonicalName and path.
- */
-abstract class AbstractAvroDeclarationFqn(override val namespace: Namespace, override val name: Name, override val fileExtension: FileExtension) :
-  AvroDeclarationFqn {
-
-  override val canonicalName: CanonicalName by lazy {
-    canonicalName(namespace, name)
-  }
-
-  override val path: Path by lazy {
-    canonicalNameToPath(canonicalName, fileExtension)
-  }
-
-  override fun toString() = "${this::class.simpleName}(namespace='$namespace', name='$name', extension='$fileExtension')"
-}
-
+@Deprecated("delete")
 data class AvroDeclarationFqnData(
   override val namespace: Namespace,
   override val name: Name,
   override val fileExtension: FileExtension
-) : AbstractAvroDeclarationFqn(namespace, name, fileExtension) {
+) : DefaultAvroDeclarationFqn(namespace, name, fileExtension) {
 
   constructor(fqn: SchemaFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
   constructor(fqn: ProtocolFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)

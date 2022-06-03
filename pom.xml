@@ -116,6 +116,12 @@
       <artifactId>kotlin-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>3.10</version>
+      <scope>test</scope>
+    </dependency>
 
     <!-- include jackson to verify instances can be serialized -->
     <dependency>

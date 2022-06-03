@@ -2,7 +2,6 @@ package io.toolisticon.lib.avro.fqn
 
 import io.toolisticon.lib.avro.AvroKotlinLib.schema
 import io.toolisticon.lib.avro.TestFixtures
-import io.toolisticon.lib.avro.exception.SchemaFqnMismatchException
 import io.toolisticon.lib.avro.ext.SchemaExt.writeToDirectory
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -20,7 +19,7 @@ internal class SchemaFqnTest {
   fun `toString contains namespace name and extension`() {
     val fqn = SchemaFqn(namespace = "com.acme.foo", name = "MySchema")
 
-    assertThat(fqn.toString()).isEqualTo("SchemaFqn(namespace='com.acme.foo', name='MySchema', extension='avsc')")
+    assertThat(fqn.toString()).isEqualTo("SchemaFqn(namespace='com.acme.foo', name='MySchema', fileExtension='avsc')")
   }
 
   @Test
@@ -37,7 +36,8 @@ internal class SchemaFqnTest {
 
     assertThatThrownBy {
       fqnWithWrongNamespace.fromDirectory(tmpDir)
-    }.isInstanceOf(SchemaFqnMismatchException::class.java)
+    }.isInstanceOf(AvroDeclarationMismatchException::class.java)
+      .hasMessageContaining("violation of package-path convention: found declaration fqn='lib.test.event.BankAccountCreated' but was loaded from path='foo/bar/BankAccountCreated.avsc'")
 
     // if we disable the check, it can be loaded
     val ignoreMismatchSchema = fqnWithWrongNamespace.fromDirectory(tmpDir, false)

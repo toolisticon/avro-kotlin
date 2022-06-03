@@ -4,7 +4,6 @@ import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.AvroKotlinLib.DEFAULT_CLASS_LOADER
 import io.toolisticon.lib.avro.Name
 import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.exception.SchemaFqnMismatchException
 import io.toolisticon.lib.avro.ext.IoExt.file
 import io.toolisticon.lib.avro.ext.ResourceExt.parseFromResource
 import io.toolisticon.lib.avro.ext.SchemaExt.fqn
@@ -16,10 +15,7 @@ import java.io.FileNotFoundException
  * Represents a (json) avro [Schema] file. Based on this information the file can be read from resource and read/written from/to a file.
  */
 data class SchemaFqn(override val namespace: Namespace, override val name: Name) :
-  AbstractAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_SCHEMA) {
-  companion object {
-    fun AvroFqn.schemaFqn() = AvroKotlinLib.schema(this)
-  }
+  DefaultAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_SCHEMA) {
 
   override fun toString(): String = super.toString()
 }
@@ -57,7 +53,7 @@ fun SchemaFqn.fromDirectory(dir: File, failOnFqnMismatch: Boolean = true): Schem
   if (failOnFqnMismatch) {
     val schemaFqn = schema.fqn()
     if (schemaFqn != this) {
-      throw SchemaFqnMismatchException(this, schemaFqn)
+      throw AvroDeclarationMismatchException(schemaFqn, this)
     }
   }
 

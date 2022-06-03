@@ -1,13 +1,12 @@
 package io.toolisticon.lib.avro
 
 import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
-import io.toolisticon.lib.avro.fqn.AvroFqn
-import io.toolisticon.lib.avro.fqn.AvroFqnData
-import io.toolisticon.lib.avro.fqn.ProtocolFqn
-import io.toolisticon.lib.avro.fqn.SchemaFqn
+import io.toolisticon.lib.avro.fqn.*
 import java.io.File
 
 object AvroKotlinLib {
+
+  var verifyPackageConvention = true
 
   fun schema(namespace: Namespace, name: Name): SchemaFqn = SchemaFqn(namespace = namespace, name = name)
   fun schema(fqn: AvroFqn): SchemaFqn = schema(namespace = fqn.namespace, name = fqn.name)
@@ -16,29 +15,24 @@ object AvroKotlinLib {
   fun protocol(fqn: AvroFqn): ProtocolFqn = protocol(namespace = fqn.namespace, name = fqn.name)
 
 
-  /**
-   * Concat a canonical name based on namespace and name.
-   */
-  fun canonicalName(namespace: Namespace, name: Name): CanonicalName = "$namespace$NAME_SEPARATOR$name"
+
 
   /**
    * Create [AvroFqn] based on namespace and name.
    */
   fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
 
-
-//  @Throws(AvroSchemaFqnMismatch::class)
-//  fun verifyPathAndSchemaFqnMatches(rootDirectory: File, avscFile: File, parser: Schema.Parser = Schema.Parser()): Schema {
-//    val subPath: Path = Path(avscFile.path.removePrefix("${rootDirectory.path}${File.separator}"))
-//
-//    val fileFqn: AvroFqn = fileToFqn(subPath)
-//
-//    if (fileFqn.namespace != schema.namespace || fileFqn.name != schema.name) {
-//      throw AvroSchemaFqnMismatch(schema.namespace, schema.name, subPath)
-//    }
-//
-//    return schema
-//  }
+  /**
+   * An avro declaration file should have a path that matches its canonicalName, the same way a java file has to
+   * be defined in the correct package.
+   * @throws AvroDeclarationMismatchException
+   */
+  @Throws(AvroDeclarationMismatchException::class)
+  fun verifyPackagePathConvention(actual: DefaultAvroDeclarationFqn, expected: DefaultAvroDeclarationFqn): Unit = try {
+    require(actual == expected)
+  } catch (e: Exception) {
+    throw AvroDeclarationMismatchException(actual, expected)
+  }
 
   /**
    * Marker bytes according to Avro schema specification v1.

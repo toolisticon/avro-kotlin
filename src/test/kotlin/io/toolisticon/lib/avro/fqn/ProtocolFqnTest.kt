@@ -9,6 +9,6 @@ internal class ProtocolFqnTest {
   fun `toString contains namespace name and extension`() {
     val fqn = ProtocolFqn(namespace = "com.acme.foo", name = "MyProtocol")
 
-    assertThat(fqn.toString()).isEqualTo("ProtocolFqn(namespace='com.acme.foo', name='MyProtocol', extension='avpr')")
+    assertThat(fqn.toString()).isEqualTo("ProtocolFqn(namespace='com.acme.foo', name='MyProtocol', fileExtension='avpr')")
   }
 }
