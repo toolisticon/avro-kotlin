@@ -34,26 +34,14 @@ sealed interface AvroDeclarationFqn : AvroFqn {
   val path: Path
 }
 
-@Deprecated("delete")
-data class AvroDeclarationFqnData(
-  override val namespace: Namespace,
-  override val name: Name,
-  override val fileExtension: FileExtension
-) : DefaultAvroDeclarationFqn(namespace, name, fileExtension) {
-
-  constructor(fqn: SchemaFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
-  constructor(fqn: ProtocolFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
-
-}
-
-fun Path.toFqn(): AvroDeclarationFqn {
-  val namespace = this.parent.toString().replace(File.separator, NAME_SEPARATOR)
-  val fileExtension = this.extension
-  val name = fileName.toString().substringBeforeLast(NAME_SEPARATOR)
-
-
-  return AvroDeclarationFqnData(namespace, name, fileExtension)
-}
+//fun Path.toFqn(): AvroDeclarationFqn {
+//  val namespace = this.parent.toString().replace(File.separator, NAME_SEPARATOR)
+//  val fileExtension = this.extension
+//  val name = fileName.toString().substringBeforeLast(NAME_SEPARATOR)
+//
+//
+//  return AvroDeclarationFqnData(namespace, name, fileExtension)
+//}
 
 /**
  * URL of resource using path based on namespace and name.
