@@ -15,7 +15,7 @@ import java.io.FileNotFoundException
  * Represents a (json) avro [Schema] file. Based on this information the file can be read from resource and read/written from/to a file.
  */
 data class SchemaFqn(override val namespace: Namespace, override val name: Name) :
-  DefaultAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_SCHEMA) {
+  GenericAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_SCHEMA) {
 
   override fun toString(): String = super.toString()
 }

@@ -7,6 +7,7 @@ import io.toolisticon.lib.avro.ext.IoExt.dotToDash
 import io.toolisticon.lib.avro.ext.IoExt.file
 import io.toolisticon.lib.avro.ext.IoExt.fqnToPath
 import io.toolisticon.lib.avro.ext.IoExt.namespaceToPath
+
 import io.toolisticon.lib.avro.ext.ResourceExt.resource
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -15,6 +16,7 @@ import java.io.File
 import kotlin.io.path.Path
 
 internal class IoExtTest {
+
   @TempDir
   lateinit var tmp: File
 
@@ -56,5 +58,16 @@ internal class IoExtTest {
 
     assertThat(dashes).isEqualTo("io/acme/bar/Foo")
     assertThat(dashes.dashToDot()).isEqualTo(dots)
+  }
+
+
+  @Test
+  fun `extract subpath`() {
+    val root = Path("/foo/bar/ggg")
+    val full = Path("/foo/bar/com/acme/baz/hello.world")
+
+    val sub = root.relativize(full)
+
+    assertThat(sub.toString()).isEqualTo("../com/acme/baz/hello.world")
   }
 }

@@ -1,6 +1,6 @@
 # avro-kotlin
 
-opionionated extension functions and helpers for using apache avro with kotlin.
+opinionated extension functions and helpers for using apache avro with kotlin.
 
 [![incubating](https://img.shields.io/badge/lifecycle-INCUBATING-orange.svg)](https://github.com/holisticon#open-source-lifecycle)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)

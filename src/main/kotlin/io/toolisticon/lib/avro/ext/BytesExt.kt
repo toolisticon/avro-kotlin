@@ -33,6 +33,7 @@ object BytesExt {
   @JvmStatic()
   fun ByteArray.buffer(): ByteBuffer = ByteBuffer.wrap(this)
 
+
   /**
    * Splits an array in `n+1` parts, where `n` is the number of given indexes.
    * The first slice reaches from 0 to index_0, the last slice from index_n to end.

@@ -12,4 +12,8 @@ internal class ResourceExtTest {
     assertThat(root).endsWith("/target/test-classes/")
   }
 
+  @Test
+  fun `find all avro resources`() {
+    ResourceExt.findAvroResources(prefix = "avro")
+  }
 }

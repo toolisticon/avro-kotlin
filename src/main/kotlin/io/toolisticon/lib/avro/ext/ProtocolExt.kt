@@ -5,7 +5,10 @@ import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_PROTOCOL
 import io.toolisticon.lib.avro.FileExtension
 import io.toolisticon.lib.avro.ext.IoExt.file
 import io.toolisticon.lib.avro.ext.IoExt.writeText
+import io.toolisticon.lib.avro.fqn.ProtocolFqn
+import io.toolisticon.lib.avro.fqn.SchemaFqn
 import org.apache.avro.Protocol
+import org.apache.avro.Schema
 import java.io.File
 import java.nio.file.Path
 
@@ -25,6 +28,8 @@ object ProtocolExt {
    * A [File] with [Protocol#path] based on given directory. Use to read or write protocol from file system.
    */
   fun Protocol.file(dir: File): Path = dir.file(this.path)
+
+  fun Protocol.fqn(): ProtocolFqn = ProtocolFqn(namespace = namespace, name = name)
 
   /**
    * Write protocol json content to directory, using [Protocol#path].

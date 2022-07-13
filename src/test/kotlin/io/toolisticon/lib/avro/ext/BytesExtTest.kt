@@ -88,4 +88,13 @@ internal class BytesExtTest {
 
     assertThat(helloBytes.isAvroSingleObjectEncoded()).isFalse
   }
+
+  @Test
+  fun `convert buffer and bytes`() {
+    val bytes = helloBytes
+
+    val buffer = helloBytes.buffer()
+
+    assertThat(buffer.array()).isEqualTo(bytes)
+  }
 }

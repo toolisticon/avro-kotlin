@@ -1,8 +1,13 @@
 package io.toolisticon.lib.avro
 
-import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
+import io.toolisticon.lib.avro.declaration.SchemaDeclaration
 import io.toolisticon.lib.avro.fqn.*
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.io.path.extension
+import kotlin.io.path.isRegularFile
+import kotlin.streams.toList
 
 object AvroKotlinLib {
 
@@ -15,12 +20,33 @@ object AvroKotlinLib {
   fun protocol(fqn: AvroFqn): ProtocolFqn = protocol(namespace = fqn.namespace, name = fqn.name)
 
 
-
-
   /**
    * Create [AvroFqn] based on namespace and name.
    */
   fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
+
+  fun findDeclarations(root: Path, filter: (Path) -> Boolean = Declaration.BOTH): List<Any> {
+    val fqns = Files.walk(root)
+      .filter { it.isRegularFile() }
+      .filter(filter)
+      .map { GenericAvroDeclarationFqn.fromPath(it, root) }
+      .toList()
+
+    return fqns.map { fqn ->
+      if (fqn.fileExtension == Declaration.SCHEMA.fileExtension) {
+        SchemaDeclaration(
+          location = fqn,
+          content = schema(fqn).fromDirectory(root.toFile())
+        )
+      } else if (fqn.fileExtension == Declaration.PROTOCOL.fileExtension) {
+        protocol(fqn).fromDirectory(root.toFile())
+      } else {
+        throw IllegalArgumentException("unsupported extension: ${fqn.fileExtension}")
+      }
+    }
+
+
+  }
 
   /**
    * An avro declaration file should have a path that matches its canonicalName, the same way a java file has to
@@ -28,11 +54,26 @@ object AvroKotlinLib {
    * @throws AvroDeclarationMismatchException
    */
   @Throws(AvroDeclarationMismatchException::class)
-  fun verifyPackagePathConvention(actual: DefaultAvroDeclarationFqn, expected: DefaultAvroDeclarationFqn): Unit = try {
+  fun verifyPackagePathConvention(actual: GenericAvroDeclarationFqn, expected: GenericAvroDeclarationFqn): Unit = try {
     require(actual == expected)
   } catch (e: Exception) {
     throw AvroDeclarationMismatchException(actual, expected)
   }
+
+  enum class Declaration(val fileExtension: FileExtension) {
+    SCHEMA(EXTENSION_SCHEMA),
+    PROTOCOL(EXTENSION_PROTOCOL)
+    ;
+
+    companion object {
+      private val extensions = values().associateBy { it.fileExtension }
+
+      val BOTH: (Path) -> Boolean = { setOf(SCHEMA.fileExtension, PROTOCOL.fileExtension).contains(it.extension) }
+
+      fun byExtension(fileExtension: FileExtension) = requireNotNull(extensions[fileExtension]) { "illegal file extension='$fileExtension'" }
+    }
+  }
+
 
   /**
    * Marker bytes according to Avro schema specification v1.

@@ -2,15 +2,10 @@ package io.toolisticon.lib.avro.fqn
 
 import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.FileExtension
-import io.toolisticon.lib.avro.Name
-import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.ext.IoExt.NAME_SEPARATOR
 import org.apache.avro.AvroRuntimeException
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
-import kotlin.io.path.extension
-import kotlin.jvm.Throws
 
 /**
  * [AvroRuntimeException] expressing the the declared canonical name in the actual resource does not match the path of the resource.
@@ -23,6 +18,7 @@ class AvroDeclarationMismatchException(actual: AvroDeclarationFqn, expected: Avr
  * Represents a concrete file or resource containing a (json) avro schema or protocol.
  */
 sealed interface AvroDeclarationFqn : AvroFqn {
+
   /**
    * The file suffix to use (avsc or avpr).
    */
@@ -32,6 +28,8 @@ sealed interface AvroDeclarationFqn : AvroFqn {
    * Calculates the FQN path of the document using namespace, name and suffix
    */
   val path: Path
+
+  val type: AvroKotlinLib.Declaration
 }
 
 //fun Path.toFqn(): AvroDeclarationFqn {

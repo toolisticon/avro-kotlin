@@ -1,5 +1,7 @@
 package io.toolisticon.lib.avro
 
+import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_PROTOCOL
+import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_SCHEMA
 import io.toolisticon.lib.avro.AvroKotlinLib.fqn
 import io.toolisticon.lib.avro.AvroKotlinLib.protocol
 import io.toolisticon.lib.avro.AvroKotlinLib.schema
@@ -9,8 +11,8 @@ import io.toolisticon.lib.avro.ext.SchemaExt.writeToDirectory
 import io.toolisticon.lib.avro.fqn.*
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -80,8 +82,6 @@ internal class AvroKotlinLibTest {
     val file: Path = protocol.writeToDirectory(tmpDir)
     assertThat(file).exists()
 
-    Files.walk(tmpDir.toPath()).filter { it.isRegularFile() }
-      .forEach { println(it) }
 
     // read from tmp file
     val readFromFile = fqn.fromDirectory(tmpDir)
@@ -95,13 +95,32 @@ internal class AvroKotlinLibTest {
   }
 
 
-
   @Test
   fun `test mismatch exception`() {
 
-    Assertions.assertThatThrownBy {
+    assertThatThrownBy {
       AvroKotlinLib.verifyPackagePathConvention(SchemaFqn("foo", "Baz"), SchemaFqn("foo.bar", "Baz"))
     }.isInstanceOf(AvroDeclarationMismatchException::class.java)
       .hasMessage("violation of package-path convention: found declaration fqn='foo.Baz' but was loaded from path='foo/bar/Baz.avsc'")
+  }
+
+  @Test
+   fun `find declaration by extension`() {
+    assertThat(AvroKotlinLib.Declaration.byExtension(EXTENSION_SCHEMA)).isEqualTo(AvroKotlinLib.Declaration.SCHEMA)
+    assertThat(AvroKotlinLib.Declaration.byExtension(EXTENSION_PROTOCOL)).isEqualTo(AvroKotlinLib.Declaration.PROTOCOL)
+
+    assertThatThrownBy { AvroKotlinLib.Declaration.byExtension("foo") }
+      .isInstanceOf(java.lang.IllegalArgumentException::class.java)
+      .hasMessage("illegal file extension='foo'")
+  }
+
+  @Test
+  fun `find all schemaDeclarations`() {
+    TestFixtures.schemaFoo.writeToDirectory(tmpDir)
+    TestFixtures.schemaBar.writeToDirectory(tmpDir)
+
+    val found = AvroKotlinLib.findDeclarations(tmpDir.toPath())
+
+    assertThat(found).hasSize(2)
   }
 }

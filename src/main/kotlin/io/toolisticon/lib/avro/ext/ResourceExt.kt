@@ -4,11 +4,14 @@ import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.FileExtension
 import io.toolisticon.lib.avro.Name
 import io.toolisticon.lib.avro.Namespace
-import io.toolisticon.lib.avro.fqn.DefaultAvroDeclarationFqn
+import io.toolisticon.lib.avro.fqn.GenericAvroDeclarationFqn
 import org.apache.avro.JsonProperties
 import java.io.File
 import java.io.InputStream
 import java.net.URL
+import java.nio.file.Files
+import kotlin.io.path.Path
+import kotlin.jvm.Throws
 
 object ResourceExt {
 
@@ -30,14 +33,14 @@ object ResourceExt {
     prefix: String? = null,
     classLoader: ClassLoader = AvroKotlinLib.DEFAULT_CLASS_LOADER
   ): URL {
-    val fqn = DefaultAvroDeclarationFqn(namespace, name, fileExtension)
+    val fqn = GenericAvroDeclarationFqn(namespace, name, fileExtension)
     val path = fqn.path
 
-    val resource = (if (prefix != null) {
+    val resource: String = (if (prefix != null) {
       "$prefix${File.separator}$path"
     } else {
       path.toString()
-    }).removePrefix("/")
+    }).removePrefix(File.separator)
 
     return requireNotNull(classLoader.getResource(resource)) { "resource not found: $path" }
   }
@@ -64,8 +67,15 @@ object ResourceExt {
     return resource(namespace, name, fileExtension, prefix, classLoader).openStream().use { parser.invoke(it) }
   }
 
-  @kotlin.jvm.Throws(IllegalStateException::class)
+  @Throws(IllegalStateException::class)
   fun rootResource(classLoader: ClassLoader = AvroKotlinLib.DEFAULT_CLASS_LOADER): URL = classLoader.getResource("")
     ?: throw IllegalStateException("no root resource found for classLoader:$classLoader")
 
+  fun findAvroResources(prefix:String? = null, classLoader: ClassLoader = AvroKotlinLib.DEFAULT_CLASS_LOADER) {
+    val rootPath = Path(rootResource(classLoader).path).resolve(prefix?:"")
+
+    Files.walk(rootPath)
+      .map { it.toFile() }
+      .forEach { println(it) }
+  }
 }

@@ -12,7 +12,7 @@ import java.io.File
 /**
  * Represents a (json) avro [Protocol] file. Based on this information the file can be read from resource and read/written from/to a file.
  */
-data class ProtocolFqn(override val namespace: Namespace, override val name: Name) : DefaultAvroDeclarationFqn(
+data class ProtocolFqn(override val namespace: Namespace, override val name: Name) : GenericAvroDeclarationFqn(
   namespace = namespace, name = name, fileExtension = AvroKotlinLib.EXTENSION_PROTOCOL
 ) {
   companion object {

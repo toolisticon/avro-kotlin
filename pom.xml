@@ -6,7 +6,7 @@
   <artifactId>avro-kotlin</artifactId>
   <version>1.11.0.0-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <description>avro-kotlin</description>
+  <description>opinionated extension functions and helpers for using apache avro with kotlin</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
 
   <properties>
@@ -122,6 +122,13 @@
       <version>3.10</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.jimfs</groupId>
+      <artifactId>jimfs</artifactId>
+      <version>1.2</version>
+      <scope>test</scope>
+    </dependency>
+
 
     <!-- include jackson to verify instances can be serialized -->
     <dependency>
