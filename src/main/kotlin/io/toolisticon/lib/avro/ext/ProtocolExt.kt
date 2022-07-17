@@ -1,21 +1,18 @@
 package io.toolisticon.lib.avro.ext
 
-import io.toolisticon.lib.avro.AvroKotlinLib
 import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_PROTOCOL
 import io.toolisticon.lib.avro.FileExtension
 import io.toolisticon.lib.avro.ext.IoExt.file
 import io.toolisticon.lib.avro.ext.IoExt.writeText
 import io.toolisticon.lib.avro.fqn.ProtocolFqn
-import io.toolisticon.lib.avro.fqn.SchemaFqn
 import org.apache.avro.Protocol
-import org.apache.avro.Schema
 import java.io.File
 import java.nio.file.Path
 
 object ProtocolExt {
 
   /**
-   * Protocl file extension is `avpr`.
+   * Protocol file extension is `avpr`.
    */
   val Protocol.fileExtension: FileExtension get() = EXTENSION_PROTOCOL
 
@@ -40,5 +37,10 @@ object ProtocolExt {
 
     return target.toPath()
   }
+
+  /**
+   * Get message from protocol by name.
+   */
+  fun Protocol.message(name:String): Protocol.Message = requireNotNull(this.messages[name]) {"No protocol message with name '$name' found."}
 
 }

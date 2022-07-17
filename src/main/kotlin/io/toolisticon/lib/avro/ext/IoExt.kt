@@ -58,6 +58,4 @@ object IoExt {
     this.writeText(content, AvroKotlinLib.UTF_8)
     return this
   }
-
-
 }
