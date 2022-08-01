@@ -44,8 +44,6 @@ object AvroKotlinLib {
         throw IllegalArgumentException("unsupported extension: ${fqn.fileExtension}")
       }
     }
-
-
   }
 
   /**
