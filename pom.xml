@@ -4,7 +4,7 @@
 
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>1.11.0.0</version>
+  <version>1.11.1.0</version>
   <name>${project.artifactId}</name>
   <description>opinionated extension functions and helpers for using apache avro with kotlin</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
@@ -16,14 +16,14 @@
     <java.version>11</java.version>
 
     <!-- LIB -->
-    <avro.version>1.11.0</avro.version>
+    <avro.version>1.11.1</avro.version>
 
     <!-- TEST -->
     <assertj.version>3.22.0</assertj.version>
     <equalsverifier.version>3.10</equalsverifier.version>
     <jackson.version>2.13.3</jackson.version>
     <jimfs.version>1.2</jimfs.version>
-    <junit5.version>5.8.2</junit5.version>
+    <junit5.version>5.9.0</junit5.version>
     <logback.version>1.2.11</logback.version>
     <mockito.version>4.0.0</mockito.version>
 
