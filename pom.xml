@@ -4,7 +4,7 @@
 
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>1.11.1.1-SNAPSHOT</version>
+  <version>1.11.1.1</version>
   <name>${project.artifactId}</name>
   <description>opinionated extension functions and helpers for using apache avro with kotlin</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
