@@ -16,7 +16,7 @@
     <java.version>11</java.version>
 
     <!-- LIB -->
-    <avro.version>1.11.1</avro.version>
+    <avro.version>1.11.3</avro.version>
 
     <!-- TEST -->
     <assertj.version>3.23.1</assertj.version>
