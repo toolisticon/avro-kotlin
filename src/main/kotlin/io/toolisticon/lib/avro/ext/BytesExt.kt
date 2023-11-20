@@ -27,6 +27,17 @@ object BytesExt {
     postfix = postfix
   ) { "%02X".format(it) }
 
+  @JvmStatic()
+  fun ByteBuffer.toHexString(
+    separator: String = " ",
+    prefix: String = "[",
+    postfix: String = "]",
+  ): String = this.array().toHexString(
+    separator = separator,
+    prefix = prefix,
+    postfix = postfix
+  )
+
   /**
    * @return [ByteBuffer.wrap] for given array
    */
@@ -96,7 +107,11 @@ object BytesExt {
    * @return `true` if bytes start with [AvroKotlinLib#AVRO_V1_HEADER].
    */
   @JvmStatic()
-  fun ByteBuffer.isAvroSingleObjectEncoded(): Boolean = try { extract(0, AvroKotlinLib.AVRO_V1_HEADER.size).contentEquals(AvroKotlinLib.AVRO_V1_HEADER) } catch (e:Exception) { false }
+  fun ByteBuffer.isAvroSingleObjectEncoded(): Boolean = try {
+    extract(0, AvroKotlinLib.AVRO_V1_HEADER.size).contentEquals(AvroKotlinLib.AVRO_V1_HEADER)
+  } catch (e: Exception) {
+    false
+  }
 
   /**
    * @return `true` if bytes start with [AvroKotlinLib#AVRO_V1_HEADER].

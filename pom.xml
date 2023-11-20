@@ -11,8 +11,8 @@
 
   <properties>
     <!-- JVM -->
-    <kotlin.version>1.7.20</kotlin.version>
-    <kotlin-logging.version>3.0.2</kotlin-logging.version>
+    <kotlin.version>1.8.21</kotlin.version>
+    <kotlin-logging.version>3.0.5</kotlin-logging.version>
     <java.version>11</java.version>
 
     <!-- LIB -->
@@ -31,8 +31,9 @@
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-    <maven-dokka.version>1.7.20</maven-dokka.version>
-    <maven-surefire.version>3.0.0-M7</maven-surefire.version>
+    <maven-dokka.version>1.8.10</maven-dokka.version>
+
+    <project.generated.test>${project.build.directory}/generated-test-sources/avro</project.generated.test>
   </properties>
 
   <dependencyManagement>
@@ -84,6 +85,24 @@
         </exclusion>
       </exclusions>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${avro.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.avro-kotlin.avro4k</groupId>
+      <artifactId>avro4k-core</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.marschall</groupId>
+      <artifactId>memoryfilesystem</artifactId>
+      <version>2.5.0</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -148,9 +167,21 @@
     </dependency>
     <!-- logback -->
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+      <artifactId>logback-core</artifactId>
       <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tschuchortdev</groupId>
+      <artifactId>kotlin-compile-testing</artifactId>
+      <version>1.5.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -179,7 +210,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.8</version>
+          <version>0.8.10</version>
           <executions>
             <execution>
               <id>pre-unit-test</id>
@@ -230,7 +261,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <version>3.11.0</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <release>${java.version}</release>
@@ -275,6 +306,7 @@
               <!--plugin>jpa</plugin-->
               <plugin>no-arg</plugin>
               <plugin>all-open</plugin>
+              <plugin>kotlinx-serialization</plugin>
             </compilerPlugins>
             <pluginOptions>
               <!-- Each annotation is placed on its own line -->
@@ -291,6 +323,7 @@
               <configuration>
                 <sourceDirs>
                   <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                  <sourceDir>${project.generated.test}</sourceDir>
                 </sourceDirs>
               </configuration>
             </execution>
@@ -319,6 +352,11 @@
               <artifactId>kotlin-maven-noarg</artifactId>
               <version>${kotlin.version}</version>
             </dependency>
+            <dependency>
+              <groupId>org.jetbrains.kotlin</groupId>
+              <artifactId>kotlin-maven-serialization</artifactId>
+              <version>${kotlin.version}</version>
+            </dependency>
           </dependencies>
         </plugin>
 
@@ -335,7 +373,7 @@
         <!-- Unit Tests -->
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire.version}</version>
+          <version>3.1.0</version>
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
             <shutdown>kill</shutdown>
@@ -443,6 +481,7 @@
               <configuration>
                 <sources>
                   <source>${project.basedir}/src/main/kotlin</source>
+                  <source>${project.generated.test}</source>
                 </sources>
               </configuration>
             </execution>
@@ -473,7 +512,7 @@
         <plugin>
           <groupId>com.amashchenko.maven.plugin</groupId>
           <artifactId>gitflow-maven-plugin</artifactId>
-          <version>1.18.0</version>
+          <version>1.19.0</version>
           <configuration>
             <gitFlowConfig>
               <productionBranch>master</productionBranch>
@@ -491,11 +530,18 @@
           </configuration>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro-maven-plugin</artifactId>
+          <version>1.11.1</version>
+        </plugin>
+
+
         <!-- To sign the artifacts -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.0</version>
           <configuration>
             <gpgArguments>
               <arg>--batch</arg>
@@ -596,6 +642,35 @@
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <configuration>
+          <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+          <outputDirectory>${project.generated.test}</outputDirectory>
+          <gettersReturnOptional>true</gettersReturnOptional>
+          <createSetters>false</createSetters>
+          <stringType>string</stringType>
+            <stringType>String</stringType>
+            <enableDecimalLogicalType>true</enableDecimalLogicalType>
+          <gettersReturnOptional>false</gettersReturnOptional>
+<!--          <templateDirectory>-->
+<!--            ${project.basedir}/src/test/resources/templates/-->
+<!--          </templateDirectory>-->
+<!--          <velocityToolsClassesNames>-->
+<!--            <name>io.toolisticon.lib.avro.MyDummyVelocityTool</name>-->
+<!--          </velocityToolsClassesNames>-->
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-test</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>schema</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -609,6 +684,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.1.0</version>
             <configuration>
               <skipTests>true</skipTests>
             </configuration>

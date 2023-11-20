@@ -6,7 +6,8 @@
     {
       "name": "bankAccountId",
       "type": {
-        "type": "string"
+        "type": "string",
+        "logicalType": "uuid"
       }
     },
     {
