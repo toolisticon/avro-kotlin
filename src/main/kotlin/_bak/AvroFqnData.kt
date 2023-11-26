@@ -1,7 +1,6 @@
 package io.toolisticon.avro.kotlin._bak
 
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.NAME_SEPARATOR
-import io.toolisticon.avro.kotlin.CanonicalName
+import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
 
@@ -11,5 +10,5 @@ import io.toolisticon.avro.kotlin.value.Namespace
 @Deprecated("remove")
 data class AvroFqnData(override val namespace: Namespace, override val name: Name) : AvroFqn {
 
-  override val canonicalName: CanonicalName = "$namespace${NAME_SEPARATOR}$name"
+  override val canonicalName: CanonicalName = CanonicalName(namespace to  name)
 }

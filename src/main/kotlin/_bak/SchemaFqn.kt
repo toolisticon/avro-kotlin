@@ -17,8 +17,6 @@ import java.io.FileNotFoundException
 @Deprecated("remove")
 data class SchemaFqn(override val namespace: Namespace, override val name: Name) :
   GenericAvroDeclarationFqn(namespace = namespace, name = name, fileExtension = AvroKotlin.Constants.EXTENSION_SCHEMA) {
-
-  override fun toString(): String = super.toString()
 }
 
 

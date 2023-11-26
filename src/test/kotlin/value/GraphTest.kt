@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.ktx
+package io.toolisticon.avro.kotlin.value
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class KotlinKtxTest {
+internal class GraphTest {
 
   @Test
   fun `operate graph`() {
@@ -42,10 +42,15 @@ internal class KotlinKtxTest {
 
   @Test
   fun `verify sequence`() {
-    val g = Graph(1 to 2, 1 to 3, 2 to 4) + 5 + (4 to 6) + (3 to 5)
+    val g = Graph(
+      1 to 2,
+      1 to 3,
+      2 to 4
+    ) + 5 + (4 to 6) + (3 to 5)
+
 
     assertThat(g.sequence.toList()).containsExactly(
-      5,3,6,4,2,1
+      5, 3, 6, 4, 2, 1
     )
   }
 }

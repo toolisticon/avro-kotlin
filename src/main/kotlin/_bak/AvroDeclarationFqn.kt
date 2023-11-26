@@ -48,7 +48,7 @@ sealed interface AvroDeclarationFqn : AvroFqn {
  * @param classLoader optional classloader if not given, the classloader of AvroFqn is used
  * @return URL pointing to resource.
  */
-fun AvroDeclarationFqn.resource(prefix: String? = null, classLoader: ClassLoader = AvroKotlin::class.java.classLoader): URL {
+fun AvroDeclarationFqn.resource(prefix: String? = null, classLoader: ClassLoader = AvroKotlin.Constants.DEFAULT_CLASS_LOADER): URL {
   val resource = (if (prefix != null) {
     "$prefix${File.separator}${path}"
   } else {

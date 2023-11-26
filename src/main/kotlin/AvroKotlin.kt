@@ -39,9 +39,11 @@ object AvroKotlin {
     operator fun invoke(resource: URL): AvroProtocol = parse(resource.openStream())
   }
 
-  val LOGICALTYPE_EMPTY = object : LogicalType("") {
+  /**
+   * Empty logical type that adds nothing to the schema.
+   */
+  val LOGICAL_TYPE_EMPTY = object : LogicalType("") {
     override fun addToSchema(schema: Schema): Schema = schema
-
     override fun validate(schema: Schema) {}
   }
 
@@ -51,6 +53,8 @@ object AvroKotlin {
      * Default separator used in canonical name.
      */
     const val NAME_SEPARATOR = "."
+
+    val FILE_SEPARATOR = File.separator
 
     /**
      * Marker bytes according to Avro schema specification v1.

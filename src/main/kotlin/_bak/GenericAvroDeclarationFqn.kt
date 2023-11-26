@@ -1,6 +1,5 @@
 package io.toolisticon.avro.kotlin._bak
 
-import io.toolisticon.avro.kotlin.ktx.canonicalNameToPath
 import io.toolisticon.avro.kotlin.ktx.dashToDot
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.Name
@@ -40,7 +39,7 @@ open class GenericAvroDeclarationFqn(
 
 
   override val path: Path by lazy {
-    canonicalNameToPath(canonicalName, fileExtension)
+    canonicalName.toPath(fileExtension)
   }
 
   override val type: AvroSpecification by lazy {

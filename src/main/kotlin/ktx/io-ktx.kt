@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.ktx
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.NAME_SEPARATOR
-import io.toolisticon.avro.kotlin.CanonicalName
 import io.toolisticon.avro.kotlin._bak.GenericAvroDeclarationFqn
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
@@ -15,17 +14,7 @@ import kotlin.io.path.Path
  */
 fun String.dashToDot(): String = replace(File.separator, NAME_SEPARATOR)
 
-/**
- * [Namespace] to [Path] replacing `.` with [File#separator].
- */
-fun namespaceToPath(namespace: Namespace): Path = Path(namespace.value.dotToDash())
 
-/**
- * Turns a canonical (fqn) name to a file system [Path] using suffix.
- *
- * A java class `io.acme.Foo` would become `io/acme/Foo.java`.
- */
-fun canonicalNameToPath(canonicalName: CanonicalName, fileExtension: String): Path = Path("${canonicalName.dotToDash()}.$fileExtension").normalize()
 
 /**
  * Creates avro file path using [Namespace], [Name] and [FileExtension].

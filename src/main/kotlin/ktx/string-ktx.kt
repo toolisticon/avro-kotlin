@@ -23,8 +23,6 @@ fun String.shorten(maxLength: Int = 100, append: String = "...") = if (length > 
   this.take(maxLength) + append
 else this
 
-fun Number.hex() = "%x".format(this).uppercase()
-
 fun Any?.nullableToString(
   prefix: String = "",
   suffix: String = "",

@@ -2,9 +2,16 @@ package io.toolisticon.avro.kotlin.value
 
 import java.nio.ByteOrder
 
+/**
+ * Message encoded as [Single Object](https://avro.apache.org/docs/current/spec.html#single_object_encoding) ByteArray.
+ */
 class SingleObjectEncodedBytes private constructor(
   private val bytes: ByteArrayValue,
   val fingerprint: AvroFingerprint,
+  /**
+   * The encoded message. This is only the payload data,
+   * so no marker header and encoded schemaId are present.
+   */
   val payload: ByteArrayValue
 ) : ValueType<ByteArray> by bytes, WithHexString {
 

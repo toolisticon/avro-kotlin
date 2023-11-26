@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.ktx.Graph
+import io.toolisticon.avro.kotlin.value.Graph
 import io.toolisticon.avro.kotlin.value.AvroHashCode
 import org.apache.avro.Protocol
 

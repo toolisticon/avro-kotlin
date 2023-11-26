@@ -18,11 +18,6 @@ internal class IoExtTest {
 
 
   @Test
-  fun `namespace to path`() {
-    assertThat(namespaceToPath(Namespace("test.lib")).toString()).isEqualTo("test/lib")
-  }
-
-  @Test
   fun `fqn to path`() {
     assertThat(fqnToPath(namespace = Namespace("com.acme"), name = Name("Foo"), fileExtension = EXTENSION_SCHEMA).toString())
       .isEqualTo("com/acme/Foo.avsc")
