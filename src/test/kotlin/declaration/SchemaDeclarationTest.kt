@@ -1,11 +1,11 @@
 package io.toolisticon.avro.kotlin.declaration
 
 import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.TestFixtures
+import io.toolisticon.avro.kotlin.TestFixtures.simpleStringValueSchema
 import io.toolisticon.avro.kotlin._bak.AvroDeclarationMismatchException
 import io.toolisticon.avro.kotlin._bak.SchemaDeclaration
 import io.toolisticon.avro.kotlin._bak.SchemaFqn
-import io.toolisticon.avro.kotlin._test.TestFixtures
-import io.toolisticon.avro.kotlin._test.TestFixtures.simpleStringValueSchema
 import io.toolisticon.avro.kotlin.ktx.writeToDirectory
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace

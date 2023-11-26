@@ -1,6 +1,5 @@
-package io.toolisticon.avro.kotlin._test
+package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.fqn
 import io.toolisticon.avro.kotlin.AvroKotlin.protocol
 import io.toolisticon.avro.kotlin.AvroKotlin.schema
