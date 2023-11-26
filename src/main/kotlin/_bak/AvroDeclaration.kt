@@ -1,14 +1,13 @@
 package io.toolisticon.avro.kotlin._bak
 
-import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroParser
 import org.apache.avro.JsonProperties
-import kotlin.jvm.Throws
 
 /**
  * Represents a json avro declaration file or resource.
  */
 @Deprecated("remove")
-sealed interface AvroDeclaration<T: JsonProperties> : AvroFqn {
+sealed interface AvroDeclaration<T : JsonProperties> : AvroFqn {
 
   /**
    * The location derived from namespace and name.
@@ -29,5 +28,5 @@ sealed interface AvroDeclaration<T: JsonProperties> : AvroFqn {
    * Checks if the location matches the derived content qfn.
    */
   @Throws(AvroDeclarationMismatchException::class)
-  fun verifyPackageConvention(verifyPackageConvention: Boolean = AvroKotlin.verifyPackageConvention) : Boolean
+  fun verifyPackageConvention(verifyPackageConvention: Boolean = AvroParser().verifyPackageConvention): Boolean
 }

@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin._bak
 
-import io.toolisticon.avro.kotlin._bak.SchemaExt.fqn
+import io.toolisticon.avro.kotlin.ktx.fqn
 import org.apache.avro.Schema
 
 @Deprecated("remove")

@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin._bak
 
 import io.toolisticon.avro.kotlin.CanonicalName
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 
 
 /**

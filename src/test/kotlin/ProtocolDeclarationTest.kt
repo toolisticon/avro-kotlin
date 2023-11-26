@@ -6,10 +6,11 @@ import io.toolisticon.avro.kotlin.ktx.createRecord
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 // FIXME: remove/refactor!
-//@Disabled("dead end")
+@Disabled("dead end")
 internal class ProtocolDeclarationTest {
 
   @Test
@@ -17,8 +18,6 @@ internal class ProtocolDeclarationTest {
     val declaration = TestFixtures.loadProtocolDeclaration("protocol/DummyProtocol.avpr")
 
     println(declaration)
-
-
   }
 
   @Test

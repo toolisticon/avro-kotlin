@@ -1,10 +1,9 @@
 package io.toolisticon.avro.kotlin.ktx
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.FileExtension
 import io.toolisticon.avro.kotlin._bak.GenericAvroDeclarationFqn
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.JsonProperties
 import java.io.File
 import java.io.InputStream
@@ -15,6 +14,7 @@ import kotlin.io.path.Path
 fun loadResource(name: String): String = with(name.trailingSlash()) {
   return resourceUrl(this).readText()
 }
+
 fun resourceUrl(resource: String): URL = requireNotNull(
   {}::class.java.getResource(resource.trailingSlash())
 ) { "resource not found: $resource" }
@@ -33,7 +33,7 @@ fun resourceUrl(resource: String): URL = requireNotNull(
 fun resource(
   namespace: Namespace,
   name: Name,
-  fileExtension: FileExtension,
+  fileExtension: String,
   prefix: String? = null,
   classLoader: ClassLoader = AvroKotlin.Constants.DEFAULT_CLASS_LOADER
 ): URL {
@@ -63,7 +63,7 @@ fun resource(
 fun <T : JsonProperties> parseFromResource(
   namespace: Namespace,
   name: Name,
-  fileExtension: FileExtension,
+  fileExtension: String,
   prefix: String? = null,
   classLoader: ClassLoader = AvroKotlin.Constants.DEFAULT_CLASS_LOADER,
   parser: (InputStream) -> T

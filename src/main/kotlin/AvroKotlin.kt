@@ -3,15 +3,14 @@ package io.toolisticon.avro.kotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.SCHEMA_RESERVED_KEYWORDS
 import io.toolisticon.avro.kotlin._bak.*
-import io.toolisticon.avro.kotlin.key.AvroFingerprint
-import io.toolisticon.avro.kotlin.key.AvroHashCode
 import io.toolisticon.avro.kotlin.ktx.trimToNull
 import io.toolisticon.avro.kotlin.model.*
-import io.toolisticon.avro.kotlin.name.LogicalTypeName
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.*
 import org.apache.avro.Schema.Type
+import java.io.File
+import java.io.InputStream
+import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -21,33 +20,57 @@ import kotlin.streams.asSequence
 
 object AvroKotlin {
 
+  /**
+   * Encapsulates [Schema#Parser#parse] for the relevant input types.
+   */
+  object parseSchema {
+    operator fun invoke(json: JsonString, isRoot: Boolean = false): AvroSchema = AvroSchema(json, isRoot)
+    operator fun invoke(file: File): AvroSchema = AvroSchema(file)
+    operator fun invoke(resource: URL): AvroSchema = AvroSchema(resource)
+  }
+
+  object parseProtocol {
+    private fun parse(inputStream: InputStream) = AvroProtocol(
+      protocol = Protocol.parse(inputStream)
+    )
+
+    operator fun invoke(json: JsonString): AvroProtocol = parse(json.inputStream())
+    operator fun invoke(file: File): AvroProtocol = parse(file.inputStream())
+    operator fun invoke(resource: URL): AvroProtocol = parse(resource.openStream())
+  }
+
+  val LOGICALTYPE_EMPTY = object : LogicalType("") {
+    override fun addToSchema(schema: Schema): Schema = schema
+
+    override fun validate(schema: Schema) {}
+  }
+
+
   object Constants {
     /**
      * Default separator used in canonical name.
      */
     const val NAME_SEPARATOR = "."
 
-
     /**
      * Marker bytes according to Avro schema specification v1.
      */
-    @JvmField
-    val AVRO_V1_HEADER = byteArrayOf(-61, 1) // [C3 01]
+    val AVRO_V1_HEADER = SingleObjectEncodedBytes.AVRO_V1_HEADER
 
     /**
      * Length of default avro header bytes.
      */
-    val AVRO_HEADER_LENGTH = AVRO_V1_HEADER.size + Long.SIZE_BYTES
+    val AVRO_HEADER_LENGTH = SingleObjectEncodedBytes.AVRO_HEADER_LENGTH
 
     /**
      * Avro Schema files end with `.avsc`.
      */
-    const val EXTENSION_SCHEMA: FileExtension = "avsc"
+    const val EXTENSION_SCHEMA: String = "avsc"
 
     /**
      * Avro protocol files end with `.avpr`.
      */
-    const val EXTENSION_PROTOCOL: FileExtension = "avpr"
+    const val EXTENSION_PROTOCOL: String = "avpr"
 
     /**
      * Default charset to use is [Charsets#UTF_8]
@@ -74,8 +97,6 @@ object AvroKotlin {
   }
 
 
-  var verifyPackageConvention = true
-
   fun schema(namespace: Namespace, name: Name): SchemaFqn = SchemaFqn(namespace = namespace, name = name)
   fun schema(fqn: AvroFqn): SchemaFqn = schema(namespace = fqn.namespace, name = fqn.name)
 
@@ -88,7 +109,7 @@ object AvroKotlin {
    */
   fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
 
-  fun findDeclarations(root: Path, filter: (Path) -> Boolean = Declaration.BOTH): List<Any> {
+  fun findDeclarations(root: Path, filter: (Path) -> Boolean = { AvroSpecification.EXTENSIONS.contains(it.extension) }): List<Any> {
     val fqns = Files.walk(root)
       .asSequence()
       .filter { it.isRegularFile() }
@@ -97,12 +118,12 @@ object AvroKotlin {
       .toList()
 
     return fqns.map { fqn ->
-      if (fqn.fileExtension == Declaration.SCHEMA.fileExtension) {
+      if (fqn.fileExtension == AvroSpecification.SCHEMA.value) {
         SchemaDeclaration(
           location = fqn,
           content = schema(fqn).fromDirectory(root.toFile())
         )
-      } else if (fqn.fileExtension == Declaration.PROTOCOL.fileExtension) {
+      } else if (fqn.fileExtension == AvroSpecification.PROTOCOL.value) {
         protocol(fqn).fromDirectory(root.toFile())
       } else {
         throw IllegalArgumentException("unsupported extension: ${fqn.fileExtension}")
@@ -120,20 +141,6 @@ object AvroKotlin {
     require(actual == expected)
   } catch (e: Exception) {
     throw AvroDeclarationMismatchException(actual, expected)
-  }
-
-  enum class Declaration(val fileExtension: FileExtension) {
-    SCHEMA(Constants.EXTENSION_SCHEMA),
-    PROTOCOL(Constants.EXTENSION_PROTOCOL)
-    ;
-
-    companion object {
-      private val extensions = Declaration.entries.associateBy { it.fileExtension }
-
-      val BOTH: (Path) -> Boolean = { setOf(SCHEMA.fileExtension, PROTOCOL.fileExtension).contains(it.extension) }
-
-      fun byExtension(fileExtension: FileExtension) = requireNotNull(extensions[fileExtension]) { "illegal file extension='$fileExtension'" }
-    }
   }
 
 
@@ -155,47 +162,32 @@ object AvroKotlin {
   /**
    * Get [Name] from given [Schema].
    */
-  fun name(schema: Schema) = io.toolisticon.avro.kotlin.name.Name(schema.name)
+  fun name(schema: Schema) = Name(schema.name)
 
   /**
    * Get [Name] for given [Schema.Field].
    */
-  fun name(field: Schema.Field) = io.toolisticon.avro.kotlin.name.Name(field.name())
+  fun name(field: Schema.Field) = Name(field.name())
 
   /**
    * Get [Name] from given [Protocol].
    */
-  fun name(protocol: Protocol) = io.toolisticon.avro.kotlin.name.Name(protocol.name)
+  fun name(protocol: Protocol) = Name(protocol.name)
 
-  fun namespace(schema: Schema): io.toolisticon.avro.kotlin.name.Namespace? {
+  fun namespace(schema: Schema): Namespace? {
     return try {
-      schema.namespace?.let { io.toolisticon.avro.kotlin.name.Namespace(it) }
+      schema.namespace?.let { Namespace(it) }
     } catch (e: AvroRuntimeException) {
       null
     }
   }
 
-  fun namespace(protocol: Protocol) = io.toolisticon.avro.kotlin.name.Namespace(
+  fun namespace(protocol: Protocol) = Namespace(
     requireNotNull(protocol.namespace) { "protocol must have a namespace" }
   )
 
   fun logicalTypeName(logicalType: LogicalType?) = logicalType?.let { LogicalTypeName(it.name) }
 
-  /**
-   * Create a wrapped primitive Schema based on type.
-   *
-   * @param type the schema type
-   * @param objectProperties the additional properties, defaults to EMPTY
-   * @return wrapped primitive schema
-   */
-  fun primitiveSchema(
-    type: Type,
-    objectProperties: ObjectProperties = ObjectProperties.EMPTY
-  ): AvroSchema = AvroSchema(Schema.create(type).apply {
-    objectProperties.properties.entries.forEach { (k, v) ->
-      addProp(k, v)
-    }
-  })
 
   fun meta() {
     val c = JsonProperties::class.java.getDeclaredConstructor(Set::class.java).apply {

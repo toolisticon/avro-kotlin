@@ -1,0 +1,38 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SchemaContainingUnion",
+  "type": "record",
+  "doc": "This is a record with an union field.",
+  "fields": [
+    {
+      "name": "nullableString",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "nullableInt",
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "name": "nullableComplex",
+      "type": [
+        "null",
+        {
+          "name": "ComplexType",
+          "type": "record",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroParser.Companion.parseSchema
+import io.toolisticon.avro.kotlin.AvroBuilder
+import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
-import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.value.Name
 import org.apache.avro.Schema.Type
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
@@ -14,7 +14,7 @@ internal class AvroTypesMapTest {
 
   @Test
   fun `two types for SimpleString`() {
-    val schema = AvroSchema(schema = resourceUrl("schema/SimpleStringRecord.avsc").parseSchema(), isRoot = true)
+    val schema = parseSchema(resourceUrl("schema/SimpleStringRecord.avsc"))
 
     val map = AvroTypesMap(schema)
 
@@ -24,9 +24,9 @@ internal class AvroTypesMapTest {
 
   @Test
   fun `buildCatalog - STRING`() {
-    val string = AvroKotlin.primitiveSchema(Type.STRING)
+    val string = AvroBuilder.primitiveSchema(Type.STRING)
 
-    val map = AvroTypesMap(AvroKotlin.primitiveSchema(Type.STRING))
+    val map = AvroTypesMap(AvroBuilder.primitiveSchema(Type.STRING))
     assertThat(map).hasSize(1)
     assertThat(map.values.first()).isInstanceOf(StringType::class.java)
     assertThat(map.sequence().single().hashCode).isEqualTo(string.hashCode)
@@ -54,7 +54,7 @@ internal class AvroTypesMapTest {
 
   @Test
   fun `build types-map and graph`() {
-    val schema = AvroSchema(schema = resourceUrl("schema/ReUsingTypes.avsc").parseSchema(), isRoot = true)
+    val schema = parseSchema(resourceUrl("schema/ReUsingTypes.avsc"))
 
     val map = AvroTypesMap(schema)
 

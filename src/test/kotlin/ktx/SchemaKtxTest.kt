@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.ktx
 
-import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroBuilder
 import org.apache.avro.Schema.*
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.SchemaBuilder.record
@@ -35,7 +35,7 @@ internal class SchemaKtxTest {
       .doc("The second field")
       .type(
         createUnion(
-          AvroKotlin.primitiveSchema(Type.NULL).schema, type
+          AvroBuilder.primitiveSchema(Type.NULL).schema, type
         )
       )
       .noDefault()

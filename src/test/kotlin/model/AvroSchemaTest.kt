@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.AvroBuilder
+import io.toolisticon.avro.kotlin.value.Name
 import org.apache.avro.Schema.Type
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -10,7 +10,7 @@ internal class AvroSchemaTest {
 
   @Test
   fun `no exceptions for primitive string`() {
-    val schema = AvroKotlin.primitiveSchema(Type.STRING)
+    val schema = AvroBuilder.primitiveSchema(Type.STRING)
 
     with(schema) {
       assertThat(aliases).isEmpty()

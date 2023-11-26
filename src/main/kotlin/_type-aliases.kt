@@ -5,16 +5,13 @@ import java.io.File
 /**
  * Combining namespace and name as a [java.lang.Class#canonicalName].
  */
+@Deprecated("use CanonicalName")
 typealias CanonicalName = String
-
-/**
- * A file extension.
- */
-typealias FileExtension = String
 
 /**
  * The Schema fingerprint.
  */
+@Deprecated("use AvroFingerprint")
 typealias Fingerprint = Long
 
 /**

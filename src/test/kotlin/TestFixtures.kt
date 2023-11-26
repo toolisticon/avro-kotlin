@@ -1,9 +1,10 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroParser.Companion.parseSchema
+import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.ktx.loadResource
 import io.toolisticon.avro.kotlin.ktx.trailingSlash
 import io.toolisticon.avro.kotlin.model.AvroSchema
+import io.toolisticon.avro.kotlin.value.JsonString
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
@@ -12,17 +13,15 @@ import java.net.URL
 
 
 object TestFixtures {
-
-
   fun resourceUrl(resource: String): URL = requireNotNull(
     TestFixtures::class.java.getResource(resource.trailingSlash())
   ) { "resource not found: $resource" }
 
 
-  fun loadSchemaJson(resource: String): Schema = loadResource(resource).parseSchema()
+  fun loadSchemaJson(resource: String): Schema = Schema.Parser().parse(JsonString(loadResource(resource).trim()).value)
 
   fun loadProtocolDeclaration(resource: String): ProtocolDeclaration {
-    return AvroParser().parseProtocol(loadResource(resource))
+    return AvroParser().parseProtocol(JsonString(loadResource(resource)))
   }
 
   /**
@@ -51,5 +50,15 @@ object TestFixtures {
       .noDefault()
       .endRecord(), isRoot = true
   )
+
+  /**
+   * This is the avro single object encoded hex representation of `FooString(str="bar")`.
+   *
+   * C3 01 - avro marker bytes
+   * CD 1D 19 01 C3 39 C6 61 - encoded writer schema fingerprint for lookup (4162171688006255043L).
+   * 06 62 61 72 - payload: 06: 3-letters in HEX, b=62,a=61,r=72
+   *
+   */
+  const val SINGLE_STRING_ENCODED = "[C3 01 CD 1D 19 01 C3 39 C6 61 06 62 61 72]"
 
 }

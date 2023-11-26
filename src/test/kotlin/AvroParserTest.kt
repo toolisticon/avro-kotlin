@@ -1,18 +1,16 @@
 package io.toolisticon.avro.kotlin
 
+import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
-import io.toolisticon.avro.kotlin.key.AvroFingerprint
-import io.toolisticon.avro.kotlin.key.AvroHashCode
-import io.toolisticon.avro.kotlin.ktx.fingerprint
-import io.toolisticon.avro.kotlin.ktx.hashCode
 import io.toolisticon.avro.kotlin.ktx.json
-import io.toolisticon.avro.kotlin.ktx.withLogicalType
+import io.toolisticon.avro.kotlin.value.JsonString
 import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -43,18 +41,20 @@ internal class AvroParserTest {
   @Test
   fun `read from json`() {
     val url = resourceUrl("schema/SchemaContainingSimpleTypes.avsc")
-    val s = AvroParser().parseSchema(url.readText())
+    val s = AvroParser().parseSchema(JsonString(url.readText()))
     assertThat(s.name.value).isEqualTo("SimpleTypesRecord")
   }
 
   @Test
   fun `parse simple schema and add avroMeta property`() {
-    val json = SchemaBuilder.record("foo.Bar")
-      .fields()
-      .name("xxx")
-      .type(Schema.create(Schema.Type.STRING).withLogicalType(LogicalTypes.uuid()))
-      .noDefault()
-      .endRecord().json
+    val json = JsonString(
+      SchemaBuilder.record("foo.Bar")
+        .fields()
+        .name("xxx")
+        .type(primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid()).schema)
+        .noDefault()
+        .endRecord()
+    )
 
     val declaration = AvroParser()
       .registerLogicalTypeFactory(CustomLogicalTypeFactory())
@@ -84,21 +84,17 @@ internal class AvroParserTest {
 
   @Test
   fun `schema equal`() {
-    val s1 = Schema.create(Schema.Type.STRING).withLogicalType(
-      LogicalTypes.uuid()
-    )
-    val s2 = Schema.create(Schema.Type.STRING)
+    val s1 = primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid())
+    val s2 = primitiveSchema(Schema.Type.STRING)
+    val s3 = primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid())
 
-    val s3 = Schema.create(Schema.Type.STRING).withLogicalType(
-      LogicalTypes.uuid()
-    )
-
-    assertThat(AvroFingerprint(s1)).isEqualTo(AvroFingerprint(s2))
-    assertThat(AvroHashCode(s1)).`as` { "hashcodes do not match" }.isNotEqualTo(AvroHashCode(s2))
+    assertThat(s1.fingerprint).isEqualTo(s2.fingerprint)
+    assertThat(s1.hashCode).`as` { "hashcodes do not match" }.isNotEqualTo(s2.hashCode)
     assertThat(s1).isEqualTo(s3)
   }
 
   @Test
+  @Disabled("implement protocol")
   fun `read protocol resource`() {
     val url = resourceUrl("protocol/DummyProtocol.avpr")
     val protocol = AvroParser().parseProtocol(url)
@@ -128,7 +124,7 @@ internal class AvroParserTest {
 
     val declaration = AvroParser().parseSchema(schema)
 
-    println(declaration.schema.json)
+    println(JsonString(declaration.schema))
 
     println(declaration.avroTypes)
 

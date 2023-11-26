@@ -3,10 +3,9 @@ package io.toolisticon.avro.kotlin.ktx
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.NAME_SEPARATOR
 import io.toolisticon.avro.kotlin.CanonicalName
-import io.toolisticon.avro.kotlin.FileExtension
 import io.toolisticon.avro.kotlin._bak.GenericAvroDeclarationFqn
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -26,14 +25,14 @@ fun namespaceToPath(namespace: Namespace): Path = Path(namespace.value.dotToDash
  *
  * A java class `io.acme.Foo` would become `io/acme/Foo.java`.
  */
-fun canonicalNameToPath(canonicalName: CanonicalName, fileExtension: FileExtension): Path = Path("${canonicalName.dotToDash()}.$fileExtension").normalize()
+fun canonicalNameToPath(canonicalName: CanonicalName, fileExtension: String): Path = Path("${canonicalName.dotToDash()}.$fileExtension").normalize()
 
 /**
  * Creates avro file path using [Namespace], [Name] and [FileExtension].
  *
  * A `Schema(namespace=foo.bar, name=HelloWorld)` becomes `Path("foo/bar/HelloWorld.avsc")`.
  */
-fun fqnToPath(namespace: Namespace, name: Name, fileExtension: FileExtension) = GenericAvroDeclarationFqn(namespace, name, fileExtension).path
+fun fqnToPath(namespace: Namespace, name: Name, fileExtension: String) = GenericAvroDeclarationFqn(namespace, name, fileExtension).path
 
 
 /**

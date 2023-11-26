@@ -4,8 +4,8 @@ import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.DEFAULT_CLASS_LOADER
 import io.toolisticon.avro.kotlin.ktx.file
 import io.toolisticon.avro.kotlin.ktx.parseFromResource
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.Protocol
 import java.io.File
 

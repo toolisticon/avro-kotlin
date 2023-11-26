@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

@@ -1,11 +1,10 @@
 package io.toolisticon.avro.kotlin._bak
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.FileExtension
 import io.toolisticon.avro.kotlin.ktx.canonicalNameToPath
 import io.toolisticon.avro.kotlin.ktx.dashToDot
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.AvroSpecification
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.extension
@@ -20,7 +19,7 @@ import kotlin.io.path.relativeToOrSelf
 @Deprecated("remove")
 open class GenericAvroDeclarationFqn(
   private val fqn: AvroFqn,
-  override val fileExtension: FileExtension
+  override val fileExtension: String
 ) : AvroDeclarationFqn, AvroFqn by fqn {
   companion object {
     fun fromPath(path: Path, root: Path? = null): GenericAvroDeclarationFqn {
@@ -34,7 +33,7 @@ open class GenericAvroDeclarationFqn(
     }
   }
 
-  constructor(namespace: Namespace, name: Name, fileExtension: FileExtension) : this(AvroFqnData(namespace, name), fileExtension)
+  constructor(namespace: Namespace, name: Name, fileExtension: String) : this(AvroFqnData(namespace, name), fileExtension)
 
   constructor(fqn: SchemaFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
   constructor(fqn: ProtocolFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
@@ -44,8 +43,8 @@ open class GenericAvroDeclarationFqn(
     canonicalNameToPath(canonicalName, fileExtension)
   }
 
-  override val type: AvroKotlin.Declaration by lazy {
-    AvroKotlin.Declaration.byExtension(fileExtension)
+  override val type: AvroSpecification by lazy {
+    AvroSpecification.valueOfExtension(fileExtension)
   }
 
   override fun toString() = "${this::class.simpleName}(namespace='$namespace', name='$name', fileExtension='$fileExtension')"

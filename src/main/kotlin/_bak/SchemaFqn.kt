@@ -2,11 +2,11 @@ package io.toolisticon.avro.kotlin._bak
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.DEFAULT_CLASS_LOADER
-import io.toolisticon.avro.kotlin._bak.SchemaExt.fqn
 import io.toolisticon.avro.kotlin.ktx.file
+import io.toolisticon.avro.kotlin.ktx.fqn
 import io.toolisticon.avro.kotlin.ktx.parseFromResource
-import io.toolisticon.avro.kotlin.name.Name
-import io.toolisticon.avro.kotlin.name.Namespace
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.Schema
 import java.io.File
 import java.io.FileNotFoundException

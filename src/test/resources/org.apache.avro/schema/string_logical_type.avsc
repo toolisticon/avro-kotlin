@@ -1,0 +1,25 @@
+{
+  "namespace": "org.apache.avro.codegentest.testdata",
+  "type": "record",
+  "name": "StringLogicalType",
+  "doc": "Test logical type applied to field of type string",
+  "fields": [
+    {
+      "name": "someIdentifier",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "someJavaString",
+      "doc": "Just to ensure no one removed <stringType>String</stringType> because this is the basis of this test",
+      "type": "string"
+    },
+    {
+      "name": "oneMoreString",
+      "doc": "will have the same type as someJavaString",
+      "type": "string"
+    }
+  ]
+}
