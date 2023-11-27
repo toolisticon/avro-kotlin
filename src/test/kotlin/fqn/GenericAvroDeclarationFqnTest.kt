@@ -9,7 +9,10 @@ import nl.jqno.equalsverifier.EqualsVerifier
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
+import kotlin.test.Ignore
 
+@Ignore("remove")
+@Deprecated("remove")
 class GenericAvroDeclarationFqnTest {
 
   @Test
@@ -35,10 +38,10 @@ class GenericAvroDeclarationFqnTest {
 
     val fqn = GenericAvroDeclarationFqn.fromPath(path, root)
 
-    assertThat(fqn.namespace.value).isEqualTo("lib.test.event")
-    assertThat(fqn.name.value).isEqualTo("BankAccountCreated")
-    assertThat(fqn.fileExtension).isEqualTo("avsc")
-    assertThat(fqn.type).isEqualTo(AvroSpecification.SCHEMA)
+//    assertThat(fqn.namespace.value).isEqualTo("lib.test.event")
+//    assertThat(fqn.name.value).isEqualTo("BankAccountCreated")
+//    assertThat(fqn.fileExtension).isEqualTo("avsc")
+//    assertThat(fqn.type).isEqualTo(AvroSpecification.SCHEMA)
 
   }
 
@@ -48,8 +51,8 @@ class GenericAvroDeclarationFqnTest {
 
     val fqn = GenericAvroDeclarationFqn.fromPath(path)
 
-    assertThat(fqn.namespace.value).isEqualTo("lib.test.event")
-    assertThat(fqn.name.value).isEqualTo("BankAccountCreated")
-    assertThat(fqn.fileExtension).isEqualTo("avsc")
+//    assertThat(fqn.namespace.value).isEqualTo("lib.test.event")
+//    assertThat(fqn.name.value).isEqualTo("BankAccountCreated")
+//    assertThat(fqn.fileExtension).isEqualTo("avsc")
   }
 }

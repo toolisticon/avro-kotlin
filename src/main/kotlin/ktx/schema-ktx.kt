@@ -2,7 +2,7 @@
 
 package io.toolisticon.avro.kotlin.ktx
 
-import io.toolisticon.avro.kotlin.Directory
+import io.toolisticon.avro.kotlin.value.Directory
 import io.toolisticon.avro.kotlin._bak.SchemaFqn
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.Name

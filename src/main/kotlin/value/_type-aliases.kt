@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.avro.kotlin.value
 
 import java.io.File
 

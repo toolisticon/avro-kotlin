@@ -8,7 +8,10 @@ import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
+import kotlin.test.Ignore
 
+@Ignore("remove")
+@Deprecated("remove")
 internal class SchemaExtTest {
 
   private val schemaFoo: Schema = SchemaBuilder

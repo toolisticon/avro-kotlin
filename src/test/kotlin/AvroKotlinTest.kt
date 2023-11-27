@@ -1,8 +1,5 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin.fqn
-import io.toolisticon.avro.kotlin.AvroKotlin.protocol
-import io.toolisticon.avro.kotlin.AvroKotlin.schema
 import io.toolisticon.avro.kotlin._bak.*
 import io.toolisticon.avro.kotlin.ktx.writeToDirectory
 import io.toolisticon.avro.kotlin.value.AvroSpecification
@@ -18,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Path
+import kotlin.test.Ignore
 
 internal class AvroKotlinTest {
 
@@ -27,7 +25,8 @@ internal class AvroKotlinTest {
   @Test
   @Disabled("fix protocol")
   fun `can load protocol from resources`() {
-    val fqn: ProtocolFqn = protocol(TestFixtures.fqnFindCurrentBalance)
+    val cn = TestFixtures.fqnFindCurrentBalance
+    val fqn: ProtocolFqn = TODO() // protocol(TestFixtures.fqnFindCurrentBalance)
 
     val protocol: Protocol = fqn.fromResource(prefix = "avro")
 
@@ -37,24 +36,25 @@ internal class AvroKotlinTest {
 
 
   @Test
+  @Ignore("remove")
+  @Deprecated("remove")
   fun `can load schema from resources`() {
-    val fqn = schema(TestFixtures.fqnBankAccountCreated)
+    val cn = TestFixtures.fqnBankAccountCreated
+    val fqn = TODO() //schema(TestFixtures.fqnBankAccountCreated)
 
-    val schema: Schema = fqn.fromResource(prefix = "avro")
+    val schema: Schema = TODO() //fqn.fromResource(prefix = "avro")
 
     assertThat(schema).isNotNull
-    assertThat((schema.namespace)).isEqualTo(fqn.namespace.value)
-    assertThat((schema.name)).isEqualTo(fqn.name.value)
+//    assertThat((schema.namespace)).isEqualTo(fqn.namespace.value)
+//    assertThat((schema.name)).isEqualTo(fqn.name.value)
   }
 
   @Test
-  fun `concat canonicalName`() {
-    assertThat(fqn(Namespace("foo.bar"), Name("HelloWorld")).canonicalName).isEqualTo("foo.bar.HelloWorld")
-  }
-
-  @Test
+  @Ignore("remove")
+  @Deprecated("remove")
   fun `can write schema to file (and read again)`() {
-    val fqn: SchemaFqn = schema(TestFixtures.fqnBankAccountCreated)
+    val cn = TestFixtures.fqnBankAccountCreated
+    val fqn: SchemaFqn = TODO() //schema(TestFixtures.fqnBankAccountCreated)
 
     assertThat(fqn.fileExtension).isEqualTo("avsc")
 
@@ -71,8 +71,11 @@ internal class AvroKotlinTest {
   }
 
   @Test
+  @Ignore("remove")
+  @Deprecated("remove")
   fun `can write protocol to file (and read again)`() {
-    val fqn: ProtocolFqn = protocol(TestFixtures.fqnFindCurrentBalance)
+    val cn = TestFixtures.fqnFindCurrentBalance
+    val fqn: ProtocolFqn = TODO() //protocol(TestFixtures.fqnFindCurrentBalance)
 
     assertThat(fqn.fileExtension).isEqualTo("avpr")
 
@@ -90,12 +93,8 @@ internal class AvroKotlinTest {
   }
 
   @Test
-  fun `header bytes C3 01`() {
-    assertThat(HexString(AvroKotlin.Constants.AVRO_V1_HEADER).formatted).isEqualTo("[C3 01]")
-  }
-
-
-  @Test
+  @Ignore("remove")
+  @Deprecated("remove")
   fun `test mismatch exception`() {
 
     assertThatThrownBy {
@@ -118,6 +117,8 @@ internal class AvroKotlinTest {
   }
 
   @Test
+  @Ignore("remove")
+  @Deprecated("remove")
   fun `find all schemaDeclarations`() {
     TestFixtures.schemaFoo.writeToDirectory(tmpDir)
     TestFixtures.schemaBar.writeToDirectory(tmpDir)

@@ -7,7 +7,7 @@ import org.apache.avro.JsonProperties
  * Represents a json avro declaration file or resource.
  */
 @Deprecated("remove")
-sealed interface AvroDeclaration<T : JsonProperties> : AvroFqn {
+sealed interface AvroDeclaration<T : JsonProperties> {
 
   /**
    * The location derived from namespace and name.
@@ -18,11 +18,6 @@ sealed interface AvroDeclaration<T : JsonProperties> : AvroFqn {
    * The parsed content.
    */
   val content: T
-
-  /**
-   * The fqn derived from the parsed [content].
-   */
-  val contentFqn: AvroFqn
 
   /**
    * Checks if the location matches the derived content qfn.

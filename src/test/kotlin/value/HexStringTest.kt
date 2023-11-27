@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.Constants.AVRO_V1_HEADER
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
@@ -23,6 +24,7 @@ internal class HexStringTest {
     val hex = HexString("[C3 01]")
     assertThat(hex.value).isEqualTo("C301")
   }
+
 
   @Test
   fun `avro header bytes is C301`() {

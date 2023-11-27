@@ -39,16 +39,16 @@ object AvroKotlin {
     operator fun invoke(resource: URL): AvroProtocol = parse(resource.openStream())
   }
 
-  /**
-   * Empty logical type that adds nothing to the schema.
-   */
-  val LOGICAL_TYPE_EMPTY = object : LogicalType("") {
-    override fun addToSchema(schema: Schema): Schema = schema
-    override fun validate(schema: Schema) {}
-  }
-
 
   object Constants {
+    /**
+     * Empty logical type that adds nothing to the schema.
+     */
+    val LOGICAL_TYPE_EMPTY = object : LogicalType("") {
+      override fun addToSchema(schema: Schema): Schema = schema
+      override fun validate(schema: Schema) {}
+    }
+
     /**
      * Default separator used in canonical name.
      */
@@ -102,16 +102,17 @@ object AvroKotlin {
 
 
   fun schema(namespace: Namespace, name: Name): SchemaFqn = SchemaFqn(namespace = namespace, name = name)
-  fun schema(fqn: AvroFqn): SchemaFqn = schema(namespace = fqn.namespace, name = fqn.name)
+  fun schema(fqn: CanonicalName): SchemaFqn = schema(namespace = fqn.namespace, name = fqn.name)
 
   fun protocol(namespace: Namespace, name: Name): ProtocolFqn = ProtocolFqn(namespace = namespace, name = name)
-  fun protocol(fqn: AvroFqn): ProtocolFqn = protocol(namespace = fqn.namespace, name = fqn.name)
+  fun protocol(fqn: CanonicalName): ProtocolFqn = protocol(namespace = fqn.namespace, name = fqn.name)
 
 
   /**
    * Create [AvroFqn] based on namespace and name.
    */
-  fun fqn(namespace: Namespace, name: Name): AvroFqn = AvroFqnData(namespace = namespace, name = name)
+  @Deprecated("remove")
+  fun fqn(namespace: Namespace, name: Name): CanonicalName = CanonicalName(namespace = namespace, name = name)
 
   fun findDeclarations(root: Path, filter: (Path) -> Boolean = { AvroSpecification.EXTENSIONS.contains(it.extension) }): List<Any> {
     val fqns = Files.walk(root)
@@ -119,18 +120,21 @@ object AvroKotlin {
       .filter { it.isRegularFile() }
       .filter(filter)
       .map { GenericAvroDeclarationFqn.fromPath(it, root) }
+      .map { it.canonicalName to it.type }
       .toList()
 
     return fqns.map { fqn ->
-      if (fqn.fileExtension == AvroSpecification.SCHEMA.value) {
-        SchemaDeclaration(
-          location = fqn,
-          content = schema(fqn).fromDirectory(root.toFile())
-        )
-      } else if (fqn.fileExtension == AvroSpecification.PROTOCOL.value) {
-        protocol(fqn).fromDirectory(root.toFile())
+      if (fqn.second == AvroSpecification.SCHEMA) {
+//        SchemaDeclaration(
+//          location = fqn.first,
+//          content = schema(fqn).fromDirectory(root.toFile())
+//        )
+        TODO()
+      } else if (fqn.second == AvroSpecification.PROTOCOL) {
+        //protocol(fqn).fromDirectory(root.toFile())
+        TODO()
       } else {
-        throw IllegalArgumentException("unsupported extension: ${fqn.fileExtension}")
+        throw IllegalArgumentException("unsupported extension: ${fqn.second}")
       }
     }
   }

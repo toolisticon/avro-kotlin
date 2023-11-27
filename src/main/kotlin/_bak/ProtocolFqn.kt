@@ -13,15 +13,9 @@ import java.io.File
  * Represents a (json) avro [Protocol] file. Based on this information the file can be read from resource and read/written from/to a file.
  */
 @Deprecated("remove")
-data class ProtocolFqn(override val namespace: Namespace, override val name: Name) : GenericAvroDeclarationFqn(
+data class ProtocolFqn(val namespace: Namespace, val name: Name) : GenericAvroDeclarationFqn(
   namespace = namespace, name = name, fileExtension = AvroKotlin.Constants.EXTENSION_PROTOCOL
 ) {
-  companion object {
-    /**
-     * Converts [AvroFqn] to [ProtocolFqn].
-     */
-    fun AvroFqn.protocolFqn() = AvroKotlin.protocol(this)
-  }
 
   override fun toString(): String = super.toString()
 }

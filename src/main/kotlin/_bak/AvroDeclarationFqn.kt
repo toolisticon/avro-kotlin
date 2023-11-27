@@ -12,13 +12,21 @@ import java.nio.file.Path
  */
 @Deprecated("remove")
 class AvroDeclarationMismatchException(actual: AvroDeclarationFqn, expected: AvroDeclarationFqn) :
-  AvroRuntimeException("violation of package-path convention: found declaration fqn='${actual.canonicalName}' but was loaded from path='${expected.path}'")
+  AvroRuntimeException("violation of package-path convention: found declaration fqn='${actual}' but was loaded from path='${expected.path}'")
+
+
+//override fun verifyPackageConvention(verifyPackageConvention: Boolean): Boolean {
+//  if (contentFqn != location) {
+//    throw AvroDeclarationMismatchException(contentFqn, location)
+//  }
+//  return true
+//}
 
 /**
  * Represents a concrete file or resource containing a (json) avro schema or protocol.
  */
 @Deprecated("remove")
-sealed interface AvroDeclarationFqn : AvroFqn {
+sealed interface AvroDeclarationFqn  {
 
   /**
    * The file suffix to use (avsc or avpr).

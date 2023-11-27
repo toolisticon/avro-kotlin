@@ -1,10 +1,8 @@
 package io.toolisticon.avro.kotlin.ext
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.EXTENSION_SCHEMA
-import io.toolisticon.avro.kotlin.ktx.*
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.avro.kotlin.ktx.dashToDot
+import io.toolisticon.avro.kotlin.ktx.dotToDash
+import io.toolisticon.avro.kotlin.ktx.file
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -17,11 +15,6 @@ internal class IoExtTest {
   lateinit var tmp: File
 
 
-  @Test
-  fun `fqn to path`() {
-    assertThat(fqnToPath(namespace = Namespace("com.acme"), name = Name("Foo"), fileExtension = EXTENSION_SCHEMA).toString())
-      .isEqualTo("com/acme/Foo.avsc")
-  }
 
   @Test
   fun `resolve path under dir`() {
@@ -33,14 +26,6 @@ internal class IoExtTest {
     assertThat(result.toString()).endsWith(path.toString())
   }
 
-  @Test
-  fun `get resource url`() {
-    val url = resource(Namespace("lib.test.event"), Name("BankAccountCreated"), EXTENSION_SCHEMA, "avro")
-
-    println(AvroKotlin.Constants.DEFAULT_CLASS_LOADER.getResource(""))
-
-    println(url)
-  }
 
   @Test
   fun `replace dots and dashes`() {

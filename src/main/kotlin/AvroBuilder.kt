@@ -17,7 +17,7 @@ object AvroBuilder {
    */
   fun primitiveSchema(
     type: Schema.Type,
-    logicalType: LogicalType = AvroKotlin.LOGICAL_TYPE_EMPTY,
+    logicalType: LogicalType = AvroKotlin.Constants.LOGICAL_TYPE_EMPTY,
     properties: ObjectProperties = ObjectProperties.EMPTY
   ): AvroSchema = AvroSchema(
     schema = Schema.create(type).apply {

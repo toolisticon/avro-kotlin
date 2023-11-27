@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin._bak
 
 import io.toolisticon.avro.kotlin.ktx.dashToDot
 import io.toolisticon.avro.kotlin.value.AvroSpecification
+import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
 import java.nio.file.Path
@@ -17,9 +18,9 @@ import kotlin.io.path.relativeToOrSelf
  */
 @Deprecated("remove")
 open class GenericAvroDeclarationFqn(
-  private val fqn: AvroFqn,
+  private val fqn: CanonicalName,
   override val fileExtension: String
-) : AvroDeclarationFqn, AvroFqn by fqn {
+) : AvroDeclarationFqn {
   companion object {
     fun fromPath(path: Path, root: Path? = null): GenericAvroDeclarationFqn {
       val fqnPath = path.relativeToOrSelf(root ?: Path(""))
@@ -32,7 +33,7 @@ open class GenericAvroDeclarationFqn(
     }
   }
 
-  constructor(namespace: Namespace, name: Name, fileExtension: String) : this(AvroFqnData(namespace, name), fileExtension)
+  constructor(namespace: Namespace, name: Name, fileExtension: String) : this(CanonicalName(namespace, name), fileExtension)
 
   constructor(fqn: SchemaFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
   constructor(fqn: ProtocolFqn) : this(fqn.namespace, fqn.name, fqn.fileExtension)
@@ -46,7 +47,10 @@ open class GenericAvroDeclarationFqn(
     AvroSpecification.valueOfExtension(fileExtension)
   }
 
-  override fun toString() = "${this::class.simpleName}(namespace='$namespace', name='$name', fileExtension='$fileExtension')"
+  override fun toString() = "${this::class.simpleName}(namespace='${fqn.namespace}', name='${fqn.name}', fileExtension='$fileExtension')"
+
+  val canonicalName: CanonicalName
+    get() = TODO("Not yet implemented")
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

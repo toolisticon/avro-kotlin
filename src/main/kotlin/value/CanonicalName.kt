@@ -11,9 +11,10 @@ import kotlin.io.path.Path
 @JvmInline
 value class CanonicalName(override val value: Pair<Namespace, Name>) : ValueType<Pair<Namespace, Name>> {
 
+  constructor(namespace: Namespace, name: Name) : this(namespace to name)
+
   val namespace: Namespace get() = value.first
   val name: Name get() = value.second
-
 
   /**
    * Turns a canonical (fqn) name to a file system [Path] using suffix.
@@ -22,6 +23,7 @@ value class CanonicalName(override val value: Pair<Namespace, Name>) : ValueType
    */
   fun toPath(fileExtension: String): Path = Path(namespace.toPath().toString() + FILE_SEPARATOR + name.value + NAME_SEPARATOR + fileExtension).normalize()
 
+  fun toPath(specification: AvroSpecification): Path = toPath(specification.value)
 
-  override fun toString() = "CanonicalName(value=$value)"
+  override fun toString() = "${namespace.value}$NAME_SEPARATOR${name.value}"
 }

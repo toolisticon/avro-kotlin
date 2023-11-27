@@ -15,7 +15,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import kotlin.io.path.Path
+import kotlin.test.Ignore
 
+@Ignore("remove")
+@Deprecated("remove")
 internal class SchemaFqnTest {
 
   @TempDir
@@ -30,7 +33,8 @@ internal class SchemaFqnTest {
 
   @Test
   fun `fail if file path does not match schemaFqn path`() {
-    val origFqn = schema(TestFixtures.fqnBankAccountCreated)
+    val cn = TestFixtures.fqnBankAccountCreated
+    val origFqn = schema(cn.namespace, cn.name)
     val origSchema = origFqn.fromResource("avro")
 
     // we write the content to the wrong path "foo/bar"
