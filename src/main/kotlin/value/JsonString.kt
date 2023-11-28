@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.PRIMITIVE_TYPES
+import io.toolisticon.avro.kotlin.AvroKotlin.PRIMITIVE_TYPES
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import java.io.InputStream
@@ -52,7 +52,7 @@ private constructor(
     }
   }
 
-  fun inputStream(): InputStream = value.byteInputStream(AvroKotlin.Constants.UTF_8)
+  fun inputStream(): InputStream = value.byteInputStream(AvroKotlin.UTF_8)
 
   override fun toString() = value
 }

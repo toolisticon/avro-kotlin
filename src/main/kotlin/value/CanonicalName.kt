@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.FILE_SEPARATOR
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.NAME_SEPARATOR
+import io.toolisticon.avro.kotlin.AvroKotlin.Separator.FILE
+import io.toolisticon.avro.kotlin.AvroKotlin.Separator.NAME
 import java.nio.file.Path
 import kotlin.io.path.Path
 
@@ -21,9 +21,9 @@ value class CanonicalName(override val value: Pair<Namespace, Name>) : ValueType
    *
    * A java class `io.acme.Foo` would become `io/acme/Foo.java`.
    */
-  fun toPath(fileExtension: String): Path = Path(namespace.toPath().toString() + FILE_SEPARATOR + name.value + NAME_SEPARATOR + fileExtension).normalize()
+  fun toPath(fileExtension: String): Path = namespace.toPath().resolve(name.toPath(fileExtension)).normalize()
 
   fun toPath(specification: AvroSpecification): Path = toPath(specification.value)
 
-  override fun toString() = "${namespace.value}$NAME_SEPARATOR${name.value}"
+  override fun toString() = "${namespace.value}${if (namespace.isEmpty()) "" else NAME}${name.value}"
 }

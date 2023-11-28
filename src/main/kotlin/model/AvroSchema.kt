@@ -1,18 +1,20 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroKotlin.Constants.PRIMITIVE_TYPES
+import io.toolisticon.avro.kotlin.AvroKotlin.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
-import io.toolisticon.avro.kotlin.AvroKotlin.name
-import io.toolisticon.avro.kotlin.AvroKotlin.namespace
-import io.toolisticon.avro.kotlin.ktx.orEmpty
+import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
+import org.apache.avro.specific.SpecificData
 import java.io.File
 import java.io.InputStream
 import java.net.URL
+import java.nio.file.Path
 import java.util.function.Supplier
+import kotlin.io.path.inputStream
+import kotlin.reflect.KClass
 
 /**
  * A kotlin type- and null-safe wrapper around the java [Schema].
@@ -35,17 +37,24 @@ class AvroSchema(
    * in case of protocol message requests, this is not the case, in these cases, we have to provide the
    * name via constructor.
    */
-  val name: Name = name(schema),
+  val name: Name = Name(schema),
 ) : Supplier<Schema> {
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
-      AvroSchema(schema = this, name = name ?: name(this), isRoot = isRoot)
+      AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
     }
 
     operator fun invoke(json: JsonString, isRoot: Boolean = false, name: Name? = null): AvroSchema = create(json.inputStream(), isRoot, name)
     operator fun invoke(file: File): AvroSchema = create(file.inputStream(), isRoot = true)
+    operator fun invoke(path: Path): AvroSchema = create(path.inputStream(), isRoot = true)
     operator fun invoke(resource: URL): AvroSchema = create(resource.openStream(), isRoot = true)
 
+
+    @Deprecated("still needed?")
+    fun schemaForClass(recordClass: Class<*>): Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
+
+    @Deprecated("still needed?")
+    fun schemaForClass(recordClass: KClass<*>): Schema = schemaForClass(recordClass.java)
   }
 
   /**
@@ -75,10 +84,12 @@ class AvroSchema(
 
   val json: JsonString = JsonString(schema)
 
-  val namespace: Namespace? by lazy {
-    namespace(schema)
+  val namespace: Namespace by lazy {
+    Namespace(schema)
   }
   val type: Type = schema.type
+
+  val canonicalName = requireNotNull(namespace) + name
 
   val objectProps: ObjectProperties = ObjectProperties(schema)
   val hasProps: Boolean = objectProps.isNotEmpty()

@@ -1,8 +1,6 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin.namespace
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
-import io.toolisticon.avro.kotlin.ktx.createRecord
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
@@ -21,15 +19,16 @@ internal class ProtocolDeclarationTest {
   }
 
   @Test
+
   fun name() {
     val p = Protocol.parse(resourceUrl("protocol/DummyProtocol.avpr").readText())
 
     val message = p.messages["queryDummy"]!!
 
-    val cp = message.createRecord(namespace(p))
-
-    println(message.request)
-    println(cp)
+//    val cp = message.createRecord(namespace(p))
+//
+//    println(message.request)
+//    println(cp)
 
   }
 

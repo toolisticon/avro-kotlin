@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.ktx.nullableToString
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+
 
 /**
  * The documentation of a [Schema.Field] as defined in the `doc` element.

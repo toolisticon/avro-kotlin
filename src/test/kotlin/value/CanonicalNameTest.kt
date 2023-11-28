@@ -1,26 +1,40 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.ktx.fqnToPath
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 
 internal class CanonicalNameTest {
 
-  @Test
-  fun `fqn to path`() {
-    val cn = CanonicalName(namespace = Namespace("com.acme.ns"), name = Name("Foo"))
+  @ParameterizedTest
+  @CsvSource(
+    value = [
+      "com.acme.ns, Foo, com/acme/ns/Foo.avsc",
+      ", Foo, Foo.avsc",
+    ]
+  )
+  fun `canonicalName toPath`(namespace: String?, name: String, expected: String) {
+    val ns = namespace?.let { Namespace(it) } ?: Namespace.EMPTY
+    val cn = CanonicalName(namespace = ns, name = Name(name))
 
     val path = cn.toPath(SCHEMA)
 
-    assertThat(path.toString()).isEqualTo("com/acme/ns/Foo.avsc")
+    assertThat(path).hasToString(expected)
   }
 
-  @Test
-  fun `cn to fqn`() {
-    val cn = Namespace("com.acme.test") + Name( "HelloWorld")
-    assertThat(cn.toString()).isEqualTo("com.acme.test.HelloWorld")
-  }
+  @ParameterizedTest
+  @CsvSource(
+    value = [
+      "com.acme.ns, Foo, com.acme.ns.Foo",
+      ", Foo, Foo",
+      "com.acme.test, HelloWorld, com.acme.test.HelloWorld",
+    ]
+  )
+  fun `canonicalName toString`(namespace: String?, name: String, expected: String) {
+    val ns = namespace?.let { Namespace(it) } ?: Namespace.EMPTY
+    val cn = CanonicalName(namespace = ns, name = Name(name))
 
+    assertThat(cn).hasToString(expected)
+  }
 }

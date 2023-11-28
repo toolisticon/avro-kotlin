@@ -1,8 +1,9 @@
 package io.toolisticon.avro.kotlin.ext
 
-import io.toolisticon.avro.kotlin.ktx.findAvroResources
-import io.toolisticon.avro.kotlin.ktx.rootResource
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.rootResource
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ResourceExtTest {
@@ -15,7 +16,9 @@ internal class ResourceExtTest {
   }
 
   @Test
+  @Disabled("remove")
+  @Deprecated("remove")
   fun `find all avro resources`() {
-    findAvroResources(prefix = "avro")
+    //findAvroResources(prefix = "avro")
   }
 }

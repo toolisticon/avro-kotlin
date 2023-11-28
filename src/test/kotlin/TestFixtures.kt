@@ -1,10 +1,11 @@
 package io.toolisticon.avro.kotlin
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadResource
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trailingSlash
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
-import io.toolisticon.avro.kotlin.ktx.loadResource
-import io.toolisticon.avro.kotlin.ktx.trailingSlash
 import io.toolisticon.avro.kotlin.model.AvroSchema
+import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
@@ -16,10 +17,10 @@ import java.net.URL
 
 
 object TestFixtures {
+
   fun resourceUrl(resource: String): URL = requireNotNull(
     TestFixtures::class.java.getResource(resource.trailingSlash())
   ) { "resource not found: $resource" }
-
 
   fun loadSchemaJson(resource: String): Schema = Schema.Parser().parse(JsonString(loadResource(resource).trim()).value)
 
@@ -68,8 +69,8 @@ object TestFixtures {
 
   val OM = jacksonObjectMapper().findAndRegisterModules()
 
-  val fqnBankAccountCreated = AvroKotlin.fqn(Namespace("lib.test.event"), Name("BankAccountCreated"))
-  val fqnFindCurrentBalance = AvroKotlin.fqn(Namespace("lib.test.query"), Name("FindCurrentBalance"))
+  val fqnBankAccountCreated = CanonicalName(Namespace("lib.test.event"), Name("BankAccountCreated"))
+  val fqnFindCurrentBalance = CanonicalName(Namespace("lib.test.query"), Name("FindCurrentBalance"))
 
   /**
    * A simple schema containing only one string `value`.
@@ -89,4 +90,5 @@ object TestFixtures {
     .type(Schema.create(Schema.Type.STRING))
     .noDefault()
     .endRecord()
+
 }

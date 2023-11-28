@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.ktx.trimToNull
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.model.AvroSchema
 import io.toolisticon.avro.kotlin.model.AvroSchemaField
 import org.apache.avro.Protocol

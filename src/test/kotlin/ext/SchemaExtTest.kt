@@ -1,16 +1,17 @@
 package io.toolisticon.avro.kotlin.ext
 
-import io.toolisticon.avro.kotlin.ktx.createGenericRecord
-import io.toolisticon.avro.kotlin.ktx.path
+
+import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.createGenericRecord
+import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.path
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
-import kotlin.test.Ignore
 
-@Ignore("remove")
+@Disabled("remove")
 @Deprecated("remove")
 internal class SchemaExtTest {
 

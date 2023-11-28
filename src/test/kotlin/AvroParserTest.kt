@@ -1,9 +1,9 @@
 package io.toolisticon.avro.kotlin
 
 import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.AvroKotlin.ProtocolKtx.json
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
-import io.toolisticon.avro.kotlin.ktx.json
 import io.toolisticon.avro.kotlin.value.JsonString
 import mu.KLogging
 import org.apache.avro.LogicalTypes

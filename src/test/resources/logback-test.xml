@@ -1,0 +1,22 @@
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <!-- Stop output INFO at start -->
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%highlight(%-5.5level) %-12.12d{HH:mm:ss.SS}[%-4.4thread]%white(%-40.40logger{40}) %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+
+  <logger name="io.holixon.axon.gist" level="debug"/>
+  <logger name="ch.qos.logback" level="warn"/>
+  <logger name="org.axonframework" level="info"/>
+  <logger name="org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore" level="error" />
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>

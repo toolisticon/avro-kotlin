@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.AvroKotlin.logicalTypeName
-import io.toolisticon.avro.kotlin.ktx.nullableToString
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import io.toolisticon.avro.kotlin.value.AvroHashCode
 import io.toolisticon.avro.kotlin.value.LogicalTypeName

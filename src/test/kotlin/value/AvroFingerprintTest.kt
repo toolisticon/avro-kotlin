@@ -11,6 +11,7 @@ import org.apache.avro.Schema
 import org.apache.avro.Schema.Type.BYTES
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.Ignore
 
@@ -86,7 +87,7 @@ internal class AvroFingerprintTest {
   }
 
   @Test
-  @Ignore("not yet implemented")
+  @Disabled("remove")
   fun `fingerprint of protocols is identical if only props and docs differ`() {
     val p1 = loadProtocolResource("protocol/DummyProtocol.avpr")
     val p2 = loadProtocolResource("protocol/DummyProtocol2.avpr")

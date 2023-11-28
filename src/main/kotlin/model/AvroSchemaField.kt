@@ -10,7 +10,7 @@ class AvroSchemaField(
   private val field: Schema.Field,
 ) : SchemaSupplier, WithDocumentation, Comparable<AvroSchemaField> {
 
-  val name: Name = AvroKotlin.name(field)
+  val name: Name = Name(field)
   val schema: AvroSchema = AvroSchema(field.schema())
 
   val position: Int = field.pos()

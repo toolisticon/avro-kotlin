@@ -1,20 +1,19 @@
 package io.toolisticon.avro.kotlin.declaration
 
+import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
 import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.TestFixtures.simpleStringValueSchema
-import io.toolisticon.avro.kotlin._bak.SchemaFqn
-import io.toolisticon.avro.kotlin.ktx.writeToDirectory
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Files
-import kotlin.test.Ignore
 
-@Ignore("remove")
+@Disabled("remove")
 @Deprecated("remove")
-internal class SchemaDeclarationTest {
+internal class SchemaDeclarationBakTest {
 
   @TempDir
   private lateinit var tmp: File
@@ -24,8 +23,8 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val fqn = SchemaFqn(Namespace(namespace), Name(name))
-    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
+//    val fqn = SchemaFqn(Namespace(namespace), Name(name))
+//    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
 //    val declaration = SchemaDeclaration(fqn, schema)
 
@@ -57,8 +56,8 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val differentLocation = SchemaFqn(Namespace("foo"), Name("Bar"))
-    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
+//    val differentLocation = SchemaFqn(Namespace("foo"), Name("Bar"))
+//    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
 //    val declaration = SchemaDeclaration(differentLocation, schema)
 //
@@ -72,8 +71,8 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val fqn = SchemaFqn(Namespace(namespace + ".foo"), Name(name))
-    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
+//    val fqn = SchemaFqn(Namespace(namespace + ".foo"), Name(name))
+//    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
 //    val declaration = SchemaDeclaration(fqn, schema)
 //

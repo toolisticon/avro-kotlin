@@ -1,7 +1,8 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.ktx.ifTrue
-import io.toolisticon.avro.kotlin.ktx.nullableToString
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.ifTrue
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 import org.apache.avro.Schema
@@ -35,7 +36,7 @@ value class RecordType(override val schema: AvroSchema) : AvroNamedType, WithDoc
       )
     )
 
-    return "$toStringName(name='${name.withNamespace(namespace)}'" +
+    return "$toStringName(name='${if (namespace == null) name else name + namespace!!}'" +
       ", hashCode='$hashCode', fingerprint='$fingerprint'" + documentation.shortenedIfPresent() +
       ", fields=$fields" +
       ")"

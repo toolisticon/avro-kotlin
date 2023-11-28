@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.ktx
 
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

@@ -1,8 +1,5 @@
 package io.toolisticon.avro.kotlin.ext
 
-import io.toolisticon.avro.kotlin.ktx.dashToDot
-import io.toolisticon.avro.kotlin.ktx.dotToDash
-import io.toolisticon.avro.kotlin.ktx.file
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -15,26 +12,6 @@ internal class IoExtTest {
   lateinit var tmp: File
 
 
-
-  @Test
-  fun `resolve path under dir`() {
-    val path = Path("foo/bar/File.txt")
-
-    val result = tmp.file(path)
-
-    assertThat(result.toString()).startsWith(tmp.toString())
-    assertThat(result.toString()).endsWith(path.toString())
-  }
-
-
-  @Test
-  fun `replace dots and dashes`() {
-    val dots = "io.acme.bar.Foo"
-    val dashes = dots.dotToDash()
-
-    assertThat(dashes).isEqualTo("io/acme/bar/Foo")
-    assertThat(dashes.dashToDot()).isEqualTo(dots)
-  }
 
 
   @Test

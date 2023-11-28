@@ -16,7 +16,7 @@ internal class AvroSchemaTest {
       assertThat(aliases).isEmpty()
       assertThat(schema.fullName).isEqualTo("string")
       assertThat(schema.name).isEqualTo(Name("string"))
-      assertThat(schema.namespace).isNull()
+      assertThat(schema.namespace.isEmpty()).isTrue()
       assertThat(schema.type).isEqualTo(Type.STRING)
 
       assertThat(unionTypes).isEmpty()

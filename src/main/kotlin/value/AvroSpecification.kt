@@ -1,11 +1,13 @@
 package io.toolisticon.avro.kotlin.value
 
+import io.toolisticon.avro.kotlin.AvroKotlin.FileExtension
+
 /**
  * Defines valid file extension for avro declarations.
  */
 enum class AvroSpecification(private val fileExtension: String) : ValueType<String> {
-  SCHEMA(fileExtension = "avsc"),
-  PROTOCOL(fileExtension = "avpr"),
+  SCHEMA(fileExtension = FileExtension.SCHEMA),
+  PROTOCOL(fileExtension = FileExtension.PROTOCOL),
   ;
 
   companion object {
