@@ -1,16 +1,18 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.AvroKotlin.ProtocolKtx.json
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.JsonSource
+import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
 import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -41,8 +43,11 @@ internal class AvroParserTest {
   @Test
   fun `read from json`() {
     val url = resourceUrl("schema/SchemaContainingSimpleTypes.avsc")
-    val s = AvroParser().parseSchema(JsonString(url.readText()))
-    assertThat(s.name.value).isEqualTo("SimpleTypesRecord")
+    val json = JsonString(url.readText())
+    val s = AvroParser().parseSchema(json)
+
+    assertThat(s.name).isEqualTo(Name("SimpleTypesRecord"))
+    assertThat(s.source).isInstanceOf(JsonSource::class.java)
   }
 
   @Test
@@ -94,15 +99,6 @@ internal class AvroParserTest {
   }
 
   @Test
-  @Disabled("implement protocol")
-  fun `read protocol resource`() {
-    val url = resourceUrl("protocol/DummyProtocol.avpr")
-    val protocol = AvroParser().parseProtocol(url)
-
-    println(protocol.protocol.json)
-  }
-
-  @Test
   fun `spike - reference or value on reused schema`() {
     val schema = AvroParser().parseSchema(resourceUrl("schema/ReUsingTypes.avsc"))
 
@@ -124,10 +120,18 @@ internal class AvroParserTest {
 
     val declaration = AvroParser().parseSchema(schema)
 
-    println(JsonString(declaration.schema))
-
-    println(declaration.avroTypes)
-
+    assertThat(declaration.canonicalName).isEqualTo(CanonicalName(Namespace("foo"), Name("Bar")))
   }
 
+  @Test
+  fun `parse protocol resource`() {
+    val declaration = AvroParser()
+      .registerLogicalTypeFactory(CustomLogicalTypeFactory())
+      .parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
+
+    assertThat(declaration.canonicalName).hasToString("foo.dummy.DummyProtocol")
+
+    assertThat(declaration.avroTypes).hasSize(10)
+
+  }
 }

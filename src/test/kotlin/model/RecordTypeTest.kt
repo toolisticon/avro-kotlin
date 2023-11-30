@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

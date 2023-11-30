@@ -48,7 +48,6 @@ internal class GraphTest {
       2 to 4
     ) + 5 + (4 to 6) + (3 to 5)
 
-
     assertThat(g.sequence.toList()).containsExactly(
       5, 3, 6, 4, 2, 1
     )

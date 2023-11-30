@@ -3,6 +3,7 @@ package io.toolisticon.avro.kotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dashToDot
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dotToDash
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import java.io.File
 
 internal class AvroKotlinTest {
@@ -135,6 +138,20 @@ internal class AvroKotlinTest {
 
       assertThat(dashes).isEqualTo("io/acme/bar/Foo")
       assertThat(dashToDot(dashes)).isEqualTo(dots)
+    }
+  }
+
+  @Nested
+  inner class SpringKtxTest {
+    @ParameterizedTest
+    @CsvSource(value = [
+      "null,null",
+      ",null",
+      " ,null",
+      " h ,h",
+    ], nullValues = ["null"])
+    fun `String_trimToNull`(input: String?, expected: String?) {
+      assertThat(input.trimToNull()).isEqualTo(expected)
     }
   }
 }

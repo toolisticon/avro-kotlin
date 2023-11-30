@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin.declaration
 
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
+import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
@@ -13,6 +14,8 @@ import io.toolisticon.avro.kotlin.value.Namespace
  * and a deep analysis/breakdown of all contained sub-schemas.
  */
 sealed interface AvroDeclaration {
+  val canonicalName: CanonicalName
+
   /**
    * For reference purposes, we keep the unmodified json as we read it from source.
    */
@@ -26,12 +29,12 @@ sealed interface AvroDeclaration {
   /**
    * On Top level, we need a namespace.
    */
-  val namespace: Namespace
+  val namespace: Namespace get() = canonicalName.namespace
 
   /**
    * The name of the root type.
    */
-  val name: Name
+  val name: Name get() = canonicalName.name
 
   val avroTypes: AvroTypesMap
 }

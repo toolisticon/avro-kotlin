@@ -1,8 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.value.Graph
 import io.toolisticon.avro.kotlin.value.AvroHashCode
-import org.apache.avro.Protocol
+import io.toolisticon.avro.kotlin.value.Graph
 
 /**
  * The types map contains a unique key/value pair of
@@ -25,26 +24,13 @@ class AvroTypesMap private constructor(
     private val map: Map<AvroHashCode, AvroSchema> = mapOf(),
     internal val graph: Graph<AvroHashCode> = Graph()
   ) : Map<AvroHashCode, AvroSchema> by map {
+
     private constructor(catalog: SchemaCatalog) : this(map = catalog.map, graph = catalog.graph)
 
     constructor(schema: AvroSchema) : this(SchemaCatalog() + schema)
 
     constructor(schemas: List<AvroSchema>) : this(SchemaCatalog() + schemas)
 
-    @Deprecated(message = "move to AvroProtocol", replaceWith = ReplaceWith("AvroProtocol"))
-    constructor(protocol: Protocol) : this(
-      buildList {
-        addAll(protocol.types.map { AvroSchema(it) })
-
-        protocol.messages.values.forEach { msg ->
-          msg.request.fields.forEach { schemaField ->
-            add(AvroSchema(schemaField.schema())) // TODO; use name
-          }
-          add(AvroSchema(msg.response))
-          add(AvroSchema(msg.errors))
-        }
-      }
-    )
 
     operator fun plus(schemas: List<AvroSchema>) = schemas.fold(this) { acc, cur -> acc + cur }
 
@@ -72,7 +58,14 @@ class AvroTypesMap private constructor(
 
   constructor(schema: AvroSchema) : this(catalog = SchemaCatalog(schema))
 
-  constructor(protocol: AvroProtocol) : this(emptyMap(), Graph())
+  constructor(protocol: AvroProtocol) : this(
+    catalog = protocol.messages.values.fold(
+      SchemaCatalog(protocol.get().types.map { AvroSchema(it) })
+    ) { acc, cur ->
+      acc + cur.enclosedTypes()
+    }
+  )
+
 
   operator fun minus(hashCode: AvroHashCode): AvroTypesMap = AvroTypesMap(
     map = map.toMutableMap().apply { remove(hashCode) }.toMap(),

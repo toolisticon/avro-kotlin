@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.NULL
@@ -13,7 +13,6 @@ import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import kotlin.test.Ignore
 
 internal class AvroFingerprintTest {
 
@@ -159,8 +158,8 @@ internal class AvroFingerprintTest {
       )
     )
 
-    assertThat(AvroFingerprint(r2.schema.getField("xxx")))
-      .isEqualTo(AvroFingerprint(r2.schema.getField("yyy")))
+    assertThat(AvroFingerprint(r2.schema.getField(Name("xxx"))!!))
+      .isEqualTo(AvroFingerprint(r2.schema.getField(Name("yyy"))!!))
   }
 
   @Test

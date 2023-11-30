@@ -3,43 +3,23 @@ package io.toolisticon.avro.kotlin.declaration
 import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
-import io.toolisticon.avro.kotlin.value.Documentation
+import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.Protocol
 
 /**
  * The result of parsing an `*.avpr` protocol declaration.
  */
-data class ProtocolDeclaration(
-  override val originalJson: JsonString,
-
-  override val namespace: Namespace,
-  override val name: Name,
-  val documentation: Documentation?,
-
-  val protocol: Protocol,
-  override val avroTypes: AvroTypesMap = AvroTypesMap(AvroProtocol(protocol))
-) : AvroDeclaration {
+class ProtocolDeclaration(
+  val protocol: AvroProtocol,
   override val source: AvroSource
-    get() = TODO("Not yet implemented")
 
+) : AvroDeclaration {
+  override val originalJson: JsonString = source.json
+  val documentation: Documentation? = protocol.documentation
 
-//  val catalog: AvroParser.model.AvroSchemaCatalog = (listOf<Schema>() + protocol.types + protocol.messages.values.flatMap {
-//    listOf(
-//      it.request,
-//      it.response,
-//      it.errors
-//    )
-//  }).fold(AvroSchemaCatalogBak(emptyList())) { acc, cur ->
-//    AvroSchemaCatalogBak(buildList {
-//      addAll(acc)
-//      addAll(AvroSchemaCatalogBak(AvroSchema(cur)))
-//    })
-//  }
-
+  override val avroTypes: AvroTypesMap = protocol.types
+  override val canonicalName: CanonicalName = protocol.canonicalName
 
   override fun toString() = "ProtocolDeclaration(" +
     "namespace='$namespace'" +

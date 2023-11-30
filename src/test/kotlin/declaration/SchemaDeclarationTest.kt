@@ -1,5 +1,6 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.avro.kotlin.declaration
 
+import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin.TestFixtures.loadSchemaJson
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import org.junit.jupiter.api.Test

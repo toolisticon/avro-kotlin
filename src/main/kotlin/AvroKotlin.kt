@@ -83,14 +83,23 @@ object AvroKotlin {
   }
 
   /**
+   * Set of reserved keywords.
+   */
+  object Reserved {
+    val PROTOCOL_KEYWORDS: Set<String> = setOf("namespace", "protocol", "doc", "messages", "types", "errors")
+    val PROTOCOL_MESSAGES = setOf("doc", "response", "request", "errors", "one-way")
+
+    private val FIELD_RESERVED = Collections
+      .unmodifiableSet(HashSet(mutableListOf("name", "type", "doc", "default", "aliases")))
+
+    val SCHEMA: Set<String> = setOf("doc", "fields", "items", "name", "namespace", "size", "symbols", "values", "type", "aliases")
+  }
+
+  /**
    * Default charset to use is [Charsets#UTF_8]
    */
   val UTF_8 = Charsets.UTF_8
 
-  /**
-   * Set of reserved keywords.
-   */
-  val SCHEMA_RESERVED_KEYWORDS: Set<String> = setOf("doc", "fields", "items", "name", "namespace", "size", "symbols", "values", "type", "aliases")
 
   /**
    * The primitive types.
@@ -141,6 +150,16 @@ object AvroKotlin {
 
   object StringKtx {
     fun String?.trimToNull() = if (this.isNullOrBlank()) null else this
+
+    fun <K : Any, V : Any> Map<K, V>.toReadableString() = StringBuilder()
+      .apply {
+        this@toReadableString.forEach { (k, v) ->
+          appendLine("$k:")
+          appendLine("\t$v")
+          appendLine()
+        }
+      }
+      .toString()
 
 
     fun ifTrue(condition: Boolean, caseTrue: String, caseFalse: String = ""): String = if (condition)

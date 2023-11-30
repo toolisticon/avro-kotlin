@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.avro.kotlin.logical
 
 import org.apache.avro.LogicalTypes.LogicalTypeFactory
 

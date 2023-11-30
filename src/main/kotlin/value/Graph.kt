@@ -1,5 +1,10 @@
 package io.toolisticon.avro.kotlin.value
 
+/**
+ * A Graph implementation that represents the dependencies (ars) between its vertexes.
+ *
+ * This is used to determinate the order of dependencies, returning the dependant elements last.
+ */
 @JvmInline
 value class Graph<T : Comparable<T>> private constructor(
   private val map: Map<T, Set<T>>

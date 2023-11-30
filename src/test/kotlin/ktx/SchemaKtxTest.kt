@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.ktx
 
-import io.toolisticon.avro.kotlin.AvroBuilder
+import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import org.apache.avro.Schema.*
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.SchemaBuilder.record

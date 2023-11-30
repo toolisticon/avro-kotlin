@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.value.*
+import org.apache.avro.JsonProperties
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import java.util.function.Supplier
@@ -117,3 +118,18 @@ sealed interface WithDocumentation {
   val documentation: Documentation?
 }
 
+sealed interface AvroSupplier<T : JsonProperties> : Supplier<T> {
+
+  /**
+   * The hashCode identifies a [Schema].
+   */
+  val hashCode: AvroHashCode
+
+  /**
+   * The JSON representation of this avro declaration.
+   */
+  val json: JsonString
+
+  val name: Name
+
+}

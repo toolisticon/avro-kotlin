@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.AvroKotlin.logicalTypeName
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
@@ -163,7 +163,7 @@ value class StringType(override val schema: AvroSchema) : AvroPrimitiveType, Wit
   override val logicalType: LogicalType? get() = schema.logicalType
   override val logicalTypeName: LogicalTypeName? get() = logicalTypeName(logicalType)
 
-  override fun toString() = schema.name.toString().removeSuffix(")") +
-    logicalType?.name.nullableToString(", logicalType='", suffix = "'") +
+  override fun toString() = "String(" +
+    logicalType?.name.nullableToString("logicalType='", suffix = "'") +
     ")"
 }

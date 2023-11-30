@@ -37,8 +37,8 @@ class AvroSchema(
    * in case of protocol message requests, this is not the case, in these cases, we have to provide the
    * name via constructor.
    */
-  val name: Name = Name(schema),
-) : Supplier<Schema> {
+  override val name: Name = Name(schema),
+) : AvroSupplier<Schema> {
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
       AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
@@ -49,7 +49,6 @@ class AvroSchema(
     operator fun invoke(path: Path): AvroSchema = create(path.inputStream(), isRoot = true)
     operator fun invoke(resource: URL): AvroSchema = create(resource.openStream(), isRoot = true)
 
-
     @Deprecated("still needed?")
     fun schemaForClass(recordClass: Class<*>): Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
 
@@ -57,10 +56,7 @@ class AvroSchema(
     fun schemaForClass(recordClass: KClass<*>): Schema = schemaForClass(recordClass.java)
   }
 
-  /**
-   * The hashCode identifies a [Schema].
-   */
-  val hashCode: AvroHashCode = AvroHashCode(schema)
+  override val hashCode: AvroHashCode = AvroHashCode(schema)
 
   /**
    * The fingerprint of the [Schema], used to lookup in schema store.
@@ -80,16 +76,19 @@ class AvroSchema(
    */
   val documentation: Documentation? by lazy { documentation(schema) }
 
-  val fullName: String = schema.fullName
+  // FIXME: fails with NPE when not lazy. Remove?
+  val fullName: String by lazy {
+    schema.fullName
+  }
 
-  val json: JsonString = JsonString(schema)
+  override val json: JsonString by lazy { JsonString(schema) }
 
   val namespace: Namespace by lazy {
     Namespace(schema)
   }
   val type: Type = schema.type
 
-  val canonicalName = requireNotNull(namespace) + name
+  val canonicalName = namespace + name
 
   val objectProps: ObjectProperties = ObjectProperties(schema)
   val hasProps: Boolean = objectProps.isNotEmpty()
@@ -164,6 +163,7 @@ class AvroSchema(
   init {
     if (isRoot) {
       require(isRecordType && !isError) { "Only RecordTypes that are not ErrorTypes must be marked as 'isRoot'." }
+      requireNotNull(schema.namespace) { "A top level schema declaration must have a namespace." }
     }
   }
 

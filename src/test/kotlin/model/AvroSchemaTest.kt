@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroBuilder
+import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.value.Name
 import org.apache.avro.Schema.Type
 import org.assertj.core.api.Assertions.assertThat

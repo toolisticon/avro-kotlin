@@ -1,5 +1,6 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.avro.kotlin.declaration
 
+import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
