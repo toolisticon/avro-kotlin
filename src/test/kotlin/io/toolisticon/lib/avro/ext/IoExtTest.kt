@@ -1,14 +1,10 @@
 package io.toolisticon.lib.avro.ext
 
-import io.toolisticon.lib.avro.AvroKotlinLib
-import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_SCHEMA
-import io.toolisticon.lib.avro.ext.IoExt.dashToDot
-import io.toolisticon.lib.avro.ext.IoExt.dotToDash
-import io.toolisticon.lib.avro.ext.IoExt.file
-import io.toolisticon.lib.avro.ext.IoExt.fqnToPath
-import io.toolisticon.lib.avro.ext.IoExt.namespaceToPath
-
-import io.toolisticon.lib.avro.ext.ResourceExt.resource
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.Constants.EXTENSION_SCHEMA
+import io.toolisticon.avro.kotlin.ktx.*
+import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.name.Namespace
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -23,12 +19,12 @@ internal class IoExtTest {
 
   @Test
   fun `namespace to path`() {
-    assertThat(namespaceToPath("test.lib").toString()).isEqualTo("test/lib")
+    assertThat(namespaceToPath(Namespace("test.lib")).toString()).isEqualTo("test/lib")
   }
 
   @Test
   fun `fqn to path`() {
-    assertThat(fqnToPath(namespace = "com.acme", name = "Foo", fileExtension = EXTENSION_SCHEMA).toString())
+    assertThat(fqnToPath(namespace = Namespace("com.acme"), name = Name("Foo"), fileExtension = EXTENSION_SCHEMA).toString())
       .isEqualTo("com/acme/Foo.avsc")
   }
 
@@ -44,9 +40,9 @@ internal class IoExtTest {
 
   @Test
   fun `get resource url`() {
-    val url = resource("lib.test.event", "BankAccountCreated", EXTENSION_SCHEMA, "avro")
+    val url = resource(Namespace("lib.test.event"), Name("BankAccountCreated"), EXTENSION_SCHEMA, "avro")
 
-    println(AvroKotlinLib.DEFAULT_CLASS_LOADER.getResource(""))
+    println(AvroKotlin.Constants.DEFAULT_CLASS_LOADER.getResource(""))
 
     println(url)
   }

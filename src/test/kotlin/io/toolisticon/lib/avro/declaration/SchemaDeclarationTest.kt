@@ -1,13 +1,14 @@
 package io.toolisticon.lib.avro.declaration
 
-import io.toolisticon.lib.avro.AvroKotlinLib
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin._bak.AvroDeclarationMismatchException
+import io.toolisticon.avro.kotlin._bak.SchemaDeclaration
+import io.toolisticon.avro.kotlin._bak.SchemaExt.writeToDirectory
+import io.toolisticon.avro.kotlin._bak.SchemaFqn
+import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.name.Namespace
 import io.toolisticon.lib.avro.TestFixtures
 import io.toolisticon.lib.avro.TestFixtures.simpleStringValueSchema
-import io.toolisticon.lib.avro.ext.SchemaExt.writeToDirectory
-import io.toolisticon.lib.avro.fqn.AvroDeclarationMismatchException
-import io.toolisticon.lib.avro.fqn.SchemaFqn
-import org.apache.avro.Schema
-import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -25,8 +26,8 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val fqn = SchemaFqn(namespace, name)
-    val schema = simpleStringValueSchema(namespace, name)
+    val fqn = SchemaFqn(Namespace(namespace), Name(name))
+    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
     val declaration = SchemaDeclaration(fqn, schema)
 
@@ -42,11 +43,11 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val schema = simpleStringValueSchema(namespace, name)
+    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
     val declaration = SchemaDeclaration(schema)
 
-    assertThat(declaration.contentFqn).isEqualTo(SchemaFqn(namespace,name))
+    assertThat(declaration.contentFqn).isEqualTo(SchemaFqn(Namespace(namespace), Name(name)))
     assertThat(declaration.verifyPackageConvention()).isTrue
     assertThat(declaration.name).isEqualTo(name)
     assertThat(declaration.namespace).isEqualTo(namespace)
@@ -58,8 +59,8 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val differentLocation = SchemaFqn("foo", "Bar")
-    val schema = simpleStringValueSchema(namespace, name)
+    val differentLocation = SchemaFqn(Namespace("foo"), Name("Bar"))
+    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
     val declaration = SchemaDeclaration(differentLocation, schema)
 
@@ -73,14 +74,14 @@ internal class SchemaDeclarationTest {
     val namespace = "com.acme.test"
     val name = "Foo"
 
-    val fqn = SchemaFqn(namespace+".foo", name)
-    val schema = simpleStringValueSchema(namespace, name)
+    val fqn = SchemaFqn(Namespace(namespace + ".foo"), Name(name))
+    val schema = simpleStringValueSchema(Namespace(namespace), Name(name))
 
     val declaration = SchemaDeclaration(fqn, schema)
 
     assertThat(declaration.contentFqn.namespace).isEqualTo(namespace)
     assertThat(declaration.contentFqn.name).isEqualTo(name)
-    assertThat(declaration.contentFqn.fileExtension).isEqualTo(AvroKotlinLib.EXTENSION_SCHEMA)
+    assertThat(declaration.contentFqn.fileExtension).isEqualTo(AvroKotlin.Constants.EXTENSION_SCHEMA)
 
     assertThatThrownBy { declaration.verifyPackageConvention(true) }
       .isInstanceOf(AvroDeclarationMismatchException::class.java)

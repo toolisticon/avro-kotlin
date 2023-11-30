@@ -1,7 +1,10 @@
 package io.toolisticon.lib.avro.fqn
 
-import io.toolisticon.lib.avro.AvroKotlinLib
-import io.toolisticon.lib.avro.AvroKotlinLib.EXTENSION_SCHEMA
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.Constants.EXTENSION_SCHEMA
+import io.toolisticon.avro.kotlin._bak.GenericAvroDeclarationFqn
+import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.name.Namespace
 import nl.jqno.equalsverifier.EqualsVerifier
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,7 +14,7 @@ class GenericAvroDeclarationFqnTest {
 
   @Test
   fun `verify toString`() {
-    val fqn = GenericAvroDeclarationFqn("io.acme.foo", "Dummy", EXTENSION_SCHEMA)
+    val fqn = GenericAvroDeclarationFqn(Namespace("io.acme.foo"), Name("Dummy"), EXTENSION_SCHEMA)
 
     assertThat(fqn.toString()).isEqualTo("GenericAvroDeclarationFqn(namespace='io.acme.foo', name='Dummy', fileExtension='avsc')")
   }
@@ -20,8 +23,8 @@ class GenericAvroDeclarationFqnTest {
   fun `verify equals and hashcode`() {
     EqualsVerifier.simple()
       .forClass(GenericAvroDeclarationFqn::class.java)
-      .withIgnoredFields( "path\$delegate")
-      .withIgnoredFields( "type\$delegate")
+      .withIgnoredFields("path\$delegate")
+      .withIgnoredFields("type\$delegate")
       .verify()
   }
 
@@ -35,7 +38,7 @@ class GenericAvroDeclarationFqnTest {
     assertThat(fqn.namespace).isEqualTo("lib.test.event")
     assertThat(fqn.name).isEqualTo("BankAccountCreated")
     assertThat(fqn.fileExtension).isEqualTo("avsc")
-    assertThat(fqn.type).isEqualTo(AvroKotlinLib.Declaration.SCHEMA)
+    assertThat(fqn.type).isEqualTo(AvroKotlin.Declaration.SCHEMA)
 
   }
 

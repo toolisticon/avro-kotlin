@@ -1,6 +1,6 @@
 package io.toolisticon.lib.avro
 
-import io.toolisticon.lib.avro.ext.BytesExt.toHexString
+import io.toolisticon.avro.kotlin.ktx.toHexString
 import lib.test.dummy.DummyType
 import lib.test.dummy.NestedDummy
 import lib.test.dummy.NestedMoney
@@ -10,10 +10,7 @@ import org.apache.avro.Conversions.UUIDConversion
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericData.Record
-import org.apache.avro.generic.GenericDatumReader
-import org.apache.avro.io.DecoderFactory
 import org.apache.avro.message.BinaryMessageDecoder
-import org.apache.avro.specific.SpecificData
 import org.junit.jupiter.api.Test
 import java.util.*
 

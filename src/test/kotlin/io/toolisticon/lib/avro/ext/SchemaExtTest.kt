@@ -1,9 +1,9 @@
 package io.toolisticon.lib.avro.ext
 
-import io.toolisticon.lib.avro.ext.SchemaExt.createGenericRecord
-import io.toolisticon.lib.avro.ext.SchemaExt.fileExtension
-import io.toolisticon.lib.avro.ext.SchemaExt.fingerprint
-import io.toolisticon.lib.avro.ext.SchemaExt.path
+import io.toolisticon.avro.kotlin._bak.SchemaExt.createGenericRecord
+import io.toolisticon.avro.kotlin._bak.SchemaExt.fileExtension
+import io.toolisticon.avro.kotlin._bak.SchemaExt.fingerprint
+import io.toolisticon.avro.kotlin._bak.SchemaExt.path
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData

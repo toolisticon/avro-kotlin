@@ -1,9 +1,9 @@
 package io.toolisticon.lib.avro.ext
 
 import io.toolisticon.lib.avro.TestFixtures
-import io.toolisticon.lib.avro.ext.ProtocolExt.message
-import io.toolisticon.lib.avro.fqn.ProtocolFqn.Companion.protocolFqn
-import io.toolisticon.lib.avro.fqn.fromResource
+import io.toolisticon.avro.kotlin._bak.ProtocolExt.message
+import io.toolisticon.avro.kotlin._bak.ProtocolFqn.Companion.protocolFqn
+import io.toolisticon.avro.kotlin._bak.fromResource
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

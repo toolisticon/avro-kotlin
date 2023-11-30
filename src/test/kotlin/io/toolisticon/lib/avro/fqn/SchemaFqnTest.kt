@@ -1,8 +1,14 @@
 package io.toolisticon.lib.avro.fqn
 
-import io.toolisticon.lib.avro.AvroKotlinLib.schema
+import io.toolisticon.avro.kotlin.AvroKotlin.schema
+import io.toolisticon.avro.kotlin._bak.AvroDeclarationMismatchException
+import io.toolisticon.avro.kotlin._bak.SchemaExt.writeToDirectory
+import io.toolisticon.avro.kotlin._bak.SchemaFqn
+import io.toolisticon.avro.kotlin._bak.fromDirectory
+import io.toolisticon.avro.kotlin._bak.fromResource
+import io.toolisticon.avro.kotlin.name.Name
+import io.toolisticon.avro.kotlin.name.Namespace
 import io.toolisticon.lib.avro.TestFixtures
-import io.toolisticon.lib.avro.ext.SchemaExt.writeToDirectory
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -17,7 +23,7 @@ internal class SchemaFqnTest {
 
   @Test
   fun `toString contains namespace name and extension`() {
-    val fqn = SchemaFqn(namespace = "com.acme.foo", name = "MySchema")
+    val fqn = SchemaFqn(namespace = Namespace("com.acme.foo"), name = Name("MySchema"))
 
     assertThat(fqn.toString()).isEqualTo("SchemaFqn(namespace='com.acme.foo', name='MySchema', fileExtension='avsc')")
   }
@@ -32,7 +38,7 @@ internal class SchemaFqnTest {
     assertThat(file).exists()
     assertThat(file).isFile
 
-    val fqnWithWrongNamespace = SchemaFqn(namespace = "foo.bar", name = "BankAccountCreated")
+    val fqnWithWrongNamespace = SchemaFqn(namespace = Namespace("foo.bar"), name = Name("BankAccountCreated"))
 
     assertThatThrownBy {
       fqnWithWrongNamespace.fromDirectory(tmpDir)

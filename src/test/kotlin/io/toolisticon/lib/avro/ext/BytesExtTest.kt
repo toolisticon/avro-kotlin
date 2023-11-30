@@ -1,14 +1,13 @@
 package io.toolisticon.lib.avro.ext
 
-import io.toolisticon.lib.avro.AvroKotlinLib
-import io.toolisticon.lib.avro.ext.BytesExt.buffer
-import io.toolisticon.lib.avro.ext.BytesExt.extract
-import io.toolisticon.lib.avro.ext.BytesExt.isAvroSingleObjectEncoded
-import io.toolisticon.lib.avro.ext.BytesExt.split
-import io.toolisticon.lib.avro.ext.BytesExt.toHexString
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.ktx.extract
+import io.toolisticon.avro.kotlin.ktx.isAvroSingleObjectEncoded
+import io.toolisticon.avro.kotlin.ktx.split
 import mu.KLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.jetbrains.kotlin.library.impl.buffer
 import org.junit.jupiter.api.Test
 
 internal class BytesExtTest {
@@ -17,14 +16,16 @@ internal class BytesExtTest {
   private val helloBytes: ByteArray = "Hello World!".encodeToByteArray()
 
   @Test
+  @ExperimentalStdlibApi
   fun `to hex String`() {
     assertThat(helloBytes.toHexString()).isEqualTo("[48 65 6C 6C 6F 20 57 6F 72 6C 64 21]")
     assertThat(byteArrayOf(-61, 1).toHexString()).isEqualTo("[C3 01]")
   }
 
   @Test
+  @ExperimentalStdlibApi
   fun `extract from byte buffer`() {
-    val buffer = helloBytes.buffer()
+    val buffer = helloBytes.buffer
     buffer.position(7)
 
     // extract 3,4,5
@@ -43,7 +44,7 @@ internal class BytesExtTest {
       .hasMessage("Cannot extract from position=0, size=100, remaining=${helloBytes.size}")
     assertThat(buffer.position()).isEqualTo(7)
 
-    assertThatThrownBy { byteArrayOf(-61).buffer().extract(1, 1) }
+    assertThatThrownBy { byteArrayOf(-61).buffer.extract(1, 1) }
       .isInstanceOf(IllegalArgumentException::class.javaObjectType)
       .hasMessage("Cannot extract from position=1, size=1, remaining=0")
 
@@ -62,6 +63,7 @@ internal class BytesExtTest {
   }
 
   @Test
+  @ExperimentalStdlibApi
   fun `split byteArray`() {
     assertThatThrownBy { helloBytes.split(-1) }.hasMessage("all indexes have to match '0 < index < size-1', was: indexes=[-1], size=12")
       .isInstanceOf(IllegalArgumentException::class.java)
@@ -82,7 +84,7 @@ internal class BytesExtTest {
 
   @Test
   fun `verify isAvroEncoded`() {
-    assertThat(AvroKotlinLib.AVRO_V1_HEADER.isAvroSingleObjectEncoded()).isTrue
+    assertThat(AvroKotlin.Constants.AVRO_V1_HEADER.isAvroSingleObjectEncoded()).isTrue
 
     assertThat(byteArrayOf(-1).isAvroSingleObjectEncoded()).isFalse
 
@@ -93,7 +95,7 @@ internal class BytesExtTest {
   fun `convert buffer and bytes`() {
     val bytes = helloBytes
 
-    val buffer = helloBytes.buffer()
+    val buffer = helloBytes.buffer
 
     assertThat(buffer.array()).isEqualTo(bytes)
   }
