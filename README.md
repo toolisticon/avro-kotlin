@@ -1,6 +1,6 @@
 # avro-kotlin
 
-opinionated extension functions and helpers for using apache avro with kotlin.
+Set of opinionated extension functions and helpers for using Apache Avro in Kotlin.
 
 [![incubating](https://img.shields.io/badge/lifecycle-INCUBATING-orange.svg)](https://github.com/holisticon#open-source-lifecycle)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)
@@ -18,5 +18,5 @@ The assumption is, that the location of an avro file follows the java fqn/packag
 ## how?
 
 * store your schema files according to the package convention
-* Create an fqn wrapper `schema(namepace="com.acme.foo", name="MySchema")`
+* Create a fqn wrapper `schema(namepace="com.acme.foo", name="MySchema")`
 * use the extension functions `fromResource` or `fromDirectory` to load and parse the `Schema`. (Same applies to `Protocol`s.)  

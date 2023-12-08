@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2023.10.2</version>
+    <version>2023.10.3</version>
     <relativePath/>
   </parent>
 
@@ -14,7 +14,7 @@
   <version>1.11.3.0-SNAPSHOT</version>
 
   <name>${project.artifactId}</name>
-  <description>opinionated extension functions and helpers for using apache avro with kotlin</description>
+  <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
 
   <properties>
@@ -22,14 +22,8 @@
     <avro.version>1.11.3</avro.version>
 
     <!-- TEST -->
-    <assertj.version>3.23.1</assertj.version>
-    <equalsverifier.version>3.10</equalsverifier.version>
-    <jackson.version>2.14.0-rc2</jackson.version>
-    <jimfs.version>1.2</jimfs.version>
-    <logback.version>1.4.11</logback.version>
-    <junit5.version>5.9.0</junit5.version>
-    <logback.version>1.3.12</logback.version>
-    <mockito.version>4.0.0</mockito.version>
+    <jackson.version>2.16.0</jackson.version>
+    <junit5.version>5.10.1</junit5.version>
 
     <project.generated.test>${project.build.directory}/generated-test-sources/avro</project.generated.test>
   </properties>
@@ -59,23 +53,33 @@
       <artifactId>avro</artifactId>
       <version>${avro.version}</version>
       <exclusions>
+        <!-- Avro exposes old versions of Jackson, let us not re-expose them -->
         <exclusion>
-          <!-- databind 2.12.5 in avro 1.11.0 is vulnerable, so we exclude it and provide databind 2.13.3 instead -->
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
+
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro-compiler</artifactId>
       <version>${avro.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -85,7 +89,7 @@
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
-      <version>${mockito.version}</version>
+      <version>5.2.1</version>
       <scope>test</scope>
     </dependency>
     <!-- jupiter -->
@@ -103,7 +107,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
+      <version>3.24.2</version>
       <scope>test</scope>
     </dependency>
     <!-- kotlin -->
@@ -116,7 +120,7 @@
     <dependency>
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
-      <version>${equalsverifier.version}</version>
+      <version>3.14.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -132,7 +136,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
+      <version>1.4.14</version>
       <scope>test</scope>
     </dependency>
     <dependency>
