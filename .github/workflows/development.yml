@@ -2,34 +2,30 @@ name: Development branches
 
 on:
   push:
+    branches:
+      - '**'
+      - '!master'
   pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and run tests on JDK 17
+    name: Build and run tests
     steps:
       # Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Expose branch name
         run: echo ${{ github.ref }}
 
-      # Setup the cache
-      - name: Cache .m2
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven
-
       # Setup JDK and Maven
       - name: Set up JDK 17
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 17
+          distribution: zulu
+          cache: maven
           server-id: ossrh
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
           server-password: OSS_CENTRAL_PASSWORD # env variable for Maven Central
@@ -40,14 +36,14 @@ jobs:
 
       # Build
       - name: Build with Maven
-        run: ./mvnw clean verify -U -B -T4
+        run: ./mvnw clean verify -U -B -T4 -ntp
 
       # itest
       - name: Run itest
-        run: ./mvnw integration-test failsafe:verify -Pitest -U -B -T4
+        run: ./mvnw integration-test failsafe:verify -Pitest -U -B -T4 -ntp
 
-#      - name: Upload coverage to Codecov
-#        if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
-#        uses: codecov/codecov-action@v1.0.2
-#        with:
-#          token: ${{secrets.CODECOV_TOKEN}}
+      - name: Upload coverage to Codecov
+        if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
