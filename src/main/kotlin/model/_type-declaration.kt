@@ -32,7 +32,7 @@ typealias SchemaSupplier = Supplier<Schema>
  *    * NULL
  *    * STRING
  */
-sealed interface AvroType : SchemaSupplier {
+sealed interface AvroType : SchemaSupplier, WithObjectProperties {
   /**
    * The name. In case of named types: simple name, else: Type name.
    */

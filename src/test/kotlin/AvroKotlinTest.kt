@@ -3,6 +3,7 @@ package io.toolisticon.avro.kotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dashToDot
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dotToDash
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.csv
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import org.apache.avro.Schema
@@ -150,8 +151,15 @@ internal class AvroKotlinTest {
       " ,null",
       " h ,h",
     ], nullValues = ["null"])
-    fun `String_trimToNull`(input: String?, expected: String?) {
+    fun `String trimToNull`(input: String?, expected: String?) {
       assertThat(input.trimToNull()).isEqualTo(expected)
+    }
+
+    @Test
+    fun `csv of non null strings`() {
+      assertThat(csv()).isEqualTo("")
+      assertThat(csv(null)).isEqualTo("")
+      assertThat(csv("1")).isEqualTo("1")
     }
   }
 }

@@ -12,7 +12,6 @@ import java.io.File
 import java.io.InputStream
 import java.net.URL
 import java.nio.file.Path
-import java.util.function.Supplier
 import kotlin.io.path.inputStream
 import kotlin.reflect.KClass
 
@@ -38,7 +37,7 @@ class AvroSchema(
    * name via constructor.
    */
   override val name: Name = Name(schema),
-) : AvroSupplier<Schema> {
+) : AvroSupplier<Schema>, WithObjectProperties {
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
       AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
@@ -90,9 +89,9 @@ class AvroSchema(
 
   val canonicalName = namespace + name
 
-  val objectProps: ObjectProperties = ObjectProperties(schema)
-  val hasProps: Boolean = objectProps.isNotEmpty()
-  fun hasProp(key: String) = objectProps.containsKey(key)
+  override val properties: ObjectProperties = ObjectProperties(schema)
+  val hasProps: Boolean = properties.isNotEmpty()
+  fun hasProp(key: String) = properties.containsKey(key)
 
   /**
    * If this is a UNION, this contains the types of the union.

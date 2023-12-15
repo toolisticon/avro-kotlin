@@ -1,6 +1,5 @@
 package io.toolisticon.avro.kotlin.ext
 
-import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.rootResource
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled

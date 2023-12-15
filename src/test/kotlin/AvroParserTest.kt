@@ -1,8 +1,10 @@
 package io.toolisticon.avro.kotlin
 
+import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.JsonSource
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
@@ -131,7 +133,15 @@ internal class AvroParserTest {
 
     assertThat(declaration.canonicalName).hasToString("foo.dummy.DummyProtocol")
 
-    assertThat(declaration.avroTypes).hasSize(10)
+    assertThat(declaration.avroTypes).hasSize(9)
+    assertThat(declaration.protocol.recordTypes).hasSize(4)
+
+    val msg : AvroProtocol.TwoWayMessage =  declaration.protocol.messages[Name("queryDummy")]!! as AvroProtocol.TwoWayMessage
+
+
+    assertThat(msg.errors.isError).isTrue()
+
+    println(declaration.protocol.messages.toReadableString())
 
   }
 }

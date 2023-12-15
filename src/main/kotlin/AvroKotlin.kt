@@ -161,12 +161,10 @@ object AvroKotlin {
       }
       .toString()
 
-
     fun ifTrue(condition: Boolean, caseTrue: String, caseFalse: String = ""): String = if (condition)
       caseTrue
     else
       caseFalse
-
 
     fun String.shorten(maxLength: Int = 100, append: String = "...") = if (length > maxLength)
       this.take(maxLength) + append
@@ -184,8 +182,9 @@ object AvroKotlin {
 
     fun String.firstUppercase() = this.replaceFirstChar(Char::uppercase)
 
-
     fun String.trailingSlash() = if (this.startsWith("/")) this else "/$this"
+
+    fun csv(vararg values: String?) = listOfNotNull(*values).joinToString(separator = ", ")
 
   }
 

@@ -98,13 +98,16 @@ class AvroProtocol(
 
     override fun hashCode(): Int = message.hashCode()
 
-    override fun toString() = message.toString()
-
     override fun enclosedTypes(): List<AvroSchema> = listOf(request)
+    override fun toString(): String {
+      return "OneWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties)"
+    }
 
     init {
       require(message.isOneWay) { "Message is not one-way." }
     }
+
+
   }
 
   class TwoWayMessage(private val message: Protocol.Message) : Message {
@@ -122,12 +125,28 @@ class AvroProtocol(
     /**
      * Errors that might be thrown.
      */
-    val errors: AvroSchema get() = AvroSchema(message.errors)
+    val errors: AvroSchema by lazy {
+      // FIXME: string is a default error type in protocol, we need to filter this
+      val schema = AvroSchema(message.errors)
+      val errorTypes = schema.enclosedTypes()
+
+      if (errorTypes.size > 1) {
+        schema.enclosedTypes().filterNot { it.isPrimitive }.single()
+      } else {
+        schema
+      }
+    }
+
     override fun enclosedTypes(): List<AvroSchema> = listOf(request, response, errors)
+    override fun toString(): String {
+      return "TwoWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties, response=$response, errors=$errors)"
+    }
 
     init {
       require(!message.isOneWay) { "Message is not two-way." }
     }
+
+
   }
 
   /**
@@ -135,6 +154,11 @@ class AvroProtocol(
    */
   val types: AvroTypesMap by lazy {
     AvroTypesMap(protocol = this)
+  }
+
+
+  val recordTypes by lazy {
+    types.values.filterIsInstance<RecordType>()
   }
 
 

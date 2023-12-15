@@ -22,6 +22,10 @@ import org.apache.avro.JsonProperties
 @JvmInline
 value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) : Map<String, Any> by value, ValueType<Map<String, Any>> {
   companion object {
+    val ignoredKeys = setOf("logicalType")
+    internal fun filter(properties : Map<String, Any>) = properties.toMutableMap().apply { ignoredKeys.forEach { this.remove(it) } }.toMap()
+
+
     val EMPTY = ObjectProperties()
   }
 
@@ -39,7 +43,7 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    * @param jsonProperties schema, field or protocol containing objectProps
    * @return properties derived from jsonProperties
    */
-  constructor(jsonProperties: JsonProperties) : this(jsonProperties.objectProps ?: emptyMap())
+  constructor(jsonProperties: JsonProperties) : this(filter(jsonProperties.objectProps ?: emptyMap()))
 
   /**
    * Creates new instance from properties.
@@ -47,7 +51,7 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    * @param pairs key/value pairs with properties
    * @return properties created from pairs
    */
-  constructor(vararg pairs: Pair<String, Any>) : this(mapOf(*pairs))
+  constructor(vararg pairs: Pair<String, Any>) : this(filter(mapOf(*pairs)))
 
   /**
    * Type-safe access to  value for given key.
@@ -80,4 +84,12 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    * @return objectProperties of given key
    */
   fun getMap(key: String): ObjectProperties = getValue(key)
+
+  override fun toString() = value.toString()
+
+
+}
+
+interface WithObjectProperties {
+  val properties: ObjectProperties
 }

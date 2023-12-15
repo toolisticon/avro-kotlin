@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.AvroParser
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.NULL
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
 import org.apache.avro.LogicalTypes.decimal
@@ -174,5 +174,6 @@ internal class AvroFingerprintTest {
 
     assertThat(AvroFingerprint(schemaFoo).value).isEqualTo(5240102248166447335L)
   }
+
 
 }

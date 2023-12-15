@@ -43,6 +43,13 @@ object AvroBuilder {
     return AvroSchema(Schema.createUnion(*s))
   }
 
+  fun array(schema: AvroSchema): AvroSchema {
+    return AvroSchema(Schema.createArray(schema.schema))
+  }
+
+  fun map(schema: AvroSchema) : AvroSchema {
+    return AvroSchema(Schema.createMap(schema.schema))
+  }
 
   // ------ PROTOCOL Snippets
   /**

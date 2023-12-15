@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.recordType
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
