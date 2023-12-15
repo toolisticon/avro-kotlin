@@ -1,14 +1,13 @@
 package io.toolisticon.avro.kotlin.builder
 
-import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.AvroSchema
 import io.toolisticon.avro.kotlin.value.ObjectProperties
-import org.apache.avro.JsonProperties
 import org.apache.avro.LogicalType
-import org.apache.avro.Protocol
 import org.apache.avro.Schema
-import java.util.LinkedHashMap
 
+/**
+ * Utilities to create [AvroSchema] or [AvroProtocol] from scratch without parsing [JsonString].
+ */
 object AvroBuilder {
 
   /**

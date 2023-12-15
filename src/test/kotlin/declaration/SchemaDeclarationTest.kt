@@ -3,6 +3,10 @@ package io.toolisticon.avro.kotlin.declaration
 import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin.TestFixtures.loadSchemaJson
 import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
+import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.avro.kotlin.value.Namespace
+import org.apache.avro.Schema
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class SchemaDeclarationTest {
@@ -13,6 +17,14 @@ class SchemaDeclarationTest {
   fun `load org_apache_avro_schema_foo`() {
     val declaration = parser.parseSchema(resourceUrl("org.apache.avro/schema/foo.avsc"))
 //TODO: add tests
+
+    assertThat(declaration.canonicalName).hasToString("org.foo.Foo")
+    assertThat(declaration.name).isEqualTo(Name("Foo"))
+    assertThat(declaration.namespace).isEqualTo(Namespace("org.foo"))
+    assertThat(declaration.recordType.fields).hasSize(1)
+    assertThat(declaration.recordType.fields[0].name).isEqualTo(Name("x"))
+    //assertThat(declaration.recordType.fields[0].type).isEqualTo(Schema.Type.INT)
+
     println(declaration)
     //println(declaration.avroTypes.toReadableString())
   }

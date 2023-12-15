@@ -1,6 +1,5 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
 import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.Name

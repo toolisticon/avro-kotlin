@@ -1,12 +1,10 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.model.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.stream.Stream
 import kotlin.io.path.*
 import kotlin.streams.asSequence
 

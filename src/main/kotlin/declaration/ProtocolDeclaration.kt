@@ -3,9 +3,10 @@ package io.toolisticon.avro.kotlin.declaration
 import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.avro.kotlin.value.CanonicalName
+import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
-import org.apache.avro.Protocol
+import io.toolisticon.avro.kotlin.value.JsonString
 
 /**
  * The result of parsing an `*.avpr` protocol declaration.

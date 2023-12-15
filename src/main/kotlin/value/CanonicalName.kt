@@ -1,6 +1,5 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin.Separator.FILE
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.NAME
 import java.nio.file.Path
 import kotlin.io.path.Path
