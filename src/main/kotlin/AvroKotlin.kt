@@ -4,14 +4,20 @@ import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
+import io.toolisticon.avro.kotlin.logical.AvroLogicalType
 import io.toolisticon.avro.kotlin.model.*
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.*
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericDatumReader
+import org.apache.avro.generic.GenericDatumWriter
+import org.apache.avro.io.DecoderFactory
+import org.apache.avro.io.EncoderFactory
 import org.apache.avro.specific.SpecificData
 import org.apache.avro.specific.SpecificRecord
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
 import java.net.URL
@@ -181,6 +187,39 @@ object AvroKotlin {
 
 
   fun logicalTypeName(logicalType: LogicalType?) = logicalType?.let { LogicalTypeName(it.name) }
+
+  val avroLogicalTypes by lazy {
+    LogicalTypes.getCustomRegisteredTypes().values.filterIsInstance<AvroLogicalType<*>>()
+      .toList()
+  }
+
+  val genericDataWithConversions: GenericData by lazy {
+    GenericData().apply {
+      avroLogicalTypes.forEach { logicalType ->
+        addLogicalTypeConversion(logicalType.conversion)
+      }
+    }
+  }
+
+  fun genericRecordToJson(record: GenericData.Record, genericData: GenericData = genericDataWithConversions): JsonString {
+
+    val jsonBytes = ByteArrayOutputStream().use {
+      val dw = GenericDatumWriter<Any>(record.schema, genericData)
+      val encoder = EncoderFactory.get().jsonEncoder(record.schema, it, true)
+      dw.write(record, encoder)
+      encoder.flush()
+      it.toString(UTF_8)
+    }
+
+    return JsonString(jsonBytes)
+  }
+
+  fun genericRecordFromJson(json: JsonString, schema: AvroSchema, genericData: GenericData = genericDataWithConversions): GenericData.Record {
+    val reader = GenericDatumReader<Any>(schema.get(), schema.get(), genericData)
+
+    return reader.read(null, DecoderFactory.get().jsonDecoder(schema.get(), json.inputStream())) as GenericData.Record
+  }
+
 
   fun <T : Any> Result<List<T>?>.orEmpty(): List<T> = getOrNull() ?: emptyList()
 
