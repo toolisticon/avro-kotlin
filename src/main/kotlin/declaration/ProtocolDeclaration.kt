@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
+import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
@@ -14,10 +14,11 @@ import io.toolisticon.avro.kotlin.value.JsonString
 class ProtocolDeclaration(
   val protocol: AvroProtocol,
   override val source: AvroSource
-
 ) : AvroDeclaration {
+
   override val originalJson: JsonString = source.json
-  val documentation: Documentation? = protocol.documentation
+
+  override val documentation: Documentation? = protocol.documentation
 
   override val avroTypes: AvroTypesMap = protocol.types
   override val canonicalName: CanonicalName = protocol.canonicalName

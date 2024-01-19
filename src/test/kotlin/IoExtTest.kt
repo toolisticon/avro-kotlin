@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.ext
+package io.toolisticon.avro.kotlin
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -10,8 +10,6 @@ internal class IoExtTest {
 
   @TempDir
   lateinit var tmp: File
-
-
 
 
   @Test

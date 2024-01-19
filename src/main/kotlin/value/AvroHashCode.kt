@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.model.AvroSchema
-import io.toolisticon.avro.kotlin.model.AvroSchemaField
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaField
 import org.apache.avro.Protocol
 import org.apache.avro.Protocol.Message
 import org.apache.avro.Schema
@@ -32,5 +32,5 @@ value class AvroHashCode(override val value: Int) : WithHexString, Comparable<Av
   override val hex: HexString get() = HexString(value)
   override fun compareTo(other: AvroHashCode): Int = value.compareTo(other.value)
 
-  override fun toString() = "$hex"
+  override fun toString() = hex.value
 }

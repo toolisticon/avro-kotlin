@@ -2,7 +2,9 @@ package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.recordType
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.withLogicalType
+import io.toolisticon.avro.kotlin.model.ErrorType
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
@@ -36,12 +38,12 @@ internal class JsonStringTest {
       .endsWith("}")
 
     val schema = parseSchema(json)
-    assertThat(schema.recordType().isRoot).isFalse()
+    assertThat(ErrorType(schema).isRoot).isFalse()
   }
 
   @Test
   fun `jsonString for string schema with logical type`() {
-    val schema = primitiveSchema(Schema.Type.STRING)
+    val schema = primitiveSchema(STRING)
       .withLogicalType(LogicalTypes.uuid())
 
     assertThat(schema.json).isEqualTo(
@@ -57,7 +59,7 @@ internal class JsonStringTest {
 
   @Test
   fun `jsonString for simple string schema`() {
-    val schema = primitiveSchema(Schema.Type.STRING)
+    val schema = primitiveSchema(STRING)
 
     assertThat(schema.json).isEqualTo(
       JsonString(

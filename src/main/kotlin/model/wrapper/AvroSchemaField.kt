@@ -1,16 +1,22 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
+import io.toolisticon.avro.kotlin.model.WithDocumentation
+import io.toolisticon.avro.kotlin.value.AvroHashCode
 import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.Name
 import org.apache.avro.Schema
 
-class AvroSchemaField(
+class AvroSchemaField private constructor(
   private val field: Schema.Field,
-) : SchemaSupplier, WithDocumentation, Comparable<AvroSchemaField> {
+  val schema: AvroSchema,
+) : SchemaSupplier by schema, WithDocumentation, Comparable<AvroSchemaField> {
 
-  val name: Name = Name(field)
-  val schema: AvroSchema = AvroSchema(field.schema())
+  constructor(field: Schema.Field) : this(field = field, schema = AvroSchema(field.schema()))
+
+  override val hashCode: AvroHashCode = AvroHashCode(field.hashCode())
+
+  override val name: Name = Name(field)
 
   val position: Int = field.pos()
   val order: Schema.Field.Order = field.order()

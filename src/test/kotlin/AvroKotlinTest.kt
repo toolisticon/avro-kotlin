@@ -1,26 +1,28 @@
 package io.toolisticon.avro.kotlin
 
 import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
-import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dashToDot
-import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dotToDash
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.csv
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
+import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroSpecification
+import io.toolisticon.avro.kotlin.value.Directory
 import org.apache.avro.Schema
+import org.apache.avro.SchemaBuilder
+import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import java.io.File
 
 internal class AvroKotlinTest {
 
   @TempDir
   private lateinit var tmpDir: File
+
+  private val directory: Directory by lazy {
+    Directory(tmpDir)
+  }
 
   @Test
   @Disabled("fix protocol")
@@ -49,46 +51,25 @@ internal class AvroKotlinTest {
   }
 
   @Test
-  @Disabled("remove")
-  @Deprecated("remove")
   fun `can write schema to file (and read again)`() {
-    val cn = TestFixtures.fqnBankAccountCreated
-//    val fqn: SchemaFqn = TODO() //schema(TestFixtures.fqnBankAccountCreated)
-//
-//    assertThat(fqn.fileExtension).isEqualTo("avsc")
-//
-//    // copy resource to tmp file
-//    val schema = fqn.fromResource("avro")
-//
-//    val file: Path = schema.writeToDirectory(tmpDir)
-//    assertThat(file).exists()
-//
-//    // read from tmp file
-//    val readFromFile = fqn.fromDirectory(tmpDir)
-//
-//    assertThat(readFromFile).isEqualTo(schema)
+    val schema = AvroParser().parseSchema(AvroKotlin.ResourceKtx.resourceUrl("schema/SimpleStringRecord.avsc"))
+
+    AvroKotlin.write(schema, directory)
+
+    val readFromFile = AvroParser().parseSchema(tmpDir.resolve("io/acme/schema/SimpleStringRecord.avsc"))
+
+    assertThat(readFromFile).isEqualTo(schema)
   }
 
   @Test
-  @Disabled("remove")
-  @Deprecated("remove")
   fun `can write protocol to file (and read again)`() {
-    val cn = TestFixtures.fqnFindCurrentBalance
-//    val fqn: ProtocolFqn = TODO() //protocol(TestFixtures.fqnFindCurrentBalance)
-//
-//    assertThat(fqn.fileExtension).isEqualTo("avpr")
-//
-//    // copy resource to tmp file
-//    val protocol = fqn.fromResource("avro")
-//
-//    val file: Path = protocol.writeToDirectory(tmpDir)
-//    assertThat(file).exists()
-//
-//
-//    // read from tmp file
-//    val readFromFile = fqn.fromDirectory(tmpDir)
-//
-//    assertThat(readFromFile).isEqualTo(protocol)
+    val protocol = AvroParser().parseProtocol(AvroKotlin.ResourceKtx.resourceUrl("protocol/DummyProtocol.avpr"))
+
+    AvroKotlin.write(protocol, directory)
+
+    val readFromFile = AvroParser().parseProtocol(tmpDir.resolve("foo/dummy/DummyProtocol.avpr"))
+
+    assertThat(readFromFile).isEqualTo(protocol)
   }
 
   @Test
@@ -129,37 +110,23 @@ internal class AvroKotlinTest {
 //    assertThat(found).hasSize(2)
   }
 
-  @Nested
-  inner class SeparatorTest {
+  @Test
+  fun `create generic record`() {
+    val schemaFoo: AvroSchema = AvroSchema(
+      SchemaBuilder
+        .record("Foo")
+        .namespace("test.lib")
+        .fields().name("value").type("int")
+        .noDefault()
+        .endRecord()
+    )
 
-    @Test
-    fun `replace dots and dashes`() {
-      val dots = "io.acme.bar.Foo"
-      val dashes = dotToDash(dots)
 
-      assertThat(dashes).isEqualTo("io/acme/bar/Foo")
-      assertThat(dashToDot(dashes)).isEqualTo(dots)
-    }
-  }
-
-  @Nested
-  inner class SpringKtxTest {
-    @ParameterizedTest
-    @CsvSource(value = [
-      "null,null",
-      ",null",
-      " ,null",
-      " h ,h",
-    ], nullValues = ["null"])
-    fun `String trimToNull`(input: String?, expected: String?) {
-      assertThat(input.trimToNull()).isEqualTo(expected)
+    val record: GenericData.Record = createGenericRecord(schemaFoo) {
+      put("value", 1)
     }
 
-    @Test
-    fun `csv of non null strings`() {
-      assertThat(csv()).isEqualTo("")
-      assertThat(csv(null)).isEqualTo("")
-      assertThat(csv("1")).isEqualTo("1")
-    }
+    assertThat(record["value"]).isEqualTo(1)
+    assertThat(record.schema).isEqualTo(schemaFoo.get())
   }
 }

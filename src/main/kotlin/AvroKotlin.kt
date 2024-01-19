@@ -1,20 +1,25 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.firstUppercase
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trailingSlash
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
+import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
+import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
 import io.toolisticon.avro.kotlin.model.*
+import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.*
-import org.apache.avro.Schema.Type
 import org.apache.avro.generic.GenericData
+import org.apache.avro.specific.SpecificData
+import org.apache.avro.specific.SpecificRecord
 import java.io.File
 import java.io.InputStream
 import java.net.URL
-import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.Path
+import kotlin.io.path.writeText
+import kotlin.reflect.KClass
 
 /**
  * Central declaration of constants and utils.
@@ -24,13 +29,24 @@ object AvroKotlin {
   /**
    * Encapsulates [Schema#Parser#parse] for the relevant input types.
    */
+  @Suppress("ClassName")
   object parseSchema {
     operator fun invoke(json: JsonString, isRoot: Boolean = false): AvroSchema = AvroSchema(json, isRoot)
     operator fun invoke(file: File): AvroSchema = AvroSchema(file)
     operator fun invoke(path: Path): AvroSchema = AvroSchema(path)
     operator fun invoke(resource: URL): AvroSchema = AvroSchema(resource)
+    operator fun invoke(resource: String, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): AvroSchema = invoke(resourceUrl(resource, classLoader))
+
+    operator fun invoke(recordClass: Class<*>): AvroSchema {
+      require(recordClass.isAssignableFrom(SpecificRecord::class.java)) { "recordClass needs to be SpecificRecord: ${recordClass.simpleName}" }
+      val schema: Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
+      return AvroSchema(schema)
+    }
+
+    operator fun invoke(recordClass: KClass<*>): AvroSchema = invoke(recordClass.java)
   }
 
+  @Suppress("ClassName")
   object parseProtocol {
     private fun parse(inputStream: InputStream) = AvroProtocol(
       protocol = Protocol.parse(inputStream)
@@ -39,6 +55,7 @@ object AvroKotlin {
     operator fun invoke(json: JsonString): AvroProtocol = parse(json.inputStream())
     operator fun invoke(file: File): AvroProtocol = parse(file.inputStream())
     operator fun invoke(resource: URL): AvroProtocol = parse(resource.openStream())
+    operator fun invoke(resource: String): AvroProtocol = invoke(resourceUrl(resource))
   }
 
   /**
@@ -46,17 +63,17 @@ object AvroKotlin {
    */
   val AVRO_V1_HEADER = SingleObjectEncodedBytes.AVRO_V1_HEADER
 
-  object FileExtension {
-    /**
-     * Avro Schema files end with `.avsc`.
-     */
-    const val SCHEMA: String = "avsc"
+  fun avroType(schema: AvroSchema): AvroType = AvroType.avroType(schema)
 
-    /**
-     * Avro protocol files end with `.avpr`.
-     */
-    const val PROTOCOL: String = "avpr"
+  fun name(name: String): Name = Name(name)
+  fun namespace(namespace: String): Namespace = Namespace(namespace)
+  fun canonicalName(namespace: String, name: String): CanonicalName = CanonicalName(namespace(namespace), name(name))
+
+
+  fun createGenericRecord(schema: AvroSchema, receiver: GenericData.Record.() -> Unit) = GenericData.Record(schema.get()).apply {
+    receiver.invoke(this)
   }
+
 
   object Separator {
 
@@ -86,8 +103,6 @@ object AvroKotlin {
    * Set of reserved keywords.
    */
   object Reserved {
-    val PROTOCOL_KEYWORDS: Set<String> = setOf("namespace", "protocol", "doc", "messages", "types", "errors")
-    val PROTOCOL_MESSAGES = setOf("doc", "response", "request", "errors", "one-way")
 
     private val FIELD_RESERVED = Collections
       .unmodifiableSet(HashSet(mutableListOf("name", "type", "doc", "default", "aliases")))
@@ -100,14 +115,6 @@ object AvroKotlin {
    */
   val UTF_8 = Charsets.UTF_8
 
-
-  /**
-   * The primitive types.
-   */
-  val PRIMITIVE_TYPES = EnumSet.of(
-    Type.BOOLEAN, Type.BYTES, Type.DOUBLE, Type.FLOAT,
-    Type.INT, Type.LONG, Type.NULL, Type.STRING
-  )
 
   /**
    * Default [ClassLoader] for resource loading.
@@ -141,6 +148,36 @@ object AvroKotlin {
   fun documentation(schema: Schema): Documentation? = documentation(schema.doc)
 
   fun documentation(field: Schema.Field): Documentation? = documentation(field.doc())
+
+  @Suppress("ClassName")
+  object write {
+    operator fun invoke(json: JsonString, path: Path) = path.writeText(json.value)
+    operator fun invoke(json: JsonString, file: File) = file.writeText(json.value)
+
+    operator fun invoke(schema: AvroSchema, directory: Directory) = directory.write(
+      fqn = schema.canonicalName,
+      type = AvroSpecification.SCHEMA,
+      content = schema.json
+    )
+
+    operator fun invoke(schema: SchemaDeclaration, directory: Directory) = directory.write(
+      fqn = schema.canonicalName,
+      type = AvroSpecification.SCHEMA,
+      content = schema.source.json
+    )
+
+    operator fun invoke(protocol: AvroProtocol, directory: Directory) = directory.write(
+      fqn = protocol.canonicalName,
+      type = AvroSpecification.PROTOCOL,
+      content = protocol.json
+    )
+
+    operator fun invoke(protocol: ProtocolDeclaration, directory: Directory) = directory.write(
+      fqn = protocol.canonicalName,
+      type = AvroSpecification.PROTOCOL,
+      content = protocol.source.json
+    )
+  }
 
 
   fun logicalTypeName(logicalType: LogicalType?) = logicalType?.let { LogicalTypeName(it.name) }
@@ -226,14 +263,22 @@ object AvroKotlin {
 
   object ResourceKtx {
 
-    fun loadResource(name: String): String = with(name.trailingSlash()) {
-      return resourceUrl(this).readText()
+    fun loadJsonString(resource: String, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): JsonString = JsonString(
+      json = resourceUrl(resource, classLoader).readText(UTF_8).trim()
+    )
+
+    /**
+     * Gets a resource URL from static `resources` folder.
+     *
+     * @param resource the resource to get
+     * @param classLoader optional classloader, defaults to DEFAULT_CLASSLOADER
+     * @return url of given resource
+     * @throws IllegalArgumentException when resource does not exist
+     */
+    @Throws(IllegalArgumentException::class)
+    fun resourceUrl(resource: String, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): URL = with(resource.removePrefix("/")) {
+      requireNotNull(classLoader.getResource(this)) { "Resource not found: $this" }
     }
-
-    fun resourceUrl(resource: String): URL = requireNotNull(
-      {}::class.java.getResource(resource.trailingSlash())
-    ) { "resource not found: $resource" }
-
 
     /**
      * URL of resource using path based on namespace and name.
@@ -245,7 +290,7 @@ object AvroKotlin {
      * @param classLoader optional classloader if not given, the classloader of AvroKotlinLib is used
      * @return URL pointing to resource.
      */
-//      fun resource(
+//    TODO  fun resource(
 //        namespace: Namespace,
 //        name: Name,
 //        fileExtension: String,
@@ -275,7 +320,7 @@ object AvroKotlin {
      * @param classLoader optional ClassLoader, default is [AvroKotlinLib#DEFAULT_CLASS_LOADER]
      * @param parser parser function, either Schema.Parser() or Protocol.parse()
      */
-//      fun <T : JsonProperties> parseFromResource(
+//   TODO   fun <T : JsonProperties> parseFromResource(
 //        namespace: Namespace,
 //        name: Name,
 //        fileExtension: String,
@@ -287,53 +332,34 @@ object AvroKotlin {
 //      }
 
     @Throws(IllegalStateException::class)
-    fun rootResource(classLoader: ClassLoader = DEFAULT_CLASS_LOADER): URL = classLoader.getResource("")
-      ?: throw IllegalStateException("no root resource found for classLoader:$classLoader")
+    fun rootResource(classLoader: ClassLoader = DEFAULT_CLASS_LOADER): URL = checkNotNull(
+      classLoader.getResource("")
+    ) { "no root resource found for classLoader:$classLoader" }
 
-    fun findAvroResources(prefix: String? = null, classLoader: ClassLoader = DEFAULT_CLASS_LOADER) {
+    fun findAvroResources(prefix: String? = null, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): Map<AvroSpecification, List<File>> {
       val rootPath = Path(rootResource(classLoader).path).resolve(prefix ?: "")
 
-      Files.walk(rootPath)
-        .map { it.toFile() }
-        .forEach { println(it) }
+      return rootPath.toFile().walk()
+        .filter { it.isFile }
+        .filter { AvroSpecification.EXTENSIONS.contains(it.extension) }
+        .groupBy(keySelector = { AvroSpecification.valueOfExtension(it.extension) })
     }
-
   }
 
   object ProtocolKtx {
 
-    val Protocol.fingerprint: AvroFingerprint get() = AvroFingerprint(this)
-    val Protocol.hashCode: AvroHashCode get() = AvroHashCode(this)
-
     val Protocol.documentation: Documentation? get() = documentation(this.doc)
     val Protocol.Message.documentation: Documentation? get() = documentation(this.doc)
 
-    val Protocol.json: String get() = this.toString(true)
-
-    val Protocol.Message.requestName: Name get() = Name("${this.name.firstUppercase()}Request")
-
-    fun Protocol.Message.createRecord(namespace: Namespace): AvroSchema = AvroSchema(
-      Schema.createRecord(
-        this.requestName.value,
-        doc,
-        namespace.value,
-        this.request.isError,
-        this.request.fields.map { Schema.Field(it, it.schema()) })
-    )
 
     // TODO: hopefully we will not need this reflection stuff, but if the above createRecord method loses the reference, we might.
     private val schemaFieldPosition = Schema.Field::class.java.getDeclaredField("position").apply { isAccessible = true }
     fun Schema.Field.resetPosition() = schemaFieldPosition.set(this, -1)
 
     /**
-     * Protocol file extension is `avpr`.
-     */
-    val Protocol.fileExtension: String get() = AvroKotlin.FileExtension.PROTOCOL
-
-    /**
      * Protocol file path based on namespace, name and extension.
      */
-    val Protocol.path: Path get() = (Namespace(namespace) + Name(name)).toPath(fileExtension)
+    val Protocol.path: Path get() = (Namespace(namespace) + Name(name)).toPath(AvroSpecification.PROTOCOL)
 
     /**
      * A [File] with [Protocol#path] based on given directory. Use to read or write protocol from file system.
@@ -358,4 +384,3 @@ object AvroKotlin {
 
   }
 }
-

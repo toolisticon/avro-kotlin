@@ -1,7 +1,8 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.PRIMITIVE_TYPES
+import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.avro.kotlin.model.SchemaType.Companion.PRIMITIVE_TYPES
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import java.io.InputStream
@@ -21,20 +22,24 @@ private constructor(
   private val single: Single<String>
 ) : ValueType<String> by single {
   companion object {
-    private val primitiveTemplate = """
+    internal val PRIMITIVE_TEMPLATE = """
       {
         "type" : %s
       }
     """.trimIndent()
 
-    private fun schemaToString(schema: Schema) = // a primitive without logicalType only is `"string"`
-      if (PRIMITIVE_TYPES.contains(schema.type) && schema.logicalType == null) {
-        primitiveTemplate.format(schema.toString())
+    private fun schemaToString(schema: Schema): String {
+      val type = SchemaType.valueOfType(schema.type)
+
+      // a primitive without logicalType only is `"string"`
+      return if (PRIMITIVE_TYPES.contains(type) && schema.logicalType == null) {
+        PRIMITIVE_TEMPLATE.format(schema.toString())
       }
       // all other schema ar valid json
       else {
         schema.toString(true)
       }
+    }
   }
 
   constructor(json: String) : this(Single(json.trim()))

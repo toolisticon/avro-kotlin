@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import org.apache.avro.Schema
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -20,6 +20,6 @@ internal class NamespaceTest {
 
   @Test
   fun `primitive type has EMPTY namespace`() {
-    assertThat(Namespace(AvroBuilder.primitiveSchema(Schema.Type.STRING).schema)).isEqualTo(Namespace.EMPTY)
+    assertThat(Namespace(AvroBuilder.primitiveSchema(STRING).get())).isEqualTo(Namespace.EMPTY)
   }
 }

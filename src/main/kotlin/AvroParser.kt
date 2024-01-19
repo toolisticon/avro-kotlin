@@ -3,7 +3,12 @@ package io.toolisticon.avro.kotlin
 import io.toolisticon.avro.kotlin.declaration.AvroDeclaration
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
-import io.toolisticon.avro.kotlin.model.*
+import io.toolisticon.avro.kotlin.model.AvroSource
+import io.toolisticon.avro.kotlin.model.FileSource
+import io.toolisticon.avro.kotlin.model.JsonSource
+import io.toolisticon.avro.kotlin.model.ResourceSource
+import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.JsonString
 import mu.KLogging

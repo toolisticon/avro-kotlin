@@ -3,9 +3,10 @@ package io.toolisticon.avro.kotlin.model
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.csv
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType
-import org.apache.avro.Schema
 
 /**
  * 32-bit signed integer.
@@ -19,7 +20,7 @@ value class IntType(override val schema: AvroSchema) : AvroPrimitiveType,
     require(schema.isIntType) { "Not an INT type." }
   }
 
-  override val type: Schema.Type get() = schema.type
+  override val type: SchemaType get() = SchemaType.INT
   override val name: Name get() = schema.name
   override val hashCode: AvroHashCode get() = schema.hashCode
   override val fingerprint: AvroFingerprint get() = schema.fingerprint

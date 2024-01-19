@@ -1,27 +1,26 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.ObjectProperties
+import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.Schema
 
 /**
  * Null - no value.
  */
 data object NullType : AvroPrimitiveType {
+  override val type: SchemaType = SchemaType.NULL
 
-  override val schema = AvroBuilder.primitiveSchema(type = Schema.Type.NULL)
+  override val schema = AvroBuilder.primitiveSchema(type = type)
   override fun get(): Schema = schema.get()
 
-  override val type: Schema.Type = schema.type
   override val name: Name = schema.name
   override val hashCode: AvroHashCode = schema.hashCode
   override val fingerprint: AvroFingerprint = schema.fingerprint
   override val properties: ObjectProperties = ObjectProperties.EMPTY
 
+  override val json: JsonString = schema.json
+
   init {
-    require(type == Schema.Type.NULL) { "not NULL type." }
+    require(type == SchemaType.NULL) { "not NULL type." }
   }
 }

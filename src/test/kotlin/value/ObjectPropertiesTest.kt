@@ -1,8 +1,9 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.apache.avro.LogicalTypes
-import org.apache.avro.Schema.Type
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -10,7 +11,7 @@ internal class ObjectPropertiesTest {
 
   @Test
   fun `no props means empty map`() {
-    val schema = primitiveSchema(Type.STRING)
+    val schema = primitiveSchema(STRING)
     val props = ObjectProperties(schema)
 
     assertThat(props).isEmpty()
@@ -19,7 +20,7 @@ internal class ObjectPropertiesTest {
   @Test
   fun `with properties and logicalType`() {
     val schema = primitiveSchema(
-      type = Type.BYTES,
+      type = BYTES,
       properties = ObjectProperties("xxx" to "value"),
       logicalType = LogicalTypes.uuid()
     )
@@ -38,7 +39,7 @@ internal class ObjectPropertiesTest {
     )
 
     val props = ObjectProperties(
-      primitiveSchema(type = Type.STRING, properties = ObjectProperties("zzz" to innerMap))
+      primitiveSchema(type = STRING, properties = ObjectProperties("zzz" to innerMap))
     )
 
     assertThat(props).isNotEmpty
@@ -48,4 +49,6 @@ internal class ObjectPropertiesTest {
 
     assertThat(p.getValue<String>("b")).isEqualTo("foo")
   }
+
+
 }

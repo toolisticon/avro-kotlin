@@ -1,14 +1,16 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 
 
 @JvmInline
-value class EnumType(override val schema: AvroSchema) : AvroNamedType,
+value class EnumType(override val schema: AvroSchema) :
+  AvroNamedType,
   SchemaSupplier by schema,
-  WithObjectProperties by schema
-{
+  WithObjectProperties by schema {
 
   init {
     require(schema.isEnumType)

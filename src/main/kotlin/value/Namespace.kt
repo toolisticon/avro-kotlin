@@ -6,6 +6,11 @@ import org.apache.avro.Schema
 import java.nio.file.Path
 import kotlin.io.path.Path
 
+/**
+ *
+ *
+ * TODO: check support functions of org.apache.avro.Schema.Name
+ */
 @JvmInline
 value class Namespace(override val value: String) : ValueType<String> {
   companion object {

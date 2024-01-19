@@ -1,12 +1,11 @@
 package io.toolisticon.avro.kotlin.model
 
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
-import org.apache.avro.JsonProperties
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
-import java.util.function.Supplier
-
-typealias SchemaSupplier = Supplier<Schema>
+import kotlin.reflect.KClass
 
 /**
  * All avro types implement this interface. These are:
@@ -33,15 +32,65 @@ typealias SchemaSupplier = Supplier<Schema>
  *    * STRING
  */
 sealed interface AvroType : SchemaSupplier, WithObjectProperties {
-  /**
-   * The name. In case of named types: simple name, else: Type name.
-   */
-  val name: Name
+
+  companion object {
+
+
+    /**
+     * Factory method to create [AvroType] from [AvroSchema].
+     */
+    inline fun <reified T : AvroType> avroType(schema: AvroSchema): T = when (schema.type) {
+      // Named
+      SchemaType.RECORD -> {
+        if (schema.isError) {
+          ErrorType(schema)
+        } else {
+          RecordType(schema)
+        }
+      }
+
+      SchemaType.ENUM -> EnumType(schema)
+      SchemaType.FIXED -> FixedType(schema)
+
+      // Container
+      SchemaType.ARRAY -> ArrayType(schema)
+      SchemaType.MAP -> MapType(schema)
+      SchemaType.UNION -> UnionType(schema)
+
+      // Primitive
+      SchemaType.BOOLEAN -> BooleanType(schema)
+      SchemaType.BYTES -> BytesType(schema)
+      SchemaType.DOUBLE -> DoubleType(schema)
+      SchemaType.FLOAT -> FloatType(schema)
+      SchemaType.INT -> IntType(schema)
+      SchemaType.LONG -> LongType(schema)
+      SchemaType.NULL -> NullType
+      SchemaType.STRING -> StringType(schema)
+    } as T
+
+    /**
+     * Shared equals function.
+     *
+     */
+    internal fun AvroType.equalsFn(other: Any?): Boolean {
+      // we can never equal null
+      if (other == null) return false
+
+      if (this === other) return true
+      if (other !is ArrayType) return false
+      if (!this.javaClass.isAssignableFrom(other.javaClass)) return false
+      if (schema != other.schema) return false
+
+      return true
+    }
+
+    internal fun AvroType.hashCodeFn(): Int = schema.hashCode()
+  }
 
   /**
    * The schema hashCode. This includes logicaltypes and additional properties and uniquely identifies a [Schema].
    */
-  val hashCode: AvroHashCode
+  override val hashCode: AvroHashCode
 
   /**
    * The fingerprint to identify a schema in a [org.apache.avro.message.SchemaStore]. This ignores all logicaltypes and additional properties and is not sufficient to uniquely identify a [Schema].
@@ -52,13 +101,22 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
    * The wrapped avro [AvroSchema] of this type, including all meta-data.
    */
   val schema: AvroSchema
+
+  val enclosedTypes: List<AvroType> get() = emptyList()
+}
+
+sealed interface WithEnclosedTypes {
+
+  val typesMap: AvroTypesMap
+
+
 }
 
 /**
  * Marks the primitive types: BOOLEAN, BYTES, DOUBLE, FLOAT, INT, LONG, NULL, STRING.
  */
 sealed interface AvroPrimitiveType : AvroType {
-  val type: Schema.Type
+  val type: SchemaType
 }
 
 /**
@@ -81,7 +139,7 @@ sealed interface AvroNamedType : AvroType, WithDocumentation {
  * * MAP - a map with string keys and values of wrapped subType.
  * * UNION - array of subTypes with "oneOf" semantic. Currently only unions of null and one other type are supported, effectively resulting in an optional type.
  */
-sealed interface AvroContainerType : AvroType
+sealed interface AvroContainerType : AvroType, WithEnclosedTypes
 
 
 /**
@@ -114,22 +172,26 @@ sealed interface WithLogicalType {
   fun hasLogicalType() = logicalType != null
 }
 
-sealed interface WithDocumentation {
+interface WithDocumentation {
   val documentation: Documentation?
 }
 
-sealed interface AvroSupplier<T : JsonProperties> : Supplier<T> {
+/**
+ * Recursively list all subtypes of [AvroType].
+ */
+internal fun avroTypes(): List<KClass<out AvroType>> {
+  val list = mutableListOf<KClass<out AvroType>>()
 
-  /**
-   * The hashCode identifies a [Schema].
-   */
-  val hashCode: AvroHashCode
+  fun addSubtypes(klass: KClass<out AvroType>) {
+    klass.sealedSubclasses.forEach {
+      list.add(it)
+      if (it.isSealed) {
+        addSubtypes(it)
+      }
+    }
+  }
 
-  /**
-   * The JSON representation of this avro declaration.
-   */
-  val json: JsonString
+  addSubtypes(AvroType::class)
 
-  val name: Name
-
+  return list
 }

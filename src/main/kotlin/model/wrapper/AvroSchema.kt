@@ -1,19 +1,18 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.avro.kotlin.model.wrapper
 
-import io.toolisticon.avro.kotlin.AvroKotlin.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
 import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
+import io.toolisticon.avro.kotlin.model.AvroTypesMap
+import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.avro.kotlin.model.SchemaType.Companion.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
-import org.apache.avro.Schema.Type
-import org.apache.avro.specific.SpecificData
 import java.io.File
 import java.io.InputStream
 import java.net.URL
 import java.nio.file.Path
 import kotlin.io.path.inputStream
-import kotlin.reflect.KClass
 
 /**
  * A kotlin type- and null-safe wrapper around the java [Schema].
@@ -22,7 +21,7 @@ class AvroSchema(
   /**
    * The original [Schema] wrapped by this class. Accessible via #get.
    */
-  val schema: Schema,
+  private val schema: Schema,
 
   /**
    * Marks the root record type, in case this is the record type that represents the parsed schema.
@@ -37,7 +36,7 @@ class AvroSchema(
    * name via constructor.
    */
   override val name: Name = Name(schema),
-) : AvroSupplier<Schema>, WithObjectProperties {
+) : SchemaSupplier, WithObjectProperties {
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
       AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
@@ -48,17 +47,18 @@ class AvroSchema(
     operator fun invoke(path: Path): AvroSchema = create(path.inputStream(), isRoot = true)
     operator fun invoke(resource: URL): AvroSchema = create(resource.openStream(), isRoot = true)
 
-    @Deprecated("still needed?")
-    fun schemaForClass(recordClass: Class<*>): Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
-
-    @Deprecated("still needed?")
-    fun schemaForClass(recordClass: KClass<*>): Schema = schemaForClass(recordClass.java)
+    const val FILE_EXTENSION = "avsc"
   }
 
+  /**
+   * The [AvroHashCode] representing the [Schema]. This hash contains additional information like logicalType or documentation.
+   */
   override val hashCode: AvroHashCode = AvroHashCode(schema)
 
   /**
    * The fingerprint of the [Schema], used to lookup in schema store.
+   *
+   * This fingerprint does not contain information like logicalType and documentation.
    */
   val fingerprint: AvroFingerprint = AvroFingerprint(schema)
 
@@ -85,12 +85,33 @@ class AvroSchema(
   val namespace: Namespace by lazy {
     Namespace(schema)
   }
-  val type: Type = schema.type
 
+  /**
+   * The type of this schema, corresponds to [Schema.Type].
+   */
+  val type: SchemaType = SchemaType.valueOfType(schema.type)
+
+  /**
+   * The full name of the schema, concats [namespace] and [name].
+   */
   val canonicalName = namespace + name
 
+  /**
+   * Additional properties, defaults to [ObjectProperties.EMPTY].
+   */
   override val properties: ObjectProperties = ObjectProperties(schema)
+
+  /**
+   * `true` if [properties] is not empty.
+   */
   val hasProps: Boolean = properties.isNotEmpty()
+
+  /**
+   * Does this schema contain an additional property with given key?
+   *
+   * @param key the property key to look for
+   * «return `true` if [properties] contains given key, `false` else.
+   */
   fun hasProp(key: String) = properties.containsKey(key)
 
   /**
@@ -110,12 +131,25 @@ class AvroSchema(
 
   val logicalType: LogicalType? = schema.logicalType
 
+  val hasLogicalType: Boolean = logicalType != null
+
+  /**
+   * If this is a [SchemaType.RECORD], get the field for given name.
+   *
+   * @param fieldname the field to get
+   * @return if fieldname exists in record -> the field, else: `null`
+   */
   fun getField(fieldname: Name): AvroSchemaField? = fields.find { it.name == fieldname }
 
+  /**
+   * If this is a [SchemaType.RECORD], contains the fields of the schema.
+   * In this case, this must not be empty.
+   *
+   * For all other types, this is empty.
+   */
   val fields: List<AvroSchemaField> by lazy {
     runCatching { schema.fields.map { AvroSchemaField(it) } }.orEmpty()
   }
-  val hasFields: Boolean by lazy { fields.isNotEmpty() }
 
   /**
    * Only valid if this is of type ENUM, then it must not be empty.
@@ -137,96 +171,65 @@ class AvroSchema(
     schema.valueType?.let { AvroSchema(it) }
   }.getOrNull()
 
+  val enclosedTypes: List<AvroSchema> by lazy {
+    buildList {
+      addAll(unionTypes)
+      fields.map(AvroSchemaField::schema).forEach { fieldSchema ->
+        if (this.find { it.hashCode == fieldSchema.hashCode } == null) {
+          add(fieldSchema)
+        }
+      }
+      mapType?.also { add(it) }
+      arrayType?.also { add(it) }
+    }
+  }
+
   fun getIndexNamed(name: String): Int = schema.getIndexNamed(name)
 
   fun getFixedSize(): Int = schema.fixedSize
 
-  val isArrayType: Boolean = Type.ARRAY == type && arrayType != null
-  val isBooleanType: Boolean = Type.BOOLEAN == type
-  val isBytesType: Boolean = Type.BYTES == type
-  val isDoubleType: Boolean = Type.DOUBLE == type
-  val isEnumType: Boolean = Type.ENUM == type
-  val isError: Boolean = runCatching { schema.isError }.getOrDefault(false)
-  val isFloatType: Boolean = Type.FLOAT == type
-  val isIntType: Boolean = Type.INT == type
-  val isLongType: Boolean = Type.LONG == type
-  val isMapType: Boolean = Type.MAP == type
-  val isNullType: Boolean = Type.NULL == type
+  val isArrayType: Boolean = SchemaType.ARRAY == type && arrayType != null
+
+  val isBooleanType: Boolean = SchemaType.BOOLEAN == type
+
+  val isBytesType: Boolean = SchemaType.BYTES == type
+
+  val isDoubleType: Boolean = SchemaType.DOUBLE == type
+
+  val isEnumType: Boolean = SchemaType.ENUM == type
+
+  val isError = runCatching { schema.isError }.getOrDefault(false)
+  val isErrorType: Boolean = SchemaType.RECORD == type && isError
+
+  val isFloatType: Boolean = SchemaType.FLOAT == type
+
+  val isIntType: Boolean = SchemaType.INT == type
+
+  val isLongType: Boolean = SchemaType.LONG == type
+
+  val isMapType: Boolean = SchemaType.MAP == type
+
   val isNullable: Boolean = schema.isNullable
+  val isNullType: Boolean = SchemaType.NULL == type
+
   val isPrimitive: Boolean = PRIMITIVE_TYPES.contains(type)
-  val isRecordType: Boolean = Type.RECORD == type
-  val isStringType: Boolean = Type.STRING == type
+
+  val isRecordType: Boolean = SchemaType.RECORD == type && !isError
+
+  val isStringType: Boolean = SchemaType.STRING == type
+
   val isUnion: Boolean = schema.isUnion
-  val isUnionType: Boolean = Type.UNION == type && isUnion && unionTypes.isNotEmpty()
+  val isUnionType: Boolean = SchemaType.UNION == type && isUnion && unionTypes.isNotEmpty()
+
+  val typesMap: AvroTypesMap get() = AvroTypesMap(this)
 
   init {
     if (isRoot) {
-      require(isRecordType && !isError) { "Only RecordTypes that are not ErrorTypes must be marked as 'isRoot'." }
+      require(type.isNamed) { "Only NamedTypes must be marked as 'isRoot'." }
       requireNotNull(schema.namespace) { "A top level schema declaration must have a namespace." }
     }
   }
 
   override fun get(): Schema = schema
 
-  fun withLogicalType(logicalType: LogicalType) = AvroSchema(
-    schema = logicalType.addToSchema(schema),
-    name = name,
-    isRoot = isRoot
-  )
-}
-
-fun AvroSchema.enclosedTypes(): List<AvroSchema> = buildList {
-  addAll(unionTypes)
-  fields.map(AvroSchemaField::schema).forEach { fieldSchema ->
-    if (this.find { it.hashCode == fieldSchema.hashCode } == null) {
-      add(fieldSchema)
-    }
-  }
-  mapType?.also { add(it) }
-  arrayType?.also { add(it) }
-}
-
-
-fun AvroSchema.recordType(): RecordType = RecordType(this)
-fun AvroSchema.enumType(): EnumType = EnumType(this)
-
-fun AvroSchema.arrayType(): ArrayType = ArrayType(this)
-fun AvroSchema.unionType(): UnionType = UnionType(this)
-fun AvroSchema.mapType(): MapType = MapType(this)
-
-fun AvroSchema.booleanType() = BooleanType(this)
-fun AvroSchema.bytesType() = BytesType(this)
-fun AvroSchema.doubleType() = DoubleType(this)
-fun AvroSchema.floatType() = FloatType(this)
-fun AvroSchema.intType() = IntType(this)
-fun AvroSchema.longType() = LongType(this)
-fun AvroSchema.nullType() = NullType
-fun AvroSchema.stringType() = StringType(this)
-
-fun AvroSchema.primitiveType() = when (type) {
-  Type.BOOLEAN -> booleanType()
-  Type.BYTES -> bytesType()
-  Type.DOUBLE -> doubleType()
-  Type.FLOAT -> floatType()
-  Type.INT -> intType()
-  Type.LONG -> longType()
-  Type.NULL -> NullType
-  Type.STRING -> stringType()
-  else -> throw IllegalArgumentException("Type must be primitive: $PRIMITIVE_TYPES")
-}
-
-fun AvroSchema.avroType(): AvroType = when (type) {
-  // Named
-  Type.RECORD -> recordType()
-  Type.ENUM -> enumType()
-  // FIXME: support FIXED
-  Type.FIXED -> TODO("fixed not supported")
-
-  // Container
-  Type.ARRAY -> arrayType()
-  Type.MAP -> mapType()
-  Type.UNION -> unionType()
-
-  // Primitive
-  else -> primitiveType()
 }

@@ -1,27 +1,33 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.firstUppercase
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
+import io.toolisticon.avro.kotlin.model.*
 import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
 import org.apache.avro.Protocol
-import org.apache.avro.Schema
 import java.util.function.Supplier
 
+/**
+ * A kotlin type- and null-safe wrapper around the java [Protocol].
+ */
 class AvroProtocol(
   private val protocol: Protocol
-) : AvroSupplier<Protocol> {
+) : ProtocolSupplier {
   companion object {
     /**
      * An error that can be thrown by any message.
      */
-    val SCHEMA_SYSTEM_ERROR = AvroBuilder.primitiveSchema(Schema.Type.STRING)
+    val SCHEMA_SYSTEM_ERROR = AvroBuilder.primitiveSchema(SchemaType.STRING)
 
     /** Union type for generating system errors.  */
     val SCHEMA_SYSTEM_ERRORS = AvroBuilder.union(SCHEMA_SYSTEM_ERROR)
 
     val KEYWORDS: Set<String> = setOf("namespace", "protocol", "doc", "messages", "types", "errors")
-    val MESSAGES = setOf("doc", "response", "request", "errors", "one-way")
+    val MESSAGES: Set<String> = setOf("doc", "response", "request", "errors", "one-way")
+
+    const val FILE_EXTENSION = "avpr"
 
     fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
   }
@@ -29,14 +35,14 @@ class AvroProtocol(
   /**
    * The namespace of this protocol. Qualifies its name.
    */
-  val namespace = Namespace(protocol.namespace)
+  override val namespace = Namespace(protocol.namespace)
 
   /**
    * The name of this protocol.
    */
   override val name = Name(protocol.name)
 
-  val canonicalName = CanonicalName(namespace, name)
+  override val canonicalName = CanonicalName(namespace, name)
 
   /**
    * Doc string for this protocol.
@@ -44,6 +50,19 @@ class AvroProtocol(
   val documentation = AvroKotlin.documentation(protocol.doc)
 
   val md5: ByteArray by lazy { protocol.mD5 }
+
+  /**
+   * [Protocol] does not have a [AvroFingerprint]. To identify an identical
+   * protocol, we can calculate the fingerprint using all types and messages.
+   */
+  val fingerprint: AvroFingerprint by lazy {
+    buildList {
+      add(AvroFingerprint(protocol.namespace))
+      add(AvroFingerprint(protocol.name))
+      addAll(protocol.types.map { AvroFingerprint(it) })
+      addAll(protocol.messages.values.map { AvroFingerprint(it) })
+    }.sum()
+  }
 
   override val json: JsonString by lazy { JsonString(protocol) }
 
@@ -128,16 +147,17 @@ class AvroProtocol(
     val errors: AvroSchema by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
-      val errorTypes = schema.enclosedTypes()
+      val errorTypes = schema.enclosedTypes
 
       if (errorTypes.size > 1) {
-        schema.enclosedTypes().filterNot { it.isPrimitive }.single()
+        schema.enclosedTypes.filterNot { it.isPrimitive }.single()
       } else {
         schema
       }
     }
 
     override fun enclosedTypes(): List<AvroSchema> = listOf(request, response, errors)
+
     override fun toString(): String {
       return "TwoWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties, response=$response, errors=$errors)"
     }
@@ -145,8 +165,6 @@ class AvroProtocol(
     init {
       require(!message.isOneWay) { "Message is not two-way." }
     }
-
-
   }
 
   /**
@@ -158,14 +176,11 @@ class AvroProtocol(
 
 
   val recordTypes by lazy {
-    types.values.filterIsInstance<RecordType>()
+    types.values.filterIsInstance<RecordType>() + types.values.filterIsInstance<ErrorType>()
   }
-
 
   /** Returns the named type.  */
-  fun getType(name: Name): AvroSchema {
-    TODO("return types.get(name)")
-  }
+  fun getType(name: Name): AvroType? = types.get(name)
 
   /**
    * The messages of this protocol.

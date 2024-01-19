@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.value.Name
-import org.apache.avro.Schema.Type
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -10,14 +10,14 @@ internal class AvroSchemaTest {
 
   @Test
   fun `no exceptions for primitive string`() {
-    val schema = AvroBuilder.primitiveSchema(Type.STRING)
+    val schema = AvroBuilder.primitiveSchema(STRING)
 
     with(schema) {
       assertThat(aliases).isEmpty()
       assertThat(schema.fullName).isEqualTo("string")
       assertThat(schema.name).isEqualTo(Name("string"))
       assertThat(schema.namespace.isEmpty()).isTrue()
-      assertThat(schema.type).isEqualTo(Type.STRING)
+      assertThat(schema.type).isEqualTo(STRING)
 
       assertThat(unionTypes).isEmpty()
       assertThat(enumSymbols).isEmpty()

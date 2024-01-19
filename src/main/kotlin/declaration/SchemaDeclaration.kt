@@ -1,9 +1,9 @@
 package io.toolisticon.avro.kotlin.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroSchema
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.RecordType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 import io.toolisticon.avro.kotlin.value.JsonString
 
@@ -16,13 +16,17 @@ class SchemaDeclaration(
 ) : AvroDeclaration {
 
   override val canonicalName = schema.canonicalName
+
   override val avroTypes: AvroTypesMap by lazy {
     AvroTypesMap(schema)
   }
+
   val recordType by lazy {
     RecordType(schema)
   }
-  val documentation = schema.documentation
+
+  override val documentation = schema.documentation
+
   override val originalJson: JsonString = source.json
 
   override fun toString() = "SchemaDeclaration(" +
@@ -42,9 +46,7 @@ class SchemaDeclaration(
     return true
   }
 
-  override fun hashCode(): Int {
-    return schema.hashCode()
-  }
+  override fun hashCode(): Int = schema.hashCode()
 
   init {
     requireNotNull(schema.namespace) { "A top level schema declaration must have a namespace." }

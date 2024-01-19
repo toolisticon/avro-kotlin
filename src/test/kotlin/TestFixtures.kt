@@ -1,32 +1,34 @@
 package io.toolisticon.avro.kotlin
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadResource
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trailingSlash
-import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
-import io.toolisticon.avro.kotlin.model.AvroSchema
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.findAvroResources
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadJsonString
+import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.LogicalTypes
+import org.apache.avro.Protocol
 import org.apache.avro.Schema
-import org.apache.avro.Schema.Type
 import org.apache.avro.SchemaBuilder
-import java.net.URL
+import org.junit.jupiter.api.extension.ExtensionContext
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.ArgumentsProvider
+import java.util.stream.Stream
+import kotlin.streams.asStream
 
 
 object TestFixtures {
 
-  fun resourceUrl(resource: String): URL = requireNotNull(
-    TestFixtures::class.java.getResource(resource.trailingSlash())
-  ) { "resource not found: $resource" }
+  val DEFAULT_PARSER = AvroParser()
 
-  fun loadSchemaJson(resource: String): Schema = Schema.Parser().parse(JsonString(loadResource(resource).trim()).value)
+  fun parseSchema(json: JsonString): Schema = Schema.Parser().parse(json.inputStream())
+  fun loadSchema(resource: String): Schema = parseSchema(loadJsonString(resource))
 
-  fun loadProtocolDeclaration(resource: String): ProtocolDeclaration {
-    return AvroParser().parseProtocol(JsonString(loadResource(resource)))
-  }
+  fun parseProtocol(json: JsonString): Protocol = Protocol.parse(json.inputStream())
+  fun loadProtocol(resource: String): Protocol = parseProtocol(loadJsonString(resource))
 
   /**
    * this schema contains 5 types:
@@ -46,8 +48,8 @@ object TestFixtures {
       .type(
         Schema.createMap(
           Schema.createUnion(
-            Schema.create(Type.NULL),
-            LogicalTypes.uuid().addToSchema(Schema.create(Type.STRING))
+            Schema.create(SchemaType.NULL.get()),
+            LogicalTypes.uuid().addToSchema(Schema.create(SchemaType.STRING.get()))
           )
         )
       )
@@ -87,8 +89,21 @@ object TestFixtures {
     .doc("some test")
     .fields()
     .name("value")
-    .type(Schema.create(Schema.Type.STRING))
+    .type(Schema.create(SchemaType.STRING.get()))
     .noDefault()
     .endRecord()
 
+
+  /**
+   * Provides all protocol and schema resources contained in `src/test/resources` as a Stream,
+   * used by parameterized tests.
+   */
+  class AvroFilesArgumentProvider : ArgumentsProvider {
+    override fun provideArguments(ctx: ExtensionContext): Stream<out Arguments> = findAvroResources()
+      .flatMap { (k, v) ->
+        v.map { k to it }
+      }.asSequence()
+      .map { Arguments.arguments(it.first, it.second) }
+      .asStream()
+  }
 }

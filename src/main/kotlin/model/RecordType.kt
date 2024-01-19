@@ -1,36 +1,41 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 
-@JvmInline
-value class RecordType(override val schema: AvroSchema) : AvroNamedType, WithDocumentation, SchemaSupplier by schema, WithObjectProperties by schema {
+class RecordType(override val schema: AvroSchema) :
+  AvroNamedType,
+  WithEnclosedTypes,
+  WithDocumentation,
+  SchemaSupplier by schema,
+  WithObjectProperties by schema {
 
   init {
-    check(schema.isRecordType) { "not a record type." }
-    check(fields.isNotEmpty()) { "a record needs at least one field." }
+    check(schema.isRecordType) { "Not a record type." }
+    check(schema.fields.isNotEmpty()) { "Record[$namespace.$name]: must have at least one field." }
   }
 
-  override val name: Name get() = schema.name
-  override val namespace: Namespace? get() = schema.namespace
-  override val hashCode: AvroHashCode get() = schema.hashCode
+  override val namespace: Namespace get() = schema.namespace
+  val canonicalName : CanonicalName  get() = schema.canonicalName
+
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
   override val documentation: Documentation? get() = schema.documentation
 
-  val isError: Boolean get() = schema.isError
   val isRoot: Boolean get() = schema.isRoot
-  val fields: List<RecordField> get() = schema.fields.map { RecordField(it) }
+  val fields: List<RecordField> by lazy { schema.fields.map { RecordField(it) } }
+
+  override val typesMap: AvroTypesMap by lazy { AvroTypesMap(fields.map { it.schema }) }
 
   override fun toString(): String {
     val toStringName: String = AvroKotlin.StringKtx.ifTrue(
-      isError,
-      "ErrorType",
-      AvroKotlin.StringKtx.ifTrue(
-        isRoot,
-        "RootRecordType",
-        "RecordType"
-      )
+      isRoot,
+      "RootRecordType",
+      "RecordType"
     )
 
     return "$toStringName(name='${if (namespace == null) name else name + namespace!!}'" +
@@ -38,4 +43,7 @@ value class RecordType(override val schema: AvroSchema) : AvroNamedType, WithDoc
       ", fields=$fields" +
       ")"
   }
+
+  override fun equals(other: Any?) = equalsFn(other)
+  override fun hashCode() = hashCodeFn()
 }

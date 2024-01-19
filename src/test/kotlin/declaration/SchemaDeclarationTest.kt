@@ -1,11 +1,10 @@
 package io.toolisticon.avro.kotlin.declaration
 
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroParser
-import io.toolisticon.avro.kotlin.TestFixtures.loadSchemaJson
-import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
+import io.toolisticon.avro.kotlin.TestFixtures.loadSchema
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
-import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -31,7 +30,7 @@ class SchemaDeclarationTest {
 
   @Test
   fun `load org_apache_avro_schema_string_logical_type`() {
-    val schema = loadSchemaJson("org.apache.avro/schema/string_logical_type.avsc")
+    val schema = loadSchema("org.apache.avro/schema/string_logical_type.avsc")
 
     //println(schema)
 //    val declaration = SchemaDeclaration(schema)
@@ -51,7 +50,7 @@ class SchemaDeclarationTest {
 
   @Test
   fun `with reuse of type`() {
-    val schema = loadSchemaJson("schema/ReUsingTypes.avsc")
+    val schema = loadSchema("schema/ReUsingTypes.avsc")
 //
 //    val declaration = SchemaDeclaration(schema)
 //

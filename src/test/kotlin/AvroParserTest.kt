@@ -1,22 +1,26 @@
 package io.toolisticon.avro.kotlin
 
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadJsonString
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.toReadableString
-import io.toolisticon.avro.kotlin.TestFixtures.resourceUrl
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.AvroProtocol
 import io.toolisticon.avro.kotlin.model.JsonSource
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
+import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import mu.KLogging
 import org.apache.avro.LogicalTypes
-import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatNoException
+import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.io.File
 
 internal class AvroParserTest {
@@ -26,9 +30,9 @@ internal class AvroParserTest {
 
   @Test
   fun `load from file`(@TempDir tmp: File) {
-    val json = resourceUrl("schema/SchemaContainingSimpleTypes.avsc").readText()
+    val json = loadJsonString("schema/SchemaContainingSimpleTypes.avsc")
     val file = tmp.resolve("SchemaContainingSimpleTypes.avsc").apply {
-      writeText(json)
+      writeText(json.value)
     }
 
     val s = AvroParser().parseSchema(file)
@@ -58,7 +62,7 @@ internal class AvroParserTest {
       SchemaBuilder.record("foo.Bar")
         .fields()
         .name("xxx")
-        .type(primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid()).schema)
+        .type(primitiveSchema(STRING, LogicalTypes.uuid()).get())
         .noDefault()
         .endRecord()
     )
@@ -91,9 +95,9 @@ internal class AvroParserTest {
 
   @Test
   fun `schema equal`() {
-    val s1 = primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid())
-    val s2 = primitiveSchema(Schema.Type.STRING)
-    val s3 = primitiveSchema(Schema.Type.STRING, LogicalTypes.uuid())
+    val s1 = primitiveSchema(STRING, LogicalTypes.uuid())
+    val s2 = primitiveSchema(STRING)
+    val s3 = primitiveSchema(STRING, LogicalTypes.uuid())
 
     assertThat(s1.fingerprint).isEqualTo(s2.fingerprint)
     assertThat(s1.hashCode).`as` { "hashcodes do not match" }.isNotEqualTo(s2.hashCode)
@@ -136,12 +140,46 @@ internal class AvroParserTest {
     assertThat(declaration.avroTypes).hasSize(9)
     assertThat(declaration.protocol.recordTypes).hasSize(4)
 
-    val msg : AvroProtocol.TwoWayMessage =  declaration.protocol.messages[Name("queryDummy")]!! as AvroProtocol.TwoWayMessage
+    val msg: AvroProtocol.TwoWayMessage = declaration.protocol.messages[Name("queryDummy")]!! as AvroProtocol.TwoWayMessage
 
 
     assertThat(msg.errors.isError).isTrue()
 
     println(declaration.protocol.messages.toReadableString())
 
+  }
+
+  @ParameterizedTest
+  @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
+  fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
+    val ignoredFiles = setOf(
+      "/protocol/protocol.avpr",
+      "/protocol/namespace.avpr",
+      "/protocol/namespaces.avpr",
+      "/protocol/bar.avpr",
+      "/protocol/reservedwords.avpr",
+      "/protocol/unicode.avpr",
+      "/protocol/output-protocol.avpr",
+      "/protocol/output-import.avpr",
+      "/protocol/output-proto.avpr",
+      "/protocol/nestedimport.avpr",
+      "/protocol/input-protocol.avpr",
+      "/protocol/simple.avpr",
+      "/protocol/bulk-data.avpr",
+      "/protocol/import.avpr",
+      "/protocol/proto.avpr",
+    )
+    Assumptions.assumeTrue(ignoredFiles.none {
+      file.path.endsWith(it)
+    })
+
+    assertThatNoException()
+      .`as` { "failed to parse $spec: file://$file" }
+      .isThrownBy {
+        when (spec) {
+          SCHEMA -> TestFixtures.DEFAULT_PARSER.parseSchema(file)
+          PROTOCOL -> TestFixtures.DEFAULT_PARSER.parseProtocol(file)
+        }
+      }
   }
 }

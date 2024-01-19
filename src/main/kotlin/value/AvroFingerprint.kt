@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
-import io.toolisticon.avro.kotlin.model.AvroSchema
-import io.toolisticon.avro.kotlin.model.AvroSchemaField
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaField
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.apache.avro.SchemaNormalization
@@ -28,15 +28,6 @@ value class AvroFingerprint(override val value: Long) : Comparable<Long> by valu
   constructor(schema: Schema) : this(SchemaNormalization.parsingFingerprint64(schema))
   constructor(bytes: ByteArray) : this(SchemaNormalization.fingerprint64(bytes))
   constructor(string: String?) : this(string?.trimToNull()?.let { AvroFingerprint(it.encodeToByteArray()) }?.value ?: NULL.value)
-
-  constructor(protocol: Protocol) : this(
-    buildList<AvroFingerprint> {
-      add(AvroFingerprint(protocol.namespace))
-      add(AvroFingerprint(protocol.name))
-      addAll(protocol.types.map { AvroFingerprint(it) })
-      addAll(protocol.messages.values.map { AvroFingerprint(it) })
-    }.sum().value
-  )
 
   constructor(message: Protocol.Message) : this(
     listOf(

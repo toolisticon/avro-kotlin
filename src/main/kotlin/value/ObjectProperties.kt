@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.model.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.JsonProperties
 
 /**
@@ -23,7 +23,7 @@ import org.apache.avro.JsonProperties
 value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) : Map<String, Any> by value, ValueType<Map<String, Any>> {
   companion object {
     val ignoredKeys = setOf("logicalType")
-    internal fun filter(properties : Map<String, Any>) = properties.toMutableMap().apply { ignoredKeys.forEach { this.remove(it) } }.toMap()
+    internal fun filter(properties: Map<String, Any>) = properties.toMutableMap().apply { ignoredKeys.forEach { this.remove(it) } }.toMap()
 
 
     val EMPTY = ObjectProperties()
@@ -35,7 +35,7 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    * @param avroSchema the wrapped schema
    * @return properties derived from schema
    */
-  constructor(avroSchema: AvroSchema) : this(avroSchema.schema)
+  constructor(avroSchema: AvroSchema) : this(avroSchema.get())
 
   /**
    * Creates new instance from schema objectProps.

@@ -2,7 +2,7 @@ package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin.AVRO_V1_HEADER
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import org.apache.avro.Schema
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -36,7 +36,7 @@ internal class HexStringTest {
 
   @Test
   fun `fingerprint hex is 8 bytes long`() {
-    val schema = primitiveSchema(Schema.Type.STRING)
+    val schema = primitiveSchema(STRING)
     val hex = HexString(schema.fingerprint)
 
     assertThat(hex.length).isEqualTo(16)

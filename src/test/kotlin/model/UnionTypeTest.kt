@@ -2,8 +2,8 @@ package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.union
-import org.apache.avro.Schema.Type.NULL
-import org.apache.avro.Schema.Type.STRING
+import io.toolisticon.avro.kotlin.model.SchemaType.NULL
+import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

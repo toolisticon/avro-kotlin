@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin.declaration
 
 import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
+import io.toolisticon.avro.kotlin.model.WithDocumentation
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
@@ -13,7 +14,7 @@ import io.toolisticon.avro.kotlin.value.Namespace
  * Contains the original parsed json structure (Schema or Protocol)
  * and a deep analysis/breakdown of all contained sub-schemas.
  */
-sealed interface AvroDeclaration {
+sealed interface AvroDeclaration : WithDocumentation {
   val canonicalName: CanonicalName
 
   /**

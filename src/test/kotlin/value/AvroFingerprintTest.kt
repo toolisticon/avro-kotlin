@@ -1,17 +1,17 @@
 package io.toolisticon.avro.kotlin.value
 
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
+import io.toolisticon.avro.kotlin.AvroKotlin.parseProtocol
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.NULL
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
 import org.apache.avro.LogicalTypes.decimal
-import org.apache.avro.Protocol
 import org.apache.avro.Schema
-import org.apache.avro.Schema.Type.BYTES
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class AvroFingerprintTest {
@@ -86,17 +86,11 @@ internal class AvroFingerprintTest {
   }
 
   @Test
-  @Disabled("remove")
   fun `fingerprint of protocols is identical if only props and docs differ`() {
-    val p1 = loadProtocolResource("protocol/DummyProtocol.avpr")
-    val p2 = loadProtocolResource("protocol/DummyProtocol2.avpr")
+    val p1 = parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
+    val p2 = parseProtocol(resourceUrl("protocol/DummyProtocol2.avpr"))
 
-    assertThat(AvroFingerprint(p1)).isEqualTo(AvroFingerprint(p2))
-  }
-
-  @Deprecated("remove")
-  private fun loadProtocolResource(s: String): Protocol {
-    TODO()
+    assertThat(p1.fingerprint).isEqualTo(p2.fingerprint)
   }
 
   @Test

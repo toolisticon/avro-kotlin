@@ -3,15 +3,18 @@ package io.toolisticon.avro.kotlin.model
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.csv
 import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType
-import org.apache.avro.Schema
 
 /**
  * Sequence of 8-bit unsigned bytes.
  */
 @JvmInline
-value class BytesType(override val schema: AvroSchema) : AvroPrimitiveType, WithLogicalType,
+value class BytesType(override val schema: AvroSchema) :
+  AvroPrimitiveType,
+  WithLogicalType,
   SchemaSupplier by schema,
   WithObjectProperties by schema {
 
@@ -22,7 +25,7 @@ value class BytesType(override val schema: AvroSchema) : AvroPrimitiveType, With
   override val name: Name get() = schema.name
   override val hashCode: AvroHashCode get() = schema.hashCode
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
-  override val type: Schema.Type get() = Schema.Type.BYTES
+  override val type: SchemaType get() = SchemaType.BYTES
   override val logicalType: LogicalType? get() = schema.logicalType
   override val logicalTypeName: LogicalTypeName? get() = AvroKotlin.logicalTypeName(logicalType)
 
