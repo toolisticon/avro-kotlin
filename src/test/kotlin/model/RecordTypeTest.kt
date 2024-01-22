@@ -39,8 +39,6 @@ internal class RecordTypeTest {
     val schema = AvroKotlin.parseSchema(resourceUrl("schema/SchemaContainingUnionType.avsc"))
     val record: RecordType = AvroType.avroType(schema)
 
-    println(record.typesMap.toReadableString())
-
     assertThat(record.typesMap).hasSize(7)
 
     assertThat(record.typesMap.values.map { it.schema.type }.toSet()).containsExactlyInAnyOrder(

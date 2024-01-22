@@ -24,7 +24,6 @@ class SchemaDeclarationTest {
     assertThat(declaration.recordType.fields[0].name).isEqualTo(Name("x"))
     //assertThat(declaration.recordType.fields[0].type).isEqualTo(Schema.Type.INT)
 
-    println(declaration)
     //println(declaration.avroTypes.toReadableString())
   }
 
