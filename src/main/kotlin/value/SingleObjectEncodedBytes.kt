@@ -46,4 +46,6 @@ class SingleObjectEncodedBytes private constructor(
   constructor(bytes: ByteArray) : this(create(bytes))
 
   override val hex: HexString get() = bytes.hex
+
+  override fun toString() = hex.formatted
 }

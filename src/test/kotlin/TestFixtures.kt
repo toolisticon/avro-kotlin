@@ -57,6 +57,8 @@ object TestFixtures {
       .endRecord(), isRoot = true
   )
 
+
+
   /**
    * This is the avro single object encoded hex representation of `FooString(str="bar")`.
    *
@@ -66,7 +68,6 @@ object TestFixtures {
    *
    */
   const val SINGLE_STRING_ENCODED = "[C3 01 CD 1D 19 01 C3 39 C6 61 06 62 61 72]"
-
   const val SCHEMA_ROOT = "avro"
 
   val OM = jacksonObjectMapper().findAndRegisterModules()

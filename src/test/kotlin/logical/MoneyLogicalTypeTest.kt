@@ -1,6 +1,8 @@
 package io.toolisticon.avro.kotlin.logical
 
 import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
+import io.toolisticon.avro.kotlin.AvroSchemaStore
 import io.toolisticon.avro.kotlin._test.MoneyLogicalType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.LogicalTypes
@@ -11,30 +13,70 @@ import org.junit.jupiter.api.Test
 
 internal class MoneyLogicalTypeTest {
 
-  @Test
-  fun `money logicalType is loaded via SPI`() {
-    assertThat(LogicalTypes.getCustomRegisteredTypes()).hasSize(1)
-    assertThat(LogicalTypes.getCustomRegisteredTypes()["money"]).isNotNull
-  }
+    private val writerSchema = AvroSchema(
+        SchemaBuilder.record("foo.MoneyData")
+            .fields()
+            .name("money")
+            .type(MoneyLogicalType.INSTANCE.conversion.recommendedSchema)
+            .noDefault()
+            .endRecord()
+    )
 
-  @Test
-  fun `write generic record with money`() {
-    val schema = SchemaBuilder.record("foo.MoneyData")
-      .fields()
-      .name("money")
-      .type(MoneyLogicalType.INSTANCE.conversion.recommendedSchema)
-      .noDefault()
-      .endRecord()
-
-    val amount = Money.of(100.3456, "EUR")
-    val record = AvroKotlin.createGenericRecord(AvroSchema(schema)) {
-      put("money", amount)
+    @Test
+    fun `money logicalType is loaded via SPI`() {
+        assertThat(LogicalTypes.getCustomRegisteredTypes()).hasSize(1)
+        assertThat(LogicalTypes.getCustomRegisteredTypes()["money"]).isNotNull
     }
 
-    val json = AvroKotlin.genericRecordToJson(record)
+    @Test
+    fun `read and write generic record with money`() {
 
-    val recordFromJson = AvroKotlin.genericRecordFromJson(json, AvroSchema(schema))
+        val amount = Money.of(100.3456, "EUR")
+        val record = createGenericRecord(writerSchema) {
+            put("money", amount)
+        }
 
-    assertThat(recordFromJson.get("money")).isEqualTo(amount)
-  }
+        val json = AvroKotlin.genericRecordToJson(record)
+
+        val recordFromJson = AvroKotlin.genericRecordFromJson(json, writerSchema)
+
+        assertThat(recordFromJson.get("money")).isEqualTo(amount)
+    }
+
+    @Test
+    fun `read and write generic record with money to singleObjectEncoded bytes using schemaStore`() {
+        val amount = Money.of(100.3456, "EUR")
+        val record = createGenericRecord(writerSchema) {
+            put("money", amount)
+        }
+
+        val schemaStore = AvroSchemaStore { _ -> writerSchema }
+
+        val bytes = AvroKotlin.genericRecordToSingleObjectEncoded(record)
+
+        val recordFromBytes = AvroKotlin.genericRecordFromSingleObjectEncoded(
+            singleObjectEncodedBytes = bytes,
+            readerSchema = writerSchema,
+            schemaStore
+        )
+
+        assertThat(recordFromBytes.get("money")).isEqualTo(amount)
+    }
+
+
+    @Test
+    fun `read and write generic record with money to singleObjectEncoded bytes`() {
+        val amount = Money.of(100.3456, "EUR")
+        val record = createGenericRecord(writerSchema) {
+            put("money", amount)
+        }
+
+        val bytes = AvroKotlin.genericRecordToSingleObjectEncoded(record)
+
+        val recordFromBytes = AvroKotlin.genericRecordFromPayloadBytes(
+            payloadBytes = bytes.payload,
+            readerSchema = writerSchema,
+        )
+        assertThat(recordFromBytes.get("money")).isEqualTo(amount)
+    }
 }

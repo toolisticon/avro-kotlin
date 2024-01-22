@@ -136,9 +136,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.javamoney</groupId>
-      <artifactId>moneta</artifactId>
-      <version>1.4.1</version>
+      <groupId>org.javamoney.moneta</groupId>
+      <artifactId>moneta-core</artifactId>
+      <version>1.4.2</version>
       <scope>test</scope>
     </dependency>
 
