@@ -35,7 +35,7 @@ class SingleObjectEncodedBytes private constructor(
 
       return SingleObjectEncodedBytes(
         bytes = value,
-        fingerprint = AvroFingerprint(value.buffer.order(ByteOrder.LITTLE_ENDIAN).long),
+        fingerprint = AvroFingerprint(fingerprint.buffer.order(ByteOrder.LITTLE_ENDIAN).long),
         payload = payload
       )
     }

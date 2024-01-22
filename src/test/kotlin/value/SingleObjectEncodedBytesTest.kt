@@ -1,7 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.TestFixtures.SINGLE_STRING_ENCODED
 import io.toolisticon.avro.kotlin._test.FooString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -9,19 +8,20 @@ import org.junit.jupiter.api.Test
 internal class SingleObjectEncodedBytesTest {
 
   @Test
-  fun `from hex String`() {
-    val soe = SingleObjectEncodedBytes(ByteArrayValue(SINGLE_STRING_ENCODED).value)
+  fun `can read from hex String`() {
+    val bytes = ByteArrayValue(FooString.SINGLE_OBJECT_BAR)
 
-    assertThat(soe.hex.formatted).isEqualTo(SINGLE_STRING_ENCODED)
-    assertThat(soe.fingerprint.value).isEqualTo(4162171688006255043L)
+    val soe = SingleObjectEncodedBytes(bytes.value)
+
+    assertThat(soe.hex.formatted).isEqualTo(FooString.SINGLE_OBJECT_BAR)
     assertThat(soe.payload.formatted).isEqualTo("[06 62 61 72]")
   }
 
-
   @Test
-  fun `encode fooString`() {
-    val foo = FooString("bar")
+  fun `encode fooString and derive fingerprint from bytes`() {
+    val record = FooString.genericRecord(FooString("bar"))
+    val encoded = AvroKotlin.genericRecordToSingleObjectEncoded(record)
 
-
+    assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
   }
 }

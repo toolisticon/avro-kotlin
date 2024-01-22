@@ -41,15 +41,12 @@ internal class FooStringTest {
 
     val bar = FooString("bar")
     val record = FooString.genericRecord(bar)
-    println(record.schema.toString())
 
     assertThat(AvroSchema(record.schema)).isEqualTo(FooString.SCHEMA)
 
     val encoded = AvroKotlin.genericRecordToSingleObjectEncoded(record)
 
-    println(encoded.hex.formatted)
-
-//    assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
+    assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
 
     val decoded = AvroKotlin.genericRecordFromSingleObjectEncoded(encoded, FooString.SCHEMA, AvroKotlin.schemaStore(cache))
 

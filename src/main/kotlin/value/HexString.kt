@@ -13,6 +13,7 @@ value class HexString private constructor(private val single: Single<String>) : 
     private fun join(value: String) = value.chunked(2).joinToString(DEFAULT_FORMAT.first, DEFAULT_FORMAT.second, DEFAULT_FORMAT.third)
   }
 
+  // parse a formatted bytes-hex-string
   constructor(formatted: String) : this(
     Single(
       formatted.removePrefix("[")
