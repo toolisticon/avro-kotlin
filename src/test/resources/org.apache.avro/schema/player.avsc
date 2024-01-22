@@ -19,7 +19,16 @@
       "name": "position",
       "type": {
         "type": "array",
-        "items": "Position"
+        "items": {
+          "type": "record",
+          "name": "Position",
+          "fields": [
+            {
+              "name": "index",
+              "type": "int"
+            }
+          ]
+        }
       }
     }
   ]

@@ -12,7 +12,7 @@ internal class ResourceKtxTest {
 
     val url = AvroKotlin.ResourceKtx.resourceUrl(file)
 
-    println(url)
+    assertThat(url.toString()).endsWith(file)
   }
 
 
@@ -26,7 +26,7 @@ internal class ResourceKtxTest {
   @Test
   fun `find all avro resources`() {
     val resources = AvroKotlin.ResourceKtx.findAvroResources()
-    assertThat(resources.keys).containsExactly(AvroSpecification.PROTOCOL, AvroSpecification.SCHEMA)
+    assertThat(resources.keys).containsExactlyInAnyOrder(AvroSpecification.PROTOCOL, AvroSpecification.SCHEMA)
     assertThat(resources[AvroSpecification.SCHEMA]).hasSize(56)
     assertThat(resources[AvroSpecification.PROTOCOL]).hasSize(26)
   }

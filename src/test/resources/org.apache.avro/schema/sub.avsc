@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Document",
+  "name": "foo.Document",
   "fields": [
     {
       "name": "DocId",

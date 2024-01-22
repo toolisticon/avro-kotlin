@@ -4,7 +4,7 @@ import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import org.apache.avro.message.SchemaStore
 
-interface AvroSchemaStore {
+fun interface AvroSchemaStore {
 
   operator fun get(fingerprint: AvroFingerprint): AvroSchema
 
