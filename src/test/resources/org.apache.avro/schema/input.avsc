@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Test",
+  "name": "foo.Test",
   "fields": [
     {
       "name": "kind",

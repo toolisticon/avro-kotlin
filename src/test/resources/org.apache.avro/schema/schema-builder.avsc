@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "recordAll",
+  "name": "foo.RecordAll",
   "fields": [
     {
       "name": "requiredBoolean",
