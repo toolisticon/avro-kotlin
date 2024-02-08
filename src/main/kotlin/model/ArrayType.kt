@@ -17,7 +17,7 @@ class ArrayType(override val schema: AvroSchema) :
   SchemaSupplier by schema {
 
   init {
-    require(schema.isArrayType) { "Not an ARRAY type." }
+    require(schema.isArrayType) { "Not an ARRAY type, was=${schema.type}." }
     requireNotNull(schema.arrayType) { "ElementType is required for ArrayType." }
   }
 

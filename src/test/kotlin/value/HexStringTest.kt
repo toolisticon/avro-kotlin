@@ -24,15 +24,15 @@ internal class HexStringTest {
     assertThat(hex.value).isEqualTo("C301")
   }
 
-
   @Test
   fun `avro header bytes is C301`() {
-    val hex = HexString(AVRO_V1_HEADER)
+    val hex = AVRO_V1_HEADER.hex
 
     assertThat(hex.value).isEqualTo("C301")
     assertThat(hex.toString()).isEqualTo("C301")
     assertThat(hex.formatted).isEqualTo("[C3 01]")
   }
+
 
   @Test
   fun `fingerprint hex is 8 bytes long`() {
@@ -41,4 +41,6 @@ internal class HexStringTest {
 
     assertThat(hex.length).isEqualTo(16)
   }
+
+
 }

@@ -8,7 +8,9 @@ import java.nio.ByteBuffer
 @JvmInline
 value class HexString private constructor(private val single: Single<String>) : ValueType<String> by single {
   companion object {
+    private const val BYTES_SIZE = 2
     private val DEFAULT_FORMAT = Triple(" ", "[", "]")
+
     private fun format(value: Any) = "%02X".format(value)
     private fun join(value: String) = value.chunked(2).joinToString(DEFAULT_FORMAT.first, DEFAULT_FORMAT.second, DEFAULT_FORMAT.third)
   }
@@ -35,6 +37,11 @@ value class HexString private constructor(private val single: Single<String>) : 
   constructor(hashCode: AvroHashCode) : this(hashCode.value)
   constructor(fingerprint: AvroFingerprint) : this(fingerprint.value)
 
+  init {
+    require(length % BYTES_SIZE == 0) { "Each byte is represented by two strings, so length has to be even, was=$length." }
+  }
+
+  val size: Int get() = length / BYTES_SIZE
   val length: Int get() = value.length
   val formatted: String get() = value.chunked(2).joinToString(separator = " ", prefix = "[", postfix = "]")
   val byteArray: ByteArrayValue
@@ -43,9 +50,7 @@ value class HexString private constructor(private val single: Single<String>) : 
       .map { it.toByte() }.toByteArray()
     )
 
-  override fun toString() = value
-}
+  val chunked : List<String> get() = value.chunked(BYTES_SIZE)
 
-interface WithHexString {
-  val hex: HexString
+  override fun toString() = value
 }

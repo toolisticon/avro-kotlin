@@ -1,10 +1,14 @@
 package io.toolisticon.avro.kotlin.model
 
+import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.array
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.union
 import io.toolisticon.avro.kotlin.model.SchemaType.*
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
 internal class ArrayTypeTest {
@@ -39,5 +43,13 @@ internal class ArrayTypeTest {
       }
     """.trimIndent()
     )
+  }
+
+  @Test
+  fun `construction fails if not array`() {
+    assertThatThrownBy {
+      ArrayType(primitiveSchema(STRING))
+    }.isInstanceOf(IllegalArgumentException::class.java)
+      .hasMessage("Not an ARRAY type, was=STRING.")
   }
 }

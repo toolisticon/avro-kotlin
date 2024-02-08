@@ -5,6 +5,7 @@ import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
 import io.toolisticon.avro.kotlin.logical.AvroLogicalType
+import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
 import io.toolisticon.avro.kotlin.model.*
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -200,23 +201,9 @@ object AvroKotlin {
       .toList()
   }
 
-  val builtInConversions: List<Conversion<*>> by lazy {
-    listOf(
-      DateConversion(),
-      DecimalConversion(),
-      LocalTimestampMicrosConversion(),
-      LocalTimestampMillisConversion(),
-      TimeMicrosConversion(),
-      TimeMillisConversion(),
-      TimestampMicrosConversion(),
-      TimestampMillisConversion(),
-      UUIDConversion(),
-    )
-  }
-
   val genericDataWithConversions: GenericData by lazy {
     GenericData().apply {
-      (avroLogicalTypes.map(AvroLogicalType<*>::conversion) + builtInConversions).forEach { conversion ->
+      (avroLogicalTypes.map(AvroLogicalType<*>::conversion) + BuiltInLogicalType.CONVERSIONS).forEach { conversion ->
         addLogicalTypeConversion(conversion)
       }
     }
@@ -247,10 +234,10 @@ object AvroKotlin {
   }
 
   fun genericRecordToSingleObjectEncoded(record: GenericData.Record, genericData: GenericData = genericDataWithConversions): SingleObjectEncodedBytes {
-    val bytes = ByteArrayOutputStream().use { baos ->
+    val bytes = ByteArrayValue(ByteArrayOutputStream().use { baos ->
       BinaryMessageEncoder<GenericData.Record>(genericData, record.schema).encode(record, baos)
       baos.toByteArray()
-    }
+    })
     return SingleObjectEncodedBytes(bytes)
   }
 
@@ -264,7 +251,7 @@ object AvroKotlin {
   }
 
   fun genericRecordFromPayloadBytes(
-    payloadBytes: ByteArrayValue,
+    payloadBytes: BinaryEncodedBytes,
     readerSchema: AvroSchema,
     writerSchema: AvroSchema = readerSchema,
     genericData: GenericData = genericDataWithConversions
@@ -324,6 +311,14 @@ object AvroKotlin {
 
     override val schemaStore: SchemaStore get() = cache
   }
+
+  fun schemaStore(vararg schemas: AvroSchema) = AvroKotlin.schemaStore(
+    cache = Cache().apply {
+      schemas.forEach {
+        addSchema(it.get())
+      }
+    }
+  )
 
   object SchemaKtx {
 
@@ -483,4 +478,6 @@ object AvroKotlin {
     fun Protocol.message(name: String): Protocol.Message = requireNotNull(this.messages[name]) { "No protocol message with name '$name' found." }
 
   }
+
+
 }

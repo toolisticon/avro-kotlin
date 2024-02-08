@@ -6,12 +6,24 @@ import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.ObjectProperties
 import org.apache.avro.LogicalType
+import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
+import org.apache.avro.SchemaBuilder.FieldAssembler
 
 /**
  * Utilities to create [AvroSchema] or [AvroProtocol] from scratch without parsing [JsonString].
  */
 object AvroBuilder {
+
+  fun FieldAssembler<Schema>.optionalUuid(fieldName: String) = this.name(fieldName)
+    .type(
+      Schema.createUnion(
+        Schema.create(Schema.Type.NULL),
+        primitiveSchema(SchemaType.STRING, LogicalTypes.uuid()).get()
+      )
+    )
+    .withDefault(null)
+
 
   /**
    * Empty logical type that adds nothing to the schema.

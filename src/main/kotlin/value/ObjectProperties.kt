@@ -89,7 +89,3 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
 
 
 }
-
-interface WithObjectProperties {
-  val properties: ObjectProperties
-}

@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
+import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
 import io.toolisticon.avro.kotlin.value.Documentation
 import io.toolisticon.avro.kotlin.value.LogicalTypeName
 import io.toolisticon.avro.kotlin.value.Name
@@ -17,7 +18,7 @@ internal class FixedTypeTest {
       name = Namespace("foo.bar") + Name("Dummy"),
       size = 16,
       documentation = Documentation("This is fixed"),
-      logicalType = LogicalType(LogicalTypeName.DURATION.value)
+      logicalType = LogicalType(BuiltInLogicalType.DURATION.logicalTypeName.value)
     ).json
 
     assertThat(json.value).isEqualTo(

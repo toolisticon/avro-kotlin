@@ -57,7 +57,7 @@ internal class AvroParserTest {
   }
 
   @Test
-  fun `parse simple schema and add avroMeta property`() {
+  fun `parse schema declaration from json`() {
     val json = JsonString(
       SchemaBuilder.record("foo.Bar")
         .fields()
@@ -66,6 +66,8 @@ internal class AvroParserTest {
         .noDefault()
         .endRecord()
     )
+
+    println(json)
 
     val declaration = AvroParser()
       .registerLogicalTypeFactory(CustomLogicalTypeFactory())

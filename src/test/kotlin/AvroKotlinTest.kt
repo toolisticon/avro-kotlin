@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin
 
+import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
 import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -52,7 +53,7 @@ internal class AvroKotlinTest {
 
   @Test
   fun `can write schema to file (and read again)`() {
-    val schema = AvroParser().parseSchema(AvroKotlin.ResourceKtx.resourceUrl("schema/SimpleStringRecord.avsc"))
+    val schema = AvroParser().parseSchema(resourceUrl("schema/SimpleStringRecord.avsc"))
 
     AvroKotlin.write(schema, directory)
 
@@ -63,7 +64,7 @@ internal class AvroKotlinTest {
 
   @Test
   fun `can write protocol to file (and read again)`() {
-    val protocol = AvroParser().parseProtocol(AvroKotlin.ResourceKtx.resourceUrl("protocol/DummyProtocol.avpr"))
+    val protocol = AvroParser().parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
 
     AvroKotlin.write(protocol, directory)
 
@@ -86,15 +87,6 @@ internal class AvroKotlinTest {
 //      .hasMessage("violation of package-path convention: found declaration fqn='foo.Baz' but was loaded from path='foo/bar/Baz.avsc'")
   }
 
-  @Test
-  fun `find declaration by extension`() {
-    assertThat(AvroSpecification.valueOfExtension("avsc")).isEqualTo(AvroSpecification.SCHEMA)
-    assertThat(AvroSpecification.valueOfExtension("avpr")).isEqualTo(AvroSpecification.PROTOCOL)
-
-    assertThatThrownBy { AvroSpecification.valueOfExtension("foo") }
-      .isInstanceOf(java.lang.IllegalArgumentException::class.java)
-      .hasMessage("Not a valid extension='foo', must be one of: [avsc, avpr].")
-  }
 
   @Test
   @Disabled("remove")

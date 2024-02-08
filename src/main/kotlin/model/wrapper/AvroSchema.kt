@@ -8,6 +8,7 @@ import io.toolisticon.avro.kotlin.model.SchemaType.Companion.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
+import org.apache.avro.SchemaCompatibility
 import java.io.File
 import java.io.InputStream
 import java.net.URL
@@ -232,4 +233,20 @@ class AvroSchema(
 
   override fun get(): Schema = schema
 
+  /**
+   * Check if we can decode using this schema if the encoder used
+   * [writer] schema.
+   *
+   * @param writer - the schema used to encode data
+   * @return [SchemaCompatibility.SchemaPairCompatibility] with reader=this
+   */
+  fun compatibleToReadFrom(writer: AvroSchema) = SchemaCompatibility.checkReaderWriterCompatibility(schema, writer.schema)
+
+  /**
+   * Check data encoded using this schema could be decoded from [reader] schema.
+   *
+   * @param reader - the schema to decode the data
+   * @return [SchemaCompatibility.SchemaPairCompatibility] with writer=this
+   */
+  fun compatibleToBeReadFrom(reader: AvroSchema) = SchemaCompatibility.checkReaderWriterCompatibility(reader.schema, schema)
 }

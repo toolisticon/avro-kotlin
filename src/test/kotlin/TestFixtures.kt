@@ -9,13 +9,17 @@ import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
+import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
+import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.slf4j.bridge.SLF4JBridgeHandler
+import java.util.logging.LogManager
 import java.util.stream.Stream
 import kotlin.streams.asStream
 
@@ -106,5 +110,13 @@ object TestFixtures {
       }.asSequence()
       .map { Arguments.arguments(it.first, it.second) }
       .asStream()
+  }
+
+  class JulBridgeExtension : KLogging(), BeforeAllCallback {
+    override fun beforeAll(ctx: ExtensionContext) {
+      logger.debug { "Init Slf4j-Bridge" }
+      LogManager.getLogManager().reset();
+      SLF4JBridgeHandler.install();
+    }
   }
 }

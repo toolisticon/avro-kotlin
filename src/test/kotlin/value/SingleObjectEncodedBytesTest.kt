@@ -8,18 +8,21 @@ import org.junit.jupiter.api.Test
 internal class SingleObjectEncodedBytesTest {
 
   @Test
-  fun `can read from hex String`() {
-    val bytes = ByteArrayValue(FooString.SINGLE_OBJECT_BAR)
+  fun `can construct from hex String`() {
+    val soe = SingleObjectEncodedBytes(FooString.SINGLE_OBJECT_BAR)
+    println(FooString.SINGLE_OBJECT_BAR.formatted)
+    println("--")
+    println(soe.fingerprint.hex.formatted)
+    println("--")
 
-    val soe = SingleObjectEncodedBytes(bytes.value)
-
-    assertThat(soe.hex.formatted).isEqualTo(FooString.SINGLE_OBJECT_BAR)
-    assertThat(soe.payload.formatted).isEqualTo("[06 62 61 72]")
+    assertThat(soe.hex).isEqualTo(FooString.SINGLE_OBJECT_BAR)
+    assertThat(soe.payload.hex.formatted).isEqualTo("[06 62 61 72]")
+    assertThat(soe.fingerprint.hex.formatted).isEqualTo("[1D 6C 12 78 03 3B 7C A0]")
   }
 
   @Test
   fun `encode fooString and derive fingerprint from bytes`() {
-    val record = FooString.genericRecord(FooString("bar"))
+    val record = FooString("bar").toGenericRecord()
     val encoded = AvroKotlin.genericRecordToSingleObjectEncoded(record)
 
     assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)

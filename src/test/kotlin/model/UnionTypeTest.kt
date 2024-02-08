@@ -22,7 +22,7 @@ internal class UnionTypeTest {
   fun `string union`() {
     val union = UnionType(union(primitiveSchema(STRING)))
 
-    assertThat(union.fingerprint).hasToString("362163B6A7722846")
+    assertThat(union.fingerprint).hasToString("462872A7B6632136")
     assertThat(union.types).hasSize(1)
     assertThat(union.isNullable).isFalse()
     assertThat(union).hasToString("UnionType(types=[string])")
@@ -32,7 +32,7 @@ internal class UnionTypeTest {
   fun `nullable string union`() {
     val union = UnionType(union(primitiveSchema(NULL), primitiveSchema(STRING)))
 
-    assertThat(union.fingerprint).hasToString("9845F21EB77EC49D")
+    assertThat(union.fingerprint).hasToString("9DC47EB71EF24598")
     assertThat(union.types).hasSize(2)
     assertThat(union.isNullable).isTrue()
   }

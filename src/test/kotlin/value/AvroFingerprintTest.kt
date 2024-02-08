@@ -4,15 +4,19 @@ import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.parseProtocol
 import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
 import io.toolisticon.avro.kotlin.AvroParser
+import io.toolisticon.avro.kotlin._test.FooString
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.NULL
 import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
+import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.toBytes
+import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.readLong
 import org.apache.avro.LogicalTypes.decimal
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 
 internal class AvroFingerprintTest {
 
@@ -169,5 +173,19 @@ internal class AvroFingerprintTest {
     assertThat(AvroFingerprint(schemaFoo).value).isEqualTo(5240102248166447335L)
   }
 
+  @Test
+  fun `derive fingerprint from single object encoded bytes`() {
+    val fp = FooString.SCHEMA.fingerprint.value
 
+    val bytes = FooString.SINGLE_OBJECT_BAR.byteArray
+    val fingerprint = AvroFingerprint(bytes)
+    assertThat(fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
+  }
+
+  @Test
+  fun `long from to bytes`() {
+    val long = Random.nextLong()
+    val bytes = long.toBytes()
+    assertThat(bytes.readLong()).isEqualTo(long)
+  }
 }

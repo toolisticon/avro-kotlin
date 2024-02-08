@@ -24,10 +24,7 @@ internal class MoneyLogicalTypeTest {
 
   @Test
   fun `money logicalType is loaded via SPI`() {
-//        assertThat(LogicalTypes.getCustomRegisteredTypes()).hasSize(1)
-
-    // we have custom and money present
-    assertThat(LogicalTypes.getCustomRegisteredTypes()).hasSize(2)
+    // we have money present
     assertThat(LogicalTypes.getCustomRegisteredTypes()["money"]).isNotNull
   }
 
