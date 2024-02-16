@@ -1,12 +1,14 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import io.toolisticon.avro.kotlin.value.AvroHashCode
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.WithObjectProperties
-
 
 /**
  * Unions, as mentioned above, are represented using JSON arrays. For example, ["null", "string"] declares a schema which may be either a null or string.
@@ -44,18 +46,12 @@ class UnionType(override val schema: AvroSchema) :
     return this.schema
   }
 
-  override fun toString() = "UnionType(types=${types.map { it.name }})"
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (other !is UnionType) return false
-
-    if (schema != other.schema) return false
-
-    return true
+  override fun toString() = StringKtx.toString("UnionType") {
+    add("types", types.map { it.name })
+    addIfNotNull("documentation", schema.documentation)
+    addIfNotEmpty("properties", properties)
   }
 
-  override fun hashCode(): Int {
-    return schema.hashCode()
-  }
+  override fun equals(other: Any?) = equalsFn(other)
+  override fun hashCode() = hashCodeFn()
 }

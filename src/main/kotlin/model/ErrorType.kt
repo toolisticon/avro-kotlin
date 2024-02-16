@@ -1,11 +1,11 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
-import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 
 
 /**
@@ -32,11 +32,11 @@ class ErrorType(override val schema: AvroSchema) :
 
   override val typesMap: AvroTypesMap = AvroTypesMap(fields.map { it.schema })
 
-  override fun toString(): String {
-    return "ErrorType(name='$canonicalName'" +
-      ", hashCode='$hashCode', fingerprint='$fingerprint'" + documentation.shortenedIfPresent() +
-      ", fields=$fields" +
-      ")"
+  override fun toString() = toString("ErrorType") {
+    add("hashCode", hashCode)
+    add("fingerprint", fingerprint)
+    addIfNotNull("documentation", documentation)
+    add("fields", fields)
   }
 
   override fun equals(other: Any?) = equalsFn(other)

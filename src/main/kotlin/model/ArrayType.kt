@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -28,7 +29,10 @@ class ArrayType(override val schema: AvroSchema) :
 
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(elementType.schema) }
 
-  override fun toString() = "${this::class.simpleName}(type=${elementType.name})"
+  override fun toString() = toString("ArrayType") {
+    add("type", elementType.name)
+    addIfNotEmpty("properties", properties)
+  }
 
   override fun equals(other: Any?): Boolean = equalsFn(other)
   override fun hashCode(): Int = hashCodeFn()

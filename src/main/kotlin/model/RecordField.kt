@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaField
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
@@ -19,4 +20,9 @@ value class RecordField(private val schemaField: AvroSchemaField) : AvroType, Wi
   val type: AvroType get() = AvroType.avroType(schema)
 
   override val documentation: Documentation? get() = schemaField.documentation
+
+  override fun toString() = toString("RecordField") {
+    addIfNotNull("documentation", schemaField.documentation)
+    addIfNotEmpty("properties", properties)
+  }
 }

@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import _ktx.StringKtx.csv
+import _ktx.StringKtx
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
@@ -24,10 +24,7 @@ value class BooleanType(override val schema: AvroSchema) : AvroPrimitiveType, Sc
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
   override val properties: ObjectProperties get() = schema.properties
 
-
-  override fun toString() = "${this::class.simpleName}(" +
-    csv(
-      if (properties.isNotEmpty()) "properties=$properties" else null
-    ) +
-    ")"
+  override fun toString() = StringKtx.toString("BooleanType") {
+    addIfNotEmpty("properties", properties)
+  }
 }

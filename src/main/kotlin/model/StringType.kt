@@ -1,7 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import _ktx.StringKtx.csv
-import _ktx.StringKtx.nullableToString
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.AvroKotlin.logicalTypeName
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
@@ -29,9 +28,9 @@ value class StringType(override val schema: AvroSchema) :
   override val logicalType: LogicalType? get() = schema.logicalType
   override val logicalTypeName: LogicalTypeName? get() = logicalTypeName(logicalType)
 
-  override fun toString() = "${this::class.simpleName}(" +
-    csv(
-      logicalType?.name.nullableToString("logicalType='", suffix = "'"),
-      if (properties.isNotEmpty()) "properties=$properties" else null
-    ) + ")"
+  override fun toString() = toString("StringType") {
+    addIfNotNull("documentation", schema.documentation)
+    addIfNotNull("logicalType", logicalTypeName, "'")
+    addIfNotEmpty("properties", properties)
+  }
 }

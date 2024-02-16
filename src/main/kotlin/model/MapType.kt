@@ -1,5 +1,8 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
+import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
@@ -30,17 +33,12 @@ class MapType(override val schema: AvroSchema) :
 
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(valueType.schema) }
 
-  override fun toString() = "MapType(type=${valueType.name})"
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (other !is MapType) return false
-
-    if (schema != other.schema) return false
-
-    return true
+  override fun toString() = StringKtx.toString("MapType") {
+    add("type", valueType.name)
+    addIfNotNull("documentation", schema.documentation)
+    addIfNotEmpty("properties", properties)
   }
 
-  override fun hashCode(): Int {
-    return schema.hashCode()
-  }
+  override fun equals(other: Any?): Boolean = equalsFn(other)
+  override fun hashCode(): Int = hashCodeFn()
 }

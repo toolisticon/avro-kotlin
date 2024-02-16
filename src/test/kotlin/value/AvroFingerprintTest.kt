@@ -175,11 +175,11 @@ internal class AvroFingerprintTest {
 
   @Test
   fun `derive fingerprint from single object encoded bytes`() {
-    val fp = FooString.SCHEMA.fingerprint.value
+    val fp = FooString.SCHEMA.fingerprint
 
     val bytes = FooString.SINGLE_OBJECT_BAR.byteArray
     val fingerprint = AvroFingerprint(bytes)
-    assertThat(fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
+    assertThat(fingerprint).isEqualTo(fp)
   }
 
   @Test

@@ -2,10 +2,8 @@ package io.toolisticon.avro.kotlin.model
 
 import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BOOLEAN
-import io.toolisticon.avro.kotlin.value.JsonString
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -23,9 +21,6 @@ internal class RecordTypeTest {
   @Test
   fun `create recordType`() {
     val resource = resourceUrl("schema/SimpleStringRecord.avsc")
-
-    val s = TestFixtures.parseSchema(JsonString(resource.readText()))
-
     val schema = AvroKotlin.parseSchema(resource)
 
     val record: RecordType = AvroType.avroType(schema)

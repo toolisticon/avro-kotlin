@@ -1,12 +1,12 @@
 package io.toolisticon.avro.kotlin.model
 
 import _ktx.StringKtx
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
-import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 
 
 /**
@@ -45,17 +45,19 @@ class RecordType(override val schema: AvroSchema) :
 
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(fields.map { it.schema }) }
 
-  override fun toString(): String {
-    val toStringName: String = StringKtx.ifTrue(
+  override fun toString() = toString(
+    StringKtx.ifTrue(
       isRoot,
       "RootRecordType",
       "RecordType"
     )
-
-    return "$toStringName(name='${if (namespace == null) name else name + namespace!!}'" +
-      ", hashCode='$hashCode', fingerprint='$fingerprint'" + documentation.shortenedIfPresent() +
-      ", fields=$fields" +
-      ")"
+  ) {
+    add("name", canonicalName)
+    add("hashCode", hashCode)
+    add("fingerprint", fingerprint)
+    addIfNotNull("documentation", schema.documentation)
+    addIfNotEmpty("properties", properties)
+    addIfNotEmpty("fields", fields)
   }
 
   override fun equals(other: Any?) = equalsFn(other)

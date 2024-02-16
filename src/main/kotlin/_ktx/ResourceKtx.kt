@@ -29,7 +29,7 @@ object ResourceKtx {
     resource: String,
     path: String? = null,
     classLoader: ClassLoader = AvroKotlin.DEFAULT_CLASS_LOADER
-  ): URL = resourceUrl(Path(path ?: "").resolve(resource))
+  ): URL = resourceUrl(resourcePath = Path(path ?: "").resolve(resource), classLoader = classLoader)
 
   fun resourceUrl(resourcePath: Path, classLoader: ClassLoader = AvroKotlin.DEFAULT_CLASS_LOADER): URL =
     with(resourcePath.toString().removeSeparatorPrefix()) {

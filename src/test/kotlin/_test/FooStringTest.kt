@@ -53,10 +53,6 @@ internal class FooStringTest {
 
     assertThat(AvroCodec.defaultGenericData.validate(record.schema, record)).isTrue()
 
-
-    val reader = AvroKotlin.genericDataWithConversions.createDatumReader(FooString.SCHEMA.get())
-
-
     val record2: GenericData.Record = AvroCodec.defaultGenericData.newRecord(
       record,
       FooString2.SCHEMA.get(),

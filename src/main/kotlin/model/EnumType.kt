@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import _ktx.StringKtx.nullableToString
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
@@ -28,10 +28,13 @@ value class EnumType(override val schema: AvroSchema) :
   fun hasEnumSymbol(symbol: String) = symbols.contains(symbol)
   fun enumOrdinal(symbol: String) = symbols.indexOf(symbol)
 
-  override fun toString() = "EnumType(" +
-    namespace.nullableToString("namespace='", suffix = "'") +
-    documentation.nullableToString(", documentation=") +
-    ", symbols=${symbols}" +
-    defaultSymbol.nullableToString(", defaultSymbol='", suffix = "'") +
-    ")"
+
+  override fun toString() = toString("EnumType") {
+    addIfNotNull(property = "namespace", value = namespace, wrap = "'")
+    addIfNotNull(property = "documentation", value = documentation, wrap = "'")
+    add(property = "symbols", symbols)
+    addIfNotNull(property = "defaultSymbol", value = defaultSymbol, wrap = "'")
+    addIfNotEmpty("properties", properties)
+  }
+
 }

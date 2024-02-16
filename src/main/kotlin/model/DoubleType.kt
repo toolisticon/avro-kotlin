@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
@@ -26,5 +27,7 @@ value class DoubleType(override val schema: AvroSchema) :
   override val hashCode: AvroHashCode get() = schema.hashCode
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
 
-  override fun toString() = schema.name.toString()
+  override fun toString() = toString("DoubleType") {
+    addIfNotEmpty("properties", properties)
+  }
 }
