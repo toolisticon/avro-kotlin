@@ -9,7 +9,7 @@ import java.util.function.Supplier
 @JvmInline
 value class BinaryEncodedBytes(override val value: ByteArray) : ByteArrayValueType, Supplier<ByteArray> {
 
-  override fun get(): ByteArray  = value
+  override fun get(): ByteArray = value
 
   override fun toString() = hex.formatted
 }

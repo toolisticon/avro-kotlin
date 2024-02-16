@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin
 
+import _ktx.ResourceKtx.findAvroResources
+import _ktx.ResourceKtx.loadJsonString
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.findAvroResources
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadJsonString
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.CanonicalName
@@ -62,7 +62,6 @@ object TestFixtures {
   )
 
 
-
   /**
    * This is the avro single object encoded hex representation of `FooString(str="bar")`.
    *
@@ -82,12 +81,12 @@ object TestFixtures {
   /**
    * A simple schema containing only one string `value`.
    */
-  val schemaFoo = simpleStringValueSchema(Namespace("com.acme.test"), Name("Foo"))
+  val schemaFoo = AvroSchema(simpleStringValueSchema(Namespace("com.acme.test"), Name("Foo")))
 
   /**
    * A simple schema containing only one string `value`.
    */
-  val schemaBar = simpleStringValueSchema(Namespace("com.acme.dummy"), Name("Bar"))
+  val schemaBar = AvroSchema(simpleStringValueSchema(Namespace("com.acme.dummy"), Name("Bar")))
 
   fun simpleStringValueSchema(namespace: Namespace, name: Name) = SchemaBuilder.record(name.value)
     .namespace(namespace.value)

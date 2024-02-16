@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.value
 
 import org.apache.avro.message.BadHeaderException
 import org.apache.avro.message.BinaryMessageEncoder
-import kotlin.jvm.Throws
 
 
 /**

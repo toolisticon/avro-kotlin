@@ -1,16 +1,31 @@
 package io.toolisticon.avro.kotlin.ktx
 
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
+import _ktx.StringKtx
+import _ktx.StringKtx.trimToNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 
 internal class StringKtxTest {
 
+  @ParameterizedTest
+  @CsvSource(
+    value = [
+      "null,null",
+      ",null",
+      " ,null",
+      " h ,h",
+    ], nullValues = ["null"]
+  )
+  fun `String trimToNull`(input: String?, expected: String?) {
+    assertThat(input.trimToNull()).isEqualTo(expected)
+  }
+
   @Test
-  fun `trim to null`() {
-    assertThat(null.trimToNull()).isEqualTo(null)
-    assertThat("".trimToNull()).isEqualTo(null)
-    assertThat(" ".trimToNull()).isEqualTo(null)
-    assertThat(" h ".trimToNull()).isEqualTo(" h ")
+  fun `csv of non null strings`() {
+    assertThat(StringKtx.csv()).isEqualTo("")
+    assertThat(StringKtx.csv(null)).isEqualTo("")
+    assertThat(StringKtx.csv("1")).isEqualTo("1")
   }
 }

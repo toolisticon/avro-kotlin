@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.codec
 
 import io.toolisticon.avro.kotlin.codec.AvroCodec.AvroSchemaSupplier
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
 import org.apache.avro.message.BinaryMessageDecoder
@@ -36,10 +35,4 @@ class GenericRecordSingleObjectDecoder private constructor(
       readerSchema().get()
     ).decode(singleObjectEncodedBytes.value)
   }
-
-//  }
-//    return BinaryMessageDecoder<GenericData.Record>(
-//      genericData,
-//      readerSchema().get(), schemaStore.schemaStore).decode(singleObjectEncodedBytes.value)
-//  }
 }

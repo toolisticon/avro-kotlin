@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin._test.FooString
 import org.apache.avro.message.BadHeaderException
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 

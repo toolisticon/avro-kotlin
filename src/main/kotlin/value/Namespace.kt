@@ -34,10 +34,3 @@ value class Namespace(override val value: String) : ValueType<String> {
 
   override fun toString() = value
 }
-
-//fun String.withNamespace(namespace: String?): String = if (this.contains(".") || namespace == null) {
-//  this
-//} else {
-//  "$namespace.$this"
-//}
-

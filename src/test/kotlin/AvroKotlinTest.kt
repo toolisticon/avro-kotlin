@@ -1,20 +1,18 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin.SchemaKtx.writeToDirectory
+import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
+import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.Directory
-import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
+import kotlin.io.path.Path
 
 internal class AvroKotlinTest {
 
@@ -26,29 +24,29 @@ internal class AvroKotlinTest {
   }
 
   @Test
-  @Disabled("fix protocol")
   fun `can load protocol from resources`() {
     val cn = TestFixtures.fqnFindCurrentBalance
+    val url = resourceUrl(Path("/avro").resolve(cn.toPath(AvroSpecification.PROTOCOL)))
 
-//    val protocol: Protocol = fqn.fromResource(prefix = "avro")
-//
-//    assertThat((protocol.namespace)).isEqualTo(fqn.namespace)
-//    assertThat((protocol.name)).isEqualTo(fqn.name)
+    val protocol: AvroProtocol = AvroKotlin.parseProtocol(url)
+
+    assertThat((protocol.namespace)).isEqualTo(cn.namespace)
+    assertThat((protocol.name)).isEqualTo(cn.name)
   }
 
 
   @Test
-  @Disabled("remove")
-  @Deprecated("remove")
-  fun `can load schema from resources`() {
+  fun `can load schema from resources via fqn`() {
     val cn = TestFixtures.fqnBankAccountCreated
-    val fqn = TODO() //schema(TestFixtures.fqnBankAccountCreated)
+    val url = resourceUrl(
+      Path("/avro").resolve(cn.toPath(AvroSpecification.SCHEMA))
+    )
 
-    val schema: Schema = TODO() //fqn.fromResource(prefix = "avro")
+    val schema: AvroSchema = AvroKotlin.parseSchema(url)
 
     assertThat(schema).isNotNull
-//    assertThat((schema.namespace)).isEqualTo(fqn.namespace.value)
-//    assertThat((schema.name)).isEqualTo(fqn.name.value)
+    assertThat((schema.namespace)).isEqualTo(cn.namespace)
+    assertThat((schema.name)).isEqualTo(cn.name)
   }
 
   @Test
@@ -73,34 +71,6 @@ internal class AvroKotlinTest {
     assertThat(readFromFile).isEqualTo(protocol)
   }
 
-  @Test
-  @Disabled("remove")
-  @Deprecated("remove")
-  fun `test mismatch exception`() {
-//
-//    assertThatThrownBy {
-//      AvroKotlin.verifyPackagePathConvention(
-//        SchemaFqn(Namespace("foo"), Name("Baz")),
-//        SchemaFqn(Namespace("foo.bar"), Name("Baz"))
-//      )
-//    }.isInstanceOf(AvroDeclarationMismatchException::class.java)
-//      .hasMessage("violation of package-path convention: found declaration fqn='foo.Baz' but was loaded from path='foo/bar/Baz.avsc'")
-  }
-
-
-  @Test
-  @Disabled("remove")
-  @Deprecated("remove")
-  fun `find all schemaDeclarations`() {
-
-
-    TestFixtures.schemaFoo.writeToDirectory(tmpDir)
-    TestFixtures.schemaBar.writeToDirectory(tmpDir)
-
-//    val found = AvroKotlin.findDeclarations(tmpDir.toPath())
-//
-//    assertThat(found).hasSize(2)
-  }
 
   @Test
   fun `create generic record`() {

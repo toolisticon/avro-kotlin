@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.csv
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+import _ktx.StringKtx.csv
+import _ktx.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.AvroKotlin.logicalTypeName
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier

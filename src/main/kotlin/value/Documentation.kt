@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
+import _ktx.StringKtx.nullableToString
 
 
 /**

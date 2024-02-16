@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.declaration
 
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
+import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.model.*

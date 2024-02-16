@@ -7,8 +7,9 @@ import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 
+
 /**
- * Same as [RecordType] but for [org.apache.avro.Protocol] errors.
+ * Error is a special [RecordType] that is used to define exceptions on [org.apache.avro.Protocol].Messages.
  */
 class ErrorType(override val schema: AvroSchema) :
   AvroNamedType,

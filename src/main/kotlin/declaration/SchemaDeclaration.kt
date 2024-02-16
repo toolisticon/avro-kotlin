@@ -1,9 +1,9 @@
 package io.toolisticon.avro.kotlin.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.RecordType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSource
 import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
 import io.toolisticon.avro.kotlin.value.JsonString
 

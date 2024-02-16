@@ -1,7 +1,8 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx
+import _ktx.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.nullableToString
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
@@ -25,7 +26,7 @@ value class FixedType(override val schema: AvroSchema) :
 
 
   override fun toString() = "FixedType(" +
-    AvroKotlin.StringKtx.csv(
+    StringKtx.csv(
       namespace.nullableToString("namespace='", suffix = "'"),
       documentation.nullableToString(", documentation="),
       logicalType?.name.nullableToString("logicalType='", suffix = "'"),

@@ -3,7 +3,6 @@ package io.toolisticon.avro.kotlin.model
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
 import io.toolisticon.avro.kotlin.value.Documentation
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.LogicalType

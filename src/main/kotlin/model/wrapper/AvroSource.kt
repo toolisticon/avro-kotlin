@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.JsonString

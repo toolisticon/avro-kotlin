@@ -1,13 +1,13 @@
 package io.toolisticon.avro.kotlin
 
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.loadJsonString
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.toReadableString
+import _ktx.ResourceKtx.loadJsonString
+import _ktx.ResourceKtx.resourceUrl
+import _ktx.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.JsonSource
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.JsonSource
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA

@@ -13,9 +13,13 @@ value class HexString private constructor(private val single: Single<String>) : 
 
     private fun format(value: Any) = "%02X".format(value)
     private fun join(value: String) = value.chunked(2).joinToString(DEFAULT_FORMAT.first, DEFAULT_FORMAT.second, DEFAULT_FORMAT.third)
+
+
   }
 
-  // parse a formatted bytes-hex-string
+  /**
+   * Parses a formatted bytes-hex-string.
+   */
   constructor(formatted: String) : this(
     Single(
       formatted.removePrefix("[")
@@ -50,7 +54,7 @@ value class HexString private constructor(private val single: Single<String>) : 
       .map { it.toByte() }.toByteArray()
     )
 
-  val chunked : List<String> get() = value.chunked(BYTES_SIZE)
+  val chunked: List<String> get() = value.chunked(BYTES_SIZE)
 
   override fun toString() = value
 }

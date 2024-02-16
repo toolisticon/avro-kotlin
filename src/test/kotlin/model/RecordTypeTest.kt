@@ -1,8 +1,7 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BOOLEAN
@@ -19,6 +18,7 @@ internal class RecordTypeTest {
       RecordType(primitiveSchema(BOOLEAN))
     }.isInstanceOf(IllegalStateException::class.java)
   }
+
 
   @Test
   fun `create recordType`() {

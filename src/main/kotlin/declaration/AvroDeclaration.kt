@@ -1,8 +1,8 @@
 package io.toolisticon.avro.kotlin.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroSource
 import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.WithDocumentation
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSource
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name

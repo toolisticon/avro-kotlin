@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
+import _ktx.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.AvroKotlin.Separator.NAME
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.trimToNull
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import kotlin.io.path.Path

@@ -3,12 +3,7 @@ package io.toolisticon.avro.kotlin
 import io.toolisticon.avro.kotlin.declaration.AvroDeclaration
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
-import io.toolisticon.avro.kotlin.model.AvroSource
-import io.toolisticon.avro.kotlin.model.FileSource
-import io.toolisticon.avro.kotlin.model.JsonSource
-import io.toolisticon.avro.kotlin.model.ResourceSource
-import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.JsonString
 import mu.KLogging
@@ -43,12 +38,12 @@ class AvroParser(
   private fun schemaDeclaration(schema: AvroSchema, source: AvroSource): SchemaDeclaration {
     requireNotNull(schema.namespace) { "A top level schema declaration must have a namespace." }
     requireNotNull(schema.name) { "A schema must have a name." }
-    // FIXME: validate packageConvention here!
+    // FIXME: validate packageConvention here, see issue #18!
     return SchemaDeclaration(schema, source)
   }
 
   private fun protocolDeclaration(protocol: AvroProtocol, source: AvroSource): ProtocolDeclaration {
-    // FIXME: validate packageConvention here!
+    // FIXME: validate packageConvention here, see issue #18!
     return ProtocolDeclaration(protocol = protocol, source = source)
   }
 

@@ -12,24 +12,20 @@ internal class DirectoryTest {
   @TempDir
   private lateinit var tmp: Path
 
-  @Test
-  fun `verify toString`() {
-    assertThat(Directory(tmp).toString())
-      .startsWith("Directory(/")
-      .endsWith(")")
-  }
+  private val dir by lazy { Directory(tmp) }
 
   @Test
-  fun walk() {
-    Directory(tmp).walk().forEach {
-      println(it)
-    }
+  fun `verify toString`() {
+    assertThat(dir.toString())
+      .startsWith("Directory('/")
+      .endsWith("')")
   }
+
 
   @Test
   fun `resolve path under dir`() {
     val path = Path("foo/bar/File.txt")
-    val result = Directory(tmp).resolve(path)
+    val result = dir.resolve(path)
 
     assertThat(result.toString()).startsWith(tmp.toString())
     assertThat(result.toString()).endsWith(path.toString())
@@ -37,11 +33,9 @@ internal class DirectoryTest {
 
   @Test
   fun `write json to dir`() {
-    val dir = Directory(tmp)
-
     val schema = TestFixtures.RECORD_MAP_WITH_NULLABLE_UUIDS
 
-    val file = dir.write(
+    dir.write(
       fqn = schema.canonicalName,
       type = AvroSpecification.SCHEMA,
       content = schema.json
@@ -57,4 +51,32 @@ internal class DirectoryTest {
 
     assertThat(writtenSchema.toString()).endsWith("/xxx/yyy/Foo.avsc")
   }
+
+  @Test
+  fun `find all schemaDeclarations`() {
+    assertThat(dir.findSchemaFiles().toList()).isEmpty()
+
+    val schemaFoo = TestFixtures.schemaFoo
+    val schemaBar = TestFixtures.schemaBar
+
+    dir.write(schemaFoo)
+    dir.write(schemaBar)
+    assertThat(dir.findSchemaFiles().toList()).hasSize(2)
+  }
+
+
+  @Test
+  fun `extract subpath`() {
+
+    val root = dir.mkDir("ggg")
+    println(root)
+    println(dir.mkDir("com"))
+    val full = dir.mkDir("com").resolve("acme/baz/hello.world")
+    println(full)
+
+    val sub = root.relativize(full)
+
+    assertThat(sub.toString()).isEqualTo("../com/acme/baz/hello.world")
+  }
+
 }

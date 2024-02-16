@@ -5,7 +5,6 @@ import org.apache.avro.Conversion
 import org.apache.avro.Conversions
 import org.apache.avro.data.TimeConversions
 import java.time.Duration
-import kotlin.jvm.Throws
 
 /**
  * Represents all 10 logical types that are defined by the [official avro implementation](https://avro.apache.org/docs/1.11.1/specification/#logical-types).
@@ -52,8 +51,8 @@ enum class BuiltInLogicalType(
    * that represent durations at different granularities of time. The first stores a number in months, the second stores
    * a number in days, and the third stores a number in milliseconds.
    *
-   * @Deprecated("Duration is not supported by apache-avro-java.")
    */
+  @Deprecated("Duration is not supported by apache-avro-java.")
   DURATION(
     logicalTypeName = LogicalTypeName("duration"),
     conversion = object : Conversion<Duration>() {

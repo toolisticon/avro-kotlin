@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
+import _ktx.StringKtx.firstUppercase
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroKotlin.StringKtx.firstUppercase
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.*
 import io.toolisticon.avro.kotlin.value.*
@@ -216,90 +216,3 @@ class AvroProtocol(
   override fun hashCode(): Int = protocol.hashCode()
 
 }
-
-//private inner class ProcessProtocol(val protocol: Protocol, source: AvroSource) : ProcessAvro<ProtocolDeclaration>(
-//    namespace = Namespace(requireNotNull(protocol.namespace) { "A protocol must have a namespace" }),
-//    name = with(protocol.name) {
-//      require(this != null && !this.contains(".")) { "A protocol name must be a simpleName, not an FQN (basically: contain no dots)." }
-//      Name(this)
-//    },
-//    json = JsonString(protocol),
-//    source = source
-//  ) {
-//  }
-
-// FIXME
-///**
-// * Load from resource.
-// *
-// * @param prefix optional path inside the classpath if not in root
-// * @param classLoader optional -  if specific one is required, otherwise classloader of [AvroKotlin] is used
-// * @return parsed avro schema  instance
-// */
-//fun SchemaFqn.fromResource(
-//  prefix: String? = null,
-//  classLoader: ClassLoader = DEFAULT_CLASS_LOADER
-//): Schema = parseFromResource(
-//  namespace = namespace,
-//  name = name,
-//  fileExtension = this.fileExtension,
-//  classLoader = classLoader,
-//  prefix = prefix
-//) { Schema.Parser().parse(it) }
-//
-///**
-// * Read [Schema] from directory assuming file has canonical path.
-// */
-//fun SchemaFqn.fromDirectory(dir: File, failOnFqnMismatch: Boolean = true): Schema {
-//  val avscFile: File = dir.file(path).toFile()
-//  if (!avscFile.exists() || avscFile.isDirectory) {
-//    throw FileNotFoundException("could not read from file=$avscFile")
-//  }
-//
-//  val schema: Schema = Schema.Parser().parse(avscFile)
-//
-//  if (failOnFqnMismatch) {
-//    val schemaFqn = schema.fqn()
-//    if (schemaFqn != this) {
-//      throw AvroDeclarationMismatchException(schemaFqn, this)
-//    }
-//  }
-//
-//  return schema
-//}
-
-
-// FIXME
-///**
-// * Represents a (json) avro [Protocol] file. Based on this information the file can be read from resource and read/written from/to a file.
-// */
-//@Deprecated("remove")
-//data class ProtocolFqn(val namespace: Namespace, val name: Name) : GenericAvroDeclarationFqn(
-//  namespace = namespace, name = name, fileExtension = AvroKotlin.Constants.EXTENSION_PROTOCOL
-//) {
-//
-//  override fun toString(): String = super.toString()
-//}
-//
-///**
-// * Load from resource.
-// *
-// * @param prefix optional path inside the classpath if not in root
-// * @param classLoader optional - if specific one is required, otherwise classloader of [AvroKotlin] is used
-// * @return parsed avro  protocol instance
-// */
-//fun ProtocolFqn.fromResource(
-//  prefix: String? = null,
-//  classLoader: ClassLoader = AvroKotlin.Constants.DEFAULT_CLASS_LOADER
-//): Protocol = parseFromResource(
-//  namespace = namespace,
-//  name = name,
-//  fileExtension = this.fileExtension,
-//  classLoader = classLoader,
-//  prefix = prefix
-//) { Protocol.parse(it) }
-//
-///**
-// * Read [Protocol] from directory assuming file has canonical path.
-// */
-//fun ProtocolFqn.fromDirectory(dir: File): Protocol = Protocol.parse(dir.file(path).toFile())
