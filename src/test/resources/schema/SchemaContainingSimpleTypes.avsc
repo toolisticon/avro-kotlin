@@ -1,0 +1,46 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SimpleTypesRecord",
+  "type": "record",
+  "doc": "This is a record with a simple type value.",
+  "free_props": {
+    "e1": 5,
+    "e2": "foo"
+  },
+  "logicalType": "local-timestamp-micros",
+  "fields": [
+    {
+      "name": "stringValue",
+      "doc": "This is a string doc.",
+      "foo": "bar",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid",
+        "props": {
+          "length": 2
+        }
+      },
+      "default": "Hello World"
+    },
+    {
+      "name": "intValue",
+      "doc": "This is a int doc.",
+      "type": "int"
+    },
+    {
+      "name": "doubleValue",
+      "doc": "This is a double doc.",
+      "type": "double"
+    },
+    {
+      "name": "floatValue",
+      "doc": "This is a float doc.",
+      "type": "float"
+    },
+    {
+      "name": "booleanValue",
+      "doc": "This is a boolean doc.",
+      "type": "boolean"
+    }
+  ]
+}

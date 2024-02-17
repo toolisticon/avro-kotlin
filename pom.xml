@@ -1,73 +1,57 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>io.toolisticon.maven.parent</groupId>
+    <artifactId>maven-parent-kotlin-base</artifactId>
+    <version>2024.2.0</version>
+    <relativePath/>
+  </parent>
+
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>1.11.1.1</version>
+  <version>1.11.2.0</version>
+
   <name>${project.artifactId}</name>
-  <description>opinionated extension functions and helpers for using apache avro with kotlin</description>
+  <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
 
   <properties>
-    <!-- JVM -->
-    <kotlin.version>1.7.20</kotlin.version>
-    <kotlin-logging.version>3.0.2</kotlin-logging.version>
-    <java.version>11</java.version>
-
     <!-- LIB -->
-    <avro.version>1.11.1</avro.version>
+    <avro.version>1.11.3</avro.version>
+    <commons-compress.version>1.25.0</commons-compress.version>
+    <jackson.version>2.16.1</jackson.version>
 
     <!-- TEST -->
-    <assertj.version>3.23.1</assertj.version>
-    <equalsverifier.version>3.10</equalsverifier.version>
-    <jackson.version>2.14.0-rc2</jackson.version>
-    <jimfs.version>1.2</jimfs.version>
-    <junit5.version>5.9.0</junit5.version>
-    <logback.version>1.2.11</logback.version>
-    <mockito.version>4.0.0</mockito.version>
+    <assertj.version>3.25.3</assertj.version>
+    <equalsverifier.version>3.15.6</equalsverifier.version>
+    <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
+    <logback.version>1.4.14</logback.version>
+    <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
+    <moneta.version>1.4.4</moneta.version>
+    <okio.version>3.8.0</okio.version>
+    <slf4j.version>2.0.11</slf4j.version>
 
-    <!-- MAVEN -->
-    <project.encoding>UTF-8</project.encoding>
-    <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-    <maven-dokka.version>1.7.20</maven-dokka.version>
-    <maven-surefire.version>3.0.0-M7</maven-surefire.version>
+    <project.generated.test>${project.build.directory}/generated-test-sources/avro</project.generated.test>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-bom</artifactId>
-        <version>${kotlin.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>${junit5.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- KOTLIN -->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <version>${kotlin-logging.version}</version>
+      <scope>provided</scope>
     </dependency>
     <!-- /KOTLIN -->
 
@@ -77,17 +61,44 @@
       <artifactId>avro</artifactId>
       <version>${avro.version}</version>
       <exclusions>
+        <!-- Avro exposes old versions of Jackson, let us not re-expose them -->
         <exclusion>
-          <!-- databind 2.12.5 in avro 1.11.0 is vulnerable, so we exclude it and provide databind 2.13.3 instead -->
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <!-- exclude because v1.22 has vulnerability -->
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-compress</artifactId>
+        </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <!-- replaces transitive dependency of org.apache.avro:avro -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>${commons-compress.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${avro.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -97,7 +108,7 @@
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
-      <version>${mockito.version}</version>
+      <version>${mockito-kotlin.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- jupiter -->
@@ -131,11 +142,11 @@
       <version>${equalsverifier.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- jimfs -->
+
     <dependency>
-      <groupId>com.google.jimfs</groupId>
-      <artifactId>jimfs</artifactId>
-      <version>${jimfs.version}</version>
+      <groupId>org.javamoney.moneta</groupId>
+      <artifactId>moneta-core</artifactId>
+      <version>${moneta.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -146,6 +157,7 @@
       <version>${jackson.version}</version>
       <scope>test</scope>
     </dependency>
+
     <!-- logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -153,515 +165,86 @@
       <version>${logback.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tschuchortdev</groupId>
+      <artifactId>kotlin-compile-testing</artifactId>
+      <version>${kotlin-compile-testing.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.squareup.okio</groupId>
+          <artifactId>okio-jvm</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>${okio.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
-    <defaultGoal>clean jacoco:prepare-agent package</defaultGoal>
-    <resources>
-      <!-- ignore gitkeep marker files -->
-      <resource>
-        <directory>src/main/resources</directory>
-        <excludes>
-          <exclude>.gitkeep</exclude>
-        </excludes>
-      </resource>
-    </resources>
+
     <pluginManagement>
       <plugins>
-        <!-- cleaning -->
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-
-        <!-- Coverage metering -->
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.8</version>
-          <executions>
-            <execution>
-              <id>pre-unit-test</id>
-              <goals>
-                <goal>prepare-agent</goal>
-              </goals>
-              <configuration>
-                <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                <propertyName>surefireArgLine</propertyName>
-              </configuration>
-            </execution>
-            <execution>
-              <id>pre-integration-test</id>
-              <goals>
-                <goal>prepare-agent-integration</goal>
-              </goals>
-              <configuration>
-                <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
-                <propertyName>failsafeArgLine</propertyName>
-              </configuration>
-            </execution>
-            <execution>
-              <id>post-unit-test</id>
-              <phase>test</phase>
-              <goals>
-                <goal>report</goal>
-              </goals>
-              <configuration>
-                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-              </configuration>
-            </execution>
-            <execution>
-              <id>post-integration-test</id>
-              <phase>post-integration-test</phase>
-              <goals>
-                <goal>report</goal>
-              </goals>
-              <configuration>
-                <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- java compiler -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <release>${java.version}</release>
-          </configuration>
-          <executions>
-            <!-- Replacing default-compile as it is treated specially by maven -->
-            <execution>
-              <id>default-compile</id>
-              <phase>none</phase>
-            </execution>
-            <!-- Replacing default-testCompile as it is treated specially by maven -->
-            <execution>
-              <id>default-testCompile</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>java-compile</id>
-              <phase>compile</phase>
-              <goals>
-                <goal>compile</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>java-test-compile</id>
-              <phase>test-compile</phase>
-              <goals>
-                <goal>testCompile</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- kotlin compiler -->
-        <plugin>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-maven-plugin</artifactId>
-          <version>${kotlin.version}</version>
-          <configuration>
-            <jvmTarget>${java.version}</jvmTarget>
-            <compilerPlugins>
-              <!--<plugin>spring</plugin>-->
-              <!--plugin>jpa</plugin-->
-              <plugin>no-arg</plugin>
-              <plugin>all-open</plugin>
-            </compilerPlugins>
-            <pluginOptions>
-              <!-- Each annotation is placed on its own line -->
-              <!--  <option>all-open:annotation=com.tngtech.jgiven.integration.spring.JGivenStage</option> -->
-            </pluginOptions>
-          </configuration>
-
-          <executions>
-            <execution>
-              <id>compile</id>
-              <goals>
-                <goal>compile</goal>
-              </goals>
-              <configuration>
-                <sourceDirs>
-                  <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                </sourceDirs>
-              </configuration>
-            </execution>
-            <execution>
-              <id>test-compile</id>
-              <goals>
-                <goal>test-compile</goal>
-              </goals>
-              <configuration>
-                <sourceDirs>
-                  <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                  <sourceDir>${project.basedir}/src/test/java</sourceDir>
-                </sourceDirs>
-              </configuration>
-            </execution>
-          </executions>
-
-          <dependencies>
-            <dependency>
-              <groupId>org.jetbrains.kotlin</groupId>
-              <artifactId>kotlin-maven-allopen</artifactId>
-              <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.jetbrains.kotlin</groupId>
-              <artifactId>kotlin-maven-noarg</artifactId>
-              <version>${kotlin.version}</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-
-        <!-- resources -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-
-        <!-- Unit Tests -->
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire.version}</version>
-          <configuration>
-            <useSystemClassLoader>false</useSystemClassLoader>
-            <shutdown>kill</shutdown>
-            <runOrder>random</runOrder>
-            <argLine>--illegal-access=permit ${surefireArgLine} -Djava.awt.headless=true -XX:+StartAttachListener</argLine>
-            <excludes>
-              <exclude>**/*ITest.*</exclude>
-            </excludes>
-            <systemPropertyVariables>
-              <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
-
-        <!-- ITests -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.2</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>integration-test</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <argLine>--illegal-access=permit ${failsafeArgLine}</argLine>
-            <includes>
-              <include>**/*ITest.*</include>
-            </includes>
-            <systemPropertyVariables>
-              <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
-
-        <!-- Versions -->
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>versions-maven-plugin</artifactId>
-          <version>2.10.0</version>
-          <configuration>
-            <generateBackupPoms>false</generateBackupPoms>
-          </configuration>
-        </plugin>
-
-        <!-- JavaDoc for Kotlin -->
-        <plugin>
-          <groupId>org.jetbrains.dokka</groupId>
-          <artifactId>dokka-maven-plugin</artifactId>
-          <version>${maven-dokka.version}</version>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <id>attach-javadocs</id>
-              <goals>
-                <goal>javadocJar</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <jdkVersion>11</jdkVersion>
-            <!--
-            <includes>
-              <include>packages.md</include>
-              <include>extra.md</include>
-            </includes>
-            -->
-            <reportUndocumented>false</reportUndocumented>
-            <skipEmptyPackages>true</skipEmptyPackages>
-          </configuration>
-        </plugin>
-
-        <!-- JavaDoc for Java -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.4.0</version>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-              <configuration>
-                <encoding>UTF-8</encoding>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Source from Kotlin -->
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.3.0</version>
-          <executions>
-            <execution>
-              <id>add-kotlin-source</id>
-              <phase>generate-sources</phase>
-              <goals>
-                <goal>add-source</goal>
-              </goals>
-              <configuration>
-                <sources>
-                  <source>${project.basedir}/src/main/kotlin</source>
-                </sources>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Attach Sources -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <phase>package</phase>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-              <configuration>
-                <attach>true</attach>
-                <forceCreation>true</forceCreation>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- gitflow -->
-        <plugin>
-          <groupId>com.amashchenko.maven.plugin</groupId>
-          <artifactId>gitflow-maven-plugin</artifactId>
-          <version>1.18.0</version>
-          <configuration>
-            <gitFlowConfig>
-              <productionBranch>master</productionBranch>
-              <developmentBranch>develop</developmentBranch>
-              <featureBranchPrefix>feature/</featureBranchPrefix>
-              <releaseBranchPrefix>release/</releaseBranchPrefix>
-              <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-              <supportBranchPrefix>support/</supportBranchPrefix>
-              <origin>origin</origin>
-            </gitFlowConfig>
-            <useSnapshotInHotfix>true</useSnapshotInHotfix>
-            <useSnapshotInRelease>true</useSnapshotInRelease>
-            <keepBranch>false</keepBranch>
-            <pushRemote>true</pushRemote>
-          </configuration>
-        </plugin>
-
-        <!-- To sign the artifacts -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
-          <configuration>
-            <gpgArguments>
-              <arg>--batch</arg>
-              <arg>--yes</arg>
-              <arg>--pinentry-mode</arg>
-              <arg>loopback</arg>
-            </gpgArguments>
-          </configuration>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Deploy -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-
-        <!-- nexus staging -->
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.13</version>
-          <configuration>
-            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            <serverId>ossrh</serverId>
-            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          </configuration>
-          <executions>
-            <execution>
-              <id>default-deploy</id>
-              <phase>deploy</phase>
-              <goals>
-                <goal>deploy</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Install -->
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-
-        <!-- Enforce -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0</version>
-          <executions>
-            <execution>
-              <id>enforce-maven</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireJavaVersion>
-                    <version>11</version>
-                  </requireJavaVersion>
-                  <requireMavenVersion>
-                    <version>3.6.0</version>
-                  </requireMavenVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro-maven-plugin</artifactId>
+          <version>${avro.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <configuration>
+          <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+          <outputDirectory>${project.generated.test}</outputDirectory>
+          <gettersReturnOptional>true</gettersReturnOptional>
+          <createSetters>false</createSetters>
+          <stringType>string</stringType>
+          <stringType>String</stringType>
+          <enableDecimalLogicalType>true</enableDecimalLogicalType>
+          <gettersReturnOptional>false</gettersReturnOptional>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-test</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>schema</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>itest</id>
-      <build>
-        <defaultGoal>verify</defaultGoal>
-        <plugins>
-          <!-- surefire -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skipTests>true</skipTests>
-            </configuration>
-          </plugin>
-          <!-- failsafe -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <!--
-      Profile creating all artifacts: JARs, POMs, Sources, JavaDoc and all signatures.
-    -->
-    <profile>
-      <id>release</id>
-      <activation>
-        <property>
-          <name>release</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!-- source -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-          </plugin>
-          <!-- dokka -->
-          <plugin>
-            <groupId>org.jetbrains.dokka</groupId>
-            <artifactId>dokka-maven-plugin</artifactId>
-          </plugin>
-          <!-- build-helper -->
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-          </plugin>
-          <!-- gpg -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-          </plugin>
-          <!-- nexus staging -->
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <licenses>
     <license>

@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "foo.SimpleRecord",
+  "fields": [
+    {
+      "name": "value",
+      "type": "int"
+    },
+    {
+      "name": "nullableValue",
+      "type": [
+        "null",
+        "int"
+      ],
+      "doc": "doc"
+    }
+  ]
+}

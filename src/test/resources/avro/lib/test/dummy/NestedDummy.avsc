@@ -1,0 +1,62 @@
+{
+  "namespace": "lib.test.dummy",
+  "name": "NestedDummy",
+  "doc": "trying some more advanced schema ops",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "type",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "enum",
+          "name": "DummyType",
+          "symbols": [
+            "FOO",
+            "BAR"
+          ]
+        }
+      }
+    },
+    {
+      "name": "message",
+      "doc": "Optional message for continuation error.",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "money",
+      "type": {
+        "name": "NestedMoney",
+        "type": "record",
+        "fields": [
+          {
+            "name": "amount",
+            "doc": "money amount as 123.45",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 10,
+              "scale": 2
+            }
+          },
+          {
+            "name": "currencyCode",
+            "type": "string",
+            "doc": "3-letter uppercase currency code"
+          }
+        ]
+      }
+    }
+  ]
+}

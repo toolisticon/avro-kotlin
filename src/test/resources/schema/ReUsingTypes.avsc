@@ -1,0 +1,41 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "ExtremeNesting",
+  "type": "record",
+  "doc": "This is a record with nested field with nested field with enum.",
+  "fields": [
+    {
+      "name": "level1",
+      "type": {
+        "name": "Level1",
+        "type": "record",
+        "fields": [
+          {
+            "name": "level2",
+            "type": {
+              "name": "Level2",
+              "type": "record",
+              "fields": [
+                {
+                  "name": "type",
+                  "type": {
+                    "type": "enum",
+                    "name": "AnotherEnum",
+                    "symbols": [
+                      "Hello",
+                      "World"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "reusing",
+      "type": "AnotherEnum"
+    }
+  ]
+}

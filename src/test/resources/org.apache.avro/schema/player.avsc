@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "name": "Player",
+  "namespace": "avro.examples.baseball",
+  "fields": [
+    {
+      "name": "number",
+      "type": "int"
+    },
+    {
+      "name": "first_name",
+      "type": "string"
+    },
+    {
+      "name": "last_name",
+      "type": "string"
+    },
+    {
+      "name": "position",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Position",
+          "fields": [
+            {
+              "name": "index",
+              "type": "int"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
