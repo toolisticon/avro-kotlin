@@ -41,10 +41,6 @@ value class HexString private constructor(private val single: Single<String>) : 
   constructor(hashCode: AvroHashCode) : this(hashCode.value)
   constructor(fingerprint: AvroFingerprint) : this(fingerprint.value)
 
-  init {
-    require(length % BYTES_SIZE == 0) { "Each byte is represented by two strings, so length has to be even, was=$length." }
-  }
-
   val size: Int get() = length / BYTES_SIZE
   val length: Int get() = value.length
   val formatted: String get() = value.chunked(2).joinToString(separator = " ", prefix = "[", postfix = "]")
