@@ -20,7 +20,7 @@
   <properties>
     <!-- LIB -->
     <avro.version>1.11.3</avro.version>
-    <commons-compress.version>1.25.0</commons-compress.version>
+    <commons-compress.version>1.26.0</commons-compress.version>
     <jackson.version>2.16.1</jackson.version>
 
     <!-- TEST -->
