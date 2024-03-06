@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
+import _ktx.StringKtx
 import _ktx.StringKtx.firstUppercase
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
@@ -103,7 +104,13 @@ class AvroProtocol(
   class OneWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = AvroKotlin.documentation(message.doc)
-    override val request: AvroSchema = AvroSchema(schema = message.request, name = requestName(message))
+
+    override val request: AvroSchema = if (message.request.fields.isEmpty()) {
+      EmptyType.schema
+    } else {
+      AvroSchema(schema = message.request, name = requestName(message))
+    }
+
     override val properties: ObjectProperties = ObjectProperties(message)
     override fun get() = message
     override fun equals(other: Any?): Boolean {
@@ -118,8 +125,11 @@ class AvroProtocol(
     override fun hashCode(): Int = message.hashCode()
 
     override fun enclosedTypes(): List<AvroSchema> = listOf(request)
-    override fun toString(): String {
-      return "OneWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties)"
+    override fun toString() = StringKtx.toString("OneWayMessage") {
+      add("name", name)
+      addIfNotNull("documentation", documentation)
+      addIfNotEmpty("properties", properties)
+      add("request", request)
     }
 
     init {
@@ -180,7 +190,7 @@ class AvroProtocol(
   }
 
   /** Returns the named type.  */
-  fun getType(name: Name): AvroType? = types.get(name)
+  fun getType(name: Name): AvroType? = types[name]
 
   /**
    * The messages of this protocol.
@@ -194,6 +204,8 @@ class AvroProtocol(
       }
     }.associateBy { it.name }
   }
+
+  fun getMessage(name: Name): Message? = messages[name]
 
 
   /**
