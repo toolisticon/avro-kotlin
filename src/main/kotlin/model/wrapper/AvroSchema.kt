@@ -241,7 +241,7 @@ class AvroSchema(
    * @param writer - the schema used to encode data
    * @return [SchemaCompatibility.SchemaPairCompatibility] with reader=this
    */
-  fun compatibleToReadFrom(writer: AvroSchema) = SchemaCompatibility.checkReaderWriterCompatibility(schema, writer.schema)
+  fun compatibleToReadFrom(writer: AvroSchema): SchemaCompatibility.SchemaPairCompatibility = SchemaCompatibility.checkReaderWriterCompatibility(schema, writer.schema)
 
   /**
    * Check data encoded using this schema could be decoded from [reader] schema.
@@ -249,5 +249,5 @@ class AvroSchema(
    * @param reader - the schema to decode the data
    * @return [SchemaCompatibility.SchemaPairCompatibility] with writer=this
    */
-  fun compatibleToBeReadFrom(reader: AvroSchema) = SchemaCompatibility.checkReaderWriterCompatibility(reader.schema, schema)
+  fun compatibleToBeReadFrom(reader: AvroSchema): SchemaCompatibility.SchemaPairCompatibility = SchemaCompatibility.checkReaderWriterCompatibility(reader.schema, schema)
 }

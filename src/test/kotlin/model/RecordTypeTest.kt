@@ -4,6 +4,7 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BOOLEAN
+import io.toolisticon.avro.kotlin.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -26,6 +27,7 @@ internal class RecordTypeTest {
     val record: RecordType = AvroType.avroType(schema)
 
     assertThat(record.schema.isRecordType).isTrue()
+    assertThat(record.getField(Name("stringValue"))).isNotNull().isInstanceOf(RecordField::class.java)
   }
 
 
