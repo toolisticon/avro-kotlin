@@ -43,6 +43,8 @@ class RecordType(override val schema: AvroSchema) :
   val isRoot: Boolean get() = schema.isRoot
   val fields: List<RecordField> by lazy { schema.fields.map { RecordField(it) } }
 
+  fun getField(name: Name): RecordField? = fields.find { it.name == name }
+
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(fields.map { it.schema }) }
 
   override fun toString() = toString(

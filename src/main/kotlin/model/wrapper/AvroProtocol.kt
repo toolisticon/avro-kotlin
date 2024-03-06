@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
 import _ktx.StringKtx.firstUppercase
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.*
@@ -14,7 +15,7 @@ import java.util.function.Supplier
  */
 class AvroProtocol(
   private val protocol: Protocol
-) : ProtocolSupplier {
+) : ProtocolSupplier, WithObjectProperties, WithDocumentation {
   companion object {
     /**
      * An error that can be thrown by any message.
@@ -30,6 +31,12 @@ class AvroProtocol(
     const val FILE_EXTENSION = "avpr"
 
     fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
+
+    fun schemaForMessageRequest(message: Protocol.Message) = if (message.request.fields.isEmpty()) {
+      EmptyType.schema
+    } else {
+      AvroSchema(schema = message.request, name = requestName(message))
+    }
   }
 
   /**
@@ -47,7 +54,8 @@ class AvroProtocol(
   /**
    * Doc string for this protocol.
    */
-  val documentation = AvroKotlin.documentation(protocol.doc)
+  override val documentation = AvroKotlin.documentation(protocol.doc)
+  override val properties = ObjectProperties(protocol)
 
   val md5: ByteArray by lazy { protocol.mD5 }
 
@@ -103,7 +111,9 @@ class AvroProtocol(
   class OneWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = AvroKotlin.documentation(message.doc)
-    override val request: AvroSchema = AvroSchema(schema = message.request, name = requestName(message))
+
+    override val request: AvroSchema = schemaForMessageRequest(message)
+
     override val properties: ObjectProperties = ObjectProperties(message)
     override fun get() = message
     override fun equals(other: Any?): Boolean {
@@ -118,8 +128,11 @@ class AvroProtocol(
     override fun hashCode(): Int = message.hashCode()
 
     override fun enclosedTypes(): List<AvroSchema> = listOf(request)
-    override fun toString(): String {
-      return "OneWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties)"
+    override fun toString() = toString("OneWayMessage") {
+      add("name", name)
+      addIfNotNull("documentation", documentation)
+      addIfNotEmpty("properties", properties)
+      add("request", request)
     }
 
     init {
@@ -132,7 +145,7 @@ class AvroProtocol(
   class TwoWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = AvroKotlin.documentation(message.doc)
-    override val request: AvroSchema = AvroSchema(schema = message.request, name = requestName(message))
+    override val request: AvroSchema = schemaForMessageRequest(message)
     override val properties: ObjectProperties = ObjectProperties(message)
     override fun get() = message
 
@@ -180,7 +193,9 @@ class AvroProtocol(
   }
 
   /** Returns the named type.  */
-  fun getType(name: Name): AvroType? = types.get(name)
+  fun getType(name: Name): AvroType? = types[name]
+
+  inline fun <reified T : AvroType> getTypeAs(name: Name) = requireNotNull(getType(name)) as T
 
   /**
    * The messages of this protocol.
@@ -194,6 +209,8 @@ class AvroProtocol(
       }
     }.associateBy { it.name }
   }
+
+  fun getMessage(name: Name): Message? = messages[name]
 
 
   /**

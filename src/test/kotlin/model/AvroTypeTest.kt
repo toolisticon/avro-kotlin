@@ -7,11 +7,12 @@ internal class AvroTypeTest {
 
   @Test
   fun `list all subtypes`() {
-    assertThat(avroTypes()).hasSize(19)
+    assertThat(avroTypes()).hasSize(20)
       .containsExactlyInAnyOrder(
         ArrayType::class,
         MapType::class,
         UnionType::class,
+        EmptyType::class,
         EnumType::class,
         ErrorType::class,
         FixedType::class,

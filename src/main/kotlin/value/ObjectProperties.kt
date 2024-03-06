@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.WithJavaAnnotations
 import org.apache.avro.JsonProperties
 
 /**
@@ -20,7 +21,7 @@ import org.apache.avro.JsonProperties
  *   * String
  */
 @JvmInline
-value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) : Map<String, Any> by value, ValueType<Map<String, Any>> {
+value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) : Map<String, Any> by value, ValueType<Map<String, Any>>, WithJavaAnnotations {
   companion object {
     val ignoredKeys = setOf("logicalType")
     internal fun filter(properties: Map<String, Any>) = properties.toMutableMap().apply { ignoredKeys.forEach { this.remove(it) } }.toMap()
@@ -75,6 +76,12 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
     } else {
       value as V
     }
+  }
+
+  override val javaAnnotations: List<JavaAnnotation> get() = when (val annotationsValue = get(JavaAnnotation.PROPERTY_KEY)) {
+    is String -> listOf(JavaAnnotation(annotationsValue))
+    is List<*> -> annotationsValue.filterIsInstance<String>().map { JavaAnnotation(it) }
+    else -> emptyList()
   }
 
   /**

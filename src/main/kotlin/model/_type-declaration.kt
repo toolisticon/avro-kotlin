@@ -44,6 +44,8 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
       SchemaType.RECORD -> {
         if (schema.isError) {
           ErrorType(schema)
+        } else if(schema.isEmptyType) {
+          EmptyType
         } else {
           RecordType(schema)
         }

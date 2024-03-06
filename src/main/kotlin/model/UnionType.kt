@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
-import _ktx.StringKtx
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -46,7 +46,7 @@ class UnionType(override val schema: AvroSchema) :
     return this.schema
   }
 
-  override fun toString() = StringKtx.toString("UnionType") {
+  override fun toString() = toString("UnionType") {
     add("types", types.map { it.name })
     addIfNotNull("documentation", schema.documentation)
     addIfNotEmpty("properties", properties)

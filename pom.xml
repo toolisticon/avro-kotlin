@@ -5,13 +5,13 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2024.2.0</version>
+    <version>2024.3.0</version>
     <relativePath/>
   </parent>
 
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>1.11.2.2</version>
+  <version>1.11.2.3</version>
 
   <name>${project.artifactId}</name>
   <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -25,9 +25,9 @@
 
     <!-- TEST -->
     <assertj.version>3.25.3</assertj.version>
-    <equalsverifier.version>3.15.6</equalsverifier.version>
+    <equalsverifier.version>3.15.8</equalsverifier.version>
     <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
-    <logback.version>1.4.14</logback.version>
+    <logback.version>1.5.3</logback.version>
     <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
     <okio.version>3.8.0</okio.version>
