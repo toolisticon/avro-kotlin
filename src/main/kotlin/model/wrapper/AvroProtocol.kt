@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
-import _ktx.StringKtx
 import _ktx.StringKtx.firstUppercase
+import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.*
@@ -31,6 +31,12 @@ class AvroProtocol(
     const val FILE_EXTENSION = "avpr"
 
     fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
+
+    fun schemaForMessageRequest(message: Protocol.Message) = if (message.request.fields.isEmpty()) {
+      EmptyType.schema
+    } else {
+      AvroSchema(schema = message.request, name = requestName(message))
+    }
   }
 
   /**
@@ -105,11 +111,7 @@ class AvroProtocol(
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = AvroKotlin.documentation(message.doc)
 
-    override val request: AvroSchema = if (message.request.fields.isEmpty()) {
-      EmptyType.schema
-    } else {
-      AvroSchema(schema = message.request, name = requestName(message))
-    }
+    override val request: AvroSchema = schemaForMessageRequest(message)
 
     override val properties: ObjectProperties = ObjectProperties(message)
     override fun get() = message
@@ -125,7 +127,7 @@ class AvroProtocol(
     override fun hashCode(): Int = message.hashCode()
 
     override fun enclosedTypes(): List<AvroSchema> = listOf(request)
-    override fun toString() = StringKtx.toString("OneWayMessage") {
+    override fun toString() = toString("OneWayMessage") {
       add("name", name)
       addIfNotNull("documentation", documentation)
       addIfNotEmpty("properties", properties)
@@ -142,7 +144,7 @@ class AvroProtocol(
   class TwoWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = AvroKotlin.documentation(message.doc)
-    override val request: AvroSchema = AvroSchema(schema = message.request, name = requestName(message))
+    override val request: AvroSchema = schemaForMessageRequest(message)
     override val properties: ObjectProperties = ObjectProperties(message)
     override fun get() = message
 
