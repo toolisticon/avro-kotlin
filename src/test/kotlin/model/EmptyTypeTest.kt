@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.model
 
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.Name
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

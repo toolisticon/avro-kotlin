@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
-import _ktx.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
