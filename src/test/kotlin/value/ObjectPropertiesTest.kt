@@ -1,9 +1,15 @@
 package io.toolisticon.avro.kotlin.value
 
+import _ktx.ResourceKtx
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroParser
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.avro.kotlin.model.wrapper.WithJavaAnnotations
+import org.apache.avro.JsonProperties
 import org.apache.avro.LogicalTypes
+import org.apache.avro.compiler.specific.SpecificCompiler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -50,5 +56,40 @@ internal class ObjectPropertiesTest {
     assertThat(p.getValue<String>("b")).isEqualTo("foo")
   }
 
+  @Test
+  fun `javaAnnotations() - empty`() {
+    assertThat(ObjectProperties().javaAnnotations()).isEmpty()
+  }
 
+  @Test
+  fun `javaAnnotations() - single annotation`() {
+    val annotation = "foo.Bar(key=1)"
+    assertThat(ObjectProperties(JavaAnnotation.PROPERTY_KEY to annotation).javaAnnotations()).containsExactly(JavaAnnotation(annotation))
+  }
+
+  @Test
+  fun `javaAnnotations() - multiple annotations`() {
+    val annotation1 = "foo.Bar(key=1)"
+    val annotation2 = "foo.HelloWorld"
+    assertThat(ObjectProperties(JavaAnnotation.PROPERTY_KEY to listOf(annotation1, annotation2)).javaAnnotations())
+      .containsExactlyInAnyOrder(
+        JavaAnnotation(annotation1),
+        JavaAnnotation(annotation2),
+      )
+  }
+
+  @Test
+  fun `avro compiler extracts from resource`() {
+    val protocol = AvroKotlin.parseProtocol("org.apache.avro/protocol/simple.avpr")
+    val compiler = SpecificCompiler(protocol.get())
+    fun SpecificCompiler.javaAnnotationList(props: JsonProperties) = this.javaAnnotations(props).toList().map { JavaAnnotation(it) }
+
+
+
+    println(compiler.javaAnnotationList(protocol.get()))
+
+    println(compiler.javaAnnotationList(protocol.get().getType("Kind")))
+    println(compiler.javaAnnotationList(protocol.get().getType("TestRecord").getField("name")))
+
+  }
 }
