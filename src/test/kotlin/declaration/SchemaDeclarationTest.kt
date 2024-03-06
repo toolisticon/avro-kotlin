@@ -14,6 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.isRegularFile
 
 class SchemaDeclarationTest {
 
@@ -62,8 +63,11 @@ class SchemaDeclarationTest {
     tmp.write(schemaFoo)
     tmp.write(schemaBar)
 
-    tmp.walk()
-      .forEach { println(it) }
+    val files = tmp.walk()
+      .filter { it.isRegularFile() }
+      .toList()
+      .fold(mutableListOf<Path>()) {a,c -> a.apply { add(c) }}
 
+    assertThat(files).hasSize(2)
   }
 }

@@ -33,6 +33,8 @@ class ErrorType(override val schema: AvroSchema) :
   override val typesMap: AvroTypesMap = AvroTypesMap(fields.map { it.schema })
 
   override fun toString() = toString("ErrorType") {
+    add("namespace", namespace)
+    add("name", name)
     add("hashCode", hashCode)
     add("fingerprint", fingerprint)
     addIfNotNull("documentation", documentation)
