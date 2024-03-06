@@ -8,6 +8,9 @@ import kotlin.io.path.Path
 
 @JvmInline
 value class Name(override val value: String) : ValueType<String> {
+  companion object {
+    val EMPTY = Name("")
+  }
 
   /**
    * Get [Name] from given [Protocol].

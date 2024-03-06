@@ -62,9 +62,6 @@ internal class FooStringTest {
 
     assertThat(AvroCodec.defaultGenericData.validate(record2.schema, record2)).isFalse()
 
-    println(record2)
-    println(record2.schema)
-    println(FooString2(record2))
 
   }
 
