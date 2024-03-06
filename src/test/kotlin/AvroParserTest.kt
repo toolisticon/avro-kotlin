@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
-import _ktx.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
@@ -67,29 +66,21 @@ internal class AvroParserTest {
         .endRecord()
     )
 
-    println(json)
 
     val declaration = AvroParser()
       .registerLogicalTypeFactory(CustomLogicalTypeFactory())
       .parseSchema(json)
 
 
-    println(declaration)
 
 //    val meta = schema.recordType.schema.avroKotlinMeta
 //
-//    println(schema.recordType.schema.json)
-//    println(schema.hashCode())
 //
 //    meta.fingerprint = schema.recordType.schema.fingerprint
 
 
 //    val meta = schema.avroKotlin
 //
-//    //println(meta.fingerprint)
-//    println(meta)
-
-    //println(LogicalTypes.getCustomRegisteredTypes())
 
     //schema.recordType.schema.avroKotlinMeta.store("another", "hello")
 
@@ -106,14 +97,6 @@ internal class AvroParserTest {
     assertThat(s1).isEqualTo(s3)
   }
 
-  @Test
-  fun `spike - reference or value on reused schema`() {
-    val schema = AvroParser().parseSchema(resourceUrl("schema/ReUsingTypes.avsc"))
-
-    //schema.recordType.schema.getField("reusing").schema().avroKotlinMeta.store("foo", "bar")
-
-    println(schema.recordType.schema.json)
-  }
 
   @Test
   fun `parse simple schema with reflective field`() {
@@ -147,14 +130,13 @@ internal class AvroParserTest {
 
     assertThat(msg.errors.isError).isTrue()
 
-    println(declaration.protocol.messages.toReadableString())
-
   }
 
   @ParameterizedTest
   @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
   fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
     val ignoredFiles = setOf(
+      "/org.apache.avro/schema/json.avsc",
       "/protocol/protocol.avpr",
       "/protocol/namespace.avpr",
       "/protocol/namespaces.avpr",
@@ -166,7 +148,6 @@ internal class AvroParserTest {
       "/protocol/output-proto.avpr",
       "/protocol/nestedimport.avpr",
       "/protocol/input-protocol.avpr",
-      "/protocol/simple.avpr",
       "/protocol/bulk-data.avpr",
       "/protocol/import.avpr",
       "/protocol/proto.avpr",

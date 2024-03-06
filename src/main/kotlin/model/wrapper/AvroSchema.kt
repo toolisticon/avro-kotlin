@@ -199,7 +199,8 @@ class AvroSchema(
 
   val isEnumType: Boolean = SchemaType.ENUM == type
 
-  val isError = runCatching { schema.isError }.getOrDefault(false)
+  val isEmptyType : Boolean = SchemaType.RECORD == type &&  fields.isEmpty()
+  val isError : Boolean = runCatching { schema.isError }.getOrDefault(false)
   val isErrorType: Boolean = SchemaType.RECORD == type && isError
 
   val isFloatType: Boolean = SchemaType.FLOAT == type

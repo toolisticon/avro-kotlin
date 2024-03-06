@@ -10,10 +10,6 @@ internal class SingleObjectEncodedBytesTest {
   @Test
   fun `can construct from hex String`() {
     val soe = SingleObjectEncodedBytes(FooString.SINGLE_OBJECT_BAR)
-    println(FooString.SINGLE_OBJECT_BAR.formatted)
-    println("--")
-    println(soe.fingerprint.hex.formatted)
-    println("--")
 
     assertThat(soe.hex).isEqualTo(FooString.SINGLE_OBJECT_BAR)
     assertThat(soe.payload.hex.formatted).isEqualTo("[06 62 61 72]")

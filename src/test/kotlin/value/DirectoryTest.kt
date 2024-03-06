@@ -69,10 +69,7 @@ internal class DirectoryTest {
   fun `extract subpath`() {
 
     val root = dir.mkDir("ggg")
-    println(root)
-    println(dir.mkDir("com"))
     val full = dir.mkDir("com").resolve("acme/baz/hello.world")
-    println(full)
 
     val sub = root.relativize(full)
 

@@ -22,6 +22,8 @@ value class RecordField(private val schemaField: AvroSchemaField) : AvroType, Wi
   override val documentation: Documentation? get() = schemaField.documentation
 
   override fun toString() = toString("RecordField") {
+    add("name", name)
+    add("type", type)
     addIfNotNull("documentation", schemaField.documentation)
     addIfNotEmpty("properties", properties)
   }

@@ -75,6 +75,13 @@ internal class JsonStringTest {
   fun `parse schema`() {
     val schema = Schema.Parser().parse("""{"type":"string"}""")
 
-    println(schema)
+    assertThat(JsonString(schema)).isEqualTo(
+      JsonString(
+        """
+        {
+          "type" : "string"
+        }""".trimIndent()
+      )
+    )
   }
 }
