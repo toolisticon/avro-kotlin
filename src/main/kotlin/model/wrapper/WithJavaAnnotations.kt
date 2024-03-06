@@ -11,5 +11,5 @@ interface WithJavaAnnotations {
   /**
    * @return list of [JavaAnnotation]s defined on this element, defaults to empty
    */
-  fun javaAnnotations() : List<JavaAnnotation> = emptyList()
+  val javaAnnotations : List<JavaAnnotation> get() = emptyList()
 }

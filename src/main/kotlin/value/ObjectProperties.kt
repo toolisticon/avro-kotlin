@@ -78,6 +78,12 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
     }
   }
 
+  override val javaAnnotations: List<JavaAnnotation> get() = when (val annotationsValue = get(JavaAnnotation.PROPERTY_KEY)) {
+    is String -> listOf(JavaAnnotation(annotationsValue))
+    is List<*> -> annotationsValue.filterIsInstance<String>().map { JavaAnnotation(it) }
+    else -> emptyList()
+  }
+
   /**
    * Gets the value of given key as [ObjectProperties].
    *

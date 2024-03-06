@@ -15,7 +15,7 @@ import java.util.function.Supplier
  */
 class AvroProtocol(
   private val protocol: Protocol
-) : ProtocolSupplier {
+) : ProtocolSupplier, WithObjectProperties, WithDocumentation {
   companion object {
     /**
      * An error that can be thrown by any message.
@@ -54,7 +54,8 @@ class AvroProtocol(
   /**
    * Doc string for this protocol.
    */
-  val documentation = AvroKotlin.documentation(protocol.doc)
+  override val documentation = AvroKotlin.documentation(protocol.doc)
+  override val properties = ObjectProperties(protocol)
 
   val md5: ByteArray by lazy { protocol.mD5 }
 
@@ -193,6 +194,8 @@ class AvroProtocol(
 
   /** Returns the named type.  */
   fun getType(name: Name): AvroType? = types[name]
+
+  inline fun <reified T : AvroType> getTypeAs(name: Name) = requireNotNull(getType(name)) as T
 
   /**
    * The messages of this protocol.
