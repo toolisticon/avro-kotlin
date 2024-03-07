@@ -84,5 +84,11 @@ internal class JavaAnnotationPropertyTest {
   fun `verify toString`() {
     val property = JavaAnnotationProperty("""bar.Foo("hello" ,  sum =  8)""")
     assertThat(property).hasToString("JavaAnnotationProperty(value='bar.Foo(value=\"hello\",sum=8)')")
+
+    assertThat(JavaAnnotationProperty("io.toolisticon.avro.avro4k.generator.processor.WorldField"))
+      .hasToString("JavaAnnotationProperty(value='io.toolisticon.avro.avro4k.generator.processor.WorldField()')")
+
+    assertThat(JavaAnnotationProperty("io.toolisticon.avro.avro4k.generator.processor.WorldField()"))
+      .hasToString("JavaAnnotationProperty(value='io.toolisticon.avro.avro4k.generator.processor.WorldField()')")
   }
 }

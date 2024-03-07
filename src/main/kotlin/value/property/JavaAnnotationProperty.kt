@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.value.property
 
+import _ktx.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.ObjectProperties
 import io.toolisticon.avro.kotlin.value.ValueType
@@ -27,12 +28,13 @@ value class JavaAnnotationProperty private constructor(override val value: Pair<
     val membersMap: Map<String, String> = if (members == fqn) {
       emptyMap()
     } else {
-      members.removeSuffix(")").split(",").map { it.trim() }.map {
+      val membersString = members.removeSuffix(")").trimToNull()
+      membersString?.split(",")?.map { it.trim() }?.associate {
         val pair = if (it.contains("=")) it else "value=$it"
 
         val (key, value) = pair.substringBefore("=") to pair.substringAfter("=")
         key.trim() to value.trim()
-      }.toMap()
+      } ?: emptyMap()
     }
 
     CanonicalName(fqn) to membersMap
