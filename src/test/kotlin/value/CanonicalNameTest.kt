@@ -37,4 +37,33 @@ internal class CanonicalNameTest {
 
     assertThat(cn).hasToString(expected)
   }
+
+  @ParameterizedTest
+  @CsvSource(
+    value = [
+      "bar,Foo,bar.Foo",
+      "null,Foo,Foo",
+    ], nullValues = ["null"]
+  )
+  fun `verify toString`(namespaceParameter: String?, nameParameter: String?, expected: String) {
+    val namespace = namespaceParameter?.let { Namespace(it) } ?: Namespace.EMPTY
+    val name = nameParameter?.let { Name(nameParameter) } ?: Name.EMPTY
+    val canonicalName = namespace + name
+
+    assertThat(canonicalName.toString()).isEqualTo(expected)
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+    value = [
+      "null",
+      "Foo",
+      "bar.Foo",
+    ], nullValues = ["null"]
+  )
+  fun `construct from fqn string`(fqnParam: String?) {
+    val fqn = fqnParam ?: ""
+    val canonicalName = CanonicalName(fqn)
+    assertThat(canonicalName.toString()).isEqualTo(fqn)
+  }
 }
