@@ -60,4 +60,5 @@ object AvroCodec {
   fun interface AvroSchemaSupplier : (AvroFingerprint) -> AvroSchema {
     operator fun invoke() = invoke(AvroFingerprint.NULL)
   }
+
 }
