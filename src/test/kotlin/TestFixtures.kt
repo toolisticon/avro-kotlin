@@ -28,6 +28,8 @@ object TestFixtures {
 
   val DEFAULT_PARSER = AvroParser()
 
+  val emptyStringMap = emptyMap<String, String>()
+
   fun parseSchema(json: JsonString): Schema = Schema.Parser().parse(json.inputStream())
   fun loadSchema(resource: String): Schema = parseSchema(loadJsonString(resource))
 
