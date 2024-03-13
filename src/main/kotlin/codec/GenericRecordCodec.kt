@@ -1,8 +1,7 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
-import io.toolisticon.avro.kotlin.codec.AvroCodec.defaultGenericData
 import io.toolisticon.avro.kotlin.codec.AvroCodec.encoderFactory
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.JsonString
@@ -15,7 +14,7 @@ import java.io.ByteArrayOutputStream
 
 object GenericRecordCodec {
 
-  internal fun encodeByteArray(record: GenericData.Record, genericData: GenericData = defaultGenericData): ByteArray {
+  internal fun encodeByteArray(record: GenericData.Record, genericData: GenericData = defaultLogicalTypeConversions.genericData): ByteArray {
     val writerSchema: Schema = record.schema
 
     return ByteArrayOutputStream().use { baos ->
@@ -31,7 +30,7 @@ object GenericRecordCodec {
     bytes: ByteArray,
     readerSchema: Schema,
     writerSchema: Schema,
-    genericData: GenericData = defaultGenericData
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): GenericData.Record {
     return GenericDatumReader<GenericData.Record>(
       writerSchema,
@@ -40,26 +39,26 @@ object GenericRecordCodec {
     ).read(null, decoderFactory.binaryDecoder(bytes, null))
   }
 
-  fun convert(record: GenericData.Record, readerSchema: AvroSchema, genericData: GenericData = defaultGenericData) = GenericRecordConverter(
+  fun convert(record: GenericData.Record, readerSchema: AvroSchema, genericData: GenericData = defaultLogicalTypeConversions.genericData) = GenericRecordConverter(
     readerSchema = readerSchema,
     genericData = genericData
   ).convert(record)
 
   fun encodeJson(
     record: GenericData.Record,
-    genericData: GenericData = defaultGenericData
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): JsonString =
     GenericRecordJsonEncoder(genericData).encode(record)
 
   fun decodeJson(
     json: JsonString,
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultGenericData
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ) = GenericRecordJsonDecoder(readerSchema, genericData).decode(json)
 
   fun encodeSingleObject(
     record: GenericData.Record,
-    genericData: GenericData = AvroKotlin.genericDataWithConversions
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ) = GenericRecordSingleObjectEncoder(genericData).encode(
     record
   )
@@ -67,7 +66,7 @@ object GenericRecordCodec {
   fun decodeSingleObject(
     singleObjectEncodedBytes: SingleObjectEncodedBytes,
     readerSchema: AvroSchema,
-    genericData: GenericData = AvroKotlin.genericDataWithConversions
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): GenericData.Record = GenericRecordSingleObjectDecoder(
     readerSchema = readerSchema,
     genericData = genericData

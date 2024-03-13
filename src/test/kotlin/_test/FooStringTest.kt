@@ -1,11 +1,10 @@
 package io.toolisticon.avro.kotlin._test
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.codec.AvroCodec
+import io.toolisticon.avro.kotlin.avroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.SchemaCompatibility
 import org.apache.avro.generic.GenericData
-import org.apache.avro.message.SchemaStore
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -14,9 +13,7 @@ internal class FooStringTest {
 
   @Test
   fun `has correct fingerprint`() {
-    val cache = SchemaStore.Cache().apply {
-      addSchema(FooString.SCHEMA.get())
-    }
+    val cache = avroSchemaResolver(FooString.SCHEMA)
 
     val bar = FooString("bar")
     val record = bar.toGenericRecord()
@@ -28,7 +25,7 @@ internal class FooStringTest {
     assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
 
     val decoded =
-      AvroKotlin.genericRecordFromSingleObjectEncoded(encoded, FooString.SCHEMA, AvroKotlin.schemaStore(cache))
+      AvroKotlin.genericRecordFromSingleObjectEncoded(encoded, FooString.SCHEMA, cache)
 
     assertThat(FooString(decoded)).isEqualTo(bar)
 
@@ -51,18 +48,16 @@ internal class FooStringTest {
     val record = data.toGenericRecord()
 
 
-    assertThat(AvroCodec.defaultGenericData.validate(record.schema, record)).isTrue()
+    assertThat(AvroKotlin.defaultLogicalTypeConversions.genericData.validate(record.schema, record)).isTrue()
 
-    val record2: GenericData.Record = AvroCodec.defaultGenericData.newRecord(
+    val record2: GenericData.Record = AvroKotlin.defaultLogicalTypeConversions.genericData.newRecord(
       record,
       FooString2.SCHEMA.get(),
     ) as GenericData.Record
 
     GenericData.Record(record, true)
 
-    assertThat(AvroCodec.defaultGenericData.validate(record2.schema, record2)).isFalse()
-
-
+    assertThat(AvroKotlin.defaultLogicalTypeConversions.genericData.validate(record2.schema, record2)).isFalse()
   }
 
 

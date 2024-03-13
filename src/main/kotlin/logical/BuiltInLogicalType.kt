@@ -188,6 +188,10 @@ enum class BuiltInLogicalType(
       BY_NAME[logicalTypeName]
     ) { "No built-in type found for logicalTypeName=$logicalTypeName" }
 
+    val CONVERSIONS_BY_NAME: Map<LogicalTypeName, Conversion<*>> = entries.filterNot {
+      it.excludeConversion
+    }.associate { it.logicalTypeName to it.conversion }
+
     /**
      * List of all supported [Conversion<*>]s defined by avro core [org.apache.avro.LogicalType]s.
      */

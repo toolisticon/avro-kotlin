@@ -1,10 +1,10 @@
 package io.toolisticon.avro.kotlin.value.property
 
 import _ktx.StringKtx.trimToNull
+import io.toolisticon.avro.kotlin._ktx.KotlinKtx.create
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.ObjectProperties
 import io.toolisticon.avro.kotlin.value.ValueType
-import java.util.function.Supplier
 
 /**
  * A string representing a java annotation as read from additional [ObjectProperties].
@@ -23,7 +23,7 @@ value class JavaAnnotationProperty private constructor(override val value: Pair<
     }
   }
 
-  constructor(annotationString: String) : this(value = Supplier<Pair<CanonicalName, Map<String, String>>> {
+  constructor(annotationString: String) : this(value = create {
     val (fqn, members) = annotationString.substringBefore("(") to annotationString.substringAfter("(")
     val membersMap: Map<String, String> = if (members == fqn) {
       emptyMap()
@@ -38,15 +38,15 @@ value class JavaAnnotationProperty private constructor(override val value: Pair<
     }
 
     CanonicalName(fqn) to membersMap
-  }.get())
+  })
 
   val canonicalName: CanonicalName get() = value.first
   val members: Map<String, String> get() = value.second
 
-  val membersString: String get() = members.entries.joinToString(separator = ",") { "${it.key}=${it.value}" }
+  val membersString: String get() = members.entries.joinToString(separator = ", ") { "${it.key}=${it.value}" }
 
   override val key: String get() = PROPERTY_KEY
-  override fun toString(): String = "JavaAnnotationProperty(value='$canonicalName($membersString)')"
+  override fun toString(): String = "JavaAnnotationProperty('@${canonicalName.fqn}($membersString)')"
 
 
 }

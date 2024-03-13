@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
+import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
 import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonEncoder
 import io.toolisticon.avro.kotlin.codec.AvroCodec.encoderFactory
 import io.toolisticon.avro.kotlin.value.ByteArrayValue
@@ -10,7 +11,7 @@ import org.apache.avro.generic.GenericDatumWriter
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class GenericRecordJsonEncoder(
-  private val genericData: GenericData = AvroCodec.defaultGenericData
+  private val genericData: GenericData = defaultLogicalTypeConversions.genericData
 ) : JsonEncoder<GenericData.Record> {
 
   override fun encode(record: GenericData.Record): JsonString {

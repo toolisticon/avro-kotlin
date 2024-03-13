@@ -5,13 +5,15 @@ import _ktx.StringKtx.trimToNull
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
 import io.toolisticon.avro.kotlin.logical.AvroLogicalType
-import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
-import io.toolisticon.avro.kotlin.model.*
+import io.toolisticon.avro.kotlin.logical.AvroLogicalTypes
+import io.toolisticon.avro.kotlin.model.AvroType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.*
-import org.apache.avro.*
-import org.apache.avro.data.TimeConversions.*
+import org.apache.avro.LogicalType
+import org.apache.avro.LogicalTypes
+import org.apache.avro.Protocol
+import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericDatumWriter
@@ -19,8 +21,6 @@ import org.apache.avro.io.DecoderFactory
 import org.apache.avro.io.EncoderFactory
 import org.apache.avro.message.BinaryMessageDecoder
 import org.apache.avro.message.BinaryMessageEncoder
-import org.apache.avro.message.SchemaStore
-import org.apache.avro.message.SchemaStore.Cache
 import org.apache.avro.specific.SpecificData
 import org.apache.avro.specific.SpecificRecord
 import java.io.ByteArrayOutputStream
@@ -36,6 +36,8 @@ import kotlin.reflect.KClass
  * Central declaration of constants and utils.
  */
 object AvroKotlin {
+
+  val defaultLogicalTypeConversions = AvroLogicalTypes()
 
   /**
    * Encapsulates [Schema#Parser#parse] for the relevant input types.
@@ -184,15 +186,7 @@ object AvroKotlin {
       .toList()
   }
 
-  val genericDataWithConversions: GenericData by lazy {
-    GenericData().apply {
-      (avroLogicalTypes.map(AvroLogicalType<*>::conversion) + BuiltInLogicalType.CONVERSIONS).forEach { conversion ->
-        addLogicalTypeConversion(conversion)
-      }
-    }
-  }
-
-  fun genericRecordToJson(record: GenericData.Record, genericData: GenericData = genericDataWithConversions): JsonString {
+  fun genericRecordToJson(record: GenericData.Record, genericData: GenericData = defaultLogicalTypeConversions.genericData): JsonString {
 
     val jsonBytes = ByteArrayOutputStream().use {
       val dw = GenericDatumWriter<Any>(record.schema, genericData)
@@ -209,14 +203,14 @@ object AvroKotlin {
     json: JsonString,
     readerSchema: AvroSchema,
     writerSchema: AvroSchema = readerSchema,
-    genericData: GenericData = genericDataWithConversions
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): GenericData.Record {
     val reader = GenericDatumReader<Any>(writerSchema.get(), readerSchema.get(), genericData)
 
     return reader.read(null, DecoderFactory.get().jsonDecoder(readerSchema.get(), json.inputStream())) as GenericData.Record
   }
 
-  fun genericRecordToSingleObjectEncoded(record: GenericData.Record, genericData: GenericData = genericDataWithConversions): SingleObjectEncodedBytes {
+  fun genericRecordToSingleObjectEncoded(record: GenericData.Record, genericData: GenericData = defaultLogicalTypeConversions.genericData): SingleObjectEncodedBytes {
     val bytes = ByteArrayValue(ByteArrayOutputStream().use { baos ->
       BinaryMessageEncoder<GenericData.Record>(genericData, record.schema).encode(record, baos)
       baos.toByteArray()
@@ -227,17 +221,17 @@ object AvroKotlin {
   fun genericRecordFromSingleObjectEncoded(
     singleObjectEncodedBytes: SingleObjectEncodedBytes,
     readerSchema: AvroSchema,
-    schemaStore: AvroSchemaStore,
-    genericData: GenericData = genericDataWithConversions
+    schemaStore: AvroSchemaResolver,
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): GenericData.Record {
-    return BinaryMessageDecoder<GenericData.Record>(genericData, readerSchema.get(), schemaStore.schemaStore).decode(singleObjectEncodedBytes.value)
+    return BinaryMessageDecoder<GenericData.Record>(genericData, readerSchema.get(), schemaStore).decode(singleObjectEncodedBytes.value)
   }
 
   fun genericRecordFromPayloadBytes(
     payloadBytes: BinaryEncodedBytes,
     readerSchema: AvroSchema,
     writerSchema: AvroSchema = readerSchema,
-    genericData: GenericData = genericDataWithConversions
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ): GenericData.Record {
     val decoder = DecoderFactory.get().binaryDecoder(payloadBytes.value, null)
 
@@ -247,21 +241,6 @@ object AvroKotlin {
   }
 
   fun <T : Any> Result<List<T>?>.orEmpty(): List<T> = getOrNull() ?: emptyList()
-
-
-  fun schemaStore(cache: Cache): AvroSchemaStore = object : AvroSchemaStore {
-    override fun get(fingerprint: AvroFingerprint): AvroSchema = AvroSchema(schemaStore.findByFingerprint(fingerprint.value))
-
-    override val schemaStore: SchemaStore get() = cache
-  }
-
-  fun schemaStore(vararg schemas: AvroSchema) = AvroKotlin.schemaStore(
-    cache = Cache().apply {
-      schemas.forEach {
-        addSchema(it.get())
-      }
-    }
-  )
 
 
 }
