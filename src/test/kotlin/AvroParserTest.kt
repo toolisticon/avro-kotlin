@@ -120,7 +120,7 @@ internal class AvroParserTest {
       .registerLogicalTypeFactory(CustomLogicalTypeFactory())
       .parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
 
-    assertThat(declaration.canonicalName).hasToString("foo.dummy.DummyProtocol")
+    assertThat(declaration.canonicalName).hasToString("CanonicalName(fqn='foo.dummy.DummyProtocol')")
 
     assertThat(declaration.avroTypes).hasSize(9)
     assertThat(declaration.protocol.recordTypes).hasSize(4)

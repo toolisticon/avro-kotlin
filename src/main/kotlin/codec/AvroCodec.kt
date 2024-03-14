@@ -1,17 +1,12 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.logical.AvroLogicalType
-import io.toolisticon.avro.kotlin.logical.AvroLogicalTypes
-import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import io.toolisticon.avro.kotlin.value.BinaryEncodedBytes
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
-import org.apache.avro.Conversion
 import org.apache.avro.generic.GenericData
 import org.apache.avro.io.DecoderFactory
 import org.apache.avro.io.EncoderFactory
+import org.apache.avro.specific.SpecificData
 
 /**
  * > Avro specifies two serialization encodings: binary and JSON.
@@ -20,17 +15,13 @@ import org.apache.avro.io.EncoderFactory
  * > may sometimes be appropriate.
  */
 object AvroCodec {
-  private val customConversions: List<Conversion<*>> by lazy { AvroLogicalTypes.avroLogicalTypes.map(AvroLogicalType<*>::conversion) }
-  private val builtInConversions: List<Conversion<*>> = BuiltInLogicalType.CONVERSIONS
 
-  val defaultGenericData: GenericData by lazy {
-    val conversions = customConversions + builtInConversions
+  fun specificData(genericData: GenericData): SpecificData = SpecificData().apply {
+    genericData.conversions.forEach { this.addLogicalTypeConversion(it) }
+  }
 
-    GenericData().apply {
-      conversions.forEach { conversion ->
-        addLogicalTypeConversion(conversion)
-      }
-    }
+  fun genericData(specificData: SpecificData): GenericData = GenericData().apply {
+    specificData.conversions.forEach { this.addLogicalTypeConversion(it) }
   }
 
   internal val encoderFactory: EncoderFactory get() = EncoderFactory.get()
@@ -51,13 +42,10 @@ object AvroCodec {
   interface JsonEncoder<TYPE> : Encoder<TYPE, JsonString>
   interface JsonDecoder<TYPE> : Decoder<JsonString, TYPE>
 
-  interface SingleObjectEncoder<TYPE> : Encoder<TYPE, SingleObjectEncodedBytes>
-  interface SingleObjectDecoder<TYPE> : Decoder<SingleObjectEncodedBytes, TYPE>
+  fun interface SingleObjectEncoder<TYPE> : Encoder<TYPE, SingleObjectEncodedBytes>
+  fun interface SingleObjectDecoder<TYPE> : Decoder<SingleObjectEncodedBytes, TYPE>
 
   interface BinaryEncoder<TYPE> : Encoder<TYPE, BinaryEncodedBytes>
   interface BinaryDecoder<TYPE> : Decoder<BinaryEncodedBytes, TYPE>
 
-  fun interface AvroSchemaSupplier : (AvroFingerprint) -> AvroSchema {
-    operator fun invoke() = invoke(AvroFingerprint.NULL)
-  }
 }

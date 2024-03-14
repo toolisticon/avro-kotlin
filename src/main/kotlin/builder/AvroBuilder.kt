@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.builder
 
+import io.toolisticon.avro.kotlin.model.NullType
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.CanonicalName
@@ -14,15 +15,21 @@ import org.apache.avro.SchemaBuilder.FieldAssembler
  * Utilities to create [AvroSchema] or [AvroProtocol] from scratch without parsing [JsonString].
  */
 object AvroBuilder {
+  val SCHEMA_UUID = primitiveSchema(SchemaType.STRING, LogicalTypes.uuid())
 
-  fun FieldAssembler<Schema>.optionalUuid(fieldName: String) = this.name(fieldName)
-    .type(
-      Schema.createUnion(
-        Schema.create(Schema.Type.NULL),
-        primitiveSchema(SchemaType.STRING, LogicalTypes.uuid()).get()
-      )
-    )
-    .withDefault(null)
+  fun optional(schema: AvroSchema): AvroSchema = union(NullType.schema, schema)
+
+  fun FieldAssembler<Schema>.uuid(fieldName: String, optional: Boolean = false): FieldAssembler<Schema> {
+    val schema = if (optional) optional(SCHEMA_UUID) else SCHEMA_UUID
+
+    return with(this.name(fieldName).type(schema.get())) {
+      if (optional) {
+        withDefault(null)
+      } else {
+        noDefault()
+      }
+    }
+  }
 
 
   /**

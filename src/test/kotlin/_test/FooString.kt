@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin._test
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.optionalUuid
+import io.toolisticon.avro.kotlin.builder.AvroBuilder.uuid
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.HexString
 import org.apache.avro.SchemaBuilder
@@ -50,7 +50,7 @@ data class FooString2(
       SchemaBuilder.record("io.toolisticon.avro.kotlin._test.FooString")
         .fields()
         .requiredString("str")
-        .optionalUuid("uuid")
+        .uuid("uuid", true)
         .endRecord()
     )
 

@@ -31,18 +31,18 @@ internal class CanonicalNameTest {
       "com.acme.test, HelloWorld, com.acme.test.HelloWorld",
     ]
   )
-  fun `canonicalName toString`(namespace: String?, name: String, expected: String) {
+  fun `canonicalName fqn`(namespace: String?, name: String, expected: String) {
     val ns = namespace?.let { Namespace(it) } ?: Namespace.EMPTY
     val cn = CanonicalName(namespace = ns, name = Name(name))
 
-    assertThat(cn).hasToString(expected)
+    assertThat(cn.fqn).isEqualTo(expected)
   }
 
   @ParameterizedTest
   @CsvSource(
     value = [
-      "bar,Foo,bar.Foo",
-      "null,Foo,Foo",
+      "bar,Foo,CanonicalName(fqn='bar.Foo')",
+      "null,Foo,CanonicalName(fqn='Foo')",
     ], nullValues = ["null"]
   )
   fun `verify toString`(namespaceParameter: String?, nameParameter: String?, expected: String) {
@@ -64,6 +64,6 @@ internal class CanonicalNameTest {
   fun `construct from fqn string`(fqnParam: String?) {
     val fqn = fqnParam ?: ""
     val canonicalName = CanonicalName(fqn)
-    assertThat(canonicalName.toString()).isEqualTo(fqn)
+    assertThat(canonicalName.fqn).isEqualTo(fqn)
   }
 }

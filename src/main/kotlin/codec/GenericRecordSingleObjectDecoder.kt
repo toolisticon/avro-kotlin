@@ -1,14 +1,15 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.codec.AvroCodec.AvroSchemaSupplier
+import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
+import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
 import org.apache.avro.message.BinaryMessageDecoder
 
 class GenericRecordSingleObjectDecoder private constructor(
-  private val writerSchema: AvroSchemaSupplier,
-  private val readerSchema: AvroSchemaSupplier,
+  private val writerSchema: AvroSchemaResolver,
+  private val readerSchema: AvroSchemaResolver,
   private val genericData: GenericData,
 ) : AvroCodec.SingleObjectDecoder<GenericData.Record> {
 
@@ -20,7 +21,7 @@ class GenericRecordSingleObjectDecoder private constructor(
    */
   constructor(
     readerSchema: AvroSchema,
-    genericData: GenericData = AvroCodec.defaultGenericData,
+    genericData: GenericData = defaultLogicalTypeConversions.genericData,
   ) : this(
     readerSchema = { readerSchema },
     writerSchema = { readerSchema },
