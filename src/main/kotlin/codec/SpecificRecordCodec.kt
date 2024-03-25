@@ -37,6 +37,7 @@ object SpecificRecordCodec {
     return specificRecordSingleObjectEncoder().encode(record)
   }
 
+  @Suppress("UNCHECKED_CAST")
   fun <T : SpecificRecordBase> decodeSingleObject(
     bytes: SingleObjectEncodedBytes,
     schemaResolver: AvroSchemaResolver
@@ -56,18 +57,19 @@ object SpecificRecordCodec {
    * [Converter] from [GenericData.Record] to [SpecificRecordBase].
    */
   @Suppress("CAST_NEVER_SUCCEEDS")
-  fun genericRecordToSpecificRecordConverter(readerType: Class<*>?=null) = Converter<GenericData.Record, SpecificRecordBase> { generic ->
+  fun genericRecordToSpecificRecordConverter(readerType: Class<*>? = null) = Converter<GenericData.Record, SpecificRecordBase> { generic ->
     val writerSchema = generic.schema
 
     // TODO if caller does not provide expected type, we use the writer schema to derive the class ... this could be wrong.
-    val readerClass = readerType?: AvroKotlin.defaultLogicalTypeConversions.specificData.getClass(writerSchema)
+    val readerClass = readerType ?: AvroKotlin.defaultLogicalTypeConversions.specificData.getClass(writerSchema)
 
     val readerSpecificData = SpecificData.getForClass(readerClass)
 
     readerSpecificData.deepCopy(writerSchema, generic) as SpecificRecordBase
   }
 
-  fun specificRecordSingleObjectDecoder(writerSchemaResolver: AvroSchemaResolver) : SingleObjectDecoder<SpecificRecordBase> = SpecificRecordSingleObjectDecoder(writerSchemaResolver)
+  fun specificRecordSingleObjectDecoder(writerSchemaResolver: AvroSchemaResolver): SingleObjectDecoder<SpecificRecordBase> =
+    SpecificRecordSingleObjectDecoder(writerSchemaResolver)
 
-  fun specificRecordSingleObjectEncoder() : SingleObjectEncoder<SpecificRecordBase> = SpecificRecordSingleObjectEncoder()
+  fun specificRecordSingleObjectEncoder(): SingleObjectEncoder<SpecificRecordBase> = SpecificRecordSingleObjectEncoder()
 }

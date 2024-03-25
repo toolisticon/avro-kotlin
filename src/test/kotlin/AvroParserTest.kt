@@ -15,7 +15,7 @@ import org.apache.avro.LogicalTypes
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
-import org.junit.jupiter.api.Assumptions
+import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -73,17 +73,9 @@ internal class AvroParserTest {
 
 
 
-//    val meta = schema.recordType.schema.avroKotlinMeta
-//
-//
-//    meta.fingerprint = schema.recordType.schema.fingerprint
-
-
-//    val meta = schema.avroKotlin
-//
-
-    //schema.recordType.schema.avroKotlinMeta.store("another", "hello")
-
+    with(declaration.avroTypes) {
+      assertThat(this).hasSize(2)
+    }
   }
 
   @Test
@@ -135,26 +127,12 @@ internal class AvroParserTest {
   @ParameterizedTest
   @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
   fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
-    val ignoredFiles = setOf(
-      "/org.apache.avro/schema/json.avsc",
-      "/protocol/protocol.avpr",
-      "/protocol/namespace.avpr",
-      "/protocol/namespaces.avpr",
-      "/protocol/bar.avpr",
-      "/protocol/reservedwords.avpr",
-      "/protocol/unicode.avpr",
-      "/protocol/output-protocol.avpr",
-      "/protocol/output-import.avpr",
-      "/protocol/output-proto.avpr",
-      "/protocol/nestedimport.avpr",
-      "/protocol/input-protocol.avpr",
-      "/protocol/bulk-data.avpr",
-      "/protocol/import.avpr",
-      "/protocol/proto.avpr",
-    )
-    Assumptions.assumeTrue(ignoredFiles.none {
-      file.path.endsWith(it)
-    })
+    // TODO: goal is to parse all resource, ignoring files with open issues.
+    setOf(
+      "/org.apache.avro/schema/json.avsc", // FIXME: see Bug #38
+    ).forEach { ignoredFile ->
+      assumeFalse(file.path.endsWith(ignoredFile)) { "Ignoring avro resource: $ignoredFile." }
+    }
 
     assertThatNoException()
       .`as` { "failed to parse $spec: file://$file" }

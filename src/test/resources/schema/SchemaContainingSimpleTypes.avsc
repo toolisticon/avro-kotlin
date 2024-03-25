@@ -7,7 +7,6 @@
     "e1": 5,
     "e2": "foo"
   },
-  "logicalType": "local-timestamp-micros",
   "fields": [
     {
       "name": "stringValue",
