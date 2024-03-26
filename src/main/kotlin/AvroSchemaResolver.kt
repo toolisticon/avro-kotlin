@@ -30,6 +30,16 @@ fun avroSchemaResolver(firstSchema: AvroSchema, vararg otherSchemas: AvroSchema)
   override fun get(fingerprint: AvroFingerprint): AvroSchema = store[fingerprint] ?: throw missingSchemaException(fingerprint)
 }
 
+operator fun AvroSchemaResolver.plus(other: AvroSchemaResolver): AvroSchemaResolver = AvroSchemaResolver { fingerprint ->
+  try {
+    // first try us
+    this[fingerprint]
+  } catch (e: MissingSchemaException) {
+    // then try other - raise exception if still no hit
+    other[fingerprint]
+  }
+}
+
 /**
  * Supply an [AvroSchema] by [AvroFingerprint].
  */
@@ -44,4 +54,23 @@ fun interface AvroSchemaResolver : SchemaStore {
   @Throws(MissingSchemaException::class)
   override fun findByFingerprint(fingerprint: Long): Schema = this[AvroFingerprint(fingerprint)].get()
 
+}
+
+data class AvroSchemaResolverMap(
+  private val store: Map<AvroFingerprint, AvroSchema>
+) : AvroSchemaResolver {
+
+  override fun get(fingerprint: AvroFingerprint): AvroSchema = store[fingerprint] ?: throw missingSchemaException(fingerprint)
+
+  operator fun plus(schema: AvroSchema): AvroSchemaResolverMap = copy(
+    store = buildMap {
+      putAll(store)
+      put(schema.fingerprint, schema)
+    }
+  )
+
+  operator fun plus(other: AvroSchemaResolverMap) : AvroSchemaResolverMap = copy(store = buildMap {
+    putAll(store)
+    putAll(other.store)
+  })
 }
