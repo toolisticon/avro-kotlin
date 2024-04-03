@@ -6,16 +6,19 @@ import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.JsonSource
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import mu.KLogging
 import org.apache.avro.LogicalTypes
+import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
 import org.junit.jupiter.api.Assumptions.assumeFalse
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -142,5 +145,32 @@ internal class AvroParserTest {
           PROTOCOL -> TestFixtures.DEFAULT_PARSER.parseProtocol(file)
         }
       }
+  }
+
+  @Test
+  @Disabled("Fix!")
+  fun `parse recursive Json`() {
+    val schemaJson: JsonString = JsonString(resourceUrl("org.apache.avro/schema/json.avsc").readText())
+
+    val schema = Schema.Parser().parse(schemaJson.value)
+
+    println(AvroFingerprint(schema))
+    println(AvroHashCode(schema))
+
+    val avroSchema = AvroSchema(schema)
+    println(avroSchema)
+
+    fun printEnclosed(et: List<AvroSchema>) {
+      et.forEach {
+        println(it)
+        if (it.enclosedTypes.isNotEmpty()) {
+          printEnclosed(it.enclosedTypes)
+        }
+      }
+    }
+
+    printEnclosed(avroSchema.enclosedTypes)
+
+
   }
 }

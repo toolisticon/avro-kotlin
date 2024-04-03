@@ -1,9 +1,11 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
+import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.value.Name
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class AvroSchemaTest {
@@ -45,4 +47,11 @@ internal class AvroSchemaTest {
     }
   }
 
+
+  @Test
+  @Disabled("Fix!")
+  fun `recurse enclosed types map for json`() {
+    val schema = AvroSchema(TestFixtures.ApacheAvroResourceFixtures.JSON_AVSC)
+    println(schema.typesMap)
+  }
 }
