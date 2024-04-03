@@ -32,7 +32,7 @@ class AvroProtocol(
 
     fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
 
-    fun schemaForMessageRequest(message: Protocol.Message) = if (message.request.fields.isEmpty()) {
+    fun schemaForMessageRequest(message: Protocol.Message): AvroSchema = if (message.request.fields.isEmpty()) {
       EmptyType.schema
     } else {
       AvroSchema(schema = message.request, name = requestName(message))

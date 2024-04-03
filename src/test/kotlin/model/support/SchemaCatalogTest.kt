@@ -3,6 +3,7 @@ package io.toolisticon.avro.kotlin.model.support
 import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.avro.kotlin.model.support.NamedSchema.Companion.namedSchema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -12,7 +13,7 @@ internal class SchemaCatalogTest {
 
   @Test
   fun `create from primitive string`() {
-    val schema = AvroBuilder.primitiveSchema(SchemaType.STRING).get()
+    val schema = AvroBuilder.primitiveSchema(SchemaType.STRING).namedSchema
 
     val catalog = SchemaCatalog(schema)
 
@@ -22,7 +23,7 @@ internal class SchemaCatalogTest {
 
   @Test
   fun `catalog of json_avsc - complex self reference in map and array`() {
-    val catalog = SchemaCatalog(TestFixtures.ApacheAvroResourceFixtures.JSON_AVSC)
+    val catalog = SchemaCatalog(TestFixtures.ApacheAvroResourceFixtures.JSON_AVSC.namedSchema)
     assertThat(catalog).hasSize(9)
 
     assertThat(catalog.graph)
