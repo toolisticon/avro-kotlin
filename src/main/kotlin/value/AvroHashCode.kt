@@ -28,6 +28,8 @@ value class AvroHashCode(override val value: Int) : WithHexString, Comparable<Av
   constructor(schema: Schema) : this(schema.hashCode())
   constructor(field: Schema.Field) : this(field.hashCode())
   constructor(protocol: Protocol) : this(protocol.hashCode())
+  constructor(hex: String) : this(HexString(hex))
+  constructor(hex: HexString) : this(value = hex.parseInt())
 
   override val hex: HexString get() = HexString(value)
   override fun compareTo(other: AvroHashCode): Int = value.compareTo(other.value)

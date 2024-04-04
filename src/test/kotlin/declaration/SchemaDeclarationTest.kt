@@ -24,7 +24,7 @@ class SchemaDeclarationTest {
   fun `load org_apache_avro_schema_foo`() {
     val declaration = parser.parseSchema(resourceUrl("org.apache.avro/schema/foo.avsc"))
 
-    assertThat(declaration.canonicalName).hasToString("org.foo.Foo")
+    assertThat(declaration.canonicalName.fqn).isEqualTo("org.foo.Foo")
     assertThat(declaration.name).isEqualTo(Name("Foo"))
     assertThat(declaration.namespace).isEqualTo(Namespace("org.foo"))
     assertThat(declaration.recordType.fields).hasSize(1)

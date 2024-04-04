@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version-file: ./.java-version
+          java-version-file: .java-version
           cache: maven
           server-id: ossrh
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central

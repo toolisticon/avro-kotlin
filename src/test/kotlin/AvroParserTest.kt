@@ -2,20 +2,27 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
+import _ktx.StringKtx.toReadableString
+import io.toolisticon.avro.kotlin.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isError
 import io.toolisticon.avro.kotlin.model.wrapper.JsonSource
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import mu.KLogging
 import org.apache.avro.LogicalTypes
+import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
-import org.junit.jupiter.api.Assumptions
+import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -73,17 +80,9 @@ internal class AvroParserTest {
 
 
 
-//    val meta = schema.recordType.schema.avroKotlinMeta
-//
-//
-//    meta.fingerprint = schema.recordType.schema.fingerprint
-
-
-//    val meta = schema.avroKotlin
-//
-
-    //schema.recordType.schema.avroKotlinMeta.store("another", "hello")
-
+    with(declaration.avroTypes) {
+      assertThat(this).hasSize(2)
+    }
   }
 
   @Test
@@ -120,7 +119,7 @@ internal class AvroParserTest {
       .registerLogicalTypeFactory(CustomLogicalTypeFactory())
       .parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
 
-    assertThat(declaration.canonicalName).hasToString("foo.dummy.DummyProtocol")
+    assertThat(declaration.canonicalName).hasToString("CanonicalName(fqn='foo.dummy.DummyProtocol')")
 
     assertThat(declaration.avroTypes).hasSize(9)
     assertThat(declaration.protocol.recordTypes).hasSize(4)
@@ -135,34 +134,21 @@ internal class AvroParserTest {
   @ParameterizedTest
   @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
   fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
-    val ignoredFiles = setOf(
-      "/org.apache.avro/schema/json.avsc",
-      "/protocol/protocol.avpr",
-      "/protocol/namespace.avpr",
-      "/protocol/namespaces.avpr",
-      "/protocol/bar.avpr",
-      "/protocol/reservedwords.avpr",
-      "/protocol/unicode.avpr",
-      "/protocol/output-protocol.avpr",
-      "/protocol/output-import.avpr",
-      "/protocol/output-proto.avpr",
-      "/protocol/nestedimport.avpr",
-      "/protocol/input-protocol.avpr",
-      "/protocol/bulk-data.avpr",
-      "/protocol/import.avpr",
-      "/protocol/proto.avpr",
-    )
-    Assumptions.assumeTrue(ignoredFiles.none {
-      file.path.endsWith(it)
-    })
+    setOf<String>(
+      // enter file here to disable its test
+    ).forEach { ignoredFile ->
+      assumeFalse(file.path.endsWith(ignoredFile)) { "Ignoring avro resource: $ignoredFile." }
+    }
 
     assertThatNoException()
       .`as` { "failed to parse $spec: file://$file" }
       .isThrownBy {
         when (spec) {
-          SCHEMA -> TestFixtures.DEFAULT_PARSER.parseSchema(file)
-          PROTOCOL -> TestFixtures.DEFAULT_PARSER.parseProtocol(file)
+          SCHEMA -> DEFAULT_PARSER.parseSchema(file)
+          PROTOCOL -> DEFAULT_PARSER.parseProtocol(file)
         }
       }
   }
+
+
 }

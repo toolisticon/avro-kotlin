@@ -2,7 +2,7 @@ package io.toolisticon.avro.kotlin.logical
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
-import io.toolisticon.avro.kotlin.AvroSchemaStore
+import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin._test.MoneyLogicalType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.LogicalTypes
@@ -50,7 +50,7 @@ internal class MoneyLogicalTypeTest {
       put("money", amount)
     }
 
-    val schemaStore = AvroSchemaStore { _ -> writerSchema }
+    val schemaStore = AvroSchemaResolver { _ -> writerSchema }
 
     val bytes = AvroKotlin.genericRecordToSingleObjectEncoded(record)
 

@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin.model
 
 import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isEnumType
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 

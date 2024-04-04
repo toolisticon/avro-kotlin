@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
+import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
 import io.toolisticon.avro.kotlin.value.ByteArrayValue
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
@@ -7,7 +8,7 @@ import org.apache.avro.message.BinaryMessageEncoder
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class GenericRecordSingleObjectEncoder(
-  private val genericData: GenericData = AvroCodec.defaultGenericData
+  private val genericData: GenericData = defaultLogicalTypeConversions.genericData
 ) : AvroCodec.SingleObjectEncoder<GenericData.Record> {
 
   override fun encode(record: GenericData.Record): SingleObjectEncodedBytes {

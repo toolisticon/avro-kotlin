@@ -2,13 +2,12 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.findAvroResources
 import _ktx.ResourceKtx.loadJsonString
+import _ktx.ResourceKtx.resourceUrl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.avro.kotlin.value.*
+import lib.test.event.BankAccountCreated
 import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Protocol
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.slf4j.bridge.SLF4JBridgeHandler
+import java.util.*
 import java.util.logging.LogManager
 import java.util.stream.Stream
 import kotlin.streams.asStream
@@ -116,8 +116,31 @@ object TestFixtures {
   class JulBridgeExtension : KLogging(), BeforeAllCallback {
     override fun beforeAll(ctx: ExtensionContext) {
       logger.debug { "Init Slf4j-Bridge" }
-      LogManager.getLogManager().reset();
-      SLF4JBridgeHandler.install();
+      LogManager.getLogManager().reset()
+      SLF4JBridgeHandler.install()
     }
+  }
+
+  object BankAccountCreatedFixtures {
+    val SCHEMA_BANK_ACCOUNT_CREATED = AvroSchema(BankAccountCreated.getClassSchema())
+    val bankAccountId = UUID.fromString("e19c80ab-3a7b-4482-a251-8320e07d76a3")
+    val initialBalance = 99
+
+    // SOE with above values
+    val hexString =
+      HexString("[C3 01 84 98 FA BA C2 65 FD 5A 48 65 31 39 63 38 30 61 62 2D 33 61 37 62 2D 34 34 38 32 2D 61 32 35 31 2D 38 33 32 30 65 30 37 64 37 36 61 33 C6 01]")
+
+    val singleObjectEncoded = SingleObjectEncodedBytes(bytes = ByteArrayValue(hexString))
+
+    val bankAccountCreated = BankAccountCreated.newBuilder()
+      .setBankAccountId(bankAccountId)
+      .setInitialBalance(initialBalance)
+      .build()
+  }
+
+  object ApacheAvroResourceFixtures {
+    val JSON_AVSC: Schema = Schema.Parser().parse(
+      resourceUrl("org.apache.avro/schema/json.avsc").openStream()
+    )
   }
 }

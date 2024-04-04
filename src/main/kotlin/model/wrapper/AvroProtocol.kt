@@ -32,7 +32,7 @@ class AvroProtocol(
 
     fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
 
-    fun schemaForMessageRequest(message: Protocol.Message) = if (message.request.fields.isEmpty()) {
+    fun schemaForMessageRequest(message: Protocol.Message): AvroSchema = if (message.request.fields.isEmpty()) {
       EmptyType.schema
     } else {
       AvroSchema(schema = message.request, name = requestName(message))
@@ -160,10 +160,11 @@ class AvroProtocol(
     val errors: AvroSchema by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
-      val errorTypes = schema.enclosedTypes
+      val catalog = SchemaCatalog(schema = schema, excludeSelf = true)
 
-      if (errorTypes.size > 1) {
-        schema.enclosedTypes.filterNot { it.isPrimitive }.single()
+
+      if (catalog.size > 1) {
+        catalog.single(SchemaCatalog.notPrimitive()).second
       } else {
         schema
       }

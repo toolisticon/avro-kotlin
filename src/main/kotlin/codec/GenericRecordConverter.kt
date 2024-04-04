@@ -1,5 +1,7 @@
 package io.toolisticon.avro.kotlin.codec
 
+import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.generic.GenericData
 
@@ -11,13 +13,13 @@ import org.apache.avro.generic.GenericData
  * TODO: Would be nice if we could achieve this without encoding, see [so-question](https://stackoverflow.com/questions/77879245/avro-schema-evolution-update-schema-of-avro-generic-record-via-copy-deepcopy-r).
  */
 class GenericRecordConverter private constructor(
-  private val readerSchemaSupplier: AvroCodec.AvroSchemaSupplier,
+  private val readerSchemaSupplier: AvroSchemaResolver,
   private val genericData: GenericData
 ) : AvroCodec.Converter<GenericData.Record, GenericData.Record> {
 
   constructor(
     readerSchema: AvroSchema,
-    genericData: GenericData = AvroCodec.defaultGenericData
+    genericData: GenericData = AvroKotlin.defaultLogicalTypeConversions.genericData
   ) : this(
     readerSchemaSupplier = { readerSchema },
     genericData = genericData

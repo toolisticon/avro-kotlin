@@ -27,9 +27,6 @@ internal class AvroProtocolTest {
     val protocol = AvroKotlin.parseProtocol("org.apache.avro/protocol/bulk-data.avpr")
     val readMessage = requireNotNull(protocol.getMessage(Name("read"))) as AvroProtocol.TwoWayMessage
 
-    println(protocol)
-
-
     assertThat(readMessage).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
     assertThat(readMessage.request).isEqualTo(EmptyType.schema)
     assertThat(readMessage.name.value).isEqualTo("read")

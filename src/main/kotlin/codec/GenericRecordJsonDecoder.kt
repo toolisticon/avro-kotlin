@@ -1,9 +1,9 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.codec.AvroCodec.AvroSchemaSupplier
+import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
+import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonDecoder
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
-import io.toolisticon.avro.kotlin.codec.AvroCodec.defaultGenericData
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.JsonString
 import org.apache.avro.generic.GenericData
@@ -11,14 +11,14 @@ import org.apache.avro.generic.GenericDatumReader
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class GenericRecordJsonDecoder private constructor(
-  private val readerSchemaSupplier: AvroSchemaSupplier,
-  private val writerSchemaSupplier: AvroSchemaSupplier,
+  private val readerSchemaSupplier: AvroSchemaResolver,
+  private val writerSchemaSupplier: AvroSchemaResolver,
   private val genericData: GenericData,
 ) : JsonDecoder<GenericData.Record> {
 
   constructor(
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultGenericData
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ) : this(
     readerSchemaSupplier = { readerSchema },
     writerSchemaSupplier = { readerSchema },
@@ -28,7 +28,7 @@ class GenericRecordJsonDecoder private constructor(
   constructor(
     readerSchema: AvroSchema,
     writerSchema: AvroSchema,
-    genericData: GenericData = defaultGenericData
+    genericData: GenericData = defaultLogicalTypeConversions.genericData
   ) : this(
     readerSchemaSupplier = { readerSchema },
     writerSchemaSupplier = { writerSchema },

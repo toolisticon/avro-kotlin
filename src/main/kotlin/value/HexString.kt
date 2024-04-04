@@ -15,6 +15,9 @@ value class HexString private constructor(private val single: Single<String>) : 
     private fun join(value: String) = value.chunked(2).joinToString(DEFAULT_FORMAT.first, DEFAULT_FORMAT.second, DEFAULT_FORMAT.third)
 
 
+    fun intToBytes(i: Int): ByteArray = ByteBuffer.allocate(Int.SIZE_BYTES).putInt(i).array()
+
+    fun bytesToInt(bytes: ByteArray): Int = ByteBuffer.wrap(bytes).int
   }
 
   /**
@@ -27,7 +30,13 @@ value class HexString private constructor(private val single: Single<String>) : 
     )
   )
 
-  constructor(value: Number) : this(Single(format(value)))
+  constructor(value: Number) : this(
+    single = when (value) {
+      is Int -> HexString(intToBytes(value)).single
+      else -> Single(format(value))
+    }
+  )
+
 
   /**
    * Converts a byte array into its hexadecimal string representation
@@ -51,6 +60,8 @@ value class HexString private constructor(private val single: Single<String>) : 
     )
 
   val chunked: List<String> get() = value.chunked(BYTES_SIZE)
+
+  fun parseInt(): Int = bytesToInt(byteArray.value)
 
   override fun toString() = value
 }

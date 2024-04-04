@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
 import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
-import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.SchemaType.Companion.PRIMITIVE_TYPES
 import io.toolisticon.avro.kotlin.value.*
@@ -38,6 +37,7 @@ class AvroSchema(
    */
   override val name: Name = Name(schema),
 ) : SchemaSupplier, WithObjectProperties {
+
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
       AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
@@ -123,9 +123,11 @@ class AvroSchema(
    *
    * @see Schema#getTypes
    */
-  val unionTypes: List<AvroSchema> = runCatching { schema.types?.map { AvroSchema(it) } }.getOrNull() ?: emptyList()
+  val unionTypes: List<AvroSchema> by lazy {
+    runCatching { schema.types?.map { AvroSchema(it) } }.getOrNull() ?: emptyList()
+  }
 
-  override fun equals(other: Any?): Boolean = hashCode.value == other?.hashCode()
+  override fun equals(other: Any?): Boolean = other != null && other is AvroSchema && hashCode.value == other.hashCode()
   override fun hashCode(): Int = hashCode.value
   override fun toString(): String = toString(false)
   fun toString(pretty: Boolean): String = schema.toString(pretty)
@@ -156,74 +158,32 @@ class AvroSchema(
    * Only valid if this is of type ENUM, then it must not be empty.
    * In all other cases, this is empty.
    */
-  val enumSymbols: List<String> = runCatching { schema.enumSymbols }.getOrNull() ?: emptyList()
+  val enumSymbols: List<String> by lazy {
+    runCatching { schema.enumSymbols }.getOrNull() ?: emptyList()
+  }
 
   /**
    * Only valid if this is of type ARRAY, then it must not be null.
    * In all other cases, this is null.
    */
-  val arrayType: AvroSchema? = runCatching { schema.elementType?.let { AvroSchema(it) } }.getOrNull()
+  val arrayType: AvroSchema? by lazy {
+    runCatching { schema.elementType?.let { AvroSchema(it) } }.getOrNull()
+  }
 
   /**
    * Only valid if this is of type MAP, then it must not be null.
    * In all other cases, this is null.
    */
-  val mapType: AvroSchema? = runCatching {
-    schema.valueType?.let { AvroSchema(it) }
-  }.getOrNull()
-
-  val enclosedTypes: List<AvroSchema> by lazy {
-    buildList {
-      addAll(unionTypes)
-      fields.map(AvroSchemaField::schema).forEach { fieldSchema ->
-        if (this.find { it.hashCode == fieldSchema.hashCode } == null) {
-          add(fieldSchema)
-        }
-      }
-      mapType?.also { add(it) }
-      arrayType?.also { add(it) }
-    }
+  val mapType: AvroSchema? by lazy {
+    runCatching {
+      schema.valueType?.let { AvroSchema(it) }
+    }.getOrNull()
   }
+
 
   fun getIndexNamed(name: String): Int = schema.getIndexNamed(name)
 
   fun getFixedSize(): Int = schema.fixedSize
-
-  val isArrayType: Boolean = SchemaType.ARRAY == type && arrayType != null
-
-  val isBooleanType: Boolean = SchemaType.BOOLEAN == type
-
-  val isBytesType: Boolean = SchemaType.BYTES == type
-
-  val isDoubleType: Boolean = SchemaType.DOUBLE == type
-
-  val isEnumType: Boolean = SchemaType.ENUM == type
-
-  val isEmptyType : Boolean = SchemaType.RECORD == type &&  fields.isEmpty()
-  val isError : Boolean = runCatching { schema.isError }.getOrDefault(false)
-  val isErrorType: Boolean = SchemaType.RECORD == type && isError
-
-  val isFloatType: Boolean = SchemaType.FLOAT == type
-
-  val isIntType: Boolean = SchemaType.INT == type
-
-  val isLongType: Boolean = SchemaType.LONG == type
-
-  val isMapType: Boolean = SchemaType.MAP == type
-
-  val isNullable: Boolean = schema.isNullable
-  val isNullType: Boolean = SchemaType.NULL == type
-
-  val isPrimitive: Boolean = PRIMITIVE_TYPES.contains(type)
-
-  val isRecordType: Boolean = SchemaType.RECORD == type && !isError
-
-  val isStringType: Boolean = SchemaType.STRING == type
-
-  val isUnion: Boolean = schema.isUnion
-  val isUnionType: Boolean = SchemaType.UNION == type && isUnion && unionTypes.isNotEmpty()
-
-  val typesMap: AvroTypesMap get() = AvroTypesMap(this)
 
   init {
     if (isRoot) {
@@ -234,6 +194,45 @@ class AvroSchema(
 
   override fun get(): Schema = schema
 
+}
+
+object AvroSchemaChecks {
+
+  val AvroSchema.isArrayType: Boolean get() = SchemaType.ARRAY == type && arrayType != null
+
+  val AvroSchema.isBooleanType: Boolean get() = SchemaType.BOOLEAN == type
+
+  val AvroSchema.isBytesType: Boolean get() = SchemaType.BYTES == type
+
+  val AvroSchema.isDoubleType: Boolean get() = SchemaType.DOUBLE == type
+
+  val AvroSchema.isEnumType: Boolean get() = SchemaType.ENUM == type
+
+  val AvroSchema.isEmptyType: Boolean get() = SchemaType.RECORD == type && fields.isEmpty()
+  val AvroSchema.isError: Boolean get() = runCatching { get().isError }.getOrDefault(false)
+  val AvroSchema.isErrorType: Boolean get() = SchemaType.RECORD == type && isError
+
+  val AvroSchema.isFloatType: Boolean get() = SchemaType.FLOAT == type
+
+  val AvroSchema.isIntType: Boolean get() = SchemaType.INT == type
+
+  val AvroSchema.isLongType: Boolean get() = SchemaType.LONG == type
+
+  val AvroSchema.isMapType: Boolean get() = SchemaType.MAP == type
+
+  val AvroSchema.isNullable: Boolean get() = get().isNullable
+  val AvroSchema.isNullType: Boolean get() = SchemaType.NULL == type
+
+  val AvroSchema.isPrimitive: Boolean get() = PRIMITIVE_TYPES.contains(type)
+
+  val AvroSchema.isRecordType: Boolean get() = SchemaType.RECORD == type && !isError
+
+  val AvroSchema.isStringType: Boolean get() = SchemaType.STRING == type
+
+  val AvroSchema.isUnion: Boolean get() = get().isUnion
+  val AvroSchema.isUnionType: Boolean get() = SchemaType.UNION == type && isUnion && unionTypes.isNotEmpty()
+
+
   /**
    * Check if we can decode using this schema if the encoder used
    * [writer] schema.
@@ -241,7 +240,8 @@ class AvroSchema(
    * @param writer - the schema used to encode data
    * @return [SchemaCompatibility.SchemaPairCompatibility] with reader=this
    */
-  fun compatibleToReadFrom(writer: AvroSchema): SchemaCompatibility.SchemaPairCompatibility = SchemaCompatibility.checkReaderWriterCompatibility(schema, writer.schema)
+  fun AvroSchema.compatibleToReadFrom(writer: AvroSchema): SchemaCompatibility.SchemaPairCompatibility =
+    SchemaCompatibility.checkReaderWriterCompatibility(get(), writer.get())
 
   /**
    * Check data encoded using this schema could be decoded from [reader] schema.
@@ -249,5 +249,6 @@ class AvroSchema(
    * @param reader - the schema to decode the data
    * @return [SchemaCompatibility.SchemaPairCompatibility] with writer=this
    */
-  fun compatibleToBeReadFrom(reader: AvroSchema): SchemaCompatibility.SchemaPairCompatibility = SchemaCompatibility.checkReaderWriterCompatibility(reader.schema, schema)
+  fun AvroSchema.compatibleToBeReadFrom(reader: AvroSchema): SchemaCompatibility.SchemaPairCompatibility =
+    SchemaCompatibility.checkReaderWriterCompatibility(reader.get(), get())
 }
