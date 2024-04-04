@@ -3,6 +3,7 @@ package io.toolisticon.avro.kotlin.model
 import _ktx.StringKtx.toString
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isIntType
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.LogicalType

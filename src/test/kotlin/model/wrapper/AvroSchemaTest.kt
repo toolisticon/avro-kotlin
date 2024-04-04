@@ -2,6 +2,23 @@ package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isArrayType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isBooleanType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isBytesType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isDoubleType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isEnumType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isError
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isFloatType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isIntType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isLongType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isMapType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullable
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isPrimitive
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isRecordType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isStringType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isUnion
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isUnionType
 import io.toolisticon.avro.kotlin.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

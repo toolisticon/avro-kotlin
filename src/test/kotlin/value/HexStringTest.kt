@@ -4,7 +4,9 @@ import io.toolisticon.avro.kotlin.AvroKotlin.AVRO_V1_HEADER
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 
 
 internal class HexStringTest {
@@ -13,9 +15,9 @@ internal class HexStringTest {
   fun `hex of 1 is 01`() {
     val hex = HexString(1)
 
-    assertThat(hex.value).isEqualTo("01")
-    assertThat(hex.toString()).isEqualTo("01")
-    assertThat(hex.formatted).isEqualTo("[01]")
+    assertThat(hex.value).isEqualTo("00000001")
+    assertThat(hex.toString()).isEqualTo("00000001")
+    assertThat(hex.formatted).isEqualTo("[00 00 00 01]")
   }
 
   @Test
@@ -42,5 +44,19 @@ internal class HexStringTest {
     assertThat(hex.length).isEqualTo(16)
   }
 
+  @Test
+  fun `create from int and convert back into int`() {
+    SoftAssertions().apply {
+      repeat(100) {
+        val randomInt = Random.nextInt()
 
+        val hex = HexString(randomInt)
+
+        assertThat(hex.parseInt()).`as` {
+          "expected $hex to be parsed as $randomInt"
+        }.isEqualTo(randomInt)
+
+      }
+    }.assertAll()
+  }
 }

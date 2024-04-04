@@ -2,16 +2,23 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
+import _ktx.StringKtx.toReadableString
+import io.toolisticon.avro.kotlin.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isError
 import io.toolisticon.avro.kotlin.model.wrapper.JsonSource
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import mu.KLogging
 import org.apache.avro.LogicalTypes
+import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
@@ -127,9 +134,8 @@ internal class AvroParserTest {
   @ParameterizedTest
   @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
   fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
-    // TODO: goal is to parse all resource, ignoring files with open issues.
-    setOf(
-      "/org.apache.avro/schema/json.avsc", // FIXME: see Bug #38
+    setOf<String>(
+      // enter file here to disable its test
     ).forEach { ignoredFile ->
       assumeFalse(file.path.endsWith(ignoredFile)) { "Ignoring avro resource: $ignoredFile." }
     }
@@ -138,9 +144,11 @@ internal class AvroParserTest {
       .`as` { "failed to parse $spec: file://$file" }
       .isThrownBy {
         when (spec) {
-          SCHEMA -> TestFixtures.DEFAULT_PARSER.parseSchema(file)
-          PROTOCOL -> TestFixtures.DEFAULT_PARSER.parseProtocol(file)
+          SCHEMA -> DEFAULT_PARSER.parseSchema(file)
+          PROTOCOL -> DEFAULT_PARSER.parseProtocol(file)
         }
       }
   }
+
+
 }

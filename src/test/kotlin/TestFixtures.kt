@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.findAvroResources
 import _ktx.ResourceKtx.loadJsonString
+import _ktx.ResourceKtx.resourceUrl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -99,8 +100,6 @@ object TestFixtures {
     .endRecord()
 
 
-
-
   /**
    * Provides all protocol and schema resources contained in `src/test/resources` as a Stream,
    * used by parameterized tests.
@@ -117,8 +116,8 @@ object TestFixtures {
   class JulBridgeExtension : KLogging(), BeforeAllCallback {
     override fun beforeAll(ctx: ExtensionContext) {
       logger.debug { "Init Slf4j-Bridge" }
-      LogManager.getLogManager().reset();
-      SLF4JBridgeHandler.install();
+      LogManager.getLogManager().reset()
+      SLF4JBridgeHandler.install()
     }
   }
 
@@ -126,8 +125,10 @@ object TestFixtures {
     val SCHEMA_BANK_ACCOUNT_CREATED = AvroSchema(BankAccountCreated.getClassSchema())
     val bankAccountId = UUID.fromString("e19c80ab-3a7b-4482-a251-8320e07d76a3")
     val initialBalance = 99
+
     // SOE with above values
-    val hexString = HexString("[C3 01 84 98 FA BA C2 65 FD 5A 48 65 31 39 63 38 30 61 62 2D 33 61 37 62 2D 34 34 38 32 2D 61 32 35 31 2D 38 33 32 30 65 30 37 64 37 36 61 33 C6 01]")
+    val hexString =
+      HexString("[C3 01 84 98 FA BA C2 65 FD 5A 48 65 31 39 63 38 30 61 62 2D 33 61 37 62 2D 34 34 38 32 2D 61 32 35 31 2D 38 33 32 30 65 30 37 64 37 36 61 33 C6 01]")
 
     val singleObjectEncoded = SingleObjectEncodedBytes(bytes = ByteArrayValue(hexString))
 
@@ -135,5 +136,11 @@ object TestFixtures {
       .setBankAccountId(bankAccountId)
       .setInitialBalance(initialBalance)
       .build()
+  }
+
+  object ApacheAvroResourceFixtures {
+    val JSON_AVSC: Schema = Schema.Parser().parse(
+      resourceUrl("org.apache.avro/schema/json.avsc").openStream()
+    )
   }
 }

@@ -4,6 +4,7 @@ import _ktx.StringKtx
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
 import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isMapType
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
 import io.toolisticon.avro.kotlin.value.AvroHashCode
