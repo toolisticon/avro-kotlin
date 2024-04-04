@@ -160,10 +160,11 @@ class AvroProtocol(
     val errors: AvroSchema by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
-      val errorTypes = schema.enclosedTypes
+      val catalog = SchemaCatalog(schema = schema, excludeSelf = true)
 
-      if (errorTypes.size > 1) {
-        schema.enclosedTypes.filterNot { it.isPrimitive }.single()
+
+      if (catalog.size > 1) {
+        catalog.single(SchemaCatalog.notPrimitive()).second
       } else {
         schema
       }

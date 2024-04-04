@@ -1,11 +1,8 @@
 package io.toolisticon.avro.kotlin.model
 
-import io.toolisticon.avro.kotlin.model.support.NamedSchema
-import io.toolisticon.avro.kotlin.model.support.NamedSchema.Companion.avroSchema
-import io.toolisticon.avro.kotlin.model.support.NamedSchema.Companion.namedSchema
-import io.toolisticon.avro.kotlin.model.support.SchemaCatalog
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog
 import io.toolisticon.avro.kotlin.value.AvroHashCode
 import io.toolisticon.avro.kotlin.value.Graph
 import io.toolisticon.avro.kotlin.value.Name
@@ -25,7 +22,7 @@ class AvroTypesMap private constructor(
 
     internal fun SchemaCatalog.typesMap(): Map<AvroHashCode, AvroType> = entries.fold(LinkedHashMap()) { acc, cur ->
       acc.apply {
-        computeIfAbsent(cur.key) { _ -> AvroType.avroType(cur.value.avroSchema) }
+        computeIfAbsent(cur.key) { _ -> AvroType.avroType(cur.value) }
       }
     }
   }
@@ -36,14 +33,14 @@ class AvroTypesMap private constructor(
 
   internal constructor(catalog: SchemaCatalog) : this(map = catalog.typesMap(), catalog.graph)
 
-  constructor(schema: AvroSchema) : this(catalog = SchemaCatalog(schema.namedSchema))
-  constructor(schemas: List<AvroSchema>) : this(catalog = SchemaCatalog(schemas.map { it.namedSchema }))
+  constructor(schema: AvroSchema) : this(catalog = SchemaCatalog(schema))
+  constructor(schemas: List<AvroSchema>) : this(catalog = SchemaCatalog(schemas))
 
   constructor(protocol: AvroProtocol) : this(
     catalog = protocol.messages.values.fold(
-      SchemaCatalog(protocol.get().types.map { NamedSchema(it) })
+      SchemaCatalog(protocol.get().types.map { AvroSchema(it) })
     ) { catalog, message ->
-      catalog + message.enclosedTypes().map { it.namedSchema }
+      catalog + message.enclosedTypes()
     }
   )
 
@@ -81,4 +78,20 @@ class AvroTypesMap private constructor(
    * Contained [AvroType]s in order of directed dependency graph.
    */
   fun sequence(): Sequence<AvroType> = graph.sequence.mapNotNull { get(it) }
+
+  val allHashCodes: Set<AvroHashCode> by lazy {
+    LinkedHashSet(graph.vertexes)
+  }
+
+  fun sub(hashCode: AvroHashCode): AvroTypesMap {
+    val newGraph = graph.subGraphFor(hashCode)
+    val remainingHashCodes = newGraph.vertexes.toSet()
+    val newMap = map.filter { remainingHashCodes.contains(it.key) }
+
+    return AvroTypesMap(graph = newGraph, map = newMap)
+  }
+
+  val schemas: List<AvroSchema> by lazy {
+    values.map { it.schema }
+  }
 }

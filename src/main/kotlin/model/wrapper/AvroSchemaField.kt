@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin.model.wrapper
 
 import io.toolisticon.avro.kotlin.AvroKotlin.documentation
 import io.toolisticon.avro.kotlin.model.WithDocumentation
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullable
 import io.toolisticon.avro.kotlin.value.*
 import org.apache.avro.Schema
 

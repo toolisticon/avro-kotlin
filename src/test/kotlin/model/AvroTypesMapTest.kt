@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
+import _ktx.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.TestFixtures
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
@@ -8,6 +9,8 @@ import io.toolisticon.avro.kotlin.value.Name
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatNoException
+import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Test
 
 internal class AvroTypesMapTest {
@@ -128,6 +131,23 @@ internal class AvroTypesMapTest {
 
     assertThat(m).hasSize(4)
     assertThat(m.sequence().toList()).hasSize(4)
+
+  }
+
+  @Test
+  fun `can use subtypes of recursive Json_avsc`() {
+    val avroSchema = AvroSchema(TestFixtures.ApacheAvroResourceFixtures.JSON_AVSC)
+    val typesMap = AvroTypesMap(avroSchema)
+
+    // we loop over all hashes and se if we can get a valid types map
+    SoftAssertions().apply {
+      typesMap.allHashCodes.forEach {
+        assertThatNoException()
+          .isThrownBy {
+            typesMap.sub(it).toReadableString()
+          }
+      }
+    }.assertAll()
 
   }
 }

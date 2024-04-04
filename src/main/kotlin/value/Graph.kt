@@ -69,6 +69,17 @@ value class Graph<T : Comparable<T>> private constructor(
       }
     }
 
+  fun subGraphFor(vararg vertexes: T): Graph<T> {
+    require(vertexes.all { contains(it) }) { "Unknown vertexes: ${vertexes.toList() - this.vertexes.toSet()}" }
+    val keep = vertexes.flatMap { map[it]!!+it }.toSet()
+    val remove = this.vertexes - keep
+
+    return remove.fold(this.copy()) { graph, removeVertex ->
+      graph - removeVertex
+    }
+  }
+
+
   fun isEmpty() = map.isEmpty()
 
   override fun iterator(): Iterator<T> = sequence.iterator()

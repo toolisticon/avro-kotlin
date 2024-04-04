@@ -32,8 +32,14 @@ internal class GraphTest {
         1 to 4,
         2 to 4
       )
-  }
 
+    g -= 1
+
+    assertThat(g.arcs)
+      .containsExactly(
+        2 to 4
+      )
+  }
 
   @Test
   fun `self reference`() {
@@ -97,6 +103,37 @@ internal class GraphTest {
         1 to 2,
         2 to 3,
         2 to 4,
+      )
+  }
+
+  @Test
+  fun `subgraph for 2`() {
+    val g = Graph(1 to 2) + Graph(2 to 3, 2 to 4)
+
+    val sub = g.subGraphFor(2)
+    assertThat(sub.arcs)
+      .containsExactly(
+        2 to 3,
+        2 to 4,
+      )
+  }
+
+  @Test
+  fun `subgraph for 2 and 3`() {
+    val g = Graph(
+      1 to 2,
+      1 to 3,
+      2 to 4,
+      3 to 4,
+      4 to 2,
+    )
+
+    val sub = g.subGraphFor(2, 3)
+    assertThat(sub.arcs)
+      .containsExactly(
+        2 to 4,
+        3 to 4,
+        4 to 2
       )
   }
 }
