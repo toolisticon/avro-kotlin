@@ -5,13 +5,13 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2024.3.2</version>
+    <version>2024.4.0</version>
     <relativePath/>
   </parent>
 
   <groupId>io.toolisticon.lib</groupId>
   <artifactId>avro-kotlin</artifactId>
-  <version>1.11.3.0</version>
+  <version>1.11.3.1</version>
 
   <name>${project.artifactId}</name>
   <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -27,8 +27,8 @@
     <assertj.version>3.25.3</assertj.version>
     <equalsverifier.version>3.16.1</equalsverifier.version>
     <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
-    <logback.version>1.5.3</logback.version>
-    <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
+    <logback.version>1.5.4</logback.version>
+    <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
     <okio.version>3.9.0</okio.version>
     <slf4j.version>2.0.12</slf4j.version>
@@ -206,15 +206,7 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>

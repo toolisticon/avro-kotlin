@@ -2,7 +2,9 @@ package io.toolisticon.avro.kotlin.codec
 
 import io.toolisticon.avro.kotlin._test.FooString
 import io.toolisticon.avro.kotlin._test.FooString2
+import io.toolisticon.avro.kotlin.avroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.GenericRecordCodec.convert
+import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -78,5 +80,18 @@ internal class GenericRecordCodecTest {
       assertThat(str).isEqualTo("foo")
       assertThat(uuid).isNull()
     }
+  }
+
+  @Test
+  fun `convert - singleObjectEncoded to JsonString`() {
+    val json = convert(
+      SingleObjectEncodedBytes(FooString.SINGLE_OBJECT_BAR),
+      avroSchemaResolver(FooString.SCHEMA)
+    )
+
+    assertThat(json).isNotNull
+
+    val generic = GenericRecordCodec.decodeJson(json, FooString.SCHEMA)
+    assertThat(FooString(generic)).isEqualTo(FooString("bar"))
   }
 }
