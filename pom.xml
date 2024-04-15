@@ -27,7 +27,7 @@
     <assertj.version>3.25.3</assertj.version>
     <equalsverifier.version>3.16.1</equalsverifier.version>
     <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
-    <logback.version>1.5.4</logback.version>
+    <logback.version>1.5.5</logback.version>
     <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
     <okio.version>3.9.0</okio.version>
