@@ -31,7 +31,7 @@
     <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
     <okio.version>3.9.0</okio.version>
-    <slf4j.version>2.0.12</slf4j.version>
+    <slf4j.version>2.0.13</slf4j.version>
 
     <project.generated.test>${project.build.directory}/generated-test-sources/avro</project.generated.test>
   </properties>
