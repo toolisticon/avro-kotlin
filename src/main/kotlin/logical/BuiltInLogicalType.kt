@@ -1,10 +1,12 @@
 package io.toolisticon.avro.kotlin.logical
 
+import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.value.LogicalTypeName
 import org.apache.avro.Conversion
 import org.apache.avro.Conversions
 import org.apache.avro.data.TimeConversions
 import java.time.Duration
+import java.util.EnumSet
 
 /**
  * Represents all 10 logical types that are defined by the [official avro implementation](https://avro.apache.org/docs/1.11.1/specification/#logical-types).
@@ -17,7 +19,9 @@ enum class BuiltInLogicalType(
    * marks the type to be excluded, see DURATION.
    */
   private val excludeConversion: Boolean = false,
-) {
+
+  val allowedTypes: Set<SchemaType>
+)  {
 
   /**
    * The date logical type represents a date within the calendar, with no reference to a particular time zone or time of day.
@@ -28,7 +32,8 @@ enum class BuiltInLogicalType(
    */
   DATE(
     logicalTypeName = LogicalTypeName("date"),
-    conversion = TimeConversions.DateConversion()
+    conversion = TimeConversions.DateConversion(),
+    allowedTypes = EnumSet.of(SchemaType.INT)
   ),
 
   /**
@@ -38,7 +43,8 @@ enum class BuiltInLogicalType(
    */
   DECIMAL(
     logicalTypeName = LogicalTypeName("decimal"),
-    conversion = Conversions.DecimalConversion()
+    conversion = Conversions.DecimalConversion(),
+    allowedTypes = EnumSet.of(SchemaType.BYTES, SchemaType.FIXED)
   ),
 
   /**
@@ -59,7 +65,8 @@ enum class BuiltInLogicalType(
       override fun getConvertedType(): Class<Duration> = Duration::class.java
       override fun getLogicalTypeName(): String = "duration"
     },
-    excludeConversion = true
+    excludeConversion = true,
+    allowedTypes = emptySet()
   ),
 
   /**
@@ -73,7 +80,8 @@ enum class BuiltInLogicalType(
    */
   LOCAL_TIMESTAMP_MICROS(
     logicalTypeName = LogicalTypeName("local-timestamp-micros"),
-    conversion = TimeConversions.LocalTimestampMicrosConversion()
+    conversion = TimeConversions.LocalTimestampMicrosConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -87,7 +95,8 @@ enum class BuiltInLogicalType(
    */
   LOCAL_TIMESTAMP_MILLIS(
     logicalTypeName = LogicalTypeName("local-timestamp-millis"),
-    conversion = TimeConversions.LocalTimestampMillisConversion()
+    conversion = TimeConversions.LocalTimestampMillisConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -101,7 +110,8 @@ enum class BuiltInLogicalType(
    */
   TIME_MICROS(
     logicalTypeName = LogicalTypeName("time-micros"),
-    conversion = TimeConversions.TimeMicrosConversion()
+    conversion = TimeConversions.TimeMicrosConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -115,7 +125,8 @@ enum class BuiltInLogicalType(
    */
   TIME_MILLIS(
     logicalTypeName = LogicalTypeName("time-millis"),
-    conversion = TimeConversions.TimeMillisConversion()
+    conversion = TimeConversions.TimeMillisConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -133,7 +144,8 @@ enum class BuiltInLogicalType(
    */
   TIMESTAMP_MICROS(
     logicalTypeName = LogicalTypeName("timestamp-micros"),
-    conversion = TimeConversions.TimestampMicrosConversion()
+    conversion = TimeConversions.TimestampMicrosConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -150,7 +162,8 @@ enum class BuiltInLogicalType(
    */
   TIMESTAMP_MILLIS(
     logicalTypeName = LogicalTypeName("timestamp-millis"),
-    conversion = TimeConversions.TimestampMillisConversion()
+    conversion = TimeConversions.TimestampMillisConversion(),
+    allowedTypes = EnumSet.of(SchemaType.LONG)
   ),
 
   /**
@@ -162,7 +175,8 @@ enum class BuiltInLogicalType(
    */
   UUID(
     logicalTypeName = LogicalTypeName("uuid"),
-    conversion = Conversions.UUIDConversion()
+    conversion = Conversions.UUIDConversion(),
+    allowedTypes = EnumSet.of(SchemaType.STRING)
   ),
   ;
 
