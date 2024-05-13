@@ -38,10 +38,9 @@
     </dependency>
     <dependency>
       <groupId>io.toolisticon.kotlin.avro.examples</groupId>
-      <artifactId>money-logical-type</artifactId>
+      <artifactId>logical-type-money</artifactId>
       <version>${project.version}</version>
     </dependency>
-
 
     <dependency>
       <groupId>io.toolisticon.kotlin.avro.test</groupId>
