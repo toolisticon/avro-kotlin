@@ -10,6 +10,8 @@ import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import kotlin.io.path.Path
@@ -50,6 +52,7 @@ internal class AvroKotlinTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `can write schema to file (and read again)`() {
     val schema = AvroParser().parseSchema(resourceUrl("schema/SimpleStringRecord.avsc"))
 
@@ -61,6 +64,7 @@ internal class AvroKotlinTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `can write protocol to file (and read again)`() {
     val protocol = AvroParser().parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
 

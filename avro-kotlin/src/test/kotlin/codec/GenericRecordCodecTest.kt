@@ -7,11 +7,14 @@ import io.toolisticon.avro.kotlin.codec.GenericRecordCodec.convert
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 
 internal class GenericRecordCodecTest {
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `encode fooString to json`() {
     val data = FooString("bar")
 

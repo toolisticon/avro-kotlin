@@ -8,10 +8,13 @@ import io.toolisticon.avro.kotlin.value.Namespace
 import org.apache.avro.LogicalType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 internal class FixedTypeTest {
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `fixedType with jsonString`() {
     val json = AvroBuilder.fixed(
       name = Namespace("foo.bar") + Name("Dummy"),

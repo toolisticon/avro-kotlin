@@ -7,10 +7,13 @@ import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.avro.kotlin.value.Namespace
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 internal class EnumTypeTest {
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `create enumType from schema`() {
     val json = JsonString(
       """

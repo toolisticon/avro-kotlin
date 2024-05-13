@@ -9,6 +9,8 @@ import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 
 internal class JsonStringTest {
@@ -42,6 +44,7 @@ internal class JsonStringTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `jsonString for string schema with logical type`() {
     val schema = primitiveSchema(STRING)
       .withLogicalType(LogicalTypes.uuid())

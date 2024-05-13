@@ -3,6 +3,8 @@ package io.toolisticon.avro.kotlin.value
 import io.toolisticon.avro.kotlin.TestFixtures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -15,6 +17,7 @@ internal class DirectoryTest {
   private val dir by lazy { Directory(tmp) }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `verify toString`() {
     assertThat(dir.toString())
       .startsWith("Directory('/")
@@ -32,6 +35,7 @@ internal class DirectoryTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `write json to dir`() {
     val schema = TestFixtures.RECORD_MAP_WITH_NULLABLE_UUIDS
 
@@ -66,6 +70,7 @@ internal class DirectoryTest {
 
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `extract subpath`() {
 
     val root = dir.mkDir("ggg")

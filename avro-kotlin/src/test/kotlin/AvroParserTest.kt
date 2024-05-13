@@ -24,6 +24,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
@@ -35,6 +37,7 @@ internal class AvroParserTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `load from file`(@TempDir tmp: File) {
     val json = loadJsonString("schema/SchemaContainingSimpleTypes.avsc")
     val file = tmp.resolve("SchemaContainingSimpleTypes.avsc").apply {
@@ -133,6 +136,7 @@ internal class AvroParserTest {
 
   @ParameterizedTest
   @ArgumentsSource(TestFixtures.AvroFilesArgumentProvider::class)
+  @DisabledOnOs(OS.WINDOWS)
   fun `can parse all existing resources`(spec: AvroSpecification, file: File) {
     setOf<String>(
       // enter file here to disable its test

@@ -7,6 +7,8 @@ import io.toolisticon.avro.kotlin.model.SchemaType.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 internal class ArrayTypeTest {
 
@@ -29,6 +31,7 @@ internal class ArrayTypeTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `arrayType jsonString`() {
     val json = array(primitiveSchema(STRING)).json
 

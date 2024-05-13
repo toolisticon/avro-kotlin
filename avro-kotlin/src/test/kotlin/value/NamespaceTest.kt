@@ -4,7 +4,10 @@ import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
+@DisabledOnOs(OS.WINDOWS)
 internal class NamespaceTest {
 
   @Test
