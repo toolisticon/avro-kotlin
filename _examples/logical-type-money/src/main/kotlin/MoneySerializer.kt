@@ -19,7 +19,7 @@ import org.javamoney.moneta.Money
 @Serializer(forClass = Money::class)
 class MoneySerializer : AvroSerializer<Money>() {
 
-  private val conversion = MoneyConversion()
+  private val conversion = MoneyLogicalType.MoneyConversion()
   private val logicalType = MoneyLogicalType
   private val schemaType = SchemaType.STRING
 
@@ -30,7 +30,7 @@ class MoneySerializer : AvroSerializer<Money>() {
   }
 
   override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): Money {
-    require(schema.logicalType is MoneyLogicalType) { "schema does not  have logical type: $LOGICAL_TYPE_NAME."}
+    require(schema.logicalType is MoneyLogicalType) { "schema does not  have logical type: ${MoneyLogicalType.name}."}
     logicalType.validate(schema)
 
     return conversion.fromAvro(decoder.decodeString())

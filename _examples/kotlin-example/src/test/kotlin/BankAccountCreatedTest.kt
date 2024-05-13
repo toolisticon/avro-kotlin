@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.example
 
-import io.toolisticon.avro.kotlin.example.money.LOGICAL_TYPE_NAME
+import io.toolisticon.avro.kotlin.example.money.MoneyLogicalType
 import io.toolisticon.avro.kotlin.value.CanonicalName
 import io.toolisticon.avro.kotlin.value.Name
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
@@ -23,6 +23,6 @@ internal class BankAccountCreatedTest {
     val props = schema.getField("initialBalance")?.properties
 
 
-    assertThat(schema.getField(Name("initialBalance"))?.schema?.logicalTypeName).isEqualTo(LOGICAL_TYPE_NAME)
+    assertThat(schema.getField(Name("initialBalance"))?.schema?.logicalTypeName).isEqualTo(MoneyLogicalType.name)
   }
 }

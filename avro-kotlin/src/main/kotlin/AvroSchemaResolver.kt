@@ -15,6 +15,7 @@ fun avroSchemaResolver(schemas: List<AvroSchema>): AvroSchemaResolver {
   return avroSchemaResolver(first, *(other.toTypedArray()))
 }
 
+
 fun avroSchemaResolver(firstSchema: AvroSchema, vararg otherSchemas: AvroSchema): AvroSchemaResolver = object : AvroSchemaResolver {
   private val store = buildMap<AvroFingerprint, AvroSchema> {
     put(firstSchema.fingerprint, firstSchema)

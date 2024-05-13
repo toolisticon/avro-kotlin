@@ -1,12 +1,12 @@
 package io.toolisticon.avro.kotlin.logical.conversion
 
 import _ktx.StringKtx
-import io.toolisticon.avro.kotlin.logical.BooleanLogicalType
-import io.toolisticon.avro.kotlin.logical.StringLogicalType
+import io.toolisticon.avro.kotlin.logical.BooleanSimpleLogicalType
+import io.toolisticon.avro.kotlin.logical.StringSimpleLogicalType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.LogicalType
 
-abstract class SimpleStringConversion<T : StringLogicalType, CONVERTED_TYPE>(
+abstract class SimpleStringConversion<T : StringSimpleLogicalType, CONVERTED_TYPE>(
   val logicalType: T,
   convertedType: Class<CONVERTED_TYPE>
 ) : StringConversion<CONVERTED_TYPE>(logicalTypeName = logicalType.name, convertedType = convertedType) {
@@ -33,7 +33,7 @@ abstract class SimpleStringConversion<T : StringLogicalType, CONVERTED_TYPE>(
 
 }
 
-abstract class SimpleBooleanConversion<T : BooleanLogicalType, CONVERTED_TYPE>(
+abstract class SimpleBooleanConversion<T : BooleanSimpleLogicalType, CONVERTED_TYPE>(
   val logicalType: T,
   convertedType: Class<CONVERTED_TYPE>
 ) : BooleanConversion<CONVERTED_TYPE>(logicalType.name, convertedType) {

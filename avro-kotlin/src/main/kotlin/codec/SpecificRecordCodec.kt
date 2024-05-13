@@ -68,8 +68,11 @@ object SpecificRecordCodec {
     readerSpecificData.deepCopy(writerSchema, generic) as SpecificRecordBase
   }
 
+  @JvmStatic
   fun specificRecordSingleObjectDecoder(writerSchemaResolver: AvroSchemaResolver): SingleObjectDecoder<SpecificRecordBase> =
     SpecificRecordSingleObjectDecoder(writerSchemaResolver)
 
+
+  @JvmStatic
   fun specificRecordSingleObjectEncoder(): SingleObjectEncoder<SpecificRecordBase> = SpecificRecordSingleObjectEncoder()
 }

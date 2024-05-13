@@ -29,7 +29,7 @@ sealed class SimpleLogicalTypeFactory<
 
   override fun getTypeName(): String = logicalType.getName()
 
-  override fun fromSchema(schema: Schema?): LogicalType? = if (logicalType.name == LogicalTypeName.Companion.invoke(schema)) {
+  override fun fromSchema(schema: Schema?): LogicalType? = if (logicalType.name == LogicalTypeName.invoke(schema)) {
     logicalType
   } else {
     null
@@ -37,36 +37,36 @@ sealed class SimpleLogicalTypeFactory<
 }
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [BooleanLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [BooleanSimpleLogicalType] when present.
  */
-abstract class BooleanLogicalTypeFactory<T : BooleanLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Boolean, Boolean>(logicalType)
+abstract class BooleanSimpleLogicalTypeFactory<T : BooleanSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Boolean, Boolean>(logicalType)
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [BytesLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [BytesSimpleLogicalType] when present.
  */
-abstract class BytesLogicalTypeFactory<T : BytesLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, ByteArray, ByteBuffer>(logicalType)
+abstract class BytesSimpleLogicalTypeFactory<T : BytesSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, ByteArray, ByteBuffer>(logicalType)
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [DoubleLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [DoubleSimpleLogicalType] when present.
  */
-abstract class DoubleLogicalTypeFactory<T : DoubleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Double, Double>(logicalType)
+abstract class DoubleSimpleLogicalTypeFactory<T : DoubleSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Double, Double>(logicalType)
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [FloatLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [FloatSimpleLogicalType] when present.
  */
-abstract class FloatLogicalTypeFactory<T : FloatLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Float, Float>(logicalType)
+abstract class FloatSimpleLogicalTypeFactory<T : FloatSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Float, Float>(logicalType)
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [IntLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [IntSimpleLogicalType] when present.
  */
-abstract class IntLogicalTypeFactory<T : IntLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Int, Int>(logicalType)
+abstract class IntSimpleLogicalTypeFactory<T : IntSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Int, Int>(logicalType)
 
 /**
- * [SimpleLogicalTypeFactory] that returns the singleton instance of [LongLogicalType] when present.
+ * [SimpleLogicalTypeFactory] that returns the singleton instance of [LongSimpleLogicalType] when present.
  */
-abstract class LongLogicalTypeFactory<T : LongLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Long, Long>(logicalType)
+abstract class LongSimpleLogicalTypeFactory<T : LongSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, Long, Long>(logicalType)
 
 /**
  * [SimpleLogicalTypeFactory] that returns the singleton instance of [StringLogicalType] when present.
  */
-abstract class StringLogicalTypeFactory<T : StringLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, String, CharSequence>(logicalType)
+abstract class StringSimpleLogicalTypeFactory<T : StringSimpleLogicalType>(logicalType: T) : SimpleLogicalTypeFactory<T, String, CharSequence>(logicalType)

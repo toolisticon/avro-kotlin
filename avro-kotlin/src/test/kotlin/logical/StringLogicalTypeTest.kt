@@ -5,9 +5,9 @@ import io.toolisticon.avro.kotlin.value.LogicalTypeName.Companion.toLogicalTypeN
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-object DummyStringLogicalType : StringLogicalType("dummy".toLogicalTypeName())
+object DummyStringLogicalType : StringSimpleLogicalType("dummy".toLogicalTypeName())
 
-class DummyStringLogicalTypeFactory : StringLogicalTypeFactory<DummyStringLogicalType>(DummyStringLogicalType)
+class DummyStringLogicalTypeFactory : StringSimpleLogicalTypeFactory<DummyStringLogicalType>(DummyStringLogicalType)
 
 class DummyStringConversion : SimpleStringConversion<DummyStringLogicalType, Long>(logicalType = DummyStringLogicalType, convertedType = Long::class.java) {
   override fun fromAvro(value: String) = value.toLong()

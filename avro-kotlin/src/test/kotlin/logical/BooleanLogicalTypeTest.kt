@@ -7,11 +7,11 @@ enum class DummyBooleanEnum(val value: Boolean) {
   TRUE(true),FALSE(false);
 }
 
-object DummyBooleanLogicalType : BooleanLogicalType(name = "boolean".toLogicalTypeName())
+object DummyBooleanSimpleLogicalType : BooleanSimpleLogicalType(name = "boolean".toLogicalTypeName())
 
-class DummyBooleanLogicalTypeFactory : BooleanLogicalTypeFactory<DummyBooleanLogicalType>(DummyBooleanLogicalType)
+class DummyBooleanSimpleLogicalTypeFactory : BooleanSimpleLogicalTypeFactory<DummyBooleanSimpleLogicalType>(DummyBooleanSimpleLogicalType)
 
-class DummyBooleanConversion : SimpleBooleanConversion<DummyBooleanLogicalType,DummyBooleanEnum>(DummyBooleanLogicalType,DummyBooleanEnum::class.java) {
+class DummyBooleanConversion : SimpleBooleanConversion<DummyBooleanSimpleLogicalType,DummyBooleanEnum>(DummyBooleanSimpleLogicalType,DummyBooleanEnum::class.java) {
   override fun fromAvro(value: Boolean): DummyBooleanEnum = if (value) DummyBooleanEnum.TRUE else DummyBooleanEnum.FALSE
 
   override fun toAvro(value: DummyBooleanEnum): Boolean = value.value

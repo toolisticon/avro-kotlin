@@ -39,7 +39,7 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <scope>provided</scope>
+      <!-- must be transitive dependency, otherwise it fails when lib is used from java -->
     </dependency>
     <!-- /KOTLIN -->
 

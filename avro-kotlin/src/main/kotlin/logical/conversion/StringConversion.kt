@@ -17,7 +17,7 @@ abstract class StringConversion<CONVERTED_TYPE>(
 
   override fun fromCharSequence(value: CharSequence, schema: Schema?, type: LogicalType?) = fromAvro(
     value = value.toString(),
-    schema = AvroSchema(schema),
+    schema = AvroSchema.invoke(schema),
     logicalType = type
   )
 

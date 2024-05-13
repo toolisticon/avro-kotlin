@@ -1,0 +1,18 @@
+{
+  "name": "BankAccountCreated",
+  "namespace": "io.toolisticon.bank",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "string",
+        "logicalType": "money"
+      }
+    }
+  ]
+}

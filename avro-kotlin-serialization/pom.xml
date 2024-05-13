@@ -36,11 +36,7 @@
       <artifactId>kotlin-reflect</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <scope>provided</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-serialization-core-jvm</artifactId>
