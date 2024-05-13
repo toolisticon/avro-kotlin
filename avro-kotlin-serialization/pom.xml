@@ -1,0 +1,131 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.toolisticon.kotlin.avro._</groupId>
+    <artifactId>avro-kotlin-root</artifactId>
+    <version>1.11.4.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <artifactId>avro-kotlin-serialization</artifactId>
+  <description>Using kotlinx-serialization to encode/decode kotlin to avro.</description>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-bom</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- KOTLIN -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging-jvm</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-serialization-core-jvm</artifactId>
+    </dependency>
+    <!-- /KOTLIN -->
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro</groupId>
+      <artifactId>avro-kotlin</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.avro-kotlin.avro4k</groupId>
+      <artifactId>avro4k-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro.test</groupId>
+      <artifactId>avro-kotlin-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.javamoney.moneta</groupId>
+      <artifactId>moneta-core</artifactId>
+      <version>1.4.4</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.avro</groupId>-->
+<!--        <artifactId>avro-maven-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>generate-test</id>-->
+<!--            <phase>generate-test-sources</phase>-->
+<!--            <goals>-->
+<!--              <goal>schema</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <sourceDirectory>${kp.testResources}/avro</sourceDirectory>-->
+<!--              <outputDirectory>${kp.generatedTestSources}/avro</outputDirectory>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+<!--      <plugin>-->
+<!--        <groupId>org.codehaus.mojo</groupId>-->
+<!--        <artifactId>build-helper-maven-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>add-avro-test-source</id>-->
+<!--            <goals>-->
+<!--              <goal>add-test-source</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <sources>-->
+<!--                <source>${kp.generatedTestSources}/avro</source>-->
+<!--              </sources>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+    </plugins>
+  </build>
+</project>

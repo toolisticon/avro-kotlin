@@ -1,0 +1,163 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.toolisticon.kotlin.avro._</groupId>
+    <artifactId>avro-kotlin-root</artifactId>
+    <version>1.11.4.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>io.toolisticon.kotlin.avro.test</groupId>
+  <artifactId>avro-kotlin-test</artifactId>
+  <description>Common test library for all libraries provided by avro-kotlin.</description>
+
+  <properties>
+    <assertj.version>3.25.3</assertj.version>
+    <equalsverifier.version>3.16.1</equalsverifier.version>
+    <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
+    <logback.version>1.5.6</logback.version>
+    <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
+    <moneta.version>1.4.4</moneta.version>
+    <okio.version>3.9.0</okio.version>
+    <slf4j.version>2.0.13</slf4j.version>
+    <icu4j.version>73.2</icu4j.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- avro-kotlin-bom -->
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-bom</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- KOTLIN -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging-jvm</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- /KOTLIN -->
+
+    <!-- avro-core -->
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+    </dependency>
+
+    <!-- mockito -->
+    <dependency>
+      <groupId>org.mockito.kotlin</groupId>
+      <artifactId>mockito-kotlin</artifactId>
+      <version>${mockito-kotlin.version}</version>
+    </dependency>
+
+    <!-- jupiter - version defined in maven-parent-kotlin-base -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+    </dependency>
+    <!-- assert-j -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+    </dependency>
+    <!-- kotlin -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test-junit5</artifactId>
+    </dependency>
+    <!-- equals verifier -->
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>${equalsverifier.version}</version>
+    </dependency>
+
+    <!-- include jackson to verify instances can be serialized -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+    </dependency>
+
+    <!-- logback -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <!-- icu4j - conversion and i18n for java -->
+    <dependency>
+      <groupId>com.ibm.icu</groupId>
+      <artifactId>icu4j</artifactId>
+      <version>${icu4j.version}</version>
+    </dependency>
+
+    <!-- FIXME: needed here? -->
+    <!--    <dependency>-->
+    <!--      <groupId>com.github.tschuchortdev</groupId>-->
+    <!--      <artifactId>kotlin-compile-testing</artifactId>-->
+    <!--      <version>${kotlin-compile-testing.version}</version>-->
+    <!--      <scope>test</scope>-->
+    <!--      <exclusions>-->
+    <!--        <exclusion>-->
+    <!--          <groupId>com.squareup.okio</groupId>-->
+    <!--          <artifactId>okio-jvm</artifactId>-->
+    <!--        </exclusion>-->
+    <!--      </exclusions>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.squareup.okio</groupId>-->
+    <!--      <artifactId>okio-jvm</artifactId>-->
+    <!--      <version>${okio.version}</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+  </dependencies>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

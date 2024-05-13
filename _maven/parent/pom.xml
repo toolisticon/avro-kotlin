@@ -1,0 +1,82 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.toolisticon.kotlin.avro._</groupId>
+    <artifactId>avro-kotlin-root</artifactId>
+    <version>1.11.4.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>avro-kotlin-parent</artifactId>
+  <description>Common parent of all modules in avro-kotlin-root.</description>
+  <packaging>pom</packaging>
+
+  <properties>
+    <avro.version>1.11.3</avro.version>
+    <jackson.version>2.17.0</jackson.version>
+  </properties>
+
+  <modules>
+    <module>../../avro-kotlin</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-bom</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro.test</groupId>
+        <artifactId>avro-kotlin-test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- KOTLIN -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging-jvm</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- /KOTLIN -->
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro.test</groupId>
+      <artifactId>avro-kotlin-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
