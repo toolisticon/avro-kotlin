@@ -10,6 +10,7 @@ import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.apache.avro.specific.SpecificData
 import org.apache.avro.specific.SpecificRecordBase
 import org.apache.avro.util.ClassUtils
@@ -33,35 +34,37 @@ object SpecificRecordCodec {
     ClassUtils.forName(it.canonicalName.fqn) as Class<SpecificRecordBase>
   }
 
+  @JvmStatic
   fun <T : SpecificRecordBase> encodeSingleObject(record: T): SingleObjectEncodedBytes {
     return specificRecordSingleObjectEncoder().encode(record)
   }
 
   @Suppress("UNCHECKED_CAST")
+  @JvmStatic
   fun <T : SpecificRecordBase> decodeSingleObject(
     bytes: SingleObjectEncodedBytes,
     schemaResolver: AvroSchemaResolver
   ): T = specificRecordSingleObjectDecoder(schemaResolver).decode(bytes) as T
 
   /**
-   * [Converter] from [SpecificRecordBase] to [GenericData.Record].
+   * [Converter] from [SpecificRecordBase] to [GenericRecord].
    */
-  @Suppress("CAST_NEVER_SUCCEEDS")
-  fun specificRecordToGenericRecordConverter() = Converter<SpecificRecordBase, GenericData.Record> { specific ->
+  @JvmStatic
+  fun specificRecordToGenericRecordConverter() = Converter<SpecificRecordBase, GenericRecord> { specific ->
     val data = AvroCodec.genericData(specific.specificData)
 
-    data.deepCopy(specific.schema, specific) as GenericData.Record
+    data.deepCopy(specific.schema, specific) as GenericRecord
   }
 
   /**
-   * [Converter] from [GenericData.Record] to [SpecificRecordBase].
+   * [Converter] from [GenericRecord] to [SpecificRecordBase].
    */
-  @Suppress("CAST_NEVER_SUCCEEDS")
-  fun genericRecordToSpecificRecordConverter(readerType: Class<*>? = null) = Converter<GenericData.Record, SpecificRecordBase> { generic ->
+  @JvmStatic
+  fun genericRecordToSpecificRecordConverter(readerType: Class<*>? = null) = Converter<GenericRecord, SpecificRecordBase> { generic ->
     val writerSchema = generic.schema
 
     // TODO if caller does not provide expected type, we use the writer schema to derive the class ... this could be wrong.
-    val readerClass = readerType ?: AvroKotlin.defaultLogicalTypeConversions.specificData.getClass(writerSchema)
+    val readerClass: Class<*> = AvroKotlin.specificData.getClass(writerSchema)
 
     val readerSpecificData = SpecificData.getForClass(readerClass)
 

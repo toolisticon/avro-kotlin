@@ -1,1 +1,1 @@
-io.toolisticon.avro.kotlin.example.money.MoneySerializerModuleFactory
+io.toolisticon.avro.kotlin.example.money.MoneyLogicalType$MoneySerializerModuleFactory

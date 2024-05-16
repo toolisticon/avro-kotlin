@@ -6,11 +6,12 @@ import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.HexString
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.apache.avro.util.Utf8
 import java.util.*
 
 interface ToGenericRecord {
-  fun toGenericRecord(): GenericData.Record
+  fun toGenericRecord(): GenericRecord
 }
 
 /**
@@ -30,10 +31,10 @@ data class FooString(
         .endRecord()
     )
 
-    operator fun invoke(record: GenericData.Record): FooString = FooString(str = (record.get("str") as Utf8).toString())
+    operator fun invoke(record: GenericRecord): FooString = FooString(str = (record.get("str") as Utf8).toString())
   }
 
-  override fun toGenericRecord(): GenericData.Record = AvroKotlin.createGenericRecord(SCHEMA) {
+  override fun toGenericRecord(): GenericRecord = AvroKotlin.createGenericRecord(SCHEMA) {
     put("str", str)
   }
 }
@@ -54,7 +55,7 @@ data class FooString2(
         .endRecord()
     )
 
-    operator fun invoke(record: GenericData.Record): FooString2 = FooString2(
+    operator fun invoke(record: GenericRecord): FooString2 = FooString2(
       str = (record.get("str") as Utf8).toString(),
       uuid = record.get("uuid") as UUID?
     )

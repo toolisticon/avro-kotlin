@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.logical.conversion
 
-import com.ibm.icu.text.RuleBasedNumberFormat
+import io.toolisticon.avro.kotlin.logical.conversion.parameterized.ParameterizedStringConversion
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.LogicalTypeName
 import org.apache.avro.LogicalType
@@ -11,8 +11,8 @@ import java.util.*
 
 internal class PrimitiveTypeConversionsTest {
 
-    class CustomStringConversion :
-        StringConversion<UUID>(logicalTypeName = LogicalTypeName("uuid"), convertedType = UUID::class.java) {
+    class CustomParameterizedStringConversion :
+        ParameterizedStringConversion<UUID>(logicalTypeName = LogicalTypeName("uuid"), convertedType = UUID::class.java) {
         override fun fromAvro(value: String, schema: AvroSchema, logicalType: LogicalType?): UUID =
             UUID.fromString(value)
 
@@ -22,11 +22,11 @@ internal class PrimitiveTypeConversionsTest {
 
 
     @Nested
-    inner class StringConversionTest {
+    inner class ParameterizedStringConversionTest {
 
         @Test
         fun `convert uuid from to string`() {
-            val stringConversion = CustomStringConversion()
+            val stringConversion = CustomParameterizedStringConversion()
             val uuid = UUID.randomUUID()
 
             val string = stringConversion.toAvro(uuid)

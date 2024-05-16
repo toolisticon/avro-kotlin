@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
+import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.value.BinaryEncodedBytes
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
@@ -16,11 +17,11 @@ import org.apache.avro.specific.SpecificData
  */
 object AvroCodec {
 
-  fun specificData(genericData: GenericData): SpecificData = SpecificData().apply {
+  fun specificData(genericData: GenericData): SpecificData = AvroKotlin.specificData.apply {
     genericData.conversions.forEach { this.addLogicalTypeConversion(it) }
   }
 
-  fun genericData(specificData: SpecificData): GenericData = GenericData().apply {
+  fun genericData(specificData: SpecificData): GenericData = AvroKotlin.genericData.apply {
     specificData.conversions.forEach { this.addLogicalTypeConversion(it) }
   }
 

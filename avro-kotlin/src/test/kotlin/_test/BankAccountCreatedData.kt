@@ -5,6 +5,7 @@ import io.toolisticon.avro.kotlin.builder.AvroBuilder.uuid
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import java.util.*
 
 
@@ -21,13 +22,13 @@ data class BankAccountCreatedData(
         .endRecord()
     )
 
-    operator fun invoke(record: GenericData.Record): BankAccountCreatedData = BankAccountCreatedData(
+    operator fun invoke(record: GenericRecord): BankAccountCreatedData = BankAccountCreatedData(
       bankAccountId = record.get("bankAccountId") as UUID,
       initialBalance = record.get("initialBalance") as Int
     )
   }
 
-  override fun toGenericRecord(): GenericData.Record = AvroKotlin.createGenericRecord(SCHEMA) {
+  override fun toGenericRecord(): GenericRecord = AvroKotlin.createGenericRecord(SCHEMA) {
     put("bankAccountId", bankAccountId)
     put("initialBalance", initialBalance)
   }

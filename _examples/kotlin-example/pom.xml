@@ -41,6 +41,11 @@
       <artifactId>logical-type-money</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro.examples</groupId>
+      <artifactId>logical-type-customer-id</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>io.toolisticon.kotlin.avro.test</groupId>

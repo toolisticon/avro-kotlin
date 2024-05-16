@@ -1,17 +1,17 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
 import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.apache.avro.message.BinaryMessageDecoder
 
 class GenericRecordSingleObjectDecoder private constructor(
   private val writerSchema: AvroSchemaResolver,
   private val readerSchema: AvroSchemaResolver,
   private val genericData: GenericData,
-) : AvroCodec.SingleObjectDecoder<GenericData.Record> {
+) : AvroCodec.SingleObjectDecoder<GenericRecord> {
 
   /**
    * Create a new [AvroCodec.Decoder] that only uses the
@@ -21,17 +21,16 @@ class GenericRecordSingleObjectDecoder private constructor(
    */
   constructor(
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData,
+    genericData: GenericData,
   ) : this(
     readerSchema = { readerSchema },
     writerSchema = { readerSchema },
     genericData = genericData
   )
 
-  @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-  override fun decode(singleObjectEncodedBytes: SingleObjectEncodedBytes): GenericData.Record {
+  override fun decode(singleObjectEncodedBytes: SingleObjectEncodedBytes): GenericRecord {
 
-    return BinaryMessageDecoder<GenericData.Record>(
+    return BinaryMessageDecoder<GenericRecord>(
       genericData,
       readerSchema().get()
     ).decode(singleObjectEncodedBytes.value)

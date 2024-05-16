@@ -1,24 +1,25 @@
 package io.toolisticon.avro.kotlin.logical
 
-import io.toolisticon.avro.kotlin.logical.conversion.SimpleStringConversion
+import io.toolisticon.avro.kotlin.logical.conversion.StringLogicalTypeConversion
 import io.toolisticon.avro.kotlin.value.LogicalTypeName.Companion.toLogicalTypeName
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-object DummyStringLogicalType : StringSimpleLogicalType("dummy".toLogicalTypeName())
-
-class DummyStringLogicalTypeFactory : StringSimpleLogicalTypeFactory<DummyStringLogicalType>(DummyStringLogicalType)
-
-class DummyStringConversion : SimpleStringConversion<DummyStringLogicalType, Long>(logicalType = DummyStringLogicalType, convertedType = Long::class.java) {
-  override fun fromAvro(value: String) = value.toLong()
-  override fun toAvro(value: Long) = value.toString()
-}
 
 /**
  * Here we test a dummy string localtype and its factory and conversion to prove that
- * everything works as expected for a [SimpleLogicalType].
+ * everything works as expected for a [AvroLogicalType].
  */
 internal class StringLogicalTypeFactoryTest {
+  object DummyStringLogicalType : StringLogicalType("dummy".toLogicalTypeName())
+
+  class DummyStringLogicalTypeFactory : StringLogicalTypeFactory<DummyStringLogicalType>(DummyStringLogicalType)
+
+  class DummyStringConversion : StringLogicalTypeConversion<DummyStringLogicalType, Long>(logicalType = DummyStringLogicalType, convertedType = Long::class) {
+    override fun fromAvro(value: String) = value.toLong()
+    override fun toAvro(value: Long) = value.toString()
+  }
+
 
   @Test
   fun `type has correct toString`() {
@@ -32,7 +33,7 @@ internal class StringLogicalTypeFactoryTest {
 
   @Test
   fun `conversion has correct toString`() {
-    assertThat(DummyStringConversion()).hasToString("DummyStringConversion(name='dummy', convertedType=long, type=STRING)")
+    assertThat(DummyStringConversion()).hasToString("DummyStringConversion(logicalType='dummy', schemaType=STRING, convertedType=kotlin.Long)")
   }
 
   @Test

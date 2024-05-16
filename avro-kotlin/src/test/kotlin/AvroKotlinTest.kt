@@ -8,6 +8,7 @@ import io.toolisticon.avro.kotlin.value.AvroSpecification
 import io.toolisticon.avro.kotlin.value.Directory
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
@@ -88,7 +89,7 @@ internal class AvroKotlinTest {
     )
 
 
-    val record: GenericData.Record = createGenericRecord(schemaFoo) {
+    val record: GenericRecord = createGenericRecord(schemaFoo) {
       put("value", 1)
     }
 

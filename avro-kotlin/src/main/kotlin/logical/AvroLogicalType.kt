@@ -1,17 +1,45 @@
 package io.toolisticon.avro.kotlin.logical
 
+import _ktx.StringKtx.toString
+import io.toolisticon.avro.kotlin.model.PrimitiveSchemaTypeForLogicalType
+import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.LogicalTypeName
-import org.apache.avro.Conversion
 import org.apache.avro.LogicalType
-import org.apache.avro.LogicalTypes.LogicalTypeFactory
+import org.apache.avro.Schema
 
-interface AvroLogicalType<T> : LogicalTypeFactory {
+/**
+ * A [AvroLogicalType] just defines the name and the [SchemaType] it is applicable
+ * for. A simple logical type must _never_ require additional property parameters (decimal
+ * with scale and precision is _not_ a simple logical type).
+ *
+ * We use the opinionated assumption, that logical types are only defined for [PrimitiveSchemaTypeForLogicalType]
+ * as we do not see a relevant use-case for [LogicalType]s on records, arrays, maps and unions.
+ *
+ * An [AvroLogicalType] is best implemented as (data) Object, as it is de facto a singleton.
+ *
+ * @param <JVM_TYPE> how this type is represented in the jvm
+ */
+sealed class AvroLogicalType<JVM_TYPE : Any>(
+  val name: LogicalTypeName,
+  val type: PrimitiveSchemaTypeForLogicalType<JVM_TYPE>
+) : LogicalType(name.value) {
 
-  override fun getTypeName(): String = name.value
+  override fun toString() = toString(this::class.java.simpleName) {
+    add(property = "name", value = name, wrap = "'")
+    add("type", type)
+  }
 
-  val name: LogicalTypeName
+  fun schema() = AvroSchema(addToSchema(type.schema().get()))
 
-  val logicalType: LogicalType
+  override fun addToSchema(schema: Schema): Schema {
+    return super.addToSchema(schema)
+  }
 
-  val conversion: Conversion<T>
+  override fun getName(): String = name.value
+
+  override fun validate(schema: Schema) {
+    super.validate(schema)
+    require(SchemaType.valueOfType(schema.type) == type) { "$this is only valid for $type." }
+  }
 }

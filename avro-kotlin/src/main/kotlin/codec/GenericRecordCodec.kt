@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
+import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
 import io.toolisticon.avro.kotlin.codec.AvroCodec.encoderFactory
@@ -11,11 +11,15 @@ import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericDatumWriter
+import org.apache.avro.generic.GenericRecord
 import java.io.ByteArrayOutputStream
 
 object GenericRecordCodec {
 
-  internal fun encodeByteArray(record: GenericData.Record, genericData: GenericData = defaultLogicalTypeConversions.genericData): ByteArray {
+  internal fun encodeByteArray(
+    record: GenericRecord,
+    genericData: GenericData = AvroKotlin.genericData
+  ): ByteArray {
     val writerSchema: Schema = record.schema
 
     return ByteArrayOutputStream().use { baos ->
@@ -31,49 +35,63 @@ object GenericRecordCodec {
     bytes: ByteArray,
     readerSchema: Schema,
     writerSchema: Schema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
-  ): GenericData.Record {
-    return GenericDatumReader<GenericData.Record>(
+    genericData: GenericData = AvroKotlin.genericData
+  ): GenericRecord {
+    return GenericDatumReader<GenericRecord>(
       writerSchema,
       readerSchema,
       genericData
     ).read(null, decoderFactory.binaryDecoder(bytes, null))
   }
 
-  fun convert(record: GenericData.Record, readerSchema: AvroSchema, genericData: GenericData = defaultLogicalTypeConversions.genericData) = GenericRecordConverter(
+  @JvmStatic
+  fun convert(
+    record: GenericRecord,
+    readerSchema: AvroSchema,
+    genericData: GenericData = AvroKotlin.genericData
+  ) = GenericRecordConverter(
     readerSchema = readerSchema,
     genericData = genericData
   ).convert(record)
 
-  fun convert(singleObjectEncodedBytes: SingleObjectEncodedBytes, avroSchemaResolver: AvroSchemaResolver, genericData: GenericData = defaultLogicalTypeConversions.genericData) = SingleObjectToJsonConverter(
+  @JvmStatic
+  fun convert(
+    singleObjectEncodedBytes: SingleObjectEncodedBytes,
+    avroSchemaResolver: AvroSchemaResolver,
+    genericData: GenericData = AvroKotlin.genericData
+  ) = SingleObjectToJsonConverter(
     avroSchemaResolver = avroSchemaResolver,
     genericData = genericData
   ).convert(singleObjectEncodedBytes)
 
+  @JvmStatic
   fun encodeJson(
-    record: GenericData.Record,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
-  ): JsonString =
-    GenericRecordJsonEncoder(genericData).encode(record)
+    record: GenericRecord,
+    genericData: GenericData = AvroKotlin.genericData
+  ): JsonString = GenericRecordJsonEncoder(genericData)
+    .encode(record)
 
+  @JvmStatic
   fun decodeJson(
     json: JsonString,
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
-  ) = GenericRecordJsonDecoder(readerSchema, genericData).decode(json)
+    genericData: GenericData = AvroKotlin.genericData
+  ) = GenericRecordJsonDecoder(readerSchema, genericData)
+    .decode(json)
 
+  @JvmStatic
   fun encodeSingleObject(
-    record: GenericData.Record,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
-  ) = GenericRecordSingleObjectEncoder(genericData).encode(
-    record
-  )
+    record: GenericRecord,
+    genericData: GenericData = AvroKotlin.genericData
+  ) = GenericRecordSingleObjectEncoder(genericData)
+    .encode(record)
 
+  @JvmStatic
   fun decodeSingleObject(
     singleObjectEncodedBytes: SingleObjectEncodedBytes,
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
-  ): GenericData.Record = GenericRecordSingleObjectDecoder(
+    genericData: GenericData = AvroKotlin.genericData
+  ): GenericRecord = GenericRecordSingleObjectDecoder(
     readerSchema = readerSchema,
     genericData = genericData
   ).decode(singleObjectEncodedBytes)

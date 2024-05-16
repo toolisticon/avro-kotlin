@@ -1,12 +1,12 @@
 package io.toolisticon.avro.kotlin.logical.conversion
 
-import io.toolisticon.avro.kotlin._test.MoneyConversion
+import io.toolisticon.avro.kotlin._test.MoneyConversionParameterized
 import org.assertj.core.api.Assertions.assertThat
 import org.javamoney.moneta.Money
 import org.junit.jupiter.api.Test
 
 internal class MoneyConversionTest {
-  val conversion = MoneyConversion()
+  val conversion = MoneyConversionParameterized()
 
   @Test
   fun `convert via format and parse`() {

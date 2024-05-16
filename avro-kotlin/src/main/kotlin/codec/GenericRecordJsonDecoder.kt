@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin.defaultLogicalTypeConversions
+import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonDecoder
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
@@ -8,17 +8,18 @@ import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.JsonString
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumReader
+import org.apache.avro.generic.GenericRecord
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class GenericRecordJsonDecoder private constructor(
   private val readerSchemaSupplier: AvroSchemaResolver,
   private val writerSchemaSupplier: AvroSchemaResolver,
   private val genericData: GenericData,
-) : JsonDecoder<GenericData.Record> {
+) : JsonDecoder<GenericRecord> {
 
   constructor(
     readerSchema: AvroSchema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
+    genericData: GenericData = AvroKotlin.genericData
   ) : this(
     readerSchemaSupplier = { readerSchema },
     writerSchemaSupplier = { readerSchema },
@@ -28,14 +29,14 @@ class GenericRecordJsonDecoder private constructor(
   constructor(
     readerSchema: AvroSchema,
     writerSchema: AvroSchema,
-    genericData: GenericData = defaultLogicalTypeConversions.genericData
+    genericData: GenericData = AvroKotlin.genericData
   ) : this(
     readerSchemaSupplier = { readerSchema },
     writerSchemaSupplier = { writerSchema },
     genericData = genericData
   )
 
-  override fun decode(json: JsonString): GenericData.Record {
+  override fun decode(json: JsonString): GenericRecord {
     val readerSchema = readerSchemaSupplier().get()
     val writerSchema = writerSchemaSupplier().get()
 
@@ -45,7 +46,7 @@ class GenericRecordJsonDecoder private constructor(
     )
     val decoder = decoderFactory.validatingDecoder(readerSchema, jsonDecoder)
 
-    val reader = GenericDatumReader<GenericData.Record>(
+    val reader = GenericDatumReader<GenericRecord>(
       writerSchema,
       readerSchema,
       genericData

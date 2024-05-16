@@ -15,7 +15,10 @@ import org.apache.avro.SchemaBuilder.FieldAssembler
  * Utilities to create [AvroSchema] or [AvroProtocol] from scratch without parsing [JsonString].
  */
 object AvroBuilder {
-  val SCHEMA_UUID = primitiveSchema(SchemaType.STRING, LogicalTypes.uuid())
+  // this has to be lazy because [SchemaType#STRING] might not be initialized.
+  val SCHEMA_UUID by lazy {
+    primitiveSchema(SchemaType.STRING, LogicalTypes.uuid())
+  }
 
   fun optional(schema: AvroSchema): AvroSchema = union(NullType.schema, schema)
 

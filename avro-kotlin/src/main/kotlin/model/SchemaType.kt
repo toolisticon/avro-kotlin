@@ -3,47 +3,19 @@ package io.toolisticon.avro.kotlin.model
 import io.toolisticon.avro.kotlin.builder.AvroBuilder
 import io.toolisticon.avro.kotlin.model.wrapper.TypeSupplier
 import org.apache.avro.Schema.Type
-import java.nio.ByteBuffer
+import kotlin.reflect.KClass
 
 /**
  * Wraps a [Schema#Type] for type safe access and support functions.
  */
 sealed class SchemaType(
-  private val type: Type
+  private val type: Type,
+  val isPrimitive: Boolean,
+  val isNamed: Boolean,
+  val isContainer: Boolean,
 ) : TypeSupplier {
   override fun get(): Type = type
-  abstract val isPrimitive: Boolean
-  abstract val isNamed: Boolean
-  abstract val isContainer: Boolean
   val displayName: String = type.getName()
-
-  /**
-   * @param <CT> the conversion type, used by Conversion when encoding/decoding.
-   * @param <RT> the representation type, used in JVM code.
-   */
-  sealed class PrimitiveSchemaType<REPRESENTATION : Any, CONVERSION : Any>(
-    type: Type,
-    val conversionType: Class<CONVERSION>,
-    val representationType: Class<REPRESENTATION>
-  ) : SchemaType(type) {
-    override val isContainer = false
-    override val isNamed = false
-    override val isPrimitive = true
-
-    fun schema() = AvroBuilder.primitiveSchema(this)
-  }
-
-  sealed class NamedSchemaType(type: Type) : SchemaType(type) {
-    override val isContainer = false
-    override val isNamed = true
-    override val isPrimitive = false
-  }
-
-  sealed class ContainerSchemaType(type: Type) : SchemaType(type) {
-    override val isContainer = true
-    override val isNamed = false
-    override val isPrimitive = false
-  }
 
   data object ENUM : NamedSchemaType(type = Type.ENUM)
   data object FIXED : NamedSchemaType(type = Type.FIXED)
@@ -54,59 +26,48 @@ sealed class SchemaType(
   data object UNION : ContainerSchemaType(type = Type.UNION)
 
 
-  data object BOOLEAN : PrimitiveSchemaType<Boolean, Boolean>(
+  data object BOOLEAN : PrimitiveSchemaTypeForLogicalType<Boolean>(
     type = Type.BOOLEAN,
-    conversionType = Boolean::class.java,
-    representationType = Boolean::class.java
+    jvmType = Boolean::class
   )
 
-  data object BYTES : PrimitiveSchemaType<ByteArray, ByteBuffer>(
+  data object BYTES : PrimitiveSchemaTypeForLogicalType<ByteArray>(
     type = Type.BYTES,
-    conversionType = ByteBuffer::class.java,
-    representationType = ByteArray::class.java
+    jvmType = ByteArray::class
   )
 
-  data object DOUBLE : PrimitiveSchemaType<Double, Double>(
+  data object DOUBLE : PrimitiveSchemaTypeForLogicalType<Double>(
     type = Type.DOUBLE,
-    conversionType = Double::class.java,
-    representationType = Double::class.java
+    jvmType = Double::class
   )
 
-  data object FLOAT : PrimitiveSchemaType<Float, Float>(
+  data object FLOAT : PrimitiveSchemaTypeForLogicalType<Float>(
     type = Type.FLOAT,
-    conversionType = Float::class.java,
-    representationType = Float::class.java
+    jvmType = Float::class
   )
 
-  data object INT : PrimitiveSchemaType<Int, Int>(
+  data object INT : PrimitiveSchemaTypeForLogicalType<Int>(
     type = Type.INT,
-    conversionType = Int::class.java,
-    representationType = Int::class.java
+    jvmType = Int::class
   )
 
-  data object LONG : PrimitiveSchemaType<Long, Long>(
+  data object LONG : PrimitiveSchemaTypeForLogicalType<Long>(
     type = Type.LONG,
-    conversionType = Long::class.java,
-    representationType = Long::class.java
+    jvmType = Long::class
   )
 
-  data object NULL : PrimitiveSchemaType<Nothing, Nothing>(
-    type = Type.NULL,
-    conversionType = Nothing::class.java,
-    representationType = Nothing::class.java
-  )
+  data object NULL : PrimitiveSchemaType(type = Type.NULL)
 
-  data object STRING : PrimitiveSchemaType<String, CharSequence>(
+  data object STRING : PrimitiveSchemaTypeForLogicalType<String>(
     type = Type.STRING,
-    conversionType = CharSequence::class.java,
-    representationType = String::class.java
+    jvmType = String::class
   )
 
   companion object {
 
-    internal val PRIMITIVE_TYPES: Set<SchemaType> get() = setOf(BOOLEAN, BYTES, DOUBLE, FLOAT, INT, LONG, NULL, STRING)
-    internal val NAMED_TYPES: Set<SchemaType> get() = setOf(ENUM, FIXED, RECORD)
-    internal val CONTAINER_TYPES: Set<SchemaType> get() = setOf(ARRAY, MAP, UNION)
+    internal val PRIMITIVE_TYPES: Set<PrimitiveSchemaType> get() = setOf(BOOLEAN, BYTES, DOUBLE, FLOAT, INT, LONG, NULL, STRING)
+    internal val NAMED_TYPES: Set<NamedSchemaType> get() = setOf(ENUM, FIXED, RECORD)
+    internal val CONTAINER_TYPES: Set<ContainerSchemaType> get() = setOf(ARRAY, MAP, UNION)
 
     // cannot be null
     fun valueOfType(type: Type): SchemaType = when (type) {
@@ -126,5 +87,33 @@ sealed class SchemaType(
       Type.NULL -> NULL
     }
   }
+}
 
+sealed class NamedSchemaType(type: Type) : SchemaType(
+  type = type,
+  isContainer = false,
+  isNamed = true,
+  isPrimitive = false
+)
+
+sealed class ContainerSchemaType(type: Type) : SchemaType(
+  type = type,
+  isContainer = true,
+  isNamed = false,
+  isPrimitive = false
+)
+
+sealed class PrimitiveSchemaType(type: Type) : SchemaType(
+  type = type,
+  isContainer = false,
+  isNamed = false,
+  isPrimitive = true
+)
+
+sealed class PrimitiveSchemaTypeForLogicalType<JVM_TYPE : Any>(
+  type: Type,
+  val jvmType: KClass<JVM_TYPE>
+) : PrimitiveSchemaType(type) {
+
+  fun schema() = AvroBuilder.primitiveSchema(this)
 }

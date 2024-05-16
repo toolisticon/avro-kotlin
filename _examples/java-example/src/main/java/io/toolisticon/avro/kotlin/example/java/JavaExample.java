@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.example.java;
 
-public class JavaExample {
-
+public enum JavaExample {
+  ;
+  // empty
 }

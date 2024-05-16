@@ -2,6 +2,7 @@ package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin._test.FooString
+import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

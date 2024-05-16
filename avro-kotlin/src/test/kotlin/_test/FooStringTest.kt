@@ -26,8 +26,11 @@ internal class FooStringTest {
 
     assertThat(encoded.fingerprint).isEqualTo(FooString.SCHEMA.fingerprint)
 
-    val decoded =
-      AvroKotlin.genericRecordFromSingleObjectEncoded(encoded, FooString.SCHEMA, cache)
+    val decoded = AvroKotlin.genericRecordFromSingleObjectEncoded(
+      singleObjectEncodedBytes = encoded,
+      readerSchema = FooString.SCHEMA,
+      schemaStore = cache
+    )
 
     assertThat(FooString(decoded)).isEqualTo(bar)
 
@@ -49,16 +52,15 @@ internal class FooStringTest {
     val data = FooString("bar")
     val record = data.toGenericRecord()
 
+    assertThat(AvroKotlin.genericData.validate(record.schema, record)).isTrue()
 
-    assertThat(AvroKotlin.defaultLogicalTypeConversions.genericData.validate(record.schema, record)).isTrue()
-
-    val record2: GenericData.Record = AvroKotlin.defaultLogicalTypeConversions.genericData.newRecord(
+    val record2: GenericData.Record = AvroKotlin.genericData.newRecord(
       record,
       FooString2.SCHEMA.get(),
     ) as GenericData.Record
 
-    GenericData.Record(record, true)
+    GenericData.Record(record as GenericData.Record, true)
 
-    assertThat(AvroKotlin.defaultLogicalTypeConversions.genericData.validate(record2.schema, record2)).isFalse()
+    assertThat(AvroKotlin.genericData.validate(record2.schema, record2)).isFalse()
   }
 }

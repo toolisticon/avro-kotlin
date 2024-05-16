@@ -5,7 +5,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
 import java.util.*
 
-object AvroSerializationModuleFactoryServiceLoader : AvroSerializerModuleFactory {
+data object AvroSerializationModuleFactoryServiceLoader : AvroSerializerModuleFactory {
 
   private val modules = ServiceLoader.load(AvroSerializerModuleFactory::class.java)
     .fold(EmptySerializersModule()) { acc, cur ->
