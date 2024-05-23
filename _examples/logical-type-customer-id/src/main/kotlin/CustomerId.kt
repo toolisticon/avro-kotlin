@@ -13,4 +13,6 @@ value class CustomerId(val id: String) {
     @JvmStatic
     fun of(id: String):CustomerId = CustomerId(id)
   }
+
+  override fun toString() = id
 }

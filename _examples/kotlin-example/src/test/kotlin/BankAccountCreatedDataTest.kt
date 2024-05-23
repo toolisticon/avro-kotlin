@@ -29,7 +29,7 @@ internal class BankAccountCreatedDataTest {
   fun `serialize single object with uuid customerId and money`() {
     val amount = Money.of(10, "EUR")
     val accountId = UUID.randomUUID()
-    val customerId = CustomerIdData("1")
+    val customerId = CustomerId.random()
 
     val event = BankAccountCreatedData(accountId, customerId, amount)
     val resolver = avroSchemaResolver(KotlinExample.avro.schema(BankAccountCreatedData::class))

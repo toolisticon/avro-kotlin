@@ -1,6 +1,7 @@
 package io.toolisticon.avro.kotlin.example
 
 import io.toolisticon.avro.kotlin.codec.GenericRecordCodec
+import io.toolisticon.avro.kotlin.example.customerid.CustomerId
 import io.toolisticon.avro.kotlin.example.customerid.CustomerIdData
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
@@ -33,7 +34,7 @@ internal class JavaKotlinInterOpTest {
   fun `serialize from java deserialize kotlin`() {
     val orig = BankAccountCreated.newBuilder()
       .setAccountId(UUID.randomUUID())
-      .setCustomerId(CustomerIdData("1"))
+      .setCustomerId(CustomerId.random().id)
       .setInitialBalance(Money.of(100, "EUR"))
       .build()
 

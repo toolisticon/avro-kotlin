@@ -13,8 +13,7 @@
     {
       "name": "customerId",
       "type": {
-        "type": "string",
-        "logicalType": "customer-id-data"
+        "type": "string"
       }
     },
     {

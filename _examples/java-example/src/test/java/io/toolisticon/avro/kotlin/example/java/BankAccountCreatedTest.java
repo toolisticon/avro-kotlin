@@ -17,10 +17,10 @@ class BankAccountCreatedTest {
 
   @Test
   void encodeAndDecodeEventWithMoneyLogicalType() {
-    var customerId = new CustomerIdData("1");
+    //CustomerId customerId = CustomerId.of("1");
     final BankAccountCreated bankAccountCreated = BankAccountCreated.newBuilder()
       .setAccountId(UUID.randomUUID())
-      .setCustomerId(customerId)
+      .setCustomerId("1")
       .setInitialBalance(Money.of(100.123456, "EUR"))
       .build();
     final var resolver = avroSchemaResolver(BankAccountCreated.getClassSchema());
@@ -30,7 +30,7 @@ class BankAccountCreatedTest {
     final BankAccountCreated decoded = (BankAccountCreated) specificRecordSingleObjectDecoder(resolver).decode(encoded);
 
     assertThat(decoded.getAccountId()).isEqualTo(bankAccountCreated.getAccountId());
-    assertThat(decoded.getCustomerId()).isEqualTo(customerId);
+    assertThat(decoded.getCustomerId()).isEqualTo("1");
     assertThat(decoded.getInitialBalance()).isEqualTo(Money.of(100.12, "EUR"));
   }
 }
