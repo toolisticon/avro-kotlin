@@ -1,1 +1,3 @@
 io.toolisticon.avro.kotlin.example.customerid.CustomerIdLogicalType$CustomerIdLogicalTypeFactory
+
+io.toolisticon.avro.kotlin.example.customerid.CustomerIdDataLogicalType$CustomerIdDataLogicalTypeFactory

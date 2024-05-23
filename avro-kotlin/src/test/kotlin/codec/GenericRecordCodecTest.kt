@@ -2,8 +2,8 @@ package io.toolisticon.avro.kotlin.codec
 
 import io.toolisticon.avro.kotlin._test.FooString
 import io.toolisticon.avro.kotlin._test.FooString2
-import io.toolisticon.avro.kotlin.avroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.GenericRecordCodec.convert
+import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

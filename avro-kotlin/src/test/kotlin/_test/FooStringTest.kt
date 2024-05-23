@@ -1,10 +1,10 @@
 package io.toolisticon.avro.kotlin._test
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.avroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.compatibleToBeReadFrom
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.compatibleToReadFrom
+import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
 import org.apache.avro.SchemaCompatibility
 import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat

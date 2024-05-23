@@ -4,11 +4,21 @@
   "type": "record",
   "fields": [
     {
-      "name": "id",
-      "type": "string"
+      "name": "accountId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
     },
     {
-      "name": "amount",
+      "name": "customerId",
+      "type": {
+        "type": "string",
+        "logicalType": "customer-id-data"
+      }
+    },
+    {
+      "name": "initialBalance",
       "type": {
         "type": "string",
         "logicalType": "money"

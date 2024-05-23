@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroSchemaResolver
+import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
@@ -8,9 +8,9 @@ import org.apache.avro.generic.GenericRecord
 import org.apache.avro.message.BinaryMessageDecoder
 
 class GenericRecordSingleObjectDecoder private constructor(
-  private val writerSchema: AvroSchemaResolver,
-  private val readerSchema: AvroSchemaResolver,
-  private val genericData: GenericData,
+    private val writerSchema: AvroSchemaResolver,
+    private val readerSchema: AvroSchemaResolver,
+    private val genericData: GenericData,
 ) : AvroCodec.SingleObjectDecoder<GenericRecord> {
 
   /**
@@ -28,11 +28,11 @@ class GenericRecordSingleObjectDecoder private constructor(
     genericData = genericData
   )
 
-  override fun decode(singleObjectEncodedBytes: SingleObjectEncodedBytes): GenericRecord {
+  override fun decode(encoded: SingleObjectEncodedBytes): GenericRecord {
 
     return BinaryMessageDecoder<GenericRecord>(
       genericData,
       readerSchema().get()
-    ).decode(singleObjectEncodedBytes.value)
+    ).decode(encoded.value)
   }
 }

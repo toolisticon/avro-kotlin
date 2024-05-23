@@ -27,6 +27,8 @@ class AvroKotlinSerialization(
     key.kserializer()
   }
 
+  fun schema(type: Class<*>) : AvroSchema = schema(type.kotlin)
+
   fun schema(type: KClass<*>): AvroSchema = schemaCache.computeIfAbsent(type) { key ->
     logger.trace { "add schema for $type." }
     AvroSchema(avro4k.schema(serializer(key)))

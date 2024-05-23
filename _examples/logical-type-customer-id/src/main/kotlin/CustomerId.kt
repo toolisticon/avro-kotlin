@@ -7,6 +7,10 @@ import java.util.*
 @Serializable(with = CustomerIdLogicalType.CustomerIdSerializer::class)
 value class CustomerId(val id: String) {
   companion object {
-    fun random() = CustomerId(UUID.randomUUID().toString())
+    @JvmStatic
+    fun random(): CustomerId = of(UUID.randomUUID().toString())
+
+    @JvmStatic
+    fun of(id: String):CustomerId = CustomerId(id)
   }
 }

@@ -4,10 +4,10 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
 import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
 import io.toolisticon.avro.kotlin.logical.AvroLogicalType
-import io.toolisticon.avro.kotlin.logical.AvroLogicalTypes
 import io.toolisticon.avro.kotlin.model.AvroType
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.CanonicalName.Companion.toCanonicalName
 import org.apache.avro.LogicalTypes
@@ -37,8 +37,6 @@ import kotlin.reflect.KClass
  */
 object AvroKotlin {
 
-  val defaultLogicalTypeConversions = AvroLogicalTypes()
-
   /**
    * Encapsulates [Schema#Parser#parse] for the relevant input types.
    */
@@ -51,7 +49,7 @@ object AvroKotlin {
     operator fun invoke(resource: String, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): AvroSchema = invoke(resourceUrl(resource, null, classLoader))
 
     operator fun invoke(recordClass: Class<*>): AvroSchema {
-      require(recordClass.isAssignableFrom(SpecificRecord::class.java)) { "recordClass needs to be SpecificRecord: ${recordClass.simpleName}" }
+      require(SpecificRecord::class.java.isAssignableFrom(recordClass)) { "recordClass needs to be SpecificRecord: ${recordClass.simpleName}" }
       val schema: Schema = SpecificData(recordClass.classLoader).getSchema(recordClass)
       return AvroSchema(schema)
     }
@@ -168,7 +166,7 @@ object AvroKotlin {
   }
 
   @JvmStatic
-  fun avroSchemaResolver(schema: Schema) = io.toolisticon.avro.kotlin.avroSchemaResolver(
+  fun avroSchemaResolver(schema: Schema) = io.toolisticon.avro.kotlin.repository.avroSchemaResolver(
     firstSchema = AvroSchema(schema)
   )
 

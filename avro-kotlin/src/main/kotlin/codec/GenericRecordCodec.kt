@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.codec
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroSchemaResolver
+import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
 import io.toolisticon.avro.kotlin.codec.AvroCodec.encoderFactory
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -56,9 +56,9 @@ object GenericRecordCodec {
 
   @JvmStatic
   fun convert(
-    singleObjectEncodedBytes: SingleObjectEncodedBytes,
-    avroSchemaResolver: AvroSchemaResolver,
-    genericData: GenericData = AvroKotlin.genericData
+      singleObjectEncodedBytes: SingleObjectEncodedBytes,
+      avroSchemaResolver: AvroSchemaResolver,
+      genericData: GenericData = AvroKotlin.genericData
   ) = SingleObjectToJsonConverter(
     avroSchemaResolver = avroSchemaResolver,
     genericData = genericData

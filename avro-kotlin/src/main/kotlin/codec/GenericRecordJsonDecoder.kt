@@ -1,7 +1,7 @@
 package io.toolisticon.avro.kotlin.codec
 
 import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.AvroSchemaResolver
+import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonDecoder
 import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
@@ -12,9 +12,9 @@ import org.apache.avro.generic.GenericRecord
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class GenericRecordJsonDecoder private constructor(
-  private val readerSchemaSupplier: AvroSchemaResolver,
-  private val writerSchemaSupplier: AvroSchemaResolver,
-  private val genericData: GenericData,
+    private val readerSchemaSupplier: AvroSchemaResolver,
+    private val writerSchemaSupplier: AvroSchemaResolver,
+    private val genericData: GenericData,
 ) : JsonDecoder<GenericRecord> {
 
   constructor(

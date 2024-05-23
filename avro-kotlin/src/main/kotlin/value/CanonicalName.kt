@@ -20,6 +20,8 @@ value class CanonicalName(override val value: Pair<Namespace, Name>) : PairType<
       namespace = this.first.toNamespace(),
       name = this.second.toName()
     )
+
+    fun String.toCanonicalName() : CanonicalName = CanonicalName(this)
   }
 
   constructor(namespace: Namespace, name: Name) : this(namespace to name)

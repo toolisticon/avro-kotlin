@@ -1,1 +1,3 @@
 io.toolisticon.avro.kotlin.example.customerid.CustomerIdLogicalType$CustomerIdSerializerModuleFactory
+
+io.toolisticon.avro.kotlin.example.customerid.CustomerIdDataLogicalType$CustomerIdDataSerializerModuleFactory

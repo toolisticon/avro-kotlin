@@ -1,11 +1,10 @@
-package io.toolisticon.avro.kotlin
+@file:JvmName("RepositoryKt")
+package io.toolisticon.avro.kotlin.repository
 
 import io.toolisticon.avro.kotlin._ktx.KotlinKtx.head
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.AvroFingerprint
-import org.apache.avro.Schema
 import org.apache.avro.message.MissingSchemaException
-import org.apache.avro.message.SchemaStore
 
 internal fun missingSchemaException(fingerprint: AvroFingerprint) =
   MissingSchemaException("Cannot resolve schema for fingerprint: $fingerprint[${fingerprint.value}]")
@@ -41,37 +40,3 @@ operator fun AvroSchemaResolver.plus(other: AvroSchemaResolver): AvroSchemaResol
   }
 }
 
-/**
- * Supply an [AvroSchema] by [AvroFingerprint].
- */
-fun interface AvroSchemaResolver : SchemaStore {
-
-  @Throws(MissingSchemaException::class)
-  operator fun get(fingerprint: AvroFingerprint): AvroSchema
-
-  @Throws(MissingSchemaException::class)
-  operator fun invoke(): AvroSchema = this[AvroFingerprint.NULL]
-
-  @Throws(MissingSchemaException::class)
-  override fun findByFingerprint(fingerprint: Long): Schema = this[AvroFingerprint(fingerprint)].get()
-
-}
-
-data class AvroSchemaResolverMap(
-  private val store: Map<AvroFingerprint, AvroSchema>
-) : AvroSchemaResolver {
-
-  override fun get(fingerprint: AvroFingerprint): AvroSchema = store[fingerprint] ?: throw missingSchemaException(fingerprint)
-
-  operator fun plus(schema: AvroSchema): AvroSchemaResolverMap = copy(
-    store = buildMap {
-      putAll(store)
-      put(schema.fingerprint, schema)
-    }
-  )
-
-  operator fun plus(other: AvroSchemaResolverMap) : AvroSchemaResolverMap = copy(store = buildMap {
-    putAll(store)
-    putAll(other.store)
-  })
-}

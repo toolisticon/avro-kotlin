@@ -40,6 +40,8 @@ value class SingleObjectEncodedBytes private constructor(
     AvroFingerprint(bytes) to BinaryEncodedBytes(bytes.value.copyOfRange(AVRO_HEADER_LENGTH, bytes.value.size))
   )
 
+  constructor(bytes: ByteBuffer) : this(ByteArrayValue(bytes))
+
   constructor(hex: HexString) : this(hex.byteArray)
 
   constructor(fingerprint: AvroFingerprint, payload: BinaryEncodedBytes) : this(fingerprint to payload)

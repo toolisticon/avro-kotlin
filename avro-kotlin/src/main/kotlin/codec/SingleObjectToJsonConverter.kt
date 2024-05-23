@@ -1,14 +1,14 @@
 package io.toolisticon.avro.kotlin.codec
 
-import io.toolisticon.avro.kotlin.AvroSchemaResolver
+import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
 import io.toolisticon.avro.kotlin.value.JsonString
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
 import org.apache.avro.message.MissingSchemaException
 
 class SingleObjectToJsonConverter(
-  private val avroSchemaResolver: AvroSchemaResolver,
-  private val genericData: GenericData
+    private val avroSchemaResolver: AvroSchemaResolver,
+    private val genericData: GenericData
 ) : AvroCodec.Converter<SingleObjectEncodedBytes, JsonString> {
 
   @Throws(MissingSchemaException::class)
