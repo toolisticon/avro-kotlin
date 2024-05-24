@@ -10,6 +10,7 @@
 
   <groupId>io.toolisticon.kotlin.avro.test</groupId>
   <artifactId>avro-kotlin-test</artifactId>
+  <name>test: ${project.artifactId}</name>
   <description>Common test library for all libraries provided by avro-kotlin.</description>
 
   <properties>

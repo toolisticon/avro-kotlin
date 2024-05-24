@@ -53,8 +53,8 @@ class AvroProtocol(
   /**
    * Doc string for this protocol.
    */
-  override val documentation = Documentation.invoke(protocol.doc)
-  override val properties = ObjectProperties(protocol)
+  override val documentation = Documentation.ofNullable(protocol.doc)
+  override val properties = ObjectProperties.ofNullable(protocol)
 
   val md5: ByteArray by lazy { protocol.mD5 }
 
@@ -64,16 +64,16 @@ class AvroProtocol(
    */
   val fingerprint: AvroFingerprint by lazy {
     buildList {
-      add(AvroFingerprint(protocol.namespace))
-      add(AvroFingerprint(protocol.name))
-      addAll(protocol.types.map { AvroFingerprint(it) })
-      addAll(protocol.messages.values.map { AvroFingerprint(it) })
+      add(AvroFingerprint.ofNullable(protocol.namespace))
+      add(AvroFingerprint.ofNullable(protocol.name))
+      addAll(protocol.types.map { AvroFingerprint.of(it) })
+      addAll(protocol.messages.values.map { AvroFingerprint.of(it) })
     }.sum()
   }
 
-  override val json: JsonString by lazy { JsonString(protocol) }
+  override val json: JsonString by lazy { JsonString.of(protocol) }
 
-  override val hashCode = AvroHashCode(protocol)
+  override val hashCode = AvroHashCode.of(protocol)
 
   /**
    * A protocol message.
@@ -109,11 +109,11 @@ class AvroProtocol(
 
   class OneWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
-    override val documentation: Documentation? = Documentation.invoke(message.doc)
+    override val documentation: Documentation? = Documentation.ofNullable(message.doc)
 
     override val request: AvroSchema = schemaForMessageRequest(message)
 
-    override val properties: ObjectProperties = ObjectProperties(message)
+    override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
     override fun equals(other: Any?): Boolean {
       if (this === other) return true
@@ -143,9 +143,9 @@ class AvroProtocol(
 
   class TwoWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
-    override val documentation: Documentation? = Documentation.invoke(message.doc)
+    override val documentation: Documentation? = Documentation.ofNullable(message.doc)
     override val request: AvroSchema = schemaForMessageRequest(message)
-    override val properties: ObjectProperties = ObjectProperties(message)
+    override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
 
     /**

@@ -5,6 +5,7 @@ import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isIntType
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 
 /**
@@ -24,7 +25,7 @@ value class IntType(override val schema: AvroSchema) : AvroPrimitiveType,
   override val hashCode: AvroHashCode get() = schema.hashCode
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
   override val logicalType: LogicalType? get() = schema.logicalType
-  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName(properties)
+  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeNameProperty.from(properties)?.value
 
   override fun toString() = toString("IntType") {
     addIfNotNull("documentation", schema.documentation)

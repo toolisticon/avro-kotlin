@@ -1,8 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
 import _ktx.StringKtx.trimToNull
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaField
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes.Companion.verifyAvroHeader
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -27,39 +25,35 @@ value class AvroFingerprint(override val value: Long) : Comparable<Long> by valu
     fun fingerprint64(bytes: ByteArray) = SchemaNormalization.fingerprint64(bytes)
 
     fun Iterable<AvroFingerprint>.sum() = fold(NULL) { acc, avroFingerprint -> acc + avroFingerprint }
-
     fun Long.toBytes(): ByteArrayValue = ByteArrayValue(ByteBuffer.allocate(Long.SIZE_BYTES).order(ByteOrder.LITTLE_ENDIAN).putLong(this))
     fun ByteArrayValue.readLong(index: Int = 0): Long = buffer.order(ByteOrder.LITTLE_ENDIAN).getLong(index)
 
+    fun ofNullable(string: String?): AvroFingerprint = string?.trimToNull()?.let {
+      AvroFingerprint(fingerprint64(it.encodeToByteArray()))
+    } ?: NULL
 
+
+    fun of(field: Schema.Field) = of(field.schema())
+    fun of(schema: Schema) = AvroFingerprint(parsingFingerprint64(schema))
+
+    fun of(message: Protocol.Message) = listOf(
+      ofNullable(message.name),
+      of(message.errors),
+      of(message.request),
+      of(message.response)
+    ).sum()
+
+    /**
+     * Extracts the writer-schema fingerprint from given [bytes].
+     *
+     * @param bytes assumed to be a valid avro single object encoded byte array
+     * @throws BadHeaderException if bytes is not a valid single object encoded byte array
+     */
+    @Throws(BadHeaderException::class)
+    fun of(bytes: ByteArrayValue) = AvroFingerprint(
+      verifyAvroHeader(bytes).readLong(index = 2)
+    )
   }
-
-  constructor(schema: AvroSchema) : this(schema.fingerprint.value)
-  constructor(field: AvroSchemaField) : this(field.schema)
-
-  /**
-   * Extracts the writer-schema fingerprint from given [bytes].
-   *
-   * @param bytes assumed to be a valid avro single object encoded byte array
-   * @throws BadHeaderException if bytes is not a valid single object encoded byte array
-   */
-  @Throws(BadHeaderException::class)
-  constructor(bytes: ByteArrayValue) : this(
-    verifyAvroHeader(bytes).readLong(index = 2)
-  )
-
-  constructor(field: Schema.Field) : this(field.schema())
-  constructor(schema: Schema) : this(parsingFingerprint64(schema))
-  constructor(string: String?) : this(string?.trimToNull()?.let { fingerprint64(it.encodeToByteArray()) } ?: NULL.value)
-
-  constructor(message: Protocol.Message) : this(
-    listOf(
-      AvroFingerprint(message.name),
-      AvroFingerprint(message.errors),
-      AvroFingerprint(message.request),
-      AvroFingerprint(message.response)
-    ).sum().value
-  )
 
   operator fun plus(other: AvroFingerprint): AvroFingerprint = AvroFingerprint(this.value + other.value)
   operator fun plus(others: List<AvroFingerprint>): AvroFingerprint = (others + this).sum()

@@ -1,7 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
 import io.toolisticon.avro.kotlin.value.*
@@ -21,7 +20,7 @@ value class FixedType(override val schema: AvroSchema) :
   override val documentation: Documentation? get() = schema.documentation
 
   override val logicalType: LogicalType? get() = schema.logicalType
-  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName(logicalType = logicalType)
+  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName.ofNullable(logicalType = logicalType)
 
   override fun toString() = toString("FixedType") {
     addIfNotNull("namespace", namespace, "'")

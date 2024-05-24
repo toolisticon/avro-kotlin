@@ -17,13 +17,13 @@ abstract class ParameterizedStringConversion<CONVERTED_TYPE>(
 
   override fun fromCharSequence(value: CharSequence, schema: Schema?, type: LogicalType?) = fromAvro(
     value = value.toString(),
-    schema = AvroSchema.invoke(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 
   override fun toCharSequence(value: CONVERTED_TYPE, schema: Schema?, type: LogicalType?) = toAvro(
     value = value,
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   ) as CharSequence
 }

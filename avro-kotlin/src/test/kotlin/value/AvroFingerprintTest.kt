@@ -33,22 +33,22 @@ internal class AvroFingerprintTest {
 
   @Test
   fun `fingerprint of string`() {
-    val f = AvroFingerprint("Foo")
+    val f = AvroFingerprint.ofNullable("Foo")
     assertThat(f.value).isEqualTo(-6559215080592870065L)
 
-    assertThat(AvroFingerprint(null)).isEqualTo(AvroFingerprint(""))
+    assertThat(AvroFingerprint.ofNullable(null)).isEqualTo(AvroFingerprint.ofNullable(""))
   }
 
   @Test
   fun `fingerprint of schema`() {
-    val f = AvroFingerprint(Schema.create(Schema.Type.STRING))
+    val f = AvroFingerprint.of(Schema.create(Schema.Type.STRING))
     assertThat(f.value).isEqualTo(-8142146995180207161L)
   }
 
   @Test
   fun `two schemas have the same fingerprint if we ignore additional fields`() {
     val schema1 = parseSchema(
-      JsonString(
+      JsonString.of(
         """
       {
         "name":"foo.bar.Dummy",
@@ -68,7 +68,7 @@ internal class AvroFingerprintTest {
 
 
     val schema2 = parseSchema(
-      JsonString(
+      JsonString.of(
         """
       {
         "name":"foo.bar.Dummy",
@@ -123,14 +123,14 @@ internal class AvroFingerprintTest {
       .fields().nullableBoolean("yyy", true)
       .endRecord()
 
-    assertThat(AvroFingerprint(r1)).isEqualTo(AvroFingerprint(r2))
+    assertThat(AvroFingerprint.of(r1)).isEqualTo(AvroFingerprint.of(r2))
     assertThat(r1.hashCode()).isEqualTo(r2.hashCode())
   }
 
   @Test
   fun `use record`() {
     val r2 = AvroParser().parseSchema(
-      JsonString(
+      JsonString.of(
         """
       {
         "name":"foo.Foo",
@@ -156,8 +156,8 @@ internal class AvroFingerprintTest {
       )
     )
 
-    assertThat(AvroFingerprint(r2.schema.getField(Name("xxx"))!!))
-      .isEqualTo(AvroFingerprint(r2.schema.getField(Name("yyy"))!!))
+    assertThat(r2.schema.getField(Name("xxx"))!!.schema.fingerprint)
+      .isEqualTo(r2.schema.getField(Name("yyy"))!!.schema.fingerprint)
   }
 
   @Test
@@ -170,7 +170,7 @@ internal class AvroFingerprintTest {
       .noDefault()
       .endRecord()
 
-    assertThat(AvroFingerprint(schemaFoo).value).isEqualTo(5240102248166447335L)
+    assertThat(AvroFingerprint.of(schemaFoo).value).isEqualTo(5240102248166447335L)
   }
 
   @Test
@@ -178,7 +178,7 @@ internal class AvroFingerprintTest {
     val fp = FooString.SCHEMA.fingerprint
 
     val bytes = FooString.SINGLE_OBJECT_BAR.byteArray
-    val fingerprint = AvroFingerprint(bytes)
+    val fingerprint = AvroFingerprint.of(bytes)
     assertThat(fingerprint).isEqualTo(fp)
   }
 

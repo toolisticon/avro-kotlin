@@ -1,5 +1,6 @@
 package io.toolisticon.avro.kotlin.model.wrapper
 
+import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.model.WithDocumentation
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullable
 import io.toolisticon.avro.kotlin.value.*
@@ -17,7 +18,8 @@ class AvroSchemaField private constructor(
 
   override val hashCode: AvroHashCode = AvroHashCode(field.hashCode())
 
-  override val name: Name = Name(field)
+  override val name: Name = Name.of(field)
+  val type: SchemaType get() = schema.type
 
   val position: Int = field.pos()
   val order: Schema.Field.Order = field.order()
@@ -27,9 +29,9 @@ class AvroSchemaField private constructor(
 
   val aliases: Set<String> = field.aliases() ?: emptySet()
 
-  override val documentation: Documentation? = Documentation.invoke(field)
+  override val documentation: Documentation? = Documentation.of(field)
 
-  override val properties: ObjectProperties = ObjectProperties(field)
+  override val properties: ObjectProperties = ObjectProperties.ofNullable(field)
   val isNullable = schema.isNullable
 
   override fun compareTo(other: AvroSchemaField): Int = position.compareTo(other.position)

@@ -11,7 +11,7 @@ internal class ByteArrayValueTest {
 
   @Test
   fun `byte array from to hex string`() {
-    val bytes = ByteArrayValue(helloHex)
+    val bytes = ByteArrayValue.parse(helloHex)
 
     assertThat(bytes.formatted).isEqualTo(helloHex)
   }

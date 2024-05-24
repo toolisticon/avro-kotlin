@@ -12,27 +12,28 @@ import kotlin.io.path.Path
  * Combining namespace and name as a [java.lang.Class#canonicalName].
  */
 @JvmInline
-value class CanonicalName(override val value: Pair<Namespace, Name>) : PairType<Namespace, Name> {
+value class CanonicalName private constructor(override val value: Pair<Namespace, Name>) : PairType<Namespace, Name> {
   companion object {
     val EMPTY = Namespace.EMPTY + Name.EMPTY
 
-    fun Pair<String,String>.toCanonicalName(): CanonicalName = CanonicalName(
+    fun parse(fqn: String) = CanonicalName(value = create {
+      if (fqn.contains(Separator.NAME)) {
+        val (namespace, name) = fqn.substringBeforeLast(Separator.NAME) to fqn.substringAfterLast(Separator.NAME)
+        Namespace(namespace) to Name(name)
+      } else {
+        Namespace.EMPTY to Name(fqn)
+      }
+    })
+
+    fun Pair<String, String>.toCanonicalName(): CanonicalName = CanonicalName(
       namespace = this.first.toNamespace(),
       name = this.second.toName()
     )
 
-    fun String.toCanonicalName() : CanonicalName = CanonicalName(this)
+    fun String.toCanonicalName(): CanonicalName = CanonicalName.parse(this)
   }
 
   constructor(namespace: Namespace, name: Name) : this(namespace to name)
-  constructor(fqn: String) : this(value = create {
-    if (fqn.contains(Separator.NAME)) {
-      val (namespace, name) = fqn.substringBeforeLast(Separator.NAME) to fqn.substringAfterLast(Separator.NAME)
-      Namespace(namespace) to Name(name)
-    } else {
-      Namespace.EMPTY to Name(fqn)
-    }
-  })
 
   val namespace: Namespace get() = value.first
   val name: Name get() = value.second

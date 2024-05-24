@@ -13,7 +13,7 @@ internal class HexStringTest {
 
   @Test
   fun `hex of 1 is 01`() {
-    val hex = HexString(1)
+    val hex = HexString.of(1)
 
     assertThat(hex.value).isEqualTo("00000001")
     assertThat(hex.toString()).isEqualTo("00000001")
@@ -22,7 +22,7 @@ internal class HexStringTest {
 
   @Test
   fun `parse formatted`() {
-    val hex = HexString("[C3 01]")
+    val hex = HexString.parse("[C3 01]")
     assertThat(hex.value).isEqualTo("C301")
   }
 
@@ -39,7 +39,7 @@ internal class HexStringTest {
   @Test
   fun `fingerprint hex is 8 bytes long`() {
     val schema = primitiveSchema(STRING)
-    val hex = HexString(schema.fingerprint)
+    val hex = schema.fingerprint.hex
 
     assertThat(hex.length).isEqualTo(16)
   }
@@ -50,7 +50,7 @@ internal class HexStringTest {
       repeat(100) {
         val randomInt = Random.nextInt()
 
-        val hex = HexString(randomInt)
+        val hex = HexString.of(randomInt)
 
         assertThat(hex.parseInt()).`as` {
           "expected $hex to be parsed as $randomInt"

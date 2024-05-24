@@ -18,14 +18,13 @@ value class Namespace(override val value: String) : ValueType<String> {
 
     fun String.toNamespace(): Namespace = Namespace(this)
 
-    operator fun invoke(schema: Schema): Namespace = runCatching { Namespace(schema.namespace) }.getOrDefault(EMPTY)
+    fun of(schema: Schema): Namespace = runCatching { Namespace(schema.namespace) }.getOrDefault(EMPTY)
+    fun of(protocol: Protocol) = Namespace(
+      value = requireNotNull(protocol.namespace) { "protocol must have a namespace" }
+    )
   }
 
-  constructor(protocol: Protocol) : this(
-    value = requireNotNull(protocol.namespace) { "protocol must have a namespace" }
-  )
-
-  operator fun plus(name: Name) = CanonicalName(this to name)
+  operator fun plus(name: Name) = CanonicalName(this, name)
 
   /**
    * [Namespace] to [Path] replacing `.` with [File#separator].

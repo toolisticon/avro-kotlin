@@ -10,8 +10,14 @@ import java.nio.ByteBuffer
  */
 @JvmInline
 value class ByteArrayValue(override val value: ByteArray) : ByteArrayValueType {
-  constructor(hex: String) : this(HexString(hex))
-  constructor(hex: HexString) : this(hex.byteArray.value)
+
+  companion object {
+    fun parse(hex: String) = parse(HexString.parse(hex))
+    fun parse(hex: HexString) = ByteArrayValue(hex.byteArray.value)
+
+  }
+
+
   constructor(buffer: ByteBuffer) : this(buffer.array())
 
   constructor(writeToBaos: ByteArrayOutputStream.() -> Unit) : this(value = ByteArrayOutputStream().use { baos ->

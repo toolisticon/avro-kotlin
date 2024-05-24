@@ -15,6 +15,6 @@ class SpecificRecordSingleObjectEncoder : AvroCodec.SingleObjectEncoder<Specific
         record.schema
       ).encode(record, this)
     }
-    return SingleObjectEncodedBytes(bytes = bytes)
+    return SingleObjectEncodedBytes.of(bytes = bytes)
   }
 }

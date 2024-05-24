@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
  * A String that represents a hex value.
  */
 @JvmInline
-value class HexString private constructor(private val single: Single<String>) : ValueType<String> by single {
+value class HexString private constructor(override val value: String) : ValueType<String> {
   companion object {
     private const val BYTES_SIZE = 2
     private val DEFAULT_FORMAT = Triple(" ", "[", "]")
@@ -14,41 +14,37 @@ value class HexString private constructor(private val single: Single<String>) : 
     private fun format(value: Any) = "%02X".format(value)
     private fun join(value: String) = value.chunked(2).joinToString(DEFAULT_FORMAT.first, DEFAULT_FORMAT.second, DEFAULT_FORMAT.third)
 
-
-    fun intToBytes(i: Int): ByteArray = ByteBuffer.allocate(Int.SIZE_BYTES).putInt(i).array()
+    private fun intToBytes(i: Int): ByteArray = ByteBuffer.allocate(Int.SIZE_BYTES).putInt(i).array()
 
     fun bytesToInt(bytes: ByteArray): Int = ByteBuffer.wrap(bytes).int
-  }
 
-  /**
-   * Parses a formatted bytes-hex-string.
-   */
-  constructor(formatted: String) : this(
-    Single(
-      formatted.removePrefix("[")
+    /**
+     * Parses a formatted bytes-hex-string.
+     */
+    fun parse(formatted: String) = HexString(
+      value = formatted.removePrefix("[")
         .removeSuffix("]").split(" ").joinToString("")
     )
-  )
 
-  constructor(value: Number) : this(
-    single = when (value) {
-      is Int -> HexString(intToBytes(value)).single
-      else -> Single(format(value))
+    fun of(value: Number) = when (value) {
+      is Int -> of(intToBytes(value))
+      else -> parse(format(value.toString()))
     }
-  )
 
+    /**
+     * Converts a byte array into its hexadecimal string representation
+     * e.g. for the V1_HEADER => [C3 01]
+     *
+     * @return the hexadecimal string representation of the input byte array
+     */
+    fun of(byteArray: ByteArray) = HexString(
+      value = byteArray.joinToString(separator = "") { format(it) }
+    )
 
-  /**
-   * Converts a byte array into its hexadecimal string representation
-   * e.g. for the V1_HEADER => [C3 01]
-   *
-   * @return the hexadecimal string representation of the input byte array
-   */
-  constructor(byteArray: ByteArray) : this(Single(byteArray.joinToString(separator = "") { format(it) }))
-  constructor(byteBuffer: ByteBuffer) : this(byteBuffer.array())
+    fun of(byteBuffer: ByteBuffer) = of(byteBuffer.array())
 
-  constructor(hashCode: AvroHashCode) : this(hashCode.value)
-  constructor(fingerprint: AvroFingerprint) : this(fingerprint.value)
+    fun of(hashCode: AvroHashCode) = of(hashCode.value)
+  }
 
   val size: Int get() = length / BYTES_SIZE
   val length: Int get() = value.length

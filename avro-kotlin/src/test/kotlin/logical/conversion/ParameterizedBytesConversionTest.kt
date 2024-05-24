@@ -20,8 +20,8 @@ internal class ParameterizedBytesConversionTest {
     }
 
     override fun toAvro(value: String, schema: AvroSchema, logicalType: LogicalType?): ByteArray {
-      val hex = HexString(value)
-      return ByteArrayValue(hex).value
+      val hex = HexString.parse(value)
+      return ByteArrayValue.parse(hex).value
     }
   }
 

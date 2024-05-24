@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.example
 
 import io.toolisticon.avro.kotlin.codec.GenericRecordCodec
 import io.toolisticon.avro.kotlin.example.customerid.CustomerId
-import io.toolisticon.avro.kotlin.example.customerid.CustomerIdData
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
 import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
@@ -43,7 +42,7 @@ internal class JavaKotlinInterOpTest {
       AvroSchema(BankAccountCreated.`SCHEMA$`)
     )
 
-    val bytes = SingleObjectEncodedBytes(BankAccountCreated.getEncoder().encode(orig))
+    val bytes = SingleObjectEncodedBytes.of(BankAccountCreated.getEncoder().encode(orig))
 
     val record = GenericRecordCodec.decodeSingleObject(
       singleObjectEncodedBytes = bytes,

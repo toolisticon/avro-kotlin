@@ -116,9 +116,9 @@ object TestFixtures {
 
     // SOE with above values
     val hexString =
-      HexString("[C3 01 84 98 FA BA C2 65 FD 5A 48 65 31 39 63 38 30 61 62 2D 33 61 37 62 2D 34 34 38 32 2D 61 32 35 31 2D 38 33 32 30 65 30 37 64 37 36 61 33 C6 01]")
+      HexString.parse("[C3 01 84 98 FA BA C2 65 FD 5A 48 65 31 39 63 38 30 61 62 2D 33 61 37 62 2D 34 34 38 32 2D 61 32 35 31 2D 38 33 32 30 65 30 37 64 37 36 61 33 C6 01]")
 
-    val singleObjectEncoded = SingleObjectEncodedBytes(bytes = ByteArrayValue(hexString))
+    val singleObjectEncoded = SingleObjectEncodedBytes.parse(hexString)
 
     val bankAccountCreated = BankAccountCreated.newBuilder()
       .setBankAccountId(bankAccountId)

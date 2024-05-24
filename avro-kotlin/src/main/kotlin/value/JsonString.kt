@@ -13,13 +13,7 @@ import java.io.InputStream
  * do not represent to valid json ... which changes once they have a logical type ...
  */
 @JvmInline
-value class JsonString
-private constructor(
-  /**
-   * We have tro wrap string here to remain immutable and still allow trimming the giving String value.
-   */
-  private val single: Single<String>
-) : ValueType<String> by single {
+value class JsonString private constructor(override val value: String) : ValueType<String> {
   companion object {
     internal val PRIMITIVE_TEMPLATE = """
       {
@@ -39,13 +33,15 @@ private constructor(
         schema.toString(true)
       }
     }
+
+
+    fun of(json: String) = JsonString(json.trim())
+
+    fun of(schema: Schema) = JsonString(schemaToString(schema))
+
+    fun of(protocol: Protocol) = JsonString(protocol.toString(true))
+
   }
-
-  constructor(json: String) : this(Single(json.trim()))
-
-  constructor(schema: Schema) : this(schemaToString(schema))
-
-  constructor(protocol: Protocol) : this(protocol.toString(true).trim())
 
   init {
     val isValidJson = arrayOf("{" to "}", "[" to "]").any {

@@ -18,14 +18,14 @@ abstract class ParameterizedBytesConversion<CONVERTED_TYPE>(
 
   override fun fromBytes(value: ByteBuffer, schema: Schema?, type: LogicalType?) = fromAvro(
     value = value.array(),
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 
   override fun toBytes(value: CONVERTED_TYPE, schema: Schema?, type: LogicalType?) = ByteBuffer.wrap(
     toAvro(
       value = value,
-      schema = AvroSchema(schema),
+      schema = AvroSchema.ofNullable(schema),
       logicalType = type
     )
   )

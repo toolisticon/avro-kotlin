@@ -1,10 +1,15 @@
 package io.toolisticon.avro.kotlin.value.property
 
 import io.toolisticon.avro.kotlin.value.ObjectProperties
+import org.apache.avro.JsonProperties
 
 interface AvroProperty {
-
   val key: String
+}
+
+fun interface AvroPropertySupplier<T> {
+  fun from(properties: ObjectProperties) : T
+  fun from(jsonProperties: JsonProperties?) : T = from(ObjectProperties.ofNullable(jsonProperties))
 }
 
 /**

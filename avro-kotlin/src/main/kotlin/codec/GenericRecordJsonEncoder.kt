@@ -30,6 +30,6 @@ class GenericRecordJsonEncoder(
       encoder.flush()
     }
 
-    return JsonString(jsonBytes.toUtf8String())
+    return JsonString.of(jsonBytes.toUtf8String())
   }
 }

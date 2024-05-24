@@ -83,45 +83,26 @@
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <compilerPlugins>
+            <plugin>no-arg</plugin>
+            <plugin>all-open</plugin>
+            <plugin>kotlinx-serialization</plugin>
+          </compilerPlugins>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-serialization</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.avro</groupId>-->
-<!--        <artifactId>avro-maven-plugin</artifactId>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>generate-test</id>-->
-<!--            <phase>generate-test-sources</phase>-->
-<!--            <goals>-->
-<!--              <goal>schema</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <sourceDirectory>${kp.testResources}/avro</sourceDirectory>-->
-<!--              <outputDirectory>${kp.generatedTestSources}/avro</outputDirectory>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>org.codehaus.mojo</groupId>-->
-<!--        <artifactId>build-helper-maven-plugin</artifactId>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>add-avro-test-source</id>-->
-<!--            <goals>-->
-<!--              <goal>add-test-source</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <sources>-->
-<!--                <source>${kp.generatedTestSources}/avro</source>-->
-<!--              </sources>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
     </plugins>
   </build>
 </project>

@@ -20,6 +20,6 @@ class GenericRecordSingleObjectEncoder(
         writerSchema
       ).encode(record, this)
     }
-    return SingleObjectEncodedBytes(bytes = bytes)
+    return SingleObjectEncodedBytes.of(bytes = bytes)
   }
 }

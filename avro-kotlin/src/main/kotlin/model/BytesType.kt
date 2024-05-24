@@ -1,7 +1,6 @@
 package io.toolisticon.avro.kotlin.model
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isBytesType
 import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
@@ -27,7 +26,7 @@ value class BytesType(override val schema: AvroSchema) :
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
   override val type: SchemaType get() = SchemaType.BYTES
   override val logicalType: LogicalType? get() = schema.logicalType
-  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName(logicalType = logicalType)
+  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName.ofNullable(logicalType = logicalType)
 
   override fun toString() = toString("BytesType") {
     addIfNotNull(property = "logicalType", value = logicalType?.name, wrap = "'")

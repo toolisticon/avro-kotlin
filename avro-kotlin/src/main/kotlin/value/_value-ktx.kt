@@ -24,7 +24,7 @@ interface ByteArrayValueType : ValueType<ByteArray>, WithHexString {
   /**
    * The wrapped byteArray-[value] as [HexString].
    */
-  override val hex: HexString get() = HexString(value)
+  override val hex: HexString get() = HexString.of(value)
 
   /**
    * The wrapped byteArray-[value] as [ByteBuffer].

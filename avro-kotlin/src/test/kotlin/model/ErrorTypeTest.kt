@@ -11,7 +11,7 @@ internal class ErrorTypeTest {
 
   @Test
   fun `recordType for error schema`() {
-    val json = JsonString(
+    val json = JsonString.of(
       """
       {
         "name":"foo.bar.DummyException",

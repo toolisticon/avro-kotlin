@@ -88,7 +88,7 @@ internal class GenericRecordCodecTest {
   @Test
   fun `convert - singleObjectEncoded to JsonString`() {
     val json = convert(
-      SingleObjectEncodedBytes(FooString.SINGLE_OBJECT_BAR),
+      SingleObjectEncodedBytes.parse(FooString.SINGLE_OBJECT_BAR),
       avroSchemaResolver(FooString.SCHEMA)
     )
 

@@ -23,6 +23,6 @@ internal class NamespaceTest {
 
   @Test
   fun `primitive type has EMPTY namespace`() {
-    assertThat(Namespace(AvroBuilder.primitiveSchema(STRING).get())).isEqualTo(Namespace.EMPTY)
+    assertThat(AvroBuilder.primitiveSchema(STRING).namespace).isEqualTo(Namespace.EMPTY)
   }
 }

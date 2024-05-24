@@ -12,24 +12,24 @@ value class Name(override val value: String) : ValueType<String> {
     val EMPTY = Name("")
 
     fun String.toName() = Name(this)
+
+    /**
+     * Get [Name] from given [Protocol].
+     */
+    fun of(protocol: Protocol) = Name(protocol.name)
+
+    /**
+     * Get [Name] for given [Schema.Field].
+     */
+    fun of(field: Schema.Field) = Name(field.name())
+
+    /**
+     * Get [Name] from given [Schema].
+     */
+    fun of(schema: Schema) = Name(schema.name)
   }
 
-  /**
-   * Get [Name] from given [Protocol].
-   */
-  constructor(protocol: Protocol) : this(protocol.name)
-
-  /**
-   * Get [Name] for given [Schema.Field].
-   */
-  constructor(field: Schema.Field) : this(field.name())
-
-  /**
-   * Get [Name] from given [Schema].
-   */
-  constructor(schema: Schema) : this(schema.name)
-
-  operator fun plus(namespace: Namespace) = CanonicalName(namespace to this)
+  operator fun plus(namespace: Namespace) = CanonicalName(namespace, this)
 
   fun suffix(suffix: String?): Name = Name("$value${suffix.trimToNull()?.replaceFirstChar(Char::uppercase) ?: ""}")
 

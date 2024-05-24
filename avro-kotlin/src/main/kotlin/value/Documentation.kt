@@ -12,20 +12,19 @@ import org.apache.avro.Schema
 value class Documentation(override val value: String) : ValueType<String> {
   companion object {
 
-
     /**
      * Gets the nullable [Documentation] of the given string.
      */
-    operator fun invoke(value: String?): Documentation? = value?.trimToNull()?.let { Documentation(it) }
+    fun ofNullable(value: String?): Documentation? = value?.trimToNull()?.let { Documentation(it) }
 
     /**
      * Gets the nullabla [Documentation] of given [Schema].
      *
      * @see #documentation(String)
      */
-    operator fun invoke(schema: Schema): Documentation? = invoke(schema.doc)
+    fun of(schema: Schema): Documentation? = ofNullable(schema.doc)
 
-    operator fun invoke(field: Schema.Field): Documentation? = invoke(field.doc())
+    fun of(field: Schema.Field): Documentation? = ofNullable(field.doc())
 
     fun Documentation?.shortenedIfPresent(comma: String = ", ") = this.nullableToString(
       prefix = comma + "documentation='",

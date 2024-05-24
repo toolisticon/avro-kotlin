@@ -2,23 +2,18 @@ package io.toolisticon.avro.kotlin
 
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
-import _ktx.StringKtx.toReadableString
 import io.toolisticon.avro.kotlin.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.AvroTypesMap
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
 import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isError
 import io.toolisticon.avro.kotlin.model.wrapper.JsonSource
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog
 import io.toolisticon.avro.kotlin.value.*
 import io.toolisticon.avro.kotlin.value.AvroSpecification.PROTOCOL
 import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
 import mu.KLogging
 import org.apache.avro.LogicalTypes
-import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatNoException
@@ -58,7 +53,7 @@ internal class AvroParserTest {
   @Test
   fun `read from json`() {
     val url = resourceUrl("schema/SchemaContainingSimpleTypes.avsc")
-    val json = JsonString(url.readText())
+    val json = JsonString.of(url.readText())
     val s = AvroParser().parseSchema(json)
 
     assertThat(s.name).isEqualTo(Name("SimpleTypesRecord"))
@@ -67,7 +62,7 @@ internal class AvroParserTest {
 
   @Test
   fun `parse schema declaration from json`() {
-    val json = JsonString(
+    val json = JsonString.of(
       SchemaBuilder.record("foo.Bar")
         .fields()
         .name("xxx")

@@ -13,10 +13,10 @@ import io.toolisticon.avro.kotlin.value.ValueType
 value class JavaAnnotationProperty private constructor(override val value: Pair<CanonicalName, Map<String, String>>) :
   ValueType<Pair<CanonicalName, Map<String, String>>>, AvroProperty {
 
-  companion object {
+  companion object : AvroPropertySupplier<List<JavaAnnotationProperty>> {
     const val PROPERTY_KEY = "javaAnnotation"
 
-    fun from(objectProperties: ObjectProperties): List<JavaAnnotationProperty> = when (val annotationsValue = objectProperties.get(PROPERTY_KEY)) {
+    override fun from(properties: ObjectProperties): List<JavaAnnotationProperty> = when (val annotationsValue = properties.get(PROPERTY_KEY)) {
       is String -> listOf(JavaAnnotationProperty(annotationsValue))
       is List<*> -> annotationsValue.filterIsInstance<String>().map { JavaAnnotationProperty(it) }
       else -> emptyList()
@@ -37,7 +37,7 @@ value class JavaAnnotationProperty private constructor(override val value: Pair<
       } ?: emptyMap()
     }
 
-    CanonicalName(fqn) to membersMap
+    CanonicalName.parse(fqn) to membersMap
   })
 
   val canonicalName: CanonicalName get() = value.first

@@ -42,10 +42,10 @@ object AvroKotlin {
    */
   @Suppress("ClassName")
   object parseSchema {
-    operator fun invoke(json: JsonString, isRoot: Boolean = false): AvroSchema = AvroSchema(json, isRoot)
-    operator fun invoke(file: File): AvroSchema = AvroSchema(file)
-    operator fun invoke(path: Path): AvroSchema = AvroSchema(path)
-    operator fun invoke(resource: URL): AvroSchema = AvroSchema(resource)
+    operator fun invoke(json: JsonString, isRoot: Boolean = false): AvroSchema = AvroSchema.of(json, isRoot)
+    operator fun invoke(file: File): AvroSchema = AvroSchema.of(file)
+    operator fun invoke(path: Path): AvroSchema = AvroSchema.of(path)
+    operator fun invoke(resource: URL): AvroSchema = AvroSchema.of(resource)
     operator fun invoke(resource: String, classLoader: ClassLoader = DEFAULT_CLASS_LOADER): AvroSchema = invoke(resourceUrl(resource, null, classLoader))
 
     operator fun invoke(recordClass: Class<*>): AvroSchema {
@@ -185,7 +185,7 @@ object AvroKotlin {
       it.toString(UTF_8)
     }
 
-    return JsonString(jsonBytes)
+    return JsonString.of(jsonBytes)
   }
 
   fun genericRecordFromJson(
@@ -207,7 +207,7 @@ object AvroKotlin {
       BinaryMessageEncoder<GenericRecord>(genericData, record.schema).encode(record, baos)
       baos.toByteArray()
     })
-    return SingleObjectEncodedBytes(bytes)
+    return SingleObjectEncodedBytes.of(bytes)
   }
 
   fun genericRecordFromSingleObjectEncoded(

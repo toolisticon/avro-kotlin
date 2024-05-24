@@ -26,7 +26,7 @@ value class StringType(override val schema: AvroSchema) :
   override val hashCode: AvroHashCode get() = schema.hashCode
   override val fingerprint: AvroFingerprint get() = schema.fingerprint
   override val logicalType: LogicalType? get() = schema.logicalType
-  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName(logicalType = logicalType)
+  override val logicalTypeName: LogicalTypeName? get() = LogicalTypeName.ofNullable(logicalType = logicalType)
 
   override fun toString() = toString("StringType") {
     addIfNotNull("documentation", schema.documentation)

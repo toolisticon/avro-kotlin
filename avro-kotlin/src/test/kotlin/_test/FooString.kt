@@ -5,7 +5,6 @@ import io.toolisticon.avro.kotlin.builder.AvroBuilder.uuid
 import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
 import io.toolisticon.avro.kotlin.value.HexString
 import org.apache.avro.SchemaBuilder
-import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
 import org.apache.avro.util.Utf8
 import java.util.*
@@ -22,7 +21,7 @@ data class FooString(
 ) : ToGenericRecord {
   companion object {
 
-    val SINGLE_OBJECT_BAR = HexString("[C3 01 1D 6C 12 78 03 3B 7C A0 06 62 61 72]")
+    val SINGLE_OBJECT_BAR = HexString.parse("[C3 01 1D 6C 12 78 03 3B 7C A0 06 62 61 72]")
 
     val SCHEMA: AvroSchema = AvroSchema(
       SchemaBuilder.record("io.toolisticon.avro.kotlin._test.FooString")

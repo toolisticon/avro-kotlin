@@ -13,7 +13,7 @@ internal class AvroHashCodeTest {
     val hashCode = AvroHashCode(intValue)
     val string = hashCode.toString()
 
-    assertThat(AvroHashCode(hashCode.hex)).isEqualTo(hashCode)
-    assertThat(AvroHashCode(string)).isEqualTo(hashCode)
+    assertThat(AvroHashCode.of(hashCode.hex)).isEqualTo(hashCode)
+    assertThat(AvroHashCode.of(string)).isEqualTo(hashCode)
   }
 }

@@ -17,7 +17,7 @@ internal class JsonStringTest {
 
   @Test
   fun `parse jsonString from schema`() {
-    val json = JsonString(
+    val json = JsonString.of(
       """
 
       {
@@ -50,7 +50,7 @@ internal class JsonStringTest {
       .withLogicalType(LogicalTypes.uuid())
 
     assertThat(schema.json).isEqualTo(
-      JsonString(
+      JsonString.of(
         """
       {
         "type" : "string",
@@ -65,7 +65,7 @@ internal class JsonStringTest {
     val schema = primitiveSchema(STRING)
 
     assertThat(schema.json).isEqualTo(
-      JsonString(
+      JsonString.of(
         """
         {
           "type" : "string"
@@ -78,8 +78,8 @@ internal class JsonStringTest {
   fun `parse schema`() {
     val schema = Schema.Parser().parse("""{"type":"string"}""")
 
-    assertThat(JsonString(schema)).isEqualTo(
-      JsonString(
+    assertThat(JsonString.of(schema)).isEqualTo(
+      JsonString.of(
         """
         {
           "type" : "string"

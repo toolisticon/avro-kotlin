@@ -4,6 +4,7 @@ import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
 import io.toolisticon.avro.kotlin.model.EmptyType
 import io.toolisticon.avro.kotlin.model.SchemaType
 import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.apache.avro.SchemaCompatibility
@@ -34,21 +35,21 @@ class AvroSchema(
    * in case of protocol message requests, this is not the case, in these cases, we have to provide the
    * name via constructor.
    */
-  override val name: Name = Name(schema),
+  override val name: Name = Name.of(schema),
 ) : SchemaSupplier, WithObjectProperties {
 
   companion object {
     private fun create(inputStream: InputStream, isRoot: Boolean = false, name: Name? = null) = with(Schema.Parser().parse(inputStream)) {
-      AvroSchema(schema = this, name = name ?: Name(this), isRoot = isRoot)
+      AvroSchema(schema = this, name = name ?: Name.of(this), isRoot = isRoot)
     }
 
-    operator fun invoke(json: JsonString, isRoot: Boolean = false, name: Name? = null): AvroSchema = create(json.inputStream(), isRoot, name)
-    operator fun invoke(file: File): AvroSchema = create(file.inputStream(), isRoot = true)
-    operator fun invoke(path: Path): AvroSchema = create(path.inputStream(), isRoot = true)
-    operator fun invoke(resource: URL): AvroSchema = create(resource.openStream(), isRoot = true)
+    fun of(json: JsonString, isRoot: Boolean = false, name: Name? = null): AvroSchema = create(json.inputStream(), isRoot, name)
+    fun of(file: File): AvroSchema = create(file.inputStream(), isRoot = true)
+    fun of(path: Path): AvroSchema = create(path.inputStream(), isRoot = true)
+    fun of(resource: URL): AvroSchema = create(resource.openStream(), isRoot = true)
 
     // We might need to be able to continue working in kotlin using a null-safe schema, then we can use this operator.
-    operator fun invoke(schema: Schema?): AvroSchema = schema?.let { AvroSchema(it) } ?: EmptyType.schema
+    fun ofNullable(schema: Schema?): AvroSchema = schema?.let { AvroSchema(it) } ?: EmptyType.schema
 
     const val FILE_EXTENSION = "avsc"
   }
@@ -56,14 +57,14 @@ class AvroSchema(
   /**
    * The [AvroHashCode] representing the [Schema]. This hash contains additional information like logicalType or documentation.
    */
-  override val hashCode: AvroHashCode = AvroHashCode(schema)
+  override val hashCode: AvroHashCode = AvroHashCode.of(schema)
 
   /**
    * The fingerprint of the [Schema], used to lookup in schema store.
    *
    * This fingerprint does not contain information like logicalType and documentation.
    */
-  val fingerprint: AvroFingerprint = AvroFingerprint(schema)
+  val fingerprint: AvroFingerprint = AvroFingerprint.of(schema)
 
   /**
    * This is only possible for named types: FIXED, ENUM, RECORD.
@@ -76,17 +77,17 @@ class AvroSchema(
   /**
    * The content of the `doc` field.
    */
-  val documentation: Documentation? by lazy { Documentation.invoke(schema) }
+  val documentation: Documentation? by lazy { Documentation.of(schema) }
 
   // FIXME: fails with NPE when not lazy. Remove?
   val fullName: String by lazy {
     schema.fullName
   }
 
-  override val json: JsonString by lazy { JsonString(schema) }
+  override val json: JsonString by lazy { JsonString.of(schema) }
 
   val namespace: Namespace by lazy {
-    Namespace(schema)
+    Namespace.of(schema)
   }
 
   /**
@@ -102,7 +103,7 @@ class AvroSchema(
   /**
    * Additional properties, defaults to [ObjectProperties.EMPTY].
    */
-  override val properties: ObjectProperties = ObjectProperties(schema)
+  override val properties: ObjectProperties = ObjectProperties.ofNullable(schema)
 
   /**
    * `true` if [properties] is not empty.
@@ -134,7 +135,7 @@ class AvroSchema(
   override fun toString(): String = toString(false)
   fun toString(pretty: Boolean): String = schema.toString(pretty)
 
-  val logicalTypeName: LogicalTypeName? = properties.logicalTypeName()
+  val logicalTypeName: LogicalTypeName? = LogicalTypeNameProperty.from(properties)?.value
 
   val logicalType: LogicalType? = schema.logicalType
 

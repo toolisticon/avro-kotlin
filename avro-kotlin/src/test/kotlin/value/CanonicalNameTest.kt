@@ -67,7 +67,7 @@ internal class CanonicalNameTest {
   )
   fun `construct from fqn string`(fqnParam: String?) {
     val fqn = fqnParam ?: ""
-    val canonicalName = CanonicalName(fqn)
+    val canonicalName = CanonicalName.parse(fqn)
     assertThat(canonicalName.fqn).isEqualTo(fqn)
   }
 }

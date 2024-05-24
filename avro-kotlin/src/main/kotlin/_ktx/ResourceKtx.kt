@@ -12,7 +12,7 @@ import kotlin.io.path.Path
 object ResourceKtx {
 
   fun loadJsonString(resource: String, path: String? = null, classLoader: ClassLoader = AvroKotlin.DEFAULT_CLASS_LOADER): JsonString =
-    JsonString(
+    JsonString.of(
       json = resourceUrl(resource, path, classLoader).readText(AvroKotlin.UTF_8).trim()
     )
 

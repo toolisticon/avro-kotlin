@@ -34,15 +34,17 @@ value class SingleObjectEncodedBytes private constructor(
         throw BadHeaderException("Header is too short(min=$AVRO_HEADER_LENGTH) for 8-byte fingerprint: ${bytes.hex.formatted}")
       }
     })
+
+    fun of(bytes: ByteArrayValue) = SingleObjectEncodedBytes(
+      fingerprint = AvroFingerprint.of(bytes),
+      payload = BinaryEncodedBytes(bytes.value.copyOfRange(AVRO_HEADER_LENGTH, bytes.value.size))
+    )
+
+    fun of(bytes: ByteBuffer) = of(ByteArrayValue(bytes))
+
+    fun parse(hex: HexString) = of(hex.byteArray)
+
   }
-
-  constructor(bytes: ByteArrayValue) : this(
-    AvroFingerprint(bytes) to BinaryEncodedBytes(bytes.value.copyOfRange(AVRO_HEADER_LENGTH, bytes.value.size))
-  )
-
-  constructor(bytes: ByteBuffer) : this(ByteArrayValue(bytes))
-
-  constructor(hex: HexString) : this(hex.byteArray)
 
   constructor(fingerprint: AvroFingerprint, payload: BinaryEncodedBytes) : this(fingerprint to payload)
 

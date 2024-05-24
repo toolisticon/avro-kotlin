@@ -17,13 +17,13 @@ abstract class ParameterizedDoubleConversion<CONVERTED_TYPE>(
 
   override fun fromDouble(value: Double, schema: Schema?, type: LogicalType?) = fromAvro(
     value = value,
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 
   override fun toDouble(value: CONVERTED_TYPE, schema: Schema?, type: LogicalType?) = toAvro(
     value = value,
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 }

@@ -15,7 +15,7 @@ internal class EnumTypeTest {
   @Test
   @DisabledOnOs(OS.WINDOWS)
   fun `create enumType from schema`() {
-    val json = JsonString(
+    val json = JsonString.of(
       """
       {
         "type": "enum",

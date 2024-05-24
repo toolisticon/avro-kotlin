@@ -3,6 +3,7 @@ package io.toolisticon.avro.kotlin.value
 import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
 import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
 import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalTypes
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -12,7 +13,7 @@ internal class ObjectPropertiesTest {
   @Test
   fun `no props means empty map`() {
     val schema = primitiveSchema(STRING)
-    val props = ObjectProperties(schema)
+    val props = schema.properties
 
     assertThat(props).isEmpty()
   }
@@ -27,7 +28,7 @@ internal class ObjectPropertiesTest {
     val props = schema.properties
 
     assertThat(props).isNotEmpty
-    assertThat(props).containsKey(LogicalTypeName.PROPERTY_KEY)
+    assertThat(props).containsKey(LogicalTypeNameProperty.PROPERTY_KEY)
     assertThat(props.getValue<String>("xxx")).isEqualTo("value")
   }
 
@@ -38,9 +39,11 @@ internal class ObjectPropertiesTest {
       "b" to "foo"
     )
 
-    val props = ObjectProperties(
-      primitiveSchema(type = STRING, properties = ObjectProperties("zzz" to innerMap))
-    )
+    val props = primitiveSchema(
+      type = STRING,
+      properties = ObjectProperties("zzz" to innerMap)
+    ).properties
+
 
     assertThat(props).isNotEmpty
     assertThat(props.getMap("zzz").getValue<Int>("a")).isEqualTo(5)
@@ -52,6 +55,6 @@ internal class ObjectPropertiesTest {
 
   @Test
   fun `empty properties has logicalTypeName null`() {
-    assertThat(ObjectProperties.EMPTY.logicalTypeName()).isNull()
+    assertThat(LogicalTypeNameProperty.from(ObjectProperties.EMPTY)).isNull()
   }
 }

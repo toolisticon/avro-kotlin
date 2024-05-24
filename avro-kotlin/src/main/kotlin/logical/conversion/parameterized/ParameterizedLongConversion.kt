@@ -17,13 +17,13 @@ abstract class ParameterizedLongConversion<CONVERTED_TYPE>(
 
   override fun fromLong(value: Long, schema: Schema?, type: LogicalType?) = fromAvro(
     value = value,
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 
   override fun toLong(value: CONVERTED_TYPE, schema: Schema?, type: LogicalType?) = toAvro(
     value = value,
-    schema = AvroSchema(schema),
+    schema = AvroSchema.ofNullable(schema),
     logicalType = type
   )
 }

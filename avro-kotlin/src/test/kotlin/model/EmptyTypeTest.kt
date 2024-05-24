@@ -15,7 +15,7 @@ internal class EmptyTypeTest {
 
     assertThat(EmptyType.name).isEqualTo(Name.EMPTY)
     assertThat(EmptyType.schema.type).isEqualTo(SchemaType.RECORD)
-    assertThat(EmptyType.json).isEqualTo(JsonString("""{
+    assertThat(EmptyType.json).isEqualTo(JsonString.of("""{
       |  "type" : "record",
       |  "fields" : [ ]
       |}""".trimMargin()))

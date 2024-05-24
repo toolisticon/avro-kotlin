@@ -2,7 +2,6 @@ package io.toolisticon.avro.kotlin.value
 
 import io.toolisticon.avro.kotlin.AvroKotlin
 import io.toolisticon.avro.kotlin._test.FooString
-import org.apache.avro.generic.GenericData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -10,7 +9,7 @@ internal class SingleObjectEncodedBytesTest {
 
   @Test
   fun `can construct from hex String`() {
-    val soe = SingleObjectEncodedBytes(FooString.SINGLE_OBJECT_BAR)
+    val soe = SingleObjectEncodedBytes.parse(FooString.SINGLE_OBJECT_BAR)
 
     assertThat(soe.hex).isEqualTo(FooString.SINGLE_OBJECT_BAR)
     assertThat(soe.payload.hex.formatted).isEqualTo("[06 62 61 72]")

@@ -1,13 +1,13 @@
 package io.toolisticon.avro.kotlin.logical
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.LogicalTypes.LogicalTypeFactory
 import org.apache.avro.Schema
 
 /**
- * We need a [LogicalTypeFactory] to register custom types. It is an java avro aapi
+ * We need a [LogicalTypeFactory] to register custom types. It is a java avro api
  * requirement.
  *
  * As the [AvroLogicalType] is de facto a singleton instance,
@@ -27,7 +27,8 @@ sealed class AvroLogicalTypeFactory<
 
   override fun getTypeName(): String = logicalType.getName()
 
-  override fun fromSchema(schema: Schema?): LogicalType? = if (logicalType.name == LogicalTypeName.invoke(schema)) {
+  // check if logical type derived from given schema matches the expected singleton type
+  override fun fromSchema(schema: Schema?): LogicalType? = if (LogicalTypeNameProperty.from(schema)?.value == logicalType.name) {
     logicalType
   } else {
     null

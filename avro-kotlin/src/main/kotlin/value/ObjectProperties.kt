@@ -1,6 +1,6 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.JsonProperties
 
 /**
@@ -22,25 +22,21 @@ import org.apache.avro.JsonProperties
 @JvmInline
 value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) : Map<String, Any> by value, ValueType<Map<String, Any>> {
   companion object {
-    private val ignoredProperties = setOf(LogicalTypeName.PROPERTY_KEY)
+    private val ignoredProperties = setOf(LogicalTypeNameProperty.PROPERTY_KEY)
     val EMPTY = ObjectProperties()
+
+    fun of(other: ObjectProperties) = ObjectProperties(other.value)
+
+    /**
+     * Creates new instance from schema objectProps.
+     *
+     * @param jsonProperties schema, field or protocol containing objectProps
+     * @return properties derived from jsonProperties
+     */
+    fun ofNullable(jsonProperties: JsonProperties?) = jsonProperties?.let {
+      ObjectProperties(value = jsonProperties.objectProps.toMap())
+    } ?: EMPTY
   }
-
-  /**
-   * Creates new instance from schema objectProps.
-   *
-   * @param avroSchema the wrapped schema
-   * @return properties derived from schema
-   */
-  constructor(avroSchema: AvroSchema) : this(avroSchema.get())
-
-  /**
-   * Creates new instance from schema objectProps.
-   *
-   * @param jsonProperties schema, field or protocol containing objectProps
-   * @return properties derived from jsonProperties
-   */
-  constructor(jsonProperties: JsonProperties) : this(value = jsonProperties.objectProps.toMap())
 
   /**
    * Creates new instance from properties.
@@ -81,8 +77,6 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    * @return objectProperties of given key
    */
   fun getMap(key: String): ObjectProperties = getValue(key)
-
-  fun logicalTypeName(): LogicalTypeName? = LogicalTypeName(this)
 
   /**
    * Creates a copy of this properties instance with all ignored property keys removed.

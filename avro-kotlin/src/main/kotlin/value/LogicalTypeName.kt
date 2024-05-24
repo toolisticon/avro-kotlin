@@ -1,8 +1,7 @@
 package io.toolisticon.avro.kotlin.value
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
-import org.apache.avro.Schema
 
 /**
  * Type-safe wrapper of the string name of a [org.apache.avro.LogicalType].
@@ -10,21 +9,13 @@ import org.apache.avro.Schema
 @JvmInline
 value class LogicalTypeName(override val value: String) : ValueType<String> {
   companion object {
-    const val PROPERTY_KEY = LogicalType.LOGICAL_TYPE_PROP
+    fun String.toLogicalTypeName() = of(this)
 
-    fun String.toLogicalTypeName() = LogicalTypeName(this)
+    fun of(name: String) = LogicalTypeName(value = name)
+    fun ofNullable(name: String?) = name?.toLogicalTypeName()
+    fun ofNullable(logicalType: LogicalType?) = logicalType?.name?.toLogicalTypeName()
 
-    operator fun invoke(name: String?) = name?.toLogicalTypeName()
-
-    operator fun invoke(schema: Schema?) = schema?.getProp(PROPERTY_KEY)?.toLogicalTypeName()
-
-    operator fun invoke(logicalType: LogicalType?) = logicalType?.name?.toLogicalTypeName()
-
-    operator fun invoke(properties: ObjectProperties): LogicalTypeName? = if(properties.containsKey(PROPERTY_KEY)) {
-      properties.getValue<String>(PROPERTY_KEY).toLogicalTypeName()
-    } else { null }
-
-    fun schemaLogicalTypeName(logicalType: LogicalType?) = logicalType?.let { LogicalTypeName(it.name) }
+    fun from(properties: ObjectProperties): LogicalTypeName? = LogicalTypeNameProperty.from(properties)?.value
   }
 
   override fun toString(): String = value

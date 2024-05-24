@@ -52,7 +52,7 @@ class AvroParser(
    * @return the [SchemaDeclaration] containing parse result
    */
   fun parseSchema(resource: URL): SchemaDeclaration {
-    val schema = AvroSchema(resource)
+    val schema = AvroSchema.of(resource)
     val source = ResourceSource(schema.json, AvroSpecification.SCHEMA, resource)
 
     return schemaDeclaration(schema, source)
@@ -73,14 +73,14 @@ class AvroParser(
    * @param schema the schema
    * @return [SchemaDeclaration] wrapping the schema.
    */
-  fun parseSchema(schema: Schema) = parseSchema(JsonString(schema))
+  fun parseSchema(schema: Schema) = parseSchema(JsonString.of(schema))
 
   /**
    * @param json - the json string of the [Schema] to parse
    * @return the [SchemaDeclaration] containing parse result
    */
   fun parseSchema(json: JsonString): SchemaDeclaration = schemaDeclaration(
-    schema = AvroSchema(json, true),
+    schema = AvroSchema.of(json, true),
     source = JsonSource(json, AvroSpecification.SCHEMA)
   )
 
@@ -91,7 +91,7 @@ class AvroParser(
    */
   fun parseProtocol(resource: URL): ProtocolDeclaration {
     val protocol = AvroKotlin.parseProtocol(resource)
-    val json = JsonString(protocol.toString(pretty = true))
+    val json = JsonString.of(protocol.toString(pretty = true))
 
     return protocolDeclaration(protocol, ResourceSource(json, AvroSpecification.PROTOCOL, resource))
   }
