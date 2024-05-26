@@ -8,22 +8,15 @@
     <version>1.11.5.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>avro-kotlin-examples-root</artifactId>
-  <description>Common configuration for all examples.</description>
+  <artifactId>avro-kotlin-generator-root</artifactId>
+  <description>Common root for generator modules.</description>
   <name>pom: ${project.artifactId}</name>
   <packaging>pom</packaging>
 
-  <properties>
-    <!-- all examples are excluded from install/deploy/release -->
-    <maven.install.skip>true</maven.install.skip>
-    <gpg.skip>true</gpg.skip>
-  </properties>
-
   <modules>
-    <module>logical-type-money</module>
-    <module>logical-type-customer-id</module>
-    <module>kotlin-example</module>
-    <module>java-example</module>
+    <module>avro-kotlin-generator</module>
+    <module>avro-kotlin-generator-api</module>
+    <module>avro-kotlin-generator-maven-plugin</module>
   </modules>
 
   <dependencyManagement>
