@@ -1,0 +1,40 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.toolisticon.kotlin.avro._</groupId>
+    <artifactId>avro-kotlin-root</artifactId>
+    <version>1.11.4.0</version>
+  </parent>
+
+  <artifactId>avro-kotlin-examples-root</artifactId>
+  <description>Common configuration for all examples.</description>
+  <name>pom: ${project.artifactId}</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- all examples are excluded from install/deploy/release -->
+    <maven.install.skip>false</maven.install.skip>
+    <gpg.skip>true</gpg.skip>
+  </properties>
+
+  <modules>
+    <module>logical-type-money</module>
+    <module>logical-type-customer-id</module>
+    <module>kotlin-example</module>
+    <module>java-example</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-bom</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

@@ -1,0 +1,27 @@
+{
+  "name": "BankAccountCreated",
+  "namespace": "io.toolisticon.example.bank",
+  "type": "record",
+  "fields": [
+    {
+      "name": "accountId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "customerId",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "initialBalance",
+      "type": {
+        "type": "string",
+        "logicalType": "money"
+      }
+    }
+  ]
+}
