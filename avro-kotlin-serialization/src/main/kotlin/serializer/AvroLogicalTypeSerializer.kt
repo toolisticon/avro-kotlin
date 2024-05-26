@@ -18,6 +18,7 @@ sealed class AvroLogicalTypeSerializer<LOGICAL : AvroLogicalType<JVM_TYPE>, JVM_
   private val primitiveKind: PrimitiveKind
 ) : AvroSerializer<CONVERTED_TYPE>() {
 
+
   override val descriptor: SerialDescriptor = object : AvroDescriptor(type = conversion.convertedType, kind = primitiveKind) {
     override fun schema(annos: List<Annotation>, serializersModule: SerializersModule, namingStrategy: NamingStrategy): Schema {
       return conversion.logicalType.schema().get()

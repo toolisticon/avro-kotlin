@@ -7,8 +7,10 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.compatibleToReadFrom
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.spi.AvroSerializationModuleFactoryServiceLoader
+import io.toolisticon.kotlin.avro.serialization.spi.SerializerModuleKtx.reduce
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.modules.SerializersModule
 import mu.KLogging
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
@@ -18,7 +20,16 @@ import kotlin.reflect.KClass
 class AvroKotlinSerialization(
   private val avro4k: Avro
 ) {
-  companion object : KLogging()
+  companion object : KLogging() {
+
+    fun configure(vararg serializersModules: SerializersModule): AvroKotlinSerialization {
+      return AvroKotlinSerialization(
+        Avro(
+          serializersModule = serializersModules.toList().reduce()
+        )
+      )
+    }
+  }
 
   private val kserializerCache = ConcurrentHashMap<KClass<*>, KSerializer<*>>()
   private val schemaCache = ConcurrentHashMap<KClass<*>, AvroSchema>()
@@ -45,6 +56,8 @@ class AvroKotlinSerialization(
 
     return avro4k.toRecord(kserializer, data)
   }
+
+  inline fun <reified T : Any> fromRecord(record: GenericRecord): T = fromRecord(record, T::class)
 
   @Suppress("UNCHECKED_CAST")
   fun <T : Any> fromRecord(record: GenericRecord, type: KClass<T>): T {
