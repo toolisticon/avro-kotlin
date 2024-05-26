@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
-import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroSpecification.SCHEMA
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
+import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.AvroSpecification.SCHEMA
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

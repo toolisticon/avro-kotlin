@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin._ktx
+package io.toolisticon.kotlin.avro._ktx
 
 internal object KotlinKtx {
 

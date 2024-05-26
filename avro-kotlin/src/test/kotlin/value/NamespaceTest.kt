@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.kotlin.avro.builder.AvroBuilder
+import io.toolisticon.kotlin.avro.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs

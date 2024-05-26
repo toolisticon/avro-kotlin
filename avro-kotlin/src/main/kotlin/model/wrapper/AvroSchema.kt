@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
-import io.toolisticon.avro.kotlin.model.EmptyType
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.value.*
-import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
+import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
+import io.toolisticon.kotlin.avro.model.EmptyType
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.value.*
+import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.apache.avro.SchemaCompatibility

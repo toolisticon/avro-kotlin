@@ -1,16 +1,16 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin.parseProtocol
-import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
-import io.toolisticon.avro.kotlin.AvroParser
-import io.toolisticon.avro.kotlin._test.FooString
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
-import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.NULL
-import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.readLong
-import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
-import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.toBytes
+import io.toolisticon.kotlin.avro.AvroKotlin.parseProtocol
+import io.toolisticon.kotlin.avro.AvroKotlin.parseSchema
+import io.toolisticon.kotlin.avro.AvroParser
+import io.toolisticon.kotlin.avro._test.FooString
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.SchemaType.BYTES
+import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.NULL
+import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.readLong
+import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.sum
+import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.toBytes
 import org.apache.avro.LogicalTypes.decimal
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder

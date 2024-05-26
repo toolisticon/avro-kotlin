@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonEncoder
-import io.toolisticon.avro.kotlin.codec.AvroCodec.encoderFactory
-import io.toolisticon.avro.kotlin.value.ByteArrayValue
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.codec.AvroCodec.JsonEncoder
+import io.toolisticon.kotlin.avro.codec.AvroCodec.encoderFactory
+import io.toolisticon.kotlin.avro.value.ByteArrayValue
+import io.toolisticon.kotlin.avro.value.JsonString
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumWriter

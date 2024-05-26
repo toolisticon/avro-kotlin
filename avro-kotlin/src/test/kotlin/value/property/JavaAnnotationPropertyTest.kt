@@ -1,12 +1,12 @@
-package io.toolisticon.avro.kotlin.value.property
+package io.toolisticon.kotlin.avro.value.property
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.TestFixtures.emptyStringMap
-import io.toolisticon.avro.kotlin.model.RecordType
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
-import io.toolisticon.avro.kotlin.value.ObjectProperties
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.TestFixtures.emptyStringMap
+import io.toolisticon.kotlin.avro.model.RecordType
+import io.toolisticon.kotlin.avro.value.CanonicalName
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.Namespace
+import io.toolisticon.kotlin.avro.value.ObjectProperties
 import org.apache.avro.JsonProperties
 import org.apache.avro.compiler.specific.SpecificCompiler
 import org.assertj.core.api.Assertions.assertThat

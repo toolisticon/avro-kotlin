@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.value.BinaryEncodedBytes
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.value.BinaryEncodedBytes
+import io.toolisticon.kotlin.avro.value.JsonString
+import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
 import org.apache.avro.io.DecoderFactory
 import org.apache.avro.io.EncoderFactory

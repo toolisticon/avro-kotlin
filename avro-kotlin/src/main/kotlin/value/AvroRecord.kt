@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord

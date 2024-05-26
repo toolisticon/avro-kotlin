@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin
+import io.toolisticon.kotlin.avro.AvroKotlin
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 

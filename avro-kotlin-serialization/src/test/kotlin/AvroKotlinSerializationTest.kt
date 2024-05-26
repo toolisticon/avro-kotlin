@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.serialization
 
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization._test.Foo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ internal class AvroKotlinSerializationTest {
 
     println(encoded.hex.formatted)
 
-    val decoded : Foo = avro.decodeFromSingleObject(
+    val decoded: Foo = avro.decodeFromSingleObject(
       schemaResolver = avroSchemaResolver(avro.schema(Foo::class)),
       singleObjectEncodedBytes = encoded
     )

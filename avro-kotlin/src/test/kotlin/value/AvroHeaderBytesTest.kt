@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin._test.FooString
+import io.toolisticon.kotlin.avro._test.FooString
 import org.apache.avro.message.BadHeaderException
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test

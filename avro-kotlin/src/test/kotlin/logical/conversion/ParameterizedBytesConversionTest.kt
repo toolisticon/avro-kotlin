@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
-import io.toolisticon.avro.kotlin.TestFixtures
-import io.toolisticon.avro.kotlin.logical.conversion.parameterized.ParameterizedBytesConversion
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.ByteArrayValue
-import io.toolisticon.avro.kotlin.value.HexString
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.TestFixtures
+import io.toolisticon.kotlin.avro.logical.conversion.parameterized.ParameterizedBytesConversion
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.ByteArrayValue
+import io.toolisticon.kotlin.avro.value.HexString
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.LogicalType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

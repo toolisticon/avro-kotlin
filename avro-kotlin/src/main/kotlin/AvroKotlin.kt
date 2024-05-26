@@ -1,15 +1,15 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.kotlin.avro
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
-import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
-import io.toolisticon.avro.kotlin.logical.AvroLogicalType
-import io.toolisticon.avro.kotlin.model.AvroType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
-import io.toolisticon.avro.kotlin.value.*
-import io.toolisticon.avro.kotlin.value.CanonicalName.Companion.toCanonicalName
+import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
+import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
+import io.toolisticon.kotlin.avro.logical.AvroLogicalType
+import io.toolisticon.kotlin.avro.model.AvroType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
+import io.toolisticon.kotlin.avro.value.*
+import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -166,7 +166,7 @@ object AvroKotlin {
   }
 
   @JvmStatic
-  fun avroSchemaResolver(schema: Schema) = io.toolisticon.avro.kotlin.repository.avroSchemaResolver(
+  fun avroSchemaResolver(schema: Schema) = io.toolisticon.kotlin.avro.repository.avroSchemaResolver(
     firstSchema = AvroSchema(schema)
   )
 

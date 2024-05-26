@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin._test
+package io.toolisticon.kotlin.avro._test
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.uuid
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.uuid
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord

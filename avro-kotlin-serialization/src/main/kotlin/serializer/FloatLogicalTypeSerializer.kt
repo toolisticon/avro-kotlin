@@ -2,8 +2,8 @@ package io.toolisticon.kotlin.avro.serialization.serializer
 
 import com.github.avrokotlin.avro4k.decoder.ExtendedDecoder
 import com.github.avrokotlin.avro4k.encoder.ExtendedEncoder
-import io.toolisticon.avro.kotlin.logical.FloatLogicalType
-import io.toolisticon.avro.kotlin.logical.conversion.FloatLogicalTypeConversion
+import io.toolisticon.kotlin.avro.logical.FloatLogicalType
+import io.toolisticon.kotlin.avro.logical.conversion.FloatLogicalTypeConversion
 import kotlinx.serialization.descriptors.PrimitiveKind
 import org.apache.avro.Schema
 

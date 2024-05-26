@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.SchemaType.BYTES
-import io.toolisticon.avro.kotlin.value.ObjectProperties
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.SchemaType.BYTES
+import io.toolisticon.kotlin.avro.value.ObjectProperties
 import org.apache.avro.LogicalTypes
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

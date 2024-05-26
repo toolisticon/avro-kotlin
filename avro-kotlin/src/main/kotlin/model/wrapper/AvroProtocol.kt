@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
 import _ktx.StringKtx.firstUppercase
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.model.*
-import io.toolisticon.avro.kotlin.value.*
-import io.toolisticon.avro.kotlin.value.AvroFingerprint.Companion.sum
+import io.toolisticon.kotlin.avro.builder.AvroBuilder
+import io.toolisticon.kotlin.avro.model.*
+import io.toolisticon.kotlin.avro.value.*
+import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.sum
 import org.apache.avro.Protocol
 import java.util.function.Supplier
 

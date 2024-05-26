@@ -1,12 +1,11 @@
-package io.toolisticon.avro.kotlin.example
+package io.toolisticon.kotlin.avro.example
 
 import com.github.avrokotlin.avro4k.AvroName
 import com.github.avrokotlin.avro4k.AvroNamespace
 import com.github.avrokotlin.avro4k.serializer.UUIDSerializer
-import io.toolisticon.avro.kotlin.example.customerid.CustomerId
-import io.toolisticon.avro.kotlin.example.customerid.CustomerIdData
-import io.toolisticon.avro.kotlin.example.customerid.CustomerIdLogicalType
-import io.toolisticon.avro.kotlin.example.money.MoneyLogicalType.MoneySerializer
+import io.toolisticon.kotlin.avro.example.customerid.CustomerId
+import io.toolisticon.kotlin.avro.example.customerid.CustomerIdLogicalType
+import io.toolisticon.kotlin.avro.example.money.MoneyLogicalType.MoneySerializer
 import kotlinx.serialization.Serializable
 import org.javamoney.moneta.Money
 import java.util.*

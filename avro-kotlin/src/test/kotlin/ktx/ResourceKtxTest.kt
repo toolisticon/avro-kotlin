@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.ktx
+package io.toolisticon.kotlin.avro.ktx
 
 import _ktx.ResourceKtx
-import io.toolisticon.avro.kotlin.value.AvroSpecification
+import io.toolisticon.kotlin.avro.value.AvroSpecification
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs

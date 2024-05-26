@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
 import _ktx.StringKtx.trimToNull
-import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes.Companion.verifyAvroHeader
+import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes.Companion.verifyAvroHeader
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import org.apache.avro.SchemaNormalization

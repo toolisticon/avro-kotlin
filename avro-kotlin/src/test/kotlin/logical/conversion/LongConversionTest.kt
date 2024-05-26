@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
 import com.ibm.icu.text.RuleBasedNumberFormat
-import io.toolisticon.avro.kotlin.logical.conversion.parameterized.ParameterizedLongConversion
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.logical.conversion.parameterized.ParameterizedLongConversion
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.LogicalType
 import java.util.*
 

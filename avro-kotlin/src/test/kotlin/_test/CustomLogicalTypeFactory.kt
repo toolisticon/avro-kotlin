@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin._test
+package io.toolisticon.kotlin.avro._test
 
 import org.apache.avro.Conversion
 import org.apache.avro.LogicalType

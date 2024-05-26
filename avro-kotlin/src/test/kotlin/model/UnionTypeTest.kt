@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.union
-import io.toolisticon.avro.kotlin.model.SchemaType.NULL
-import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.union
+import io.toolisticon.kotlin.avro.model.SchemaType.NULL
+import io.toolisticon.kotlin.avro.model.SchemaType.STRING
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

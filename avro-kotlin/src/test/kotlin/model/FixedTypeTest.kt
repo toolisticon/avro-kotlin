@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.logical.BuiltInLogicalType
-import io.toolisticon.avro.kotlin.value.Documentation
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.kotlin.avro.builder.AvroBuilder
+import io.toolisticon.kotlin.avro.logical.BuiltInLogicalType
+import io.toolisticon.kotlin.avro.value.Documentation
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.Namespace
 import org.apache.avro.LogicalType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

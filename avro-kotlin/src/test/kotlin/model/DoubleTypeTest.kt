@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.SchemaType.DOUBLE
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.SchemaType.DOUBLE
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.Conversion
 import org.apache.avro.Conversions
 import org.apache.avro.data.TimeConversions

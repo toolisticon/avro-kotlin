@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest

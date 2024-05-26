@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin._test
+package io.toolisticon.kotlin.avro._test
 
-import io.toolisticon.avro.kotlin.logical.conversion.parameterized.ParameterizedStringConversion
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.logical.conversion.parameterized.ParameterizedStringConversion
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.javamoney.moneta.Money

@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.declaration
+package io.toolisticon.kotlin.avro.declaration
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroParser
-import io.toolisticon.avro.kotlin._test.CustomLogicalTypeFactory
-import io.toolisticon.avro.kotlin.model.*
+import io.toolisticon.kotlin.avro.AvroParser
+import io.toolisticon.kotlin.avro._test.CustomLogicalTypeFactory
+import io.toolisticon.kotlin.avro.model.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

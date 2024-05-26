@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.repository
+package io.toolisticon.kotlin.avro.repository
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import org.apache.avro.Schema
 
 data class AvroSchemaResolverMap(

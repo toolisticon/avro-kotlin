@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin._test
+package io.toolisticon.kotlin.avro._test
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.uuid
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.HexString
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.uuid
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.HexString
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericRecord
 import org.apache.avro.util.Utf8
@@ -21,10 +21,10 @@ data class FooString(
 ) : ToGenericRecord {
   companion object {
 
-    val SINGLE_OBJECT_BAR = HexString.parse("[C3 01 1D 6C 12 78 03 3B 7C A0 06 62 61 72]")
+    val SINGLE_OBJECT_BAR = HexString.parse("[C3 01 68 2F CD 81 41 03 69 8A 06 62 61 72]")
 
     val SCHEMA: AvroSchema = AvroSchema(
-      SchemaBuilder.record("io.toolisticon.avro.kotlin._test.FooString")
+      SchemaBuilder.record("io.toolisticon.kotlin.avro._test.FooString")
         .fields()
         .requiredString("str")
         .endRecord()
@@ -47,7 +47,7 @@ data class FooString2(
 ) : ToGenericRecord {
   companion object {
     val SCHEMA = AvroSchema(
-      SchemaBuilder.record("io.toolisticon.avro.kotlin._test.FooString")
+      SchemaBuilder.record("io.toolisticon.kotlin.avro._test.FooString")
         .fields()
         .requiredString("str")
         .uuid("uuid", true)

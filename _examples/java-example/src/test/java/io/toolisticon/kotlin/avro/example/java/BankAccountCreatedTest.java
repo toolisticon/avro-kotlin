@@ -1,16 +1,14 @@
-package io.toolisticon.avro.kotlin.example.java;
+package io.toolisticon.kotlin.avro.example.java;
 
-import io.toolisticon.avro.kotlin.example.customerid.CustomerId;
-import io.toolisticon.avro.kotlin.example.customerid.CustomerIdData;
-import io.toolisticon.bank.BankAccountCreated;
+import io.toolisticon.example.bank.BankAccountCreated;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.toolisticon.avro.kotlin.AvroKotlin.avroSchemaResolver;
-import static io.toolisticon.avro.kotlin.codec.SpecificRecordCodec.specificRecordSingleObjectDecoder;
-import static io.toolisticon.avro.kotlin.codec.SpecificRecordCodec.specificRecordSingleObjectEncoder;
+import static io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver;
+import static io.toolisticon.kotlin.avro.codec.SpecificRecordCodec.specificRecordSingleObjectDecoder;
+import static io.toolisticon.kotlin.avro.codec.SpecificRecordCodec.specificRecordSingleObjectEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BankAccountCreatedTest {

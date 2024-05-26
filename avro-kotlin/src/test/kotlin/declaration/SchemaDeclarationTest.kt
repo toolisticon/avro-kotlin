@@ -1,15 +1,15 @@
-package io.toolisticon.avro.kotlin.declaration
+package io.toolisticon.kotlin.avro.declaration
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroParser
-import io.toolisticon.avro.kotlin.TestFixtures
-import io.toolisticon.avro.kotlin.model.EnumType
-import io.toolisticon.avro.kotlin.model.IntType
-import io.toolisticon.avro.kotlin.model.RecordType
-import io.toolisticon.avro.kotlin.model.StringType
-import io.toolisticon.avro.kotlin.value.Directory
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.kotlin.avro.AvroParser
+import io.toolisticon.kotlin.avro.TestFixtures
+import io.toolisticon.kotlin.avro.model.EnumType
+import io.toolisticon.kotlin.avro.model.IntType
+import io.toolisticon.kotlin.avro.model.RecordType
+import io.toolisticon.kotlin.avro.model.StringType
+import io.toolisticon.kotlin.avro.value.Directory
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.Namespace
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir

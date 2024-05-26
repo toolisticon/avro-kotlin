@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
 import _ktx.StringKtx
-import io.toolisticon.avro.kotlin.logical.AvroLogicalType
+import io.toolisticon.kotlin.avro.logical.AvroLogicalType
 import org.apache.avro.Conversion
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema

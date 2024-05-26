@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.kotlin.avro
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin.createGenericRecord
-import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroSpecification
-import io.toolisticon.avro.kotlin.value.Directory
+import io.toolisticon.kotlin.avro.AvroKotlin.createGenericRecord
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.AvroSpecification
+import io.toolisticon.kotlin.avro.value.Directory
 import org.apache.avro.SchemaBuilder
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord

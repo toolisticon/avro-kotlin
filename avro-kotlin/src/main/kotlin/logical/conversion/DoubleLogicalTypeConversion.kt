@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
-import io.toolisticon.avro.kotlin.logical.DoubleLogicalType
+import io.toolisticon.kotlin.avro.logical.DoubleLogicalType
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import kotlin.reflect.KClass

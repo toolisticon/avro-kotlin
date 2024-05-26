@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.logical.conversion.parameterized
+package io.toolisticon.kotlin.avro.logical.conversion.parameterized
 
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 

@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
 import org.apache.avro.message.BadHeaderException
 import org.apache.avro.message.BinaryMessageEncoder

@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
-import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
+import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import org.apache.avro.message.BinaryMessageDecoder
 import org.apache.avro.specific.SpecificData
 import org.apache.avro.specific.SpecificRecordBase

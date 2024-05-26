@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
-import io.toolisticon.avro.kotlin._test.MoneyConversionParameterized
+import io.toolisticon.kotlin.avro._test.MoneyConversionParameterized
 import org.assertj.core.api.Assertions.assertThat
 import org.javamoney.moneta.Money
 import org.junit.jupiter.api.Test

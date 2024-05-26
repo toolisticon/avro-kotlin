@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.example
+package io.toolisticon.kotlin.avro.example
 
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
 

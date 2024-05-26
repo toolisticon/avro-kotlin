@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.example.customerid
+package io.toolisticon.kotlin.avro.example.customerid
 
 import kotlinx.serialization.Serializable
 import java.util.*

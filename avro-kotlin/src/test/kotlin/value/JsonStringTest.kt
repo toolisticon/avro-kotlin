@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin.parseSchema
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.withLogicalType
-import io.toolisticon.avro.kotlin.model.ErrorType
-import io.toolisticon.avro.kotlin.model.SchemaType.STRING
+import io.toolisticon.kotlin.avro.AvroKotlin.parseSchema
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.withLogicalType
+import io.toolisticon.kotlin.avro.model.ErrorType
+import io.toolisticon.kotlin.avro.model.SchemaType.STRING
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.assertj.core.api.Assertions.assertThat

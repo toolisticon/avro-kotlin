@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.example.money
+package io.toolisticon.kotlin.avro.example.money
 
 import org.junit.jupiter.api.Test
 

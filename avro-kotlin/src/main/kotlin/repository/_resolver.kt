@@ -1,9 +1,9 @@
 @file:JvmName("RepositoryKt")
-package io.toolisticon.avro.kotlin.repository
+package io.toolisticon.kotlin.avro.repository
 
-import io.toolisticon.avro.kotlin._ktx.KotlinKtx.head
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
+import io.toolisticon.kotlin.avro._ktx.KotlinKtx.head
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import org.apache.avro.message.MissingSchemaException
 
 internal fun missingSchemaException(fingerprint: AvroFingerprint) =

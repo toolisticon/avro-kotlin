@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
+import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.JsonProperties
 
 /**

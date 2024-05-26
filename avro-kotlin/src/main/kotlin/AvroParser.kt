@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.kotlin.avro
 
-import io.toolisticon.avro.kotlin.declaration.AvroDeclaration
-import io.toolisticon.avro.kotlin.declaration.ProtocolDeclaration
-import io.toolisticon.avro.kotlin.declaration.SchemaDeclaration
-import io.toolisticon.avro.kotlin.model.wrapper.*
-import io.toolisticon.avro.kotlin.value.AvroSpecification
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
+import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
+import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
+import io.toolisticon.kotlin.avro.model.wrapper.*
+import io.toolisticon.kotlin.avro.value.AvroSpecification
+import io.toolisticon.kotlin.avro.value.JsonString
 import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.LogicalTypes.LogicalTypeFactory

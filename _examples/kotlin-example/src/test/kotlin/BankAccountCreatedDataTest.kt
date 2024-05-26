@@ -1,12 +1,11 @@
-package io.toolisticon.avro.kotlin.example
+package io.toolisticon.kotlin.avro.example
 
-import io.toolisticon.avro.kotlin.codec.GenericRecordCodec
-import io.toolisticon.avro.kotlin.example.customerid.CustomerId
-import io.toolisticon.avro.kotlin.example.customerid.CustomerIdData
-import io.toolisticon.avro.kotlin.example.money.MoneyLogicalType
-import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
-import io.toolisticon.avro.kotlin.value.CanonicalName.Companion.toCanonicalName
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
+import io.toolisticon.kotlin.avro.example.customerid.CustomerId
+import io.toolisticon.kotlin.avro.example.money.MoneyLogicalType
+import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
+import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
+import io.toolisticon.kotlin.avro.value.Name.Companion.toName
 import org.assertj.core.api.Assertions.assertThat
 import org.javamoney.moneta.Money
 import org.junit.jupiter.api.Test
@@ -22,7 +21,7 @@ internal class BankAccountCreatedDataTest {
     assertThat(schema.fields).hasSize(3)
 
     val props = schema.getField("initialBalance")?.properties
-    assertThat(schema.getField(Name("initialBalance"))?.schema?.logicalTypeName).isEqualTo(MoneyLogicalType.name)
+    assertThat(schema.getField("initialBalance".toName())?.schema?.logicalTypeName).isEqualTo(MoneyLogicalType.name)
   }
 
   @Test

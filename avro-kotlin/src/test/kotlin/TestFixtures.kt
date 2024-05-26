@@ -1,12 +1,12 @@
-package io.toolisticon.avro.kotlin
+package io.toolisticon.kotlin.avro
 
 import _ktx.ResourceKtx.findAvroResources
 import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.*
 import lib.test.event.BankAccountCreated
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Protocol

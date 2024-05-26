@@ -1,12 +1,12 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.AvroKotlin.orEmpty
-import io.toolisticon.avro.kotlin.model.AvroTypesMap.Companion.typesMap
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isPrimitive
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog.Companion.bySchemaType
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Graph
+import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
+import io.toolisticon.kotlin.avro.model.AvroTypesMap.Companion.typesMap
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isPrimitive
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaCatalog.Companion.bySchemaType
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.Graph
 import org.apache.avro.Schema
 
 /**

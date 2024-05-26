@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 
 /**
  * [AvroLogicalType] for [SchemaType.STRING], must not require additional properties and should be implemented as singleton.

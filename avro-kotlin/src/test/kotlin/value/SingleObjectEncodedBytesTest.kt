@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin._test.FooString
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro._test.FooString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -13,7 +13,7 @@ internal class SingleObjectEncodedBytesTest {
 
     assertThat(soe.hex).isEqualTo(FooString.SINGLE_OBJECT_BAR)
     assertThat(soe.payload.hex.formatted).isEqualTo("[06 62 61 72]")
-    assertThat(soe.fingerprint.hex.formatted).isEqualTo("[1D 6C 12 78 03 3B 7C A0]")
+    assertThat(soe.fingerprint.hex.formatted).isEqualTo("[68 2F CD 81 41 03 69 8A]")
   }
 
   @Test

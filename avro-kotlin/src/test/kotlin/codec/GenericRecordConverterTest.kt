@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin._test.FooString
-import io.toolisticon.avro.kotlin._test.FooString2
+import io.toolisticon.kotlin.avro._test.FooString
+import io.toolisticon.kotlin.avro._test.FooString2
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

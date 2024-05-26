@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.WithDocumentation
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullable
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.WithDocumentation
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isNullable
+import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Schema
 
 class AvroSchemaField private constructor(

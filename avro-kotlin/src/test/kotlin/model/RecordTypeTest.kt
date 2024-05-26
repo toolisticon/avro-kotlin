@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import _ktx.ResourceKtx.resourceUrl
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.avro.kotlin.model.SchemaType.BOOLEAN
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isRecordType
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.SchemaType.BOOLEAN
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isRecordType
+import io.toolisticon.kotlin.avro.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.model.EmptyType
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.model.EmptyType
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

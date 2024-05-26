@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
-import io.toolisticon.avro.kotlin.logical.conversion.StringLogicalTypeConversion
-import io.toolisticon.avro.kotlin.value.LogicalTypeName.Companion.toLogicalTypeName
+import io.toolisticon.kotlin.avro.logical.conversion.StringLogicalTypeConversion
+import io.toolisticon.kotlin.avro.value.LogicalTypeName.Companion.toLogicalTypeName
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

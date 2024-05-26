@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.model.PrimitiveSchemaTypeForLogicalType
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.model.PrimitiveSchemaTypeForLogicalType
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 

@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.builder
+package io.toolisticon.kotlin.avro.builder
 
-import io.toolisticon.avro.kotlin.model.NullType
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.Documentation
-import io.toolisticon.avro.kotlin.value.ObjectProperties
+import io.toolisticon.kotlin.avro.model.NullType
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.CanonicalName
+import io.toolisticon.kotlin.avro.value.Documentation
+import io.toolisticon.kotlin.avro.value.ObjectProperties
 import org.apache.avro.LogicalType
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema

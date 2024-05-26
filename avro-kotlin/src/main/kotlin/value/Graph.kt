@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
 /**
  * A Graph implementation that represents the dependencies (ars) between its vertexes.

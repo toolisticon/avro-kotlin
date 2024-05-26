@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin.Separator.dotToDash
+import io.toolisticon.kotlin.avro.AvroKotlin.Separator.dotToDash
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import java.nio.file.Path

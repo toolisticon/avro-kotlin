@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.value.property
+package io.toolisticon.kotlin.avro.value.property
 
 import _ktx.StringKtx.trimToNull
-import io.toolisticon.avro.kotlin._ktx.KotlinKtx.create
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.ObjectProperties
-import io.toolisticon.avro.kotlin.value.ValueType
+import io.toolisticon.kotlin.avro._ktx.KotlinKtx.create
+import io.toolisticon.kotlin.avro.value.CanonicalName
+import io.toolisticon.kotlin.avro.value.ObjectProperties
+import io.toolisticon.kotlin.avro.value.ValueType
 
 /**
  * A string representing a java annotation as read from additional [ObjectProperties].

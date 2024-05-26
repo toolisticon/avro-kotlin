@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.model.wrapper.TypeSupplier
+import io.toolisticon.kotlin.avro.builder.AvroBuilder
+import io.toolisticon.kotlin.avro.model.wrapper.TypeSupplier
 import org.apache.avro.Schema.Type
 import kotlin.reflect.KClass
 

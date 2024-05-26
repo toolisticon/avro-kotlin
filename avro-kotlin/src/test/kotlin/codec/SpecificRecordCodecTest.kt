@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.TestFixtures.BankAccountCreatedFixtures
-import io.toolisticon.avro.kotlin._test.BankAccountCreatedData
-import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
+import io.toolisticon.kotlin.avro.TestFixtures.BankAccountCreatedFixtures
+import io.toolisticon.kotlin.avro._test.BankAccountCreatedData
+import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import lib.test.event.BankAccountCreated
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

@@ -1,14 +1,14 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 
 /**
- * EmptyType is a special type of [io.toolisticon.avro.kotlin.model.SchemaType.RECORD] that has an empty [Name]
- * and no [io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaField]s.
+ * EmptyType is a special type of [io.toolisticon.kotlin.avro.model.SchemaType.RECORD] that has an empty [Name]
+ * and no [io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaField]s.
  *
  * Its only use case is when it is used as an empty request array when defining a protocol message.
  * It is based on an invalid [Schema] and can not be created via parsing a string or building a schema.

@@ -4,8 +4,8 @@ import _ktx.StringKtx
 import com.github.avrokotlin.avro4k.schema.AvroDescriptor
 import com.github.avrokotlin.avro4k.schema.NamingStrategy
 import com.github.avrokotlin.avro4k.serializer.AvroSerializer
-import io.toolisticon.avro.kotlin.logical.AvroLogicalType
-import io.toolisticon.avro.kotlin.logical.conversion.AvroLogicalTypeConversion
+import io.toolisticon.kotlin.avro.logical.AvroLogicalType
+import io.toolisticon.kotlin.avro.logical.conversion.AvroLogicalTypeConversion
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor

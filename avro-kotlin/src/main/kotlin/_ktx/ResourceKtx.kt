@@ -1,9 +1,9 @@
 package _ktx
 
 import _ktx.StringKtx.removeSeparatorPrefix
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.value.AvroSpecification
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.value.AvroSpecification
+import io.toolisticon.kotlin.avro.value.JsonString
 import java.io.File
 import java.net.URL
 import java.nio.file.Path

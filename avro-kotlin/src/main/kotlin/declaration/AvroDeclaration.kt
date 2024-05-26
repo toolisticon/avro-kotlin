@@ -1,12 +1,12 @@
-package io.toolisticon.avro.kotlin.declaration
+package io.toolisticon.kotlin.avro.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroTypesMap
-import io.toolisticon.avro.kotlin.model.WithDocumentation
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSource
-import io.toolisticon.avro.kotlin.value.CanonicalName
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.Namespace
+import io.toolisticon.kotlin.avro.model.AvroTypesMap
+import io.toolisticon.kotlin.avro.model.WithDocumentation
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.CanonicalName
+import io.toolisticon.kotlin.avro.value.JsonString
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.Namespace
 
 /**
  * The result of an AvroParser parse/process.

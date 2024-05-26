@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
 /**
  * Bidirectional converter for a given converted type and its avro primitive type converter.

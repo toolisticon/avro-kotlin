@@ -1,15 +1,15 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import _ktx.StringKtx
-import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
-import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isMapType
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.WithObjectProperties
+import io.toolisticon.kotlin.avro.model.AvroType.Companion.equalsFn
+import io.toolisticon.kotlin.avro.model.AvroType.Companion.hashCodeFn
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isMapType
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.WithObjectProperties
 
 /**
  * Represents an avro map type. Keys are `string`s by definition, values are of

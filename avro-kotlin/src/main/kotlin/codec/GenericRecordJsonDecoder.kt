@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
-import io.toolisticon.avro.kotlin.codec.AvroCodec.JsonDecoder
-import io.toolisticon.avro.kotlin.codec.AvroCodec.decoderFactory
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
+import io.toolisticon.kotlin.avro.codec.AvroCodec.JsonDecoder
+import io.toolisticon.kotlin.avro.codec.AvroCodec.decoderFactory
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.JsonString
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericRecord

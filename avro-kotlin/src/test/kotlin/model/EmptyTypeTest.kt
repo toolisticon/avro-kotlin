@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.value.JsonString
+import io.toolisticon.kotlin.avro.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs

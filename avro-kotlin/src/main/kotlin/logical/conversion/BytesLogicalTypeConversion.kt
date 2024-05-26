@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.logical.conversion
+package io.toolisticon.kotlin.avro.logical.conversion
 
-import io.toolisticon.avro.kotlin.logical.BytesLogicalType
+import io.toolisticon.kotlin.avro.logical.BytesLogicalType
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import java.nio.ByteBuffer

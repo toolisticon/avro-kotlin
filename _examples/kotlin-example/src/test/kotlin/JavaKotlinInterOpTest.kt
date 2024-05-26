@@ -1,12 +1,12 @@
-package io.toolisticon.avro.kotlin.example
+package io.toolisticon.kotlin.avro.example
 
-import io.toolisticon.avro.kotlin.codec.GenericRecordCodec
-import io.toolisticon.avro.kotlin.example.customerid.CustomerId
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.repository.avroSchemaResolver
-import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
-import io.toolisticon.bank.BankAccountCreated
+import io.toolisticon.example.bank.BankAccountCreated
+import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
+import io.toolisticon.kotlin.avro.example.customerid.CustomerId
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
+import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import org.assertj.core.api.Assertions.assertThat
 import org.javamoney.moneta.Money
 import org.junit.jupiter.api.Disabled
@@ -49,7 +49,7 @@ internal class JavaKotlinInterOpTest {
       readerSchema = avro.schema(BankAccountCreatedData::class)
     )
 
-    val decoded = avro.fromRecord(record,BankAccountCreatedData::class)
+    val decoded = avro.fromRecord(record, BankAccountCreatedData::class)
 
     assertThat(decoded.accountId).isEqualTo(orig.accountId)
     assertThat(decoded.customerId).isEqualTo(orig.customerId)

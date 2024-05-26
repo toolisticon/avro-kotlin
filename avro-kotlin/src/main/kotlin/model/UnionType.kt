@@ -1,16 +1,16 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.model.AvroType.Companion.equalsFn
-import io.toolisticon.avro.kotlin.model.AvroType.Companion.hashCodeFn
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isNullable
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isUnionType
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.WithObjectProperties
+import io.toolisticon.kotlin.avro.model.AvroType.Companion.equalsFn
+import io.toolisticon.kotlin.avro.model.AvroType.Companion.hashCodeFn
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isNullable
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isUnionType
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.WithObjectProperties
 
 /**
  * Unions, as mentioned above, are represented using JSON arrays. For example, ["null", "string"] declares a schema which may be either a null or string.

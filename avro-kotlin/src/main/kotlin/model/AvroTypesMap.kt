@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaCatalog
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Graph
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaCatalog
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.Graph
+import io.toolisticon.kotlin.avro.value.Name
 import kotlin.reflect.KClass
 
 /**

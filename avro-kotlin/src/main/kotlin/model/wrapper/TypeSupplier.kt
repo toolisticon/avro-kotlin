@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
 import org.apache.avro.Schema
 import java.util.function.Supplier

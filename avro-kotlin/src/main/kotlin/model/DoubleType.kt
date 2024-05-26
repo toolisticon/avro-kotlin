@@ -1,13 +1,13 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isDoubleType
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
-import io.toolisticon.avro.kotlin.value.AvroFingerprint
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.Name
-import io.toolisticon.avro.kotlin.value.WithObjectProperties
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isDoubleType
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.WithObjectProperties
 
 /**
  * Double precision (64-bit) IEEE 754 floating-point number

@@ -1,16 +1,16 @@
-package io.toolisticon.avro.kotlin.logical.conversion.parameterized
+package io.toolisticon.kotlin.avro.logical.conversion.parameterized
 
-import io.toolisticon.avro.kotlin.model.EmptyType
-import io.toolisticon.avro.kotlin.model.PrimitiveSchemaTypeForLogicalType
-import io.toolisticon.avro.kotlin.model.SchemaType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.model.EmptyType
+import io.toolisticon.kotlin.avro.model.PrimitiveSchemaTypeForLogicalType
+import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import org.apache.avro.Conversion
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 
 /**
- * [Conversion] for primitive [io.toolisticon.avro.kotlin.model.SchemaType]s, one-to-one mapping
+ * [Conversion] for primitive [io.toolisticon.kotlin.avro.model.SchemaType]s, one-to-one mapping
  * based on converted type and internal jvm type representation.
  *
  * @param <CONVERTED_TYPE> the target type you are converting to (UuidConversion: UUID).

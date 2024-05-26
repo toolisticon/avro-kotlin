@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isEmptyType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.isError
-import io.toolisticon.avro.kotlin.model.wrapper.SchemaSupplier
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
+import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
+import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import kotlin.reflect.KClass

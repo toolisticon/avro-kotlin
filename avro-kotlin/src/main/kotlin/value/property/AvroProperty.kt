@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.value.property
+package io.toolisticon.kotlin.avro.value.property
 
-import io.toolisticon.avro.kotlin.value.ObjectProperties
+import io.toolisticon.kotlin.avro.value.ObjectProperties
 import org.apache.avro.JsonProperties
 
 interface AvroProperty {

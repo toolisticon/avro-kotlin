@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

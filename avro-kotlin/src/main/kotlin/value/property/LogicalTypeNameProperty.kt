@@ -1,9 +1,9 @@
-package io.toolisticon.avro.kotlin.value.property
+package io.toolisticon.kotlin.avro.value.property
 
-import io.toolisticon.avro.kotlin.value.LogicalTypeName
-import io.toolisticon.avro.kotlin.value.LogicalTypeName.Companion.toLogicalTypeName
-import io.toolisticon.avro.kotlin.value.ObjectProperties
-import io.toolisticon.avro.kotlin.value.ValueType
+import io.toolisticon.kotlin.avro.value.LogicalTypeName
+import io.toolisticon.kotlin.avro.value.LogicalTypeName.Companion.toLogicalTypeName
+import io.toolisticon.kotlin.avro.value.ObjectProperties
+import io.toolisticon.kotlin.avro.value.ValueType
 import org.apache.avro.LogicalType
 
 @JvmInline

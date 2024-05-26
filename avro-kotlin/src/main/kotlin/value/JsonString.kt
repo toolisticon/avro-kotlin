@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.model.SchemaType
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.model.SchemaType
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
 import java.io.InputStream

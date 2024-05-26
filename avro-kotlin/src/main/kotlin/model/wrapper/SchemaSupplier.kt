@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.value.AvroHashCode
-import io.toolisticon.avro.kotlin.value.JsonString
-import io.toolisticon.avro.kotlin.value.Name
+import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.value.JsonString
+import io.toolisticon.kotlin.avro.value.Name
 import org.apache.avro.Schema
 import java.util.function.Supplier
 

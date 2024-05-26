@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
-import io.toolisticon.avro.kotlin.model.wrapper.AvroProtocol
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 
 
 /**

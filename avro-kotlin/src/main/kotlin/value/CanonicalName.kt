@@ -1,10 +1,10 @@
-package io.toolisticon.avro.kotlin.value
+package io.toolisticon.kotlin.avro.value
 
 import _ktx.StringKtx
-import io.toolisticon.avro.kotlin.AvroKotlin.Separator
-import io.toolisticon.avro.kotlin._ktx.KotlinKtx.create
-import io.toolisticon.avro.kotlin.value.Name.Companion.toName
-import io.toolisticon.avro.kotlin.value.Namespace.Companion.toNamespace
+import io.toolisticon.kotlin.avro.AvroKotlin.Separator
+import io.toolisticon.kotlin.avro._ktx.KotlinKtx.create
+import io.toolisticon.kotlin.avro.value.Name.Companion.toName
+import io.toolisticon.kotlin.avro.value.Namespace.Companion.toNamespace
 import java.nio.file.Path
 import kotlin.io.path.Path
 

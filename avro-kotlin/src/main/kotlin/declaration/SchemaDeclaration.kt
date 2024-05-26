@@ -1,11 +1,11 @@
-package io.toolisticon.avro.kotlin.declaration
+package io.toolisticon.kotlin.avro.declaration
 
-import io.toolisticon.avro.kotlin.model.AvroTypesMap
-import io.toolisticon.avro.kotlin.model.RecordType
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSource
-import io.toolisticon.avro.kotlin.value.Documentation.Companion.shortenedIfPresent
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.model.AvroTypesMap
+import io.toolisticon.kotlin.avro.model.RecordType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.Documentation.Companion.shortenedIfPresent
+import io.toolisticon.kotlin.avro.value.JsonString
 
 /**
  * The result of parsing an `*.avsc` file.

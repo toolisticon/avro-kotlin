@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.logical
+package io.toolisticon.kotlin.avro.logical
 
 import _ktx.StringKtx.toString
-import io.toolisticon.avro.kotlin.value.property.LogicalTypeNameProperty
+import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.LogicalTypes.LogicalTypeFactory
 import org.apache.avro.Schema

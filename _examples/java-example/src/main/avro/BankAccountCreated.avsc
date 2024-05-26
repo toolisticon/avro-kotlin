@@ -1,6 +1,6 @@
 {
   "name": "BankAccountCreated",
-  "namespace": "io.toolisticon.bank",
+  "namespace": "io.toolisticon.example.bank",
   "type": "record",
   "fields": [
     {

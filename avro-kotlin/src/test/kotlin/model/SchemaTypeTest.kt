@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.model.SchemaType.*
-import io.toolisticon.avro.kotlin.model.SchemaType.Companion.valueOfType
+import io.toolisticon.kotlin.avro.model.SchemaType.*
+import io.toolisticon.kotlin.avro.model.SchemaType.Companion.valueOfType
 import org.apache.avro.Schema.Type
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

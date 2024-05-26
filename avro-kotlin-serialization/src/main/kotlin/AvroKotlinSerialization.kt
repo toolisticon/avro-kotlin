@@ -1,13 +1,13 @@
 package io.toolisticon.kotlin.avro.serialization
 
 import com.github.avrokotlin.avro4k.Avro
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.codec.GenericRecordCodec
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchemaChecks.compatibleToReadFrom
-import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
-import io.toolisticon.avro.kotlin.value.SingleObjectEncodedBytes
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.compatibleToReadFrom
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.spi.AvroSerializationModuleFactoryServiceLoader
+import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import kotlinx.serialization.KSerializer
 import mu.KLogging
 import org.apache.avro.generic.GenericData

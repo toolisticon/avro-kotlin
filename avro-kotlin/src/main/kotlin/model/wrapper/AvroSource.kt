@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.value.AvroSpecification
-import io.toolisticon.avro.kotlin.value.JsonString
+import io.toolisticon.kotlin.avro.value.AvroSpecification
+import io.toolisticon.kotlin.avro.value.JsonString
 import java.io.File
 import java.net.URL
 

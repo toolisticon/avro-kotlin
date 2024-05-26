@@ -1,6 +1,6 @@
-package io.toolisticon.avro.kotlin.model.wrapper
+package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Protocol
 import java.util.function.Supplier
 

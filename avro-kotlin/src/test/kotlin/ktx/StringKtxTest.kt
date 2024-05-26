@@ -1,4 +1,4 @@
-package io.toolisticon.avro.kotlin.ktx
+package io.toolisticon.kotlin.avro.ktx
 
 import _ktx.StringKtx
 import _ktx.StringKtx.trimToNull

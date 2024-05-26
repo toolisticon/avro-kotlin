@@ -1,8 +1,8 @@
-package io.toolisticon.avro.kotlin.codec
+package io.toolisticon.kotlin.avro.codec
 
-import io.toolisticon.avro.kotlin.AvroKotlin
-import io.toolisticon.avro.kotlin.repository.AvroSchemaResolver
-import io.toolisticon.avro.kotlin.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
 

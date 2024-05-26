@@ -1,7 +1,7 @@
-package io.toolisticon.avro.kotlin.model
+package io.toolisticon.kotlin.avro.model
 
-import io.toolisticon.avro.kotlin.builder.AvroBuilder
-import io.toolisticon.avro.kotlin.value.*
+import io.toolisticon.kotlin.avro.builder.AvroBuilder
+import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Schema
 
 /**
