@@ -15,7 +15,7 @@
 
   <properties>
     <!-- all examples are excluded from install/deploy/release -->
-    <maven.install.skip>false</maven.install.skip>
+    <maven.install.skip>true</maven.install.skip>
     <gpg.skip>true</gpg.skip>
   </properties>
 
