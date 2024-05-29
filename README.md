@@ -8,6 +8,19 @@ easily accessible from kotlin.
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.lib/avro-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.lib/avro-kotlin)
 
+Since Version 1.11.4.2 we use a multi module build. The GroupId changed, best use the provided BOM:
+
+```xml
+<dependency>
+    <groupId>io.toolisticon.kotlin.avro</groupId>
+    <artifactId>avro-kotlin-bom</artifactId>
+    <version>LATEST</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+```
+
+
 ## Apache Avro
 
 > **Apache Avro is a data serialization system.**
