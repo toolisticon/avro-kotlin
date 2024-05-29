@@ -17,6 +17,7 @@
     <avro4k.version>1.10.1</avro4k.version>
     <commons-compress.version>1.26.2</commons-compress.version>
     <jackson.version>2.17.1</jackson.version>
+    <kotlin-code-generation.version>0.0.1-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME: use release -->
   </properties>
 
   <dependencyManagement>
@@ -32,6 +33,25 @@
         <artifactId>avro-kotlin-serialization</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-generator-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
 
       <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->
       <dependency>
@@ -74,6 +94,16 @@
             <artifactId>snappy-java</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <!-- kotlin-code-generation -->
+        <!-- opinionated wrapper for kotlin-poet and kotlin-compile-testing -->
+        <groupId>io.toolisticon.kotlin.generation</groupId>
+        <artifactId>kotlin-code-generation-bom</artifactId>
+        <version>${kotlin-code-generation.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
 
       <!-- commons-compress: replaces transitive dependency of org.apache.avro:avro -->

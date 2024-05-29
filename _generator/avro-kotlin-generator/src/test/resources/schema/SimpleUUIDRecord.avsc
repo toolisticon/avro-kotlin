@@ -1,0 +1,15 @@
+{
+   "namespace": "io.acme.schema",
+   "name": "SimpleUUIDRecord",
+   "type": "record",
+   "doc": "This is a record with a single uuid value.",
+   "fields": [
+      {
+         "name": "value",
+         "type": {
+           "type": "string",
+           "logicalType": "uuid"
+         }
+      }
+   ]
+}

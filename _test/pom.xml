@@ -61,11 +61,13 @@
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro-compiler</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <!-- mockito -->
@@ -73,39 +75,46 @@
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
       <version>${mockito-kotlin.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- jupiter - version defined in maven-parent-kotlin-base -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
+      <scope>compile</scope>
     </dependency>
     <!-- assert-j -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
+      <scope>compile</scope>
     </dependency>
     <!-- kotlin -->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test-junit5</artifactId>
+      <scope>compile</scope>
     </dependency>
     <!-- equals verifier -->
     <dependency>
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
       <version>${equalsverifier.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- include jackson to verify instances can be serialized -->
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <!-- logback -->
@@ -113,11 +122,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
       <version>${slf4j.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- icu4j - conversion and i18n for java -->
@@ -125,27 +136,8 @@
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
       <version>${icu4j.version}</version>
+      <scope>compile</scope>
     </dependency>
-
-    <!-- FIXME: needed here? -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.github.tschuchortdev</groupId>-->
-    <!--      <artifactId>kotlin-compile-testing</artifactId>-->
-    <!--      <version>${kotlin-compile-testing.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--      <exclusions>-->
-    <!--        <exclusion>-->
-    <!--          <groupId>com.squareup.okio</groupId>-->
-    <!--          <artifactId>okio-jvm</artifactId>-->
-    <!--        </exclusion>-->
-    <!--      </exclusions>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.squareup.okio</groupId>-->
-    <!--      <artifactId>okio-jvm</artifactId>-->
-    <!--      <version>${okio.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
   </dependencies>
 
   <build>

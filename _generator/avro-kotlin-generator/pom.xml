@@ -12,6 +12,11 @@
   <artifactId>avro-kotlin-generator</artifactId>
   <name>${project.artifactId}</name>
 
+  <properties>
+    <!-- needed for MavenProperties -->
+    <avro-kotlin-generator.version>${project.version}</avro-kotlin-generator.version>
+  </properties>
+
   <dependencies>
     <!-- KOTLIN -->
     <dependency>
@@ -30,6 +35,11 @@
       <scope>provided</scope>
     </dependency>
     <!-- /KOTLIN -->
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro</groupId>
+      <artifactId>avro-kotlin-generator-api</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>

@@ -1,0 +1,38 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SchemaContainingMapTypes",
+  "type": "record",
+  "doc": "This is a record with map fields.",
+  "fields": [
+    {
+      "name": "stringMap",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    },
+    {
+      "name": "intMap",
+      "type": {
+        "type": "map",
+        "values": "int"
+      }
+    },
+    {
+      "name": "complexMap",
+      "type": {
+        "type": "map",
+        "values": {
+          "name": "Value",
+          "type": "record",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

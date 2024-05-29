@@ -1,0 +1,13 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SimpleStringRecord",
+  "type": "record",
+  "doc": "This is a record with a simple string value.",
+  "fields": [
+    {
+      "name": "stringValue",
+      "doc": "The single string value, no extras.",
+      "type": "string"
+    }
+  ]
+}
