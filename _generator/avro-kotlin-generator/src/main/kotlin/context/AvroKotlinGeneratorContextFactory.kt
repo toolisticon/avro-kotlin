@@ -32,7 +32,7 @@ class AvroKotlinGeneratorContextFactory(
       rootClassName = rootClassName,
       properties = properties,
       avroTypes = declaration.avroTypes - declaration.recordType.hashCode,
-      // FIXME logicalTypeMap = processors.logicalTypes,
+      logicalTypeMap = processors.logicalTypes,
     )
 
     return SchemaDeclarationContextData(
@@ -53,7 +53,7 @@ class AvroKotlinGeneratorContextFactory(
       rootClassName = rootClassName,
       properties = properties,
       avroTypes = declaration.avroTypes,
-      // FIXME logicalTypeMap = processors.logicalTypes,
+       logicalTypeMap = processors.logicalTypes,
     )
 
     return ProtocolDeclarationContextData(

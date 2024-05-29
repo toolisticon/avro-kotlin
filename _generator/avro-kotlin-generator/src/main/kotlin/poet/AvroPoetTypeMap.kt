@@ -28,7 +28,7 @@ value class AvroPoetTypeMap(
       val result = mutableMapOf<AvroHashCode, AvroPoetType>()
 
       fun resolvePrimitive(avroType: AvroPrimitiveType): AvroPoetType {
-        val logicalTypeDefinition: AvroKotlinLogicalTypeDefinition = if (avroType is WithLogicalType) {
+        val logicalTypeDefinition: AvroKotlinLogicalTypeDefinition? = if (avroType is WithLogicalType) {
           avroType.logicalTypeName?.let { logicalTypeMap[it] }
         } else null
 
