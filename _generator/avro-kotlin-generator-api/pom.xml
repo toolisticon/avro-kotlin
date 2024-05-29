@@ -11,6 +11,7 @@
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin-generator-api</artifactId>
   <name>${project.artifactId}</name>
+  <description>The API of the generator. Use to define custom generator behaviour</description>
 
   <dependencies>
     <!-- KOTLIN -->
@@ -34,6 +35,16 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>
       <artifactId>avro-kotlin-serialization</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.generation</groupId>
+      <artifactId>kotlin-code-generation</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.avro-kotlin.avro4k</groupId>
+      <artifactId>avro4k-core</artifactId>
     </dependency>
 
     <dependency>

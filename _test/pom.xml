@@ -61,6 +61,7 @@
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
+      <scope>compile</scope>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -117,6 +118,7 @@
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
       <version>${equalsverifier.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- include jackson to verify instances can be serialized -->
@@ -131,11 +133,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
       <version>${slf4j.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- icu4j - conversion and i18n for java -->
@@ -143,27 +147,8 @@
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
       <version>${icu4j.version}</version>
+      <scope>compile</scope>
     </dependency>
-
-    <!-- FIXME: needed here? -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.github.tschuchortdev</groupId>-->
-    <!--      <artifactId>kotlin-compile-testing</artifactId>-->
-    <!--      <version>${kotlin-compile-testing.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--      <exclusions>-->
-    <!--        <exclusion>-->
-    <!--          <groupId>com.squareup.okio</groupId>-->
-    <!--          <artifactId>okio-jvm</artifactId>-->
-    <!--        </exclusion>-->
-    <!--      </exclusions>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.squareup.okio</groupId>-->
-    <!--      <artifactId>okio-jvm</artifactId>-->
-    <!--      <version>${okio.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
   </dependencies>
 
   <build>
