@@ -11,9 +11,9 @@ import jakarta.annotation.Generated
 object MavenProperties : KLogging() {
   private val properties = Properties().apply {
     try {
-      load(MavenProperties::class.java.getResourceAsStream("/avro4k-generator-maven.properties"))
+      load(MavenProperties::class.java.getResourceAsStream("/avro-kotlin-generator-maven.properties"))
     } catch (e: Exception) {
-      logger.warn { "could not load resource: 'avro4k-generator-maven.properties'" }
+      logger.warn { "could not load resource: 'avro-kotlin-generator-maven.properties'" }
     }
   }
 
@@ -33,7 +33,7 @@ object MavenProperties : KLogging() {
       versions = Versions(
         avro = getProperty("avro.version", "n/a"),
         avro4k = getProperty("avro4k.version", "n/a"),
-        avro4kGenerator = getProperty("avro4k-generator.version", "n/a"),
+        avro4kGenerator = getProperty("avro-kotlin-generator.version", "n/a"),
         kotlinPoet = getProperty("kotlin-poet.version", "n/a"),
       )
     }
