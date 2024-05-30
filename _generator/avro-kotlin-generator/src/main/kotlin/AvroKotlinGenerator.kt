@@ -11,7 +11,7 @@ import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import mu.KLogging
 
 
-class AvroKotlinGenerator<AvroDeclaration>(
+class AvroKotlinGenerator(
   private val contextFactory: AvroKotlinGeneratorContextFactory
 ) {
   companion object : KLogging() {
