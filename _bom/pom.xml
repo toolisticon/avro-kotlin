@@ -11,6 +11,7 @@
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin-bom</artifactId>
   <description>Bill of material for avro-kotlin.</description>
+  <packaging>pom</packaging>
 
   <properties>
     <avro.version>1.11.3</avro.version>
