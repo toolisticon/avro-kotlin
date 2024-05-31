@@ -6,7 +6,7 @@
 ## How to start?
 
 We provide documentation for different people and different tasks. A good starting point is the
-[Getting Started](./getting-started/). You might want to look at [Reference Guide](./reference-guide/).
+[Getting Started](./getting-started/index.md). You might want to look at [Reference Guide](./reference-guide/index.md).
 
 ## Get in touch
 
