@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2024.5.1</version>
+    <version>2024.5.2</version>
     <relativePath/>
   </parent>
 
@@ -19,7 +19,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>avro-kotlin-bom</module>
+    <module>_bom</module>
     <module>_test</module>
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
