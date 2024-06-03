@@ -2,16 +2,16 @@ package io.toolisticon.kotlin.avro.generator
 
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
-import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.context.AvroKotlinGeneratorContextFactory
+import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.builder.KotlinFileBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinObjectBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import mu.KLogging
 
 
-class AvroKotlinGenerator<AvroDeclaration>(
+class AvroKotlinGenerator(
   private val contextFactory: AvroKotlinGeneratorContextFactory
 ) {
   companion object : KLogging() {
