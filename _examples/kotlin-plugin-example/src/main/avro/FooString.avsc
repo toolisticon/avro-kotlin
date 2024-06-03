@@ -1,0 +1,11 @@
+{
+  "namespace": "com.github.avrokotlin.avro4k.decoder.java",
+  "name": "FooString",
+  "type": "record",
+  "fields": [
+    {
+      "name": "str",
+      "type": "string"
+    }
+  ]
+}

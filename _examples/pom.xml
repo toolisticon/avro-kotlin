@@ -24,6 +24,7 @@
     <module>logical-type-customer-id</module>
     <module>kotlin-example</module>
     <module>java-example</module>
+    <module>kotlin-plugin-example</module>
   </modules>
 
   <dependencyManagement>
