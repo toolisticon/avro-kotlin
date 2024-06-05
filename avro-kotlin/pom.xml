@@ -49,6 +49,29 @@
     </dependency>
 
     <dependency>
+      <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
+    </dependency>
+
+    <dependency>
+      <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <!-- jackson-module-kotlin: add support for kotlin-->
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>io.toolisticon.kotlin.avro.test</groupId>
       <artifactId>avro-kotlin-test</artifactId>
       <version>${project.version}</version>

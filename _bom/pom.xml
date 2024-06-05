@@ -23,36 +23,40 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- AVRO-KOTLIN -->
       <dependency>
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <!-- AVRO-KOTLIN-SERIALIZATION -->
       <dependency>
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin-serialization</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <!-- AVRO-KOTLIN-GENERATOR-API -->
       <dependency>
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin-generator-api</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <!-- AVRO-KOTLIN-GENERATOR -->
       <dependency>
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin-generator</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <!-- AVRO-KOTLIN-GENERATOR-MAVEN-PLUGIN -->
       <dependency>
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
         <version>${project.version}</version>
       </dependency>
-
 
       <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->
       <dependency>
@@ -76,6 +80,7 @@
           </exclusion>
         </exclusions>
       </dependency>
+
       <!-- AVRO-COMPILER(${avro.version}) -->
       <dependency>
         <groupId>org.apache.avro</groupId>
@@ -97,8 +102,8 @@
         </exclusions>
       </dependency>
 
+      <!-- KOTLIN-CODE-GENERATION -->
       <dependency>
-        <!-- kotlin-code-generation -->
         <!-- opinionated wrapper for kotlin-poet and kotlin-compile-testing -->
         <groupId>io.toolisticon.kotlin.generation</groupId>
         <artifactId>kotlin-code-generation-bom</artifactId>
@@ -131,27 +136,15 @@
         </exclusions>
       </dependency>
 
+      <!-- JACKSON -->
       <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-        <scope>provided</scope>
-      </dependency>
-
       <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
-        <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-kotlin</artifactId>
-        <version>${jackson.version}</version>
-        <scope>provided</scope>
+        <scope>import</scope>
+        <type>bom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>

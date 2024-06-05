@@ -22,6 +22,18 @@
     <itf.version>0.13.1</itf.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <artifactId>avro-kotlin-bom</artifactId>
+        <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- KOTLIN -->
     <dependency>
@@ -138,11 +150,13 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
+      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
+      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
       <scope>test</scope>
     </dependency>
   </dependencies>
