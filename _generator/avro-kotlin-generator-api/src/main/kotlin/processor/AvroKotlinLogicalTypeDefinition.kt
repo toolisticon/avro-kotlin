@@ -9,6 +9,7 @@ import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.WithLogicalType
 import io.toolisticon.kotlin.avro.value.LogicalTypeName
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinParameterBuilder
 import kotlin.reflect.KClass
 
@@ -38,14 +39,14 @@ abstract class AvroKotlinLogicalTypeDefinition(
     operator fun AvroKotlinLogicalTypeDefinition.invoke(
       ctx: AvroDeclarationContext,
       field: RecordField,
-      builder: KotlinParameterBuilder
+      builder: KotlinConstructorPropertyBuilder
     ) = if (processDataClassParameterSpecPredicate(ctx, field)) {
       processDataClassParameterSpec(ctx, field, builder)
     } else {
     }
   }
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinParameterBuilder) {
+  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertyBuilder) {
     builder.addAnnotation(
       serializableAnnotation(serializerType)
     )

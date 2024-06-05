@@ -8,8 +8,8 @@ import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateDataClassStrategy
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContextData
 import io.toolisticon.kotlin.avro.model.*
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinParameterBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 
 /**
@@ -31,11 +31,10 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
 
     val dataClassBuilder = KotlinDataClassBuilder.builder(className)
 
-
     val parameterSpecs = recordType.fields.map { field ->
       val typeName = ctx[field.hashCode].suffixedTypeName
 
-      KotlinParameterBuilder.builder(field.name.value, typeName).apply {
+      KotlinConstructorPropertyBuilder.builder(name = field.name.value, typeName).apply {
         ctx.processors.dataClassParameterSpecProcessors(ctx, field, this)
       }
     }
@@ -46,7 +45,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
 
     ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
 
-    parameterSpecs.forEach(dataClassBuilder::parameter)
+    parameterSpecs.forEach(dataClassBuilder::addConstructorProperty)
 
     return dataClassBuilder.build()
   }
@@ -59,13 +58,13 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
 
     val parameterSpecs = recordType.fields.map { field ->
       val typeName = ctx.get(field.hashCode).suffixedTypeName
-      KotlinParameterBuilder.builder(field.name.value, typeName).apply {
+      KotlinConstructorPropertyBuilder.builder(field.name.value, typeName).apply {
         ctx.processors.dataClassParameterSpecProcessors(ctx, field, this)
       }
     }
     ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
 
-    parameterSpecs.forEach(dataClassBuilder::parameter)
+    parameterSpecs.forEach(dataClassBuilder::addConstructorProperty)
 
     return dataClassBuilder.build()
   }

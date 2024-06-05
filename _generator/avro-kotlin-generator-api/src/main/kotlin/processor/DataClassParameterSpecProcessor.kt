@@ -4,6 +4,7 @@ import com.squareup.kotlinpoet.ParameterSpec
 import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.RecordField
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinParameterBuilder
 
 /**
@@ -15,7 +16,7 @@ interface DataClassParameterSpecProcessor : AvroKotlinGeneratorProcessor {
 
   val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean
 
-  fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinParameterBuilder)
+  fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertyBuilder)
 
 }
 
@@ -29,7 +30,7 @@ value class DataClassParameterSpecProcessorList(private val list: List<DataClass
   /**
    * Execute all processors if predicate allows it.
    */
-  operator fun invoke(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinParameterBuilder) = forEach {
+  operator fun invoke(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertyBuilder) = forEach {
     if (it.processDataClassParameterSpecPredicate(ctx, field)) {
       it.processDataClassParameterSpec(ctx, field, builder)
     }
