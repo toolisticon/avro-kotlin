@@ -8,7 +8,6 @@
     <version>1.11.5.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro.examples</groupId>
   <artifactId>logical-type-money</artifactId>
   <name>example: ${project.artifactId}</name>
   <description>Logical Type: Money</description>

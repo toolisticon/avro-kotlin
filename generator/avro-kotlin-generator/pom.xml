@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-root</artifactId>
+    <artifactId>avro-kotlin-generator-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
   </parent>
 
@@ -16,18 +16,6 @@
     <!-- needed for MavenProperties -->
     <avro-kotlin-generator.version>${project.version}</avro-kotlin-generator.version>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-bom</artifactId>
-        <version>${project.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- KOTLIN -->
@@ -51,11 +39,13 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>
       <artifactId>avro-kotlin-generator-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>
       <artifactId>avro-kotlin-serialization</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -66,21 +56,15 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro-compiler</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>io.toolisticon.kotlin.generation</groupId>
       <artifactId>kotlin-code-generation-test</artifactId>
+      <version>${kotlin-code-generation.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
       <scope>test</scope>
     </dependency>
   </dependencies>

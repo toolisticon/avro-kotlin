@@ -4,25 +4,14 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
+    <relativePath>../_pom/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin-serialization</artifactId>
   <description>Using kotlinx-serialization to encode/decode kotlin to avro.</description>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-bom</artifactId>
-        <version>${project.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- KOTLIN -->
@@ -47,6 +36,7 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>
       <artifactId>avro-kotlin</artifactId>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
 

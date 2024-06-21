@@ -9,7 +9,7 @@ import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateDataCla
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContextData
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinDataClassBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 
 /**
@@ -29,7 +29,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
   fun generateDataClass(ctx: SchemaDeclarationContext, recordType: RecordType): KotlinDataClassSpec {
     val className: ClassName = if (ctx.isRoot) ctx.rootClassName else ctx.className(recordType.hashCode)
 
-    val dataClassBuilder = KotlinDataClassBuilder.builder(className)
+    val dataClassBuilder = KotlinDataClassSpecBuilder.builder(className)
 
     val parameterSpecs = recordType.fields.map { field ->
       val typeName = ctx[field.hashCode].suffixedTypeName
@@ -53,7 +53,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
   fun generateDataClass(ctx: ProtocolDeclarationContext, recordType: RecordType): KotlinDataClassSpec {
     val className = ctx.className(recordType.hashCode)
 
-    val dataClassBuilder = KotlinDataClassBuilder.builder(className)
+    val dataClassBuilder = KotlinDataClassSpecBuilder.builder(className)
       .addKdoc(recordType.kdoc())
 
     val parameterSpecs = recordType.fields.map { field ->
@@ -69,7 +69,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
     return dataClassBuilder.build()
   }
 
-  fun generateSubTypes(nonRootCtx: AvroDeclarationContext, dataClassBuilder: KotlinDataClassBuilder) {
+  fun generateSubTypes(nonRootCtx: AvroDeclarationContext, dataClassBuilder: KotlinDataClassSpecBuilder) {
     require(!nonRootCtx.isRoot) { "subTypes are non-root by definition." }
 
     val subTypesToGenerate = nonRootCtx.avroPoetTypes.filter {

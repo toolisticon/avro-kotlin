@@ -11,7 +11,7 @@ import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.constructorPropertyBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinDataClassBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
     val className = avroClassName(recordType, properties)
     val ctx = AvroKotlinGeneratorContextFactory(properties).create(declaration)
 
-    val builder = KotlinDataClassBuilder.builder(className)
+    val builder = KotlinDataClassSpecBuilder.builder(className)
       .addConstructorProperty(constructorPropertyBuilder("x",String::class))
     processor.addAvroNamedAnnotation(recordType, className, builder)
 
@@ -72,7 +72,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
     val className = avroClassName(subTypeRecord, properties)
     val ctx = AvroKotlinGeneratorContextFactory(properties).create(declaration)
 
-    val builder = KotlinDataClassBuilder.builder(className)
+    val builder = KotlinDataClassSpecBuilder.builder(className)
       .addConstructorProperty(constructorPropertyBuilder("x",String::class))
     processor.addAvroNamedAnnotation(subTypeRecord, className, builder)
 
