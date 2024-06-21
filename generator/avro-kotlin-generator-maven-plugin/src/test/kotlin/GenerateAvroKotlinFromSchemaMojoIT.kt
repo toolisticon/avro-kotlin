@@ -5,12 +5,12 @@ import com.soebes.itf.jupiter.extension.*
 import com.soebes.itf.jupiter.maven.MavenExecutionResult
 import org.junit.jupiter.api.Disabled
 
-@Disabled("FIXME: does not work")
 @MavenJupiterExtension
 @MavenRepository
 @MavenOptions(
   MavenOption("--no-transfer-progress")
 )
+@MavenPredefinedRepository
 class GenerateAvroKotlinFromSchemaMojoIT {
 
   @MavenTest
@@ -28,7 +28,7 @@ class GenerateAvroKotlinFromSchemaMojoIT {
   @MavenTest
   fun generates_data_classes(result: MavenExecutionResult) {
     val targetDir = "generated-sources/avro-kotlin"
-    val targetBasePackage = "io.toolisticon.kotlin.avro.generator.schema".replace(".", "/")
+    val targetBasePackage = "io.toolisticon.kotlin.avro.schema".replace(".", "/")
     assertThat(result).isSuccessful()
     assertThat(result).out()
       .info()

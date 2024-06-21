@@ -4,25 +4,14 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
+    <relativePath>../_pom/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin</artifactId>
   <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-bom</artifactId>
-        <version>${project.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- KOTLIN -->
@@ -52,14 +41,12 @@
       <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
     </dependency>
 
     <dependency>
       <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
       <scope>compile</scope>
     </dependency>
 
@@ -67,7 +54,6 @@
       <!-- jackson-module-kotlin: add support for kotlin-->
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.17.1</version><!-- TODO version should not be required -> BOM -->
       <scope>compile</scope>
     </dependency>
 

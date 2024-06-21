@@ -6,11 +6,11 @@
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-root</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro</groupId>
-  <artifactId>avro-kotlin-bom</artifactId>
-  <description>Bill of material for avro-kotlin.</description>
+  <artifactId>avro-kotlin-parent</artifactId>
+  <description>Parent for avro-kotlin summarizing used libraries and versions.</description>
   <packaging>pom</packaging>
 
   <properties>
@@ -18,45 +18,10 @@
     <avro4k.version>1.10.1</avro4k.version>
     <commons-compress.version>1.26.2</commons-compress.version>
     <jackson.version>2.17.1</jackson.version>
-    <kotlin-code-generation.version>0.0.1-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME: use release -->
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <!-- AVRO-KOTLIN -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <!-- AVRO-KOTLIN-SERIALIZATION -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-serialization</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <!-- AVRO-KOTLIN-GENERATOR-API -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-generator-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <!-- AVRO-KOTLIN-GENERATOR -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-generator</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <!-- AVRO-KOTLIN-GENERATOR-MAVEN-PLUGIN -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->
       <dependency>
@@ -102,15 +67,6 @@
         </exclusions>
       </dependency>
 
-      <!-- KOTLIN-CODE-GENERATION -->
-      <dependency>
-        <!-- opinionated wrapper for kotlin-poet and kotlin-compile-testing -->
-        <groupId>io.toolisticon.kotlin.generation</groupId>
-        <artifactId>kotlin-code-generation-bom</artifactId>
-        <version>${kotlin-code-generation.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
 
       <!-- commons-compress: replaces transitive dependency of org.apache.avro:avro -->
       <dependency>
