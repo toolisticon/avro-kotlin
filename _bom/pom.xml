@@ -144,7 +144,7 @@
         <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
         <scope>import</scope>
-        <type>bom</type>
+        <type>pom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>

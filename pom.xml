@@ -24,10 +24,10 @@
 
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
-
     <module>generator/avro-kotlin-generator-api</module>
     <module>generator/avro-kotlin-generator</module>
     <module>generator/avro-kotlin-generator-maven-plugin</module>
+    
   </modules>
 
   <!-- this is the maven root, all dependencies have to be declared in the concrete modules, using avro-kotlin-parent -->
