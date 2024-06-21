@@ -1,0 +1,17 @@
+{
+  "namespace": "io.toolisticon.avro.avro4k.schema",
+  "name": "SimpleDecimalRecord",
+  "type": "record",
+  "doc": "This is a record with a single decimal value.",
+  "fields": [
+    {
+      "name": "value",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "scale": 2,
+        "precision": 6
+      }
+    }
+  ]
+}

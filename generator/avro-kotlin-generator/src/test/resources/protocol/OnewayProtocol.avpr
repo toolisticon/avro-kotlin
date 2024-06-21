@@ -1,0 +1,15 @@
+{
+  "protocol": "dummy.OnewayProtocol",
+  "messages": {
+    "query": {
+      "request": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "one-way": true,
+      "response": "null"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SchemaContainingEnum",
+  "type": "record",
+  "doc": "This is a record with an enum field.",
+  "fields": [
+    {
+      "name": "type",
+      "foo": "bar",
+      "type": {
+        "name": "TypeEnum",
+        "type": "enum",
+        "logicalType": "uuid",
+        "symbols": ["FOO","BAR"]
+      }
+    }
+  ]
+}

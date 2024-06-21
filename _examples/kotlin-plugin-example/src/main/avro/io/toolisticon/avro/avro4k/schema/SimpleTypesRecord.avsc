@@ -1,0 +1,33 @@
+{
+  "namespace": "io.toolisticon.avro.avro4k.schema",
+  "name": "SimpleTypesRecord",
+  "type": "record",
+  "doc": "This is a record with a simple type value.",
+  "fields": [
+    {
+      "name": "stringValue",
+      "type": "string",
+      "doc": "This is a string doc."
+    },
+    {
+      "name": "intValue",
+      "type": "int",
+      "doc": "This is a int doc."
+    },
+    {
+      "name": "doubleValue",
+      "type": "double",
+      "doc": "This is a double doc."
+    },
+    {
+      "name": "floatValue",
+      "type": "float",
+      "doc": "This is a float doc."
+    },
+    {
+      "name": "booleanValue",
+      "type": "boolean",
+      "doc": "This is a boolean doc."
+    }
+  ]
+}
