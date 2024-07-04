@@ -3,7 +3,7 @@ package io.toolisticon.kotlin.avro.generator.strategy
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.generator.TestFixtures.toReadableString
 import io.toolisticon.kotlin.avro.generator.context.AvroKotlinGeneratorContextFactory
-import io.toolisticon.kotlin.generation.builder.KotlinFileBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.SchemaBuilder
@@ -29,7 +29,7 @@ internal class DefaultGenerateDataClassStrategyTest {
     val ctx = factory.create(declaration)
 
 
-    println(KotlinFileBuilder.builder(ctx.rootClassName).addType(strategy.generateDataClass(ctx, declaration.recordType)).build())
+    println(KotlinFileSpecBuilder.builder(ctx.rootClassName).addType(strategy.generateDataClass(ctx, declaration.recordType)).build())
   }
 
   @Test
@@ -48,7 +48,7 @@ internal class DefaultGenerateDataClassStrategyTest {
     val ctx = factory.create(declaration)
 
     val type = strategy.generateDataClass(ctx, declaration.recordType)
-    println(KotlinFileBuilder.builder(ctx.rootClassName).addType(type).build())
+    println(KotlinFileSpecBuilder.builder(ctx.rootClassName).addType(type).build())
   }
 
   @Test
@@ -76,7 +76,7 @@ internal class DefaultGenerateDataClassStrategyTest {
     val ctx = factory.create(declaration)
 
     val type = strategy.generateDataClass(ctx, declaration.recordType)
-    println(KotlinFileBuilder.builder(ctx.rootClassName).addType(type).build())
+    println(KotlinFileSpecBuilder.builder(ctx.rootClassName).addType(type).build())
 
   }
 }

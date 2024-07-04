@@ -5,7 +5,7 @@ import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.kdoc
 import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateEnumClassStrategy
 import io.toolisticon.kotlin.avro.model.EnumType
-import io.toolisticon.kotlin.generation.builder.KotlinEnumClassBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinEnumClassSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinEnumClassSpec
 
 class DefaultGenerateEnumClassStrategy : AbstractGenerateEnumClassStrategy() {
@@ -17,7 +17,7 @@ class DefaultGenerateEnumClassStrategy : AbstractGenerateEnumClassStrategy() {
     val type = ctx[enumType.hashCode]
     val className = type.suffixedTypeName as ClassName
 
-    val enumBuilder = KotlinEnumClassBuilder.builder(className)
+    val enumBuilder = KotlinEnumClassSpecBuilder.builder(className)
       .addKdoc(enumType.kdoc())
 
     enumType.symbols.forEach(enumBuilder::addEnumConstant)

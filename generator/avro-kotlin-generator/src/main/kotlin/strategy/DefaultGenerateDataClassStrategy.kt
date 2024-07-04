@@ -8,7 +8,7 @@ import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateDataClassStrategy
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContextData
 import io.toolisticon.kotlin.avro.model.*
-import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 
@@ -34,7 +34,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
     val parameterSpecs = recordType.fields.map { field ->
       val typeName = ctx[field.hashCode].suffixedTypeName
 
-      KotlinConstructorPropertyBuilder.builder(name = field.name.value, typeName).apply {
+      KotlinConstructorPropertySpecBuilder.builder(name = field.name.value, typeName).apply {
         ctx.processors.dataClassParameterSpecProcessors(ctx, field, this)
       }
     }
@@ -58,7 +58,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
 
     val parameterSpecs = recordType.fields.map { field ->
       val typeName = ctx.get(field.hashCode).suffixedTypeName
-      KotlinConstructorPropertyBuilder.builder(field.name.value, typeName).apply {
+      KotlinConstructorPropertySpecBuilder.builder(field.name.value, typeName).apply {
         ctx.processors.dataClassParameterSpecProcessors(ctx, field, this)
       }
     }

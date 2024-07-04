@@ -9,7 +9,7 @@
     <relativePath>../_pom/parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>avro-kotlin-generator-parent</artifactId>
+  <artifactId>avro-kotlin-generator-root</artifactId>
   <packaging>pom</packaging>
 
   <properties>

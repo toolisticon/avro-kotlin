@@ -11,9 +11,9 @@ import io.toolisticon.kotlin.avro.model.AvroNamedType
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.value.ObjectProperties
 import io.toolisticon.kotlin.avro.value.property.JavaAnnotationProperty
-import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinParameterBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinPoetTypeSpecBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinGeneratorTypeSpecBuilder
+import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpec
 
 /**
  * Reads the `javaAnnotation` property that is also supported by the avro java compiler and adds
@@ -23,6 +23,7 @@ class AddJavaAnnotationsByPropertyProcessor : TypeSpecProcessor, DataClassParame
   companion object {
     const val PROPERTY_JAVA_ANNOTATION = "javaAnnotation"
 
+    // FIXME use KotlinAnnotationSpec
     fun createAnnotationSpec(javaAnnotation: JavaAnnotationProperty): AnnotationSpec =
       AnnotationSpec.builder(ClassName(packageName = javaAnnotation.canonicalName.namespace.value, javaAnnotation.canonicalName.name.value))
         .apply {
@@ -43,15 +44,17 @@ class AddJavaAnnotationsByPropertyProcessor : TypeSpecProcessor, DataClassParame
   }
 
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertyBuilder) {
+  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
     createAnnotationSpecs(field.properties).forEach {
-      builder.addAnnotation(it)
+      builder.addAnnotation(KotlinAnnotationSpec(it))
     }
   }
 
-  override fun processTypeSpec(ctx: AvroDeclarationContext, type: AvroNamedType, typeSpecClassName: ClassName, builder: KotlinPoetTypeSpecBuilder<*>) {
+  override fun processTypeSpec(ctx: AvroDeclarationContext, type: AvroNamedType, typeSpecClassName: ClassName, builder: KotlinGeneratorTypeSpecBuilder<*, *>) {
     createAnnotationSpecs(type.properties).forEach {
-      builder.addAnnotation(it)
+      builder.builder {
+        addAnnotation(it)
+      }
     }
   }
 }

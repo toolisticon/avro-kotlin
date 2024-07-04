@@ -2,15 +2,14 @@ package io.toolisticon.kotlin.avro.generator.api.processor
 
 import io.toolisticon.kotlin.avro.generator.api.Avro4kSerializerKClass
 import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
-import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.serializableAnnotation
+import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.SerializableWithAnnotation
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.WithLogicalType
 import io.toolisticon.kotlin.avro.value.LogicalTypeName
-import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertyBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinParameterBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import kotlin.reflect.KClass
 
 /**
@@ -39,17 +38,15 @@ abstract class AvroKotlinLogicalTypeDefinition(
     operator fun AvroKotlinLogicalTypeDefinition.invoke(
       ctx: AvroDeclarationContext,
       field: RecordField,
-      builder: KotlinConstructorPropertyBuilder
+      builder: KotlinConstructorPropertySpecBuilder
     ) = if (processDataClassParameterSpecPredicate(ctx, field)) {
       processDataClassParameterSpec(ctx, field, builder)
     } else {
     }
   }
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertyBuilder) {
-    builder.addAnnotation(
-      serializableAnnotation(serializerType)
-    )
+  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
+    builder.addAnnotation(SerializableWithAnnotation(serializerType))
   }
 
   override fun toString() = "Avro4kLogicalTypeDefinition(" +

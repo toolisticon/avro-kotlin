@@ -5,7 +5,7 @@ import com.squareup.kotlinpoet.FileSpec
 import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi.Order.DEFAULT_ORDER
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
-import io.toolisticon.kotlin.generation.builder.KotlinFileBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
 
 /**
  * Gets an [AvroDeclarationContext] that is currently generated and the [FileSpec.Builder].
@@ -17,7 +17,7 @@ interface FileSpecProcessor : AvroKotlinGeneratorProcessor {
   fun processTypeSpec(
     ctx: AvroDeclarationContext,
     fileSpecClassName: ClassName,
-    builder: KotlinFileBuilder
+    builder: KotlinFileSpecBuilder
   )
 }
 
@@ -38,7 +38,7 @@ value class FileSpecProcessorList(private val list: List<FileSpecProcessor>) : L
   operator fun invoke(
     ctx: AvroDeclarationContext,
     fileSpecClassName: ClassName,
-    builder: KotlinFileBuilder
+    builder: KotlinFileSpecBuilder
   ) = forEach {
     it.processTypeSpec(ctx, fileSpecClassName, builder)
   }
