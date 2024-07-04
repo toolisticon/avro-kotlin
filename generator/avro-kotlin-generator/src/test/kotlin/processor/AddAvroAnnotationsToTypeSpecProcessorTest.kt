@@ -9,8 +9,6 @@ import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.context.AvroKotlinGeneratorContextFactory
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.constructorPropertyBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
@@ -35,7 +33,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
     val ctx = AvroKotlinGeneratorContextFactory(properties).create(declaration)
 
     val builder = KotlinDataClassSpecBuilder.builder(className)
-      .addConstructorProperty(constructorPropertyBuilder("x",String::class))
+      .addConstructorProperty("x", String::class)
     processor.addAvroNamedAnnotation(recordType, className, builder)
 
     val typeSpec = builder.build()
@@ -43,7 +41,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
     val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == AvroName::class.asTypeName() }
 
     assertThat(avroName).isNotNull
-    assertThat(avroName!!.members.first().toString()).isEqualTo(""""Bar"""")
+    assertThat(avroName!!.members.first().toString()).isEqualTo("""value = "Bar"""")
   }
 
 
@@ -73,13 +71,13 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
     val ctx = AvroKotlinGeneratorContextFactory(properties).create(declaration)
 
     val builder = KotlinDataClassSpecBuilder.builder(className)
-      .addConstructorProperty(constructorPropertyBuilder("x",String::class))
+      .addConstructorProperty("x", String::class)
     processor.addAvroNamedAnnotation(subTypeRecord, className, builder)
 
     val typeSpec = builder.build()
 
     val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == AvroName::class.asTypeName() }
 
-    assertThat(avroName!!.members.first()).isEqualTo(CodeBlock.of("%S", "Foo"))
+    assertThat(avroName!!.members.first()).isEqualTo(CodeBlock.of("value = %S", "Foo"))
   }
 }

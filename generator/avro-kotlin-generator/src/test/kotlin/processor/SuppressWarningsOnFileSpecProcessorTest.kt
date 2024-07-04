@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.processor
 
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.generation.builder.KotlinFileBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -12,7 +12,7 @@ internal class SuppressWarningsOnFileSpecProcessorTest {
   fun `add single suppression`() {
     val processor = SuppressWarningsOnFileSpecProcessor(suppressions = listOf("Hello"))
 
-    val file = KotlinFileBuilder.builder("foo", "Bar")
+    val file = KotlinFileSpecBuilder.builder("foo", "Bar")
       .apply {
         processor.addSuppressAnnotation(
           AvroKotlinGeneratorProperties(suppressRedundantModifiers = true),
@@ -29,7 +29,7 @@ internal class SuppressWarningsOnFileSpecProcessorTest {
   fun `add multiple suppressions`() {
     val processor = SuppressWarningsOnFileSpecProcessor(suppressions = listOf("Hello", "World"))
 
-    val file = KotlinFileBuilder.builder("foo", "Bar")
+    val file = KotlinFileSpecBuilder.builder("foo", "Bar")
       .apply {
         processor.addSuppressAnnotation(
           AvroKotlinGeneratorProperties(suppressRedundantModifiers = true),

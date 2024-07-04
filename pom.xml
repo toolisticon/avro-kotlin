@@ -23,7 +23,6 @@
     <module>_pom/parent</module>
     <module>_test</module>
 
-    <module>avro-kotlin-bom</module>
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
     <module>generator</module>

@@ -56,7 +56,7 @@ internal class AvroKotlinGeneratorTest {
 
     val avroName = someEnumData!!.annotations.find { AvroName::class.asTypeName() == it.typeName }
 
-    assertThat(avroName?.members?.first()).isEqualTo(CodeBlock.of("%S", "SomeEnum"))
+    assertThat(avroName?.members?.first()).isEqualTo(CodeBlock.of("value = %S", "SomeEnum"))
 
   }
 

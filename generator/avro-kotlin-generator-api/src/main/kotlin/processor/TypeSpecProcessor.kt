@@ -6,7 +6,7 @@ import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi.Order.DEFAULT_ORDER
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.AvroNamedType
-import io.toolisticon.kotlin.generation.builder.KotlinPoetTypeSpecBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinGeneratorTypeSpecBuilder
 
 /**
  * Gets an [AvroNamedType] that is currently generated and the [TypeSpec.Builder].
@@ -19,7 +19,7 @@ interface TypeSpecProcessor : AvroKotlinGeneratorProcessor {
     ctx: AvroDeclarationContext,
     type: AvroNamedType,
     typeSpecClassName: ClassName,
-    builder: KotlinPoetTypeSpecBuilder<*>
+    builder: KotlinGeneratorTypeSpecBuilder<*, *>
   )
 }
 
@@ -29,10 +29,8 @@ abstract class AbstractTypeSpecProcessor(override val order: Int = DEFAULT_ORDER
 value class TypeSpecProcessorList(private val list: List<TypeSpecProcessor>) : List<TypeSpecProcessor> by list {
 
   companion object {
-    fun of(spis: AvroKotlinGeneratorSpiList) =  TypeSpecProcessorList(spis.filterIsInstance(TypeSpecProcessor::class))
+    fun of(spis: AvroKotlinGeneratorSpiList) = TypeSpecProcessorList(spis.filterIsInstance(TypeSpecProcessor::class))
   }
-
-
 
 
   /**
@@ -42,7 +40,7 @@ value class TypeSpecProcessorList(private val list: List<TypeSpecProcessor>) : L
     ctx: AvroDeclarationContext,
     type: AvroNamedType,
     typeSpecClassName: ClassName,
-    builder: KotlinPoetTypeSpecBuilder<*>
+    builder: KotlinGeneratorTypeSpecBuilder<*, *>
   ) = forEach {
     it.processTypeSpec(ctx, type, typeSpecClassName, builder)
   }

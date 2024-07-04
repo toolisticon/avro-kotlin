@@ -9,12 +9,11 @@
     <relativePath>../_pom/parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>avro-kotlin-generator-parent</artifactId>
+  <artifactId>avro-kotlin-generator-root</artifactId>
   <packaging>pom</packaging>
 
   <properties>
     <kotlin-code-generation.version>0.0.1-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME: use release, and remove the plugin in generator-maven-plugin below "SNAPSHOT-MARKER" -->
-
   </properties>
 
   <dependencyManagement>

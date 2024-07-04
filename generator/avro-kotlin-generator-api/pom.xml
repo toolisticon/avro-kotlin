@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-generator-parent</artifactId>
+    <artifactId>avro-kotlin-generator-root</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
   </parent>
 

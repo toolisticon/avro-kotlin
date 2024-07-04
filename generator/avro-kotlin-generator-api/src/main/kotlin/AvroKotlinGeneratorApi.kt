@@ -1,27 +1,41 @@
 package io.toolisticon.kotlin.avro.generator.api
 
+import com.github.avrokotlin.avro4k.AvroName
+import com.github.avrokotlin.avro4k.ScalePrecision
 import com.github.avrokotlin.avro4k.serializer.AvroSerializer
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
-import io.toolisticon.kotlin.avro.model.AvroNamedType
-import io.toolisticon.kotlin.avro.model.EnumType
-import io.toolisticon.kotlin.avro.model.FixedType
-import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.avro.model.ErrorType
+import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.avro.value.Namespace
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.annotationBuilder
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildAnnotation
+import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpec
+import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpecSupplier
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
 object AvroKotlinGeneratorApi {
 
-  fun serializableAnnotation(serializerClass: Avro4kSerializerKClass) = annotationBuilder(
-    type = Serializable::class
-  ).addMember("with = %T::class", serializerClass)
-    .build()
+  data class SerializableWithAnnotation(val serializerClass: Avro4kSerializerKClass) : KotlinAnnotationSpecSupplier {
+    override fun spec(): KotlinAnnotationSpec = buildAnnotation(Serializable::class) {
+      addKClassMember("with", serializerClass)
+    }
+  }
+
+  data class ScalePrecisionAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
+    override fun spec(): KotlinAnnotationSpec = buildAnnotation(ScalePrecision::class) {
+      addNumberMember("precision", precision)
+      addNumberMember("scale", scale)
+    }
+  }
+
+  data class AvroNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
+    override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroName::class) {
+      addStringMember("value", name)
+    }
+  }
 
   fun rootClassName(avroDeclaration: AvroDeclaration, properties: AvroKotlinGeneratorProperties? = null) = avroClassName(
     namespace = avroDeclaration.namespace,
