@@ -41,6 +41,3 @@ build/
 ### VS Code ###
 .vscode/
 
-### DEV
-_tmp/
-.repository/
