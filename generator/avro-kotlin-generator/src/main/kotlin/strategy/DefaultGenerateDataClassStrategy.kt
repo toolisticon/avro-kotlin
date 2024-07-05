@@ -57,7 +57,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
       .addKdoc(recordType.kdoc())
 
     val parameterSpecs = recordType.fields.map { field ->
-      val typeName = ctx.get(field.hashCode).suffixedTypeName
+      val typeName = ctx[field.hashCode].suffixedTypeName
       KotlinConstructorPropertySpecBuilder.builder(field.name.value, typeName).apply {
         ctx.processors.dataClassParameterSpecProcessors(ctx, field, this)
       }

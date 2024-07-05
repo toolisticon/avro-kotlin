@@ -1,8 +1,6 @@
 package io.toolisticon.kotlin.avro.generator.processor
 
 
-import com.github.avrokotlin.avro4k.AvroName
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi

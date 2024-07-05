@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.AnnotationSpec
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
+import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 import mu.KLogging
 import java.time.Instant
 import java.util.*
@@ -39,15 +40,11 @@ object MavenProperties : KLogging() {
     }
   }
 
-  val generatedAnnotation: AnnotationSpec = AnnotationSpec.builder(Generated::class)
-    .addMember(
-      // FIXME: value has to be array
-      "value=%S, date=%S, comments=%S",
-      AvroKotlinGenerator::class.qualifiedName!!,
-      nowSupplier(),
-      versions
-    )
-    .build()
+  val generatedAnnotation: AnnotationSpec = GeneratedAnnotation(
+    value = AvroKotlinGenerator::class.qualifiedName!!,
+    date = nowSupplier(),
+    comments = listOf(versions.toString())
+  ).get()
 
   override fun toString(): String {
     return properties.toString()

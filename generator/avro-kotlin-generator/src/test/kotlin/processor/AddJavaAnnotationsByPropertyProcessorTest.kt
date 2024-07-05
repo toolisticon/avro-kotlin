@@ -132,6 +132,6 @@ internal class AddJavaAnnotationsByPropertyProcessorTest {
   fun `create annotation spec from string`(input: String, expected: String) {
     val spec = createAnnotationSpec(JavaAnnotationProperty(input))
 
-    assertThat(spec.toString()).isEqualTo(expected)
+    assertThat(spec.code).isEqualTo(expected)
   }
 }
