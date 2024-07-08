@@ -19,7 +19,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>_bom</module>
+    <module>_mvn/parent</module>
+    <module>_mvn/bom</module>
     <module>_test</module>
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
