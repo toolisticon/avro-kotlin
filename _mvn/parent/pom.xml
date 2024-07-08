@@ -1,16 +1,17 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-root</artifactId>
     <version>1.11.4.3-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro</groupId>
-  <artifactId>avro-kotlin-bom</artifactId>
-  <description>Bill of material for avro-kotlin.</description>
+  <artifactId>avro-kotlin-parent</artifactId>
+  <name>pom: ${project.artifactId}</name>
+  <description>Parent for avro-kotlin summarizing used libraries and versions.</description>
   <packaging>pom</packaging>
 
   <properties>
@@ -22,16 +23,14 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- JACKSON BOM -->
+      <!-- apache avro brings outdated jackson, we include latest versions  -->
       <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-serialization</artifactId>
-        <version>${project.version}</version>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
 
       <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->
@@ -39,6 +38,7 @@
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
         <version>${avro.version}</version>
+
         <exclusions>
           <!-- Avro exposes old versions of Jackson, let us not re-expose them -->
           <exclusion>
@@ -54,14 +54,26 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
+
       <!-- AVRO-COMPILER(${avro.version}) -->
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-compiler</artifactId>
         <version>${avro.version}</version>
         <scope>provided</scope>
+
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- AVRO-IPC(${avro.version}) - without snappy -->
@@ -69,10 +81,15 @@
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-ipc</artifactId>
         <version>${avro.version}</version>
+
         <exclusions>
           <exclusion>
             <groupId>org.xerial.snappy</groupId>
             <artifactId>snappy-java</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -100,29 +117,29 @@
           </exclusion>
         </exclusions>
       </dependency>
-
-      <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-        <scope>provided</scope>
-      </dependency>
-
-      <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
-        <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-kotlin</artifactId>
-        <version>${jackson.version}</version>
-        <scope>provided</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <!-- KOTLIN -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <!-- KOTLIN REFLECT -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <!-- KOTLIN LOGGING -->
+    <!-- also replaces slf4j-api excluded from org.apache.avro:avro -->
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging-jvm</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
 </project>

@@ -1,11 +1,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.4.3-SNAPSHOT</version>
+    <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.test</groupId>
@@ -16,7 +17,6 @@
   <properties>
     <assertj.version>3.26.0</assertj.version>
     <equalsverifier.version>3.16.1</equalsverifier.version>
-    <kotlin-compile-testing.version>1.5.0</kotlin-compile-testing.version>
     <logback.version>1.5.6</logback.version>
     <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
@@ -25,60 +25,24 @@
     <icu4j.version>75.1</icu4j.version>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <!-- avro-kotlin-bom -->
-      <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
-        <artifactId>avro-kotlin-bom</artifactId>
-        <version>${project.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
-    <!-- KOTLIN -->
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-reflect</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- /KOTLIN -->
-
     <!-- avro-core -->
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro-compiler</artifactId>
       <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-ipc</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <!-- mockito -->
@@ -86,6 +50,7 @@
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
       <version>${mockito-kotlin.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- jupiter - version defined in maven-parent-kotlin-base -->
@@ -117,6 +82,7 @@
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
       <version>${equalsverifier.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- include jackson to verify instances can be serialized -->
@@ -131,11 +97,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
       <version>${slf4j.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- icu4j - conversion and i18n for java -->
@@ -143,31 +111,11 @@
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
       <version>${icu4j.version}</version>
+      <scope>compile</scope>
     </dependency>
-
-    <!-- FIXME: needed here? -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.github.tschuchortdev</groupId>-->
-    <!--      <artifactId>kotlin-compile-testing</artifactId>-->
-    <!--      <version>${kotlin-compile-testing.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--      <exclusions>-->
-    <!--        <exclusion>-->
-    <!--          <groupId>com.squareup.okio</groupId>-->
-    <!--          <artifactId>okio-jvm</artifactId>-->
-    <!--        </exclusion>-->
-    <!--      </exclusions>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.squareup.okio</groupId>-->
-    <!--      <artifactId>okio-jvm</artifactId>-->
-    <!--      <version>${okio.version}</version>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
   </dependencies>
 
   <build>
-
     <plugins>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
