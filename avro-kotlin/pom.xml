@@ -6,7 +6,7 @@
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
-    <relativePath>../_pom/parent/pom.xml</relativePath>
+    <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
@@ -14,27 +14,32 @@
   <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
 
   <dependencies>
-    <!-- KOTLIN -->
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-reflect</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <!-- must be transitive dependency, otherwise it fails when lib is used from java -->
-    </dependency>
-    <!-- /KOTLIN -->
-
+    <!-- AVRO (as defined in parent)  -->
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- commons-compress: replace transitive dependency of org.apache.avro:avro -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -70,7 +75,6 @@
       <version>1.4.4</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

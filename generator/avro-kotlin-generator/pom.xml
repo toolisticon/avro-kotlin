@@ -4,13 +4,14 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-generator-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
+    <relativePath>../../_mvn/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <groupId>io.toolisticon.kotlin.avro.generator</groupId>
   <artifactId>avro-kotlin-generator</artifactId>
-  <name>${project.artifactId}</name>
+  <name>generator: ${project.artifactId}</name>
 
   <properties>
     <!-- needed for MavenProperties -->
@@ -18,26 +19,8 @@
   </properties>
 
   <dependencies>
-    <!-- KOTLIN -->
     <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-reflect</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- /KOTLIN -->
-
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.generator</groupId>
       <artifactId>avro-kotlin-generator-api</artifactId>
       <version>${project.version}</version>
     </dependency>

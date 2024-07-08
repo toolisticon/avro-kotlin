@@ -4,13 +4,14 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-generator-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.5.0-SNAPSHOT</version>
+    <relativePath>../../_mvn/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <groupId>io.toolisticon.kotlin.avro.generator</groupId>
   <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
-  <name>${project.artifactId}</name>
+  <name>generator: ${project.artifactId}</name>
   <packaging>maven-plugin</packaging>
 
   <properties>
@@ -23,23 +24,31 @@
   </properties>
 
   <dependencies>
-    <!-- KOTLIN -->
     <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <scope>provided</scope>
+      <groupId>io.toolisticon.kotlin.avro.generator</groupId>
+      <artifactId>avro-kotlin-generator-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-reflect</artifactId>
-      <scope>provided</scope>
+      <groupId>io.toolisticon.kotlin.avro</groupId>
+      <artifactId>avro-kotlin-serialization</artifactId>
+      <version>${project.version}</version>
     </dependency>
+
+
     <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <scope>provided</scope>
+      <groupId>io.toolisticon.kotlin.avro.generator</groupId>
+      <artifactId>avro-kotlin-generator</artifactId>
+      <version>${project.version}</version>
     </dependency>
-    <!-- /KOTLIN -->
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.generation</groupId>
+      <artifactId>kotlin-code-generation</artifactId>
+      <version>${kotlin-code-generation.version}</version>
+    </dependency>
+
 
     <!-- MAVEN -->
     <dependency>
@@ -76,30 +85,6 @@
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>file-management</artifactId>
       <version>3.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro</groupId>
-      <artifactId>avro-kotlin-serialization</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro</groupId>
-      <artifactId>avro-kotlin-generator-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro</groupId>
-      <artifactId>avro-kotlin-generator</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.toolisticon.kotlin.generation</groupId>
-      <artifactId>kotlin-code-generation</artifactId>
-      <version>${kotlin-code-generation.version}</version>
     </dependency>
 
     <dependency>
