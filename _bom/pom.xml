@@ -17,7 +17,7 @@
     <avro.version>1.11.3</avro.version>
     <avro4k.version>1.10.1</avro4k.version>
     <commons-compress.version>1.26.2</commons-compress.version>
-    <jackson.version>2.17.1</jackson.version>
+    <jackson.version>2.17.2</jackson.version>
   </properties>
 
   <dependencyManagement>
