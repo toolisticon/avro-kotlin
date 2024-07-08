@@ -46,7 +46,6 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.avro.test</groupId>
       <artifactId>avro-kotlin-test</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -32,7 +32,7 @@
 
       <!-- AVRO-KOTLIN-TEST -->
       <dependency>
-        <groupId>io.toolisticon.kotlin.avro</groupId>
+        <groupId>io.toolisticon.kotlin.avro.test</groupId>
         <artifactId>avro-kotlin-test</artifactId>
         <version>${project.version}</version>
       </dependency>
