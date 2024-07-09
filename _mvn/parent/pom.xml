@@ -19,7 +19,7 @@
     <avro4k.version>1.10.1</avro4k.version>
     <commons-compress.version>1.26.2</commons-compress.version>
     <jackson.version>2.17.2</jackson.version>
-    <kotlin-code-generation.version>0.0.1-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME: use release, and remove the plugin in generator-maven-plugin below "SNAPSHOT-MARKER" -->
+    <kotlin-code-generation.version>0.0.1</kotlin-code-generation.version>
   </properties>
 
   <dependencyManagement>
@@ -119,6 +119,14 @@
         </exclusions>
       </dependency>
 
+      <!-- KOTLIN-CODE-GENERATOR -->
+      <dependency>
+        <groupId>io.toolisticon.kotlin.generation</groupId>
+        <artifactId>kotlin-code-generation-bom</artifactId>
+        <version>${kotlin-code-generation.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

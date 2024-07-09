@@ -92,6 +92,12 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>io.toolisticon.kotlin.generation</groupId>
+      <artifactId>kotlin-code-generation-test</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>

@@ -24,7 +24,6 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.generation</groupId>
       <artifactId>kotlin-code-generation</artifactId>
-      <version>${kotlin-code-generation.version}</version>
     </dependency>
 
     <dependency>
