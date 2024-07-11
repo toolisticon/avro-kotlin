@@ -16,30 +16,8 @@
   <dependencies>
     <!-- AVRO (as defined in parent)  -->
     <dependency>
-      <groupId>org.apache.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- jackson-databind: replaces transitive dependency of org.apache.avro:avro -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- jackson-core: replaces transitive dependency of org.apache.avro:avro -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- commons-compress: replace transitive dependency of org.apache.avro:avro -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
