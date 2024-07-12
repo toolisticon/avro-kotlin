@@ -28,19 +28,19 @@
   <dependencies>
     <!-- avro-core -->
     <dependency>
-      <groupId>org.apache.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro</artifactId>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro-compiler</artifactId>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro-ipc</artifactId>
       <scope>compile</scope>
     </dependency>
