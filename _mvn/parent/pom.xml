@@ -24,99 +24,28 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- JACKSON BOM -->
-      <!-- apache avro brings outdated jackson, we include latest versions  -->
       <dependency>
-        <groupId>com.fasterxml.jackson</groupId>
-        <artifactId>jackson-bom</artifactId>
-        <version>${jackson.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-
-      <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->
-      <dependency>
-        <groupId>org.apache.avro</groupId>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
         <artifactId>avro</artifactId>
-        <version>${avro.version}</version>
-
-        <exclusions>
-          <!-- Avro exposes old versions of Jackson, let us not re-expose them -->
-          <exclusion>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <!-- exclude because v1.22 has vulnerability -->
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
+        <version>${project.version}</version>
       </dependency>
 
-      <!-- AVRO-COMPILER(${avro.version}) -->
       <dependency>
-        <groupId>org.apache.avro</groupId>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
         <artifactId>avro-compiler</artifactId>
-        <version>${avro.version}</version>
-        <scope>provided</scope>
-
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
+        <version>${project.version}</version>
       </dependency>
 
-      <!-- AVRO-IPC(${avro.version}) - without snappy -->
       <dependency>
-        <groupId>org.apache.avro</groupId>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
         <artifactId>avro-ipc</artifactId>
-        <version>${avro.version}</version>
-
-        <exclusions>
-          <exclusion>
-            <groupId>org.xerial.snappy</groupId>
-            <artifactId>snappy-java</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
+        <version>${project.version}</version>
       </dependency>
 
-      <!-- commons-compress: replaces transitive dependency of org.apache.avro:avro -->
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-compress</artifactId>
-        <version>${commons-compress.version}</version>
-      </dependency>
-
-      <!-- AVRO4K(${avro4k.version}) -->
-      <dependency>
-        <groupId>com.github.avro-kotlin.avro4k</groupId>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
         <artifactId>avro4k-core</artifactId>
-        <version>${avro4k.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.xerial.snappy</groupId>
-            <artifactId>snappy-java</artifactId>
-          </exclusion>
-        </exclusions>
+        <version>${project.version}</version>
       </dependency>
 
       <!-- KOTLIN-CODE-GENERATOR -->
@@ -148,7 +77,18 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.13</version>
     </dependency>
   </dependencies>
 

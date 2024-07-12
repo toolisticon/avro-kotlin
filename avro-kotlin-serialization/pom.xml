@@ -23,7 +23,7 @@
 
     <!-- avro4k, replaces latest versions -->
     <dependency>
-      <groupId>com.github.avro-kotlin.avro4k</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro4k-core</artifactId>
     </dependency>
 
