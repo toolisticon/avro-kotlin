@@ -6,7 +6,20 @@ easily accessible from kotlin.
 [![stable](https://img.shields.io/badge/lifecycle-STABLE-green.svg)](https://github.com/holisticon#open-source-lifecycle)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.lib/avro-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.lib/avro-kotlin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom)
+
+Since Version 1.11.4.2 we use a multi module build. The GroupId changed, best use the provided BOM:
+
+```xml
+<dependency>
+    <groupId>io.toolisticon.kotlin.avro</groupId>
+    <artifactId>avro-kotlin-bom</artifactId>
+    <version>LATEST</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+```
+
 
 ## Apache Avro
 

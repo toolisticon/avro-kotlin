@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-examples-root</artifactId>
-    <version>1.11.4.2</version>
+    <version>1.11.4.3</version>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.examples</groupId>
@@ -46,19 +46,6 @@
     <dependency>
       <groupId>io.toolisticon.kotlin.avro.test</groupId>
       <artifactId>avro-kotlin-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro-compiler</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-kotlin</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
