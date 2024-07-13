@@ -14,8 +14,12 @@ abstract class IntLogicalTypeSerializer<LOGICAL : IntLogicalType, CONVERTED_TYPE
   primitiveKind = PrimitiveKind.INT
 ) {
   override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): CONVERTED_TYPE {
-    val value = decoder.decodeInt()
-    return conversion.fromAvro(value)
+    val value = requireNotNull(decoder.decodeAny()) { "Can't deserialize null" }
+    @Suppress("UNCHECKED_CAST")
+    return when(value::class) {
+      conversion.convertedType -> value as CONVERTED_TYPE
+      else -> conversion.fromAvro(decoder.decodeInt())
+    }
   }
 
   override fun encodeAvroValue(schema: Schema, encoder: ExtendedEncoder, obj: CONVERTED_TYPE) {

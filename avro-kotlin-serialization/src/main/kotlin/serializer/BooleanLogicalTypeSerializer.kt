@@ -14,8 +14,12 @@ abstract class BooleanLogicalTypeSerializer<LOGICAL : BooleanLogicalType, CONVER
   primitiveKind = PrimitiveKind.BOOLEAN
 ) {
   override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): CONVERTED_TYPE {
-    val value = decoder.decodeBoolean()
-    return conversion.fromAvro(value)
+    val value = requireNotNull(decoder.decodeAny()) { "Can't deserialize null" }
+    @Suppress("UNCHECKED_CAST")
+    return when(value::class) {
+      conversion.convertedType -> value as CONVERTED_TYPE
+      else -> conversion.fromAvro(decoder.decodeBoolean())
+    }
   }
 
   override fun encodeAvroValue(schema: Schema, encoder: ExtendedEncoder, obj: CONVERTED_TYPE) {

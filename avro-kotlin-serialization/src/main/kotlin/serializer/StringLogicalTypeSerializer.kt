@@ -4,8 +4,10 @@ import com.github.avrokotlin.avro4k.decoder.ExtendedDecoder
 import com.github.avrokotlin.avro4k.encoder.ExtendedEncoder
 import io.toolisticon.kotlin.avro.logical.StringLogicalType
 import io.toolisticon.kotlin.avro.logical.conversion.StringLogicalTypeConversion
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
 import org.apache.avro.Schema
+import org.apache.avro.util.Utf8
 
 abstract class StringLogicalTypeSerializer<LOGICAL : StringLogicalType, CONVERTED_TYPE : Any>(
   conversion: StringLogicalTypeConversion<LOGICAL, CONVERTED_TYPE>
@@ -14,8 +16,12 @@ abstract class StringLogicalTypeSerializer<LOGICAL : StringLogicalType, CONVERTE
   primitiveKind = PrimitiveKind.STRING
 ) {
   override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): CONVERTED_TYPE {
-    val stringValue = decoder.decodeString()
-    return conversion.fromAvro(stringValue)
+    val value = requireNotNull(decoder.decodeAny()) { "Can't deserialize null" }
+    @Suppress("UNCHECKED_CAST")
+    return when(value::class) {
+      conversion.convertedType -> value as CONVERTED_TYPE
+      else -> conversion.fromAvro(decoder.decodeString())
+    }
   }
 
   override fun encodeAvroValue(schema: Schema, encoder: ExtendedEncoder, obj: CONVERTED_TYPE) {

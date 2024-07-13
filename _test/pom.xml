@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
-    <version>1.11.4.3</version>
+    <version>1.11.4.4</version>
     <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
