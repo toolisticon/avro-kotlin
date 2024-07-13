@@ -1,0 +1,7 @@
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestStringLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestLongLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestIntLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestFloatLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestDoubleLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestBooleanLogicalType$LogicalTypeFactory
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestBytesLogicalType$LogicalTypeFactory

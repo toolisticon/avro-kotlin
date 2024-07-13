@@ -1,0 +1,7 @@
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestStringLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestLongLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestIntLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestFloatLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestDoubleLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestBooleanLogicalType$TypeConversion
+io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestBytesLogicalType$TypeConversion
