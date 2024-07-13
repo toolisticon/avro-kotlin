@@ -20,8 +20,7 @@ abstract class StringLogicalTypeSerializer<LOGICAL : StringLogicalType, CONVERTE
     @Suppress("UNCHECKED_CAST")
     return when(value::class) {
       conversion.convertedType -> value as CONVERTED_TYPE
-      Utf8::class -> conversion.fromAvro(decoder.decodeString())
-      else -> throw SerializationException("Could not decode $value of type ${value::class}")
+      else -> conversion.fromAvro(decoder.decodeString())
     }
   }
 

@@ -14,7 +14,7 @@
   <version>1.11.4.4-SNAPSHOT</version>
 
   <name>pom: ${project.artifactId}</name>
-  <description>Root of Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
+  <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
   <url>https://github.com/toolisticon/avro-kotlin/</url>
   <packaging>pom</packaging>
 
@@ -84,6 +84,7 @@
       </activation>
       <modules>
         <module>_examples</module>
+        <module>_mvn/coverage-aggregator</module>
       </modules>
     </profile>
   </profiles>

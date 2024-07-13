@@ -14,8 +14,12 @@ abstract class LongLogicalTypeSerializer<LOGICAL : LongLogicalType, CONVERTED_TY
   primitiveKind = PrimitiveKind.LONG
 ) {
   override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): CONVERTED_TYPE {
-    val value = decoder.decodeLong()
-    return conversion.fromAvro(value)
+    val value = requireNotNull(decoder.decodeAny()) { "Can't deserialize null" }
+    @Suppress("UNCHECKED_CAST")
+    return when(value::class) {
+      conversion.convertedType -> value as CONVERTED_TYPE
+      else -> conversion.fromAvro(decoder.decodeLong())
+    }
   }
 
   override fun encodeAvroValue(schema: Schema, encoder: ExtendedEncoder, obj: CONVERTED_TYPE) {
