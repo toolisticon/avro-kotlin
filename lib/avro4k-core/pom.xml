@@ -1,5 +1,5 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -30,8 +30,8 @@
           <artifactId>avro</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.xerial.snappy</groupId>
-          <artifactId>snappy-java</artifactId>
+          <groupId>org.jetbrains.kotlinx</groupId>
+          <artifactId>kotlinx-serialization-core-jvm</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -40,8 +40,15 @@
       <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-serialization-core-jvm</artifactId>
+      <version>${kotlinx-serialization.version}</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
