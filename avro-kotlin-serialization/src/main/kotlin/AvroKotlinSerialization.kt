@@ -24,9 +24,9 @@ class AvroKotlinSerialization(
 
     fun configure(vararg serializersModules: SerializersModule): AvroKotlinSerialization {
       return AvroKotlinSerialization(
-        Avro(
+        Avro {
           serializersModule = serializersModules.toList().reduce()
-        )
+        }
       )
     }
   }
@@ -35,7 +35,7 @@ class AvroKotlinSerialization(
   private val schemaCache = ConcurrentHashMap<KClass<*>, AvroSchema>()
 
   constructor() : this(
-    Avro(AvroSerializationModuleFactoryServiceLoader())
+    Avro { serializersModule = AvroSerializationModuleFactoryServiceLoader() }
   )
 
   fun serializer(type: KClass<*>) = kserializerCache.computeIfAbsent(type) { key ->
@@ -54,7 +54,7 @@ class AvroKotlinSerialization(
   fun <T : Any> toRecord(data: T): GenericRecord {
     val kserializer = serializer(data::class) as KSerializer<T>
 
-    return avro4k.toRecord(kserializer, data)
+    return avro4k..toRecord(kserializer, data)
   }
 
   inline fun <reified T : Any> fromRecord(record: GenericRecord): T = fromRecord(record, T::class)
