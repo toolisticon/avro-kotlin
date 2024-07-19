@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.serialization
 
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
+import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
 import io.toolisticon.kotlin.avro.serialization._test.Foo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test
 internal class AvroKotlinSerializationTest {
 
   private val avro = AvroKotlinSerialization()
-
 
   @Test
   fun `read schema from Foo`() {
@@ -36,5 +36,14 @@ internal class AvroKotlinSerializationTest {
     )
 
     assertThat(decoded).isEqualTo(foo)
+  }
+
+  @Test
+  fun `enum from-to single object encoded`() {
+    val data = DummyEnum.BAR
+
+    val soe = avro.toSingleObjectEncoded(data)
+
+
   }
 }

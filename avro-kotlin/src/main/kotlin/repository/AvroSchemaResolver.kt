@@ -11,7 +11,6 @@ import org.apache.avro.message.SchemaStore
  */
 fun interface AvroSchemaResolver : SchemaStore {
 
-
   @Throws(MissingSchemaException::class)
   operator fun get(fingerprint: AvroFingerprint): AvroSchema
 

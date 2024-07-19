@@ -44,6 +44,7 @@ value class SingleObjectEncodedBytes private constructor(
 
     fun parse(hex: HexString) = of(hex.byteArray)
 
+    fun of(bytes: ByteArray) = of(ByteArrayValue(bytes))
   }
 
   constructor(fingerprint: AvroFingerprint, payload: BinaryEncodedBytes) : this(fingerprint to payload)
