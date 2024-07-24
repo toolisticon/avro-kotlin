@@ -1,8 +1,8 @@
 package io.toolisticon.kotlin.avro.serialization
 
 import com.github.avrokotlin.avro4k.*
+import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
 import io.toolisticon.kotlin.avro.serialization.avro4k.Avro4kSchemaRegistry
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes

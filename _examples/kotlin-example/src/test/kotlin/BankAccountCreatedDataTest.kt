@@ -1,9 +1,9 @@
 package io.toolisticon.kotlin.avro.example
 
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
 import io.toolisticon.kotlin.avro.example.customerid.CustomerId
 import io.toolisticon.kotlin.avro.example.money.MoneyLogicalType
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
 import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
 import io.toolisticon.kotlin.avro.value.Name.Companion.toName
@@ -17,7 +17,6 @@ internal class BankAccountCreatedDataTest {
   @Test
   fun `show schema`() {
     val schema = KotlinExample.avro.schema(BankAccountCreatedData::class)
-    println(schema)
     assertThat(schema.canonicalName).isEqualTo("io.toolisticon.bank.BankAccountCreated".toCanonicalName())
     assertThat(schema.fields).hasSize(3)
 
@@ -49,7 +48,7 @@ internal class BankAccountCreatedDataTest {
     val customerId = CustomerId.random()
 
     val event = BankAccountCreatedData(accountId, customerId, amount)
-    val resolver = avroSchemaResolver(KotlinExample.avro.schema(BankAccountCreatedData::class))
+    val resolver = AvroKotlin.avroSchemaResolver(KotlinExample.avro.schema(BankAccountCreatedData::class))
 
     val record = KotlinExample.avro.toRecord(event)
 

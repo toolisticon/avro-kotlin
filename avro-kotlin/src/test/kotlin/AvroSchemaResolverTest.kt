@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro
 
+import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.TestFixtures.BankAccountCreatedFixtures.SCHEMA_BANK_ACCOUNT_CREATED
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import org.apache.avro.message.MissingSchemaException
 import org.assertj.core.api.Assertions.assertThat

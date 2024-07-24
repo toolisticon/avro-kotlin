@@ -5,32 +5,31 @@ import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.codec.AvroCodec
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
-import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.compatibleToReadFrom
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
-import io.toolisticon.kotlin.avro.repository.MutableAvroSchemaResolver
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolverMutableMap
 import io.toolisticon.kotlin.avro.serialization.avro4k.avro4k
 import io.toolisticon.kotlin.avro.serialization.spi.AvroSerializationModuleFactoryServiceLoader
 import io.toolisticon.kotlin.avro.serialization.spi.SerializerModuleKtx.reduce
+import io.toolisticon.kotlin.avro.value.AvroSchemaCompatibilityMap
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import mu.KLogging
-import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
+import java.lang.Runtime.Version
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
-import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 
 @OptIn(ExperimentalSerializationApi::class)
 class AvroKotlinSerialization(
-  private val avro4k: Avro,
-  private val schemaResolver: MutableAvroSchemaResolver = MutableAvroSchemaResolver.EMPTY,
+  val avro4k: Avro,
+  private val schemaResolver: AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY,
   private val genericData: GenericData = AvroKotlin.genericData
-) {
+) : AvroSchemaResolver by schemaResolver {
   companion object : KLogging() {
 
     fun configure(vararg serializersModules: SerializersModule): AvroKotlinSerialization {
@@ -42,14 +41,67 @@ class AvroKotlinSerialization(
     }
   }
 
-  @PublishedApi
-  internal val avro4kSingleObject = AvroSingleObject(schemaRegistry = schemaResolver.avro4k(), avro = avro4k)
+  init {
+    /**
+     * We _need_ `kotlinx.serialization >= 1.7`. spring boot provides an outdated version (1.6.3).
+     * This is a pita to resolve. This check makes sure, any misconfigurations are found on app-start.
+     */
+    check(Version.parse(KSerializer::class.java.`package`.implementationVersion) >= Version.parse("1.7")) { "avro4k uses features that required kotlinx.serialization version >= 1.7.0. Make sure to include the correct versions, especially when you use spring-boot." }
+  }
+
+  val avro4kSingleObject = AvroSingleObject(schemaRegistry = schemaResolver.avro4k(), avro = avro4k)
+
+  val compatibilityCache = AvroSchemaCompatibilityMap()
+
   private val kserializerCache = ConcurrentHashMap<KClass<*>, KSerializer<*>>()
   private val schemaCache = ConcurrentHashMap<KClass<*>, AvroSchema>()
 
   constructor() : this(
     Avro { serializersModule = AvroSerializationModuleFactoryServiceLoader() }
   )
+
+  fun <T : Any> singleObjectEncoder(): AvroCodec.SingleObjectEncoder<T> = AvroCodec.SingleObjectEncoder { data ->
+    @Suppress("UNCHECKED_CAST")
+    val serializer = serializer(data::class) as KSerializer<T>
+    val writerSchema = schema(data::class)
+
+    val bytes = avro4kSingleObject.encodeToByteArray(writerSchema.get(), serializer, data)
+
+    SingleObjectEncodedBytes.of(bytes)
+  }
+
+  fun <T : Any> singleObjectDecoder(): AvroCodec.SingleObjectDecoder<T> = AvroCodec.SingleObjectDecoder { bytes ->
+    val writerSchema = schemaResolver[bytes.fingerprint]
+    val klass = AvroKotlin.loadClassForSchema<T>(writerSchema)
+
+    @Suppress("UNCHECKED_CAST")
+    avro4kSingleObject.decodeFromByteArray(serializer(klass), bytes.value) as T
+  }
+
+  fun <T : Any> genericRecordEncoder(): AvroCodec.GenericRecordEncoder<T> = AvroCodec.GenericRecordEncoder { data ->
+    @Suppress("UNCHECKED_CAST")
+    val serializer = serializer(data::class) as KSerializer<T>
+    val writerSchema = schema(data::class)
+
+    avro4k.encodeToGenericData(writerSchema.get(), serializer, data) as GenericRecord
+  }
+
+  /**
+   * @param klass - optional. If we do know the klass already, we can pass it to avoid a second lookup.
+   */
+  fun <T : Any> genericRecordDecoder(klass: KClass<T>? = null) = AvroCodec.GenericRecordDecoder { record ->
+    val writerSchema = AvroSchema(record.schema)
+    val readerKlass: KClass<T> = klass ?: AvroKotlin.loadClassForSchema(writerSchema)
+
+    @Suppress("UNCHECKED_CAST")
+    val kserializer = serializer(readerKlass) as KSerializer<T>
+    val readerSchema = schema(readerKlass)
+    val compatibility = compatibilityCache.compatibleToReadFrom(writerSchema, readerSchema)
+
+    require(compatibility.isCompatible) { "Reader/writer schema are incompatible." }
+
+    avro4k.decodeFromGenericData(writerSchema = writerSchema.get(), deserializer = kserializer, record)
+  }
 
   @Suppress("UNCHECKED_CAST")
   fun <T : Any> toGenericRecord(data: T): GenericRecord {
@@ -59,24 +111,15 @@ class AvroKotlinSerialization(
     return avro4k.encodeToGenericData(schema, kserializer, data) as GenericRecord
   }
 
-  fun <T : Any> fromGenericRecord(record: GenericRecord): T {
-    TODO("Not yet implemented")
-  }
-
-  @Suppress("UNCHECKED_CAST")
-  fun <T : Any> toSingleObjectEncoded(data: T): SingleObjectEncodedBytes {
-    val serializer = serializer(data::class) as KSerializer<T>
-    val writerSchema = schema(data::class)
-
-    val bytes = avro4kSingleObject.encodeToByteArray(writerSchema.get(), serializer, data)
-
-    return SingleObjectEncodedBytes.of(bytes)
-  }
+  fun <T : Any> toSingleObjectEncoded(data: T): SingleObjectEncodedBytes = singleObjectEncoder<T>().encode(data)
 
   /**
    * @return kotlinx-serializer for given class.
    */
   fun serializer(klass: KClass<*>) = kserializerCache.computeIfAbsent(klass) { key ->
+
+    require(klass.isSerializable())
+
     // TODO: if we use SpecificRecords, we could derive the schema from the class directly
     logger.trace { "add kserializer for $key." }
 
@@ -97,17 +140,8 @@ class AvroKotlinSerialization(
 
   inline fun <reified T : Any> fromRecord(record: GenericRecord): T = fromRecord(record, T::class)
 
-  @Suppress("UNCHECKED_CAST")
   fun <T : Any> fromRecord(record: GenericRecord, type: KClass<T>): T {
-    val writerSchema = AvroSchema(record.schema)
-
-    val kserializer = serializer(type) as KSerializer<T>
-    val readerSchema = schema(type)
-
-    // TODO nicer?
-    require(readerSchema.compatibleToReadFrom(writerSchema).result.incompatibilities.isEmpty()) { "Reader/writer schema are incompatible" }
-
-    return avro4k.decodeFromGenericData(writerSchema = writerSchema.get(), deserializer = kserializer, record) as T
+    return genericRecordDecoder(type).decode(record)
   }
 
   fun <T : Any> encodeSingleObject(
@@ -147,4 +181,7 @@ class AvroKotlinSerialization(
   )
 
   fun registerSchema(schema: AvroSchema): AvroKotlinSerialization = apply { schemaResolver + schema }
+
+  fun cachedSerializerClasses() = kserializerCache.keys().toList().toSet()
+  fun cachedSchemaClasses() = schemaCache.keys().toList().toSet()
 }

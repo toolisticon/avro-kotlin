@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentHashMap
  * and keeps all known instances in an in-memory map.
  */
 @JvmInline
-value class MutableAvroSchemaResolver private constructor(
+value class AvroSchemaResolverMutableMap private constructor(
   private val store: MutableMap<AvroFingerprint, AvroSchema> = ConcurrentHashMap()
-) : AvroSchemaResolver, Map<AvroFingerprint, AvroSchema> by store {
+) : SchemaResolverMap, Map<AvroFingerprint, AvroSchema> by store {
   companion object {
-    val EMPTY = MutableAvroSchemaResolver()
+    val EMPTY = AvroSchemaResolverMutableMap()
   }
 
-  constructor(schema: Schema) : this((EMPTY + AvroSchema(schema)).store)
+  constructor(schema: Schema) : this(AvroSchema(schema))
   constructor(schema: AvroSchema) : this((EMPTY + schema).store)
 
   @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
@@ -27,11 +27,13 @@ value class MutableAvroSchemaResolver private constructor(
     fingerprint
   )
 
-  operator fun plus(schema: AvroSchema): MutableAvroSchemaResolver = apply {
+  operator fun plus(schema: AvroSchema): AvroSchemaResolverMutableMap = apply {
     store[schema.fingerprint] = schema
   }
 
-  operator fun plus(other: MutableAvroSchemaResolver): MutableAvroSchemaResolver = apply {
+  operator fun plus(other: SchemaResolverMap): AvroSchemaResolverMutableMap = apply {
     store.putAll(other)
   }
+
+  fun toMap() = AvroSchemaResolverMap.EMPTY + this
 }

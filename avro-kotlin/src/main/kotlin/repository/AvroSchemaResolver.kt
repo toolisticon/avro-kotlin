@@ -20,3 +20,14 @@ fun interface AvroSchemaResolver : SchemaStore {
   @Throws(MissingSchemaException::class)
   override fun findByFingerprint(fingerprint: Long): Schema = this[AvroFingerprint(fingerprint)].get()
 }
+
+
+interface SchemaResolverMap : AvroSchemaResolver, Map<AvroFingerprint, AvroSchema> {
+
+  @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+  @kotlin.jvm.Throws(MissingSchemaException::class)
+  override fun get(fingerprint: AvroFingerprint): AvroSchema
+}
+
+internal fun missingSchemaException(fingerprint: AvroFingerprint) =
+  MissingSchemaException("Cannot resolve schema for fingerprint: $fingerprint[${fingerprint.value}]")

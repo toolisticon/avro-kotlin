@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro
 
 import _ktx.ResourceKtx.resourceUrl
+import io.toolisticon.kotlin.avro._ktx.KotlinKtx.head
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.logical.AvroLogicalType
@@ -8,8 +9,10 @@ import io.toolisticon.kotlin.avro.model.AvroType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
+import io.toolisticon.kotlin.avro.repository.AvroSchemaResolverMap
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
+import org.apache.avro.AvroRuntimeException
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -76,12 +79,42 @@ object AvroKotlin {
 
   fun avroType(schema: AvroSchema): AvroType = AvroType.avroType(schema)
 
+  fun <T : Any> loadClassForSchema(schema: AvroSchema): KClass<T> {
+    val nullableJavaClassClass: Class<*>? = specificData.getClass(schema.get())
+
+    @Suppress("UNCHECKED_CAST")
+    return if (nullableJavaClassClass != null)
+      nullableJavaClassClass.kotlin as KClass<T>
+    else throw AvroRuntimeException("Klass could not be found for ${schema.canonicalName.fqn}")
+  }
+
   @JvmStatic
   val genericData: GenericData get() = GenericData()
 
   @JvmStatic
   val specificData: SpecificData get() = SpecificData()
 
+  @JvmStatic
+  fun avroSchemaResolver(schemas: List<AvroSchema>): AvroSchemaResolverMap {
+    val (first, other) = schemas.head()
+    return avroSchemaResolver(first, *(other.toTypedArray()))
+  }
+
+  @JvmStatic
+  fun avroSchemaResolver(firstSchema: AvroSchema, vararg otherSchemas: AvroSchema): AvroSchemaResolverMap {
+    val store = buildMap<AvroFingerprint, AvroSchema> {
+      put(firstSchema.fingerprint, firstSchema)
+
+      if (otherSchemas.isNotEmpty()) {
+        putAll(otherSchemas.associateBy { it.fingerprint })
+      } else {
+        // in case we have a single schema, also provide this for key=NULL, so invoke works
+        put(AvroFingerprint.NULL, firstSchema)
+      }
+    }
+
+    return AvroSchemaResolverMap(store)
+  }
 
   fun canonicalName(namespace: String, name: String): CanonicalName = (namespace to name).toCanonicalName()
 
@@ -165,11 +198,6 @@ object AvroKotlin {
     )
   }
 
-  @JvmStatic
-  fun avroSchemaResolver(schema: Schema) = io.toolisticon.kotlin.avro.repository.avroSchemaResolver(
-    firstSchema = AvroSchema(schema)
-  )
-
   val avroLogicalTypes by lazy {
     LogicalTypes.getCustomRegisteredTypes().values.filterIsInstance<AvroLogicalType<*>>()
       .toList()
@@ -233,6 +261,4 @@ object AvroKotlin {
   }
 
   fun <T : Any> Result<List<T>?>.orEmpty(): List<T> = getOrNull() ?: emptyList()
-
-
 }
