@@ -46,4 +46,9 @@ value class AvroSchemaCompatibilityMap(
 
     return value.computeIfAbsent(key) { _ -> readerSchema.compatibleToReadFrom(writerSchema) }
   }
+
+  fun isCompatible(writerSchema: AvroFingerprint, readerSchema: AvroFingerprint): Boolean =
+    value.getOrDefault(AvroFingerprintPair(writerSchema, readerSchema), null)
+      ?.isCompatible
+      ?: false
 }
