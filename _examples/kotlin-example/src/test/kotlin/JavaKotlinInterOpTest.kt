@@ -1,10 +1,10 @@
 package io.toolisticon.kotlin.avro.example
 
 import io.toolisticon.example.bank.BankAccountCreated
+import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
 import io.toolisticon.kotlin.avro.example.customerid.CustomerId
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import org.assertj.core.api.Assertions.assertThat
@@ -54,6 +54,5 @@ internal class JavaKotlinInterOpTest {
     assertThat(decoded.accountId).isEqualTo(orig.accountId)
     assertThat(decoded.customerId).isEqualTo(orig.customerId)
     assertThat(decoded.initialBalance).isEqualTo(orig.initialBalance)
-
   }
 }

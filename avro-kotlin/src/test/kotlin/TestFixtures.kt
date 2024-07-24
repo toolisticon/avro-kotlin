@@ -5,6 +5,7 @@ import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.value.*
 import lib.test.event.BankAccountCreated
@@ -28,9 +29,11 @@ object TestFixtures {
 
   fun parseSchema(json: JsonString): Schema = Schema.Parser().parse(json.inputStream())
   fun loadSchema(resource: String): Schema = parseSchema(loadJsonString(resource))
+  fun loadAvroSchema(resource: String): AvroSchema = AvroSchema(loadSchema(resource))
 
   fun parseProtocol(json: JsonString): Protocol = Protocol.parse(json.inputStream())
   fun loadProtocol(resource: String): Protocol = parseProtocol(loadJsonString(resource))
+  fun loadAvroProtocol(resource: String): AvroProtocol = AvroProtocol(loadProtocol(resource))
 
   /**
    * this schema contains 5 types:
@@ -130,5 +133,35 @@ object TestFixtures {
     val JSON_AVSC: Schema = Schema.Parser().parse(
       resourceUrl("org.apache.avro/schema/json.avsc").openStream()
     )
+  }
+
+  object DummyEvents {
+    val jsonSchema01 = JsonString.of(
+      """
+      {
+        "type": "record",
+        "namespace": "upcaster.itest",
+        "name": "DummyEvent",
+        "revision": "1",
+        "fields": [
+          {
+            "name": "value01",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            }
+          }
+        ]
+      }
+    """.trimIndent()
+    )
+
+    val SCHEMA_EVENT_01: AvroSchema = AvroSchema.of(jsonSchema01)
+
+    val SCHEMA_EVENT_10 = AvroSchema.of(
+      JsonString.of("{\"type\":\"record\",\"name\":\"DummyEvent\",\"namespace\":\"upcaster.itest\",\"fields\":[{\"name\":\"value01\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value10\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"revision\":\"10\"}")
+    )
+
+    val registry = AvroKotlin.avroSchemaResolver(listOf(SCHEMA_EVENT_01, SCHEMA_EVENT_10))
   }
 }

@@ -5,6 +5,7 @@ import io.toolisticon.kotlin.avro.value.BinaryEncodedBytes
 import io.toolisticon.kotlin.avro.value.JsonString
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.apache.avro.io.DecoderFactory
 import org.apache.avro.io.EncoderFactory
 import org.apache.avro.specific.SpecificData
@@ -46,7 +47,9 @@ object AvroCodec {
   fun interface SingleObjectEncoder<TYPE> : Encoder<TYPE, SingleObjectEncodedBytes>
   fun interface SingleObjectDecoder<TYPE> : Decoder<SingleObjectEncodedBytes, TYPE>
 
+  fun interface GenericRecordEncoder<TYPE> : Encoder<TYPE, GenericRecord>
+  fun interface GenericRecordDecoder<TYPE> : Decoder<GenericRecord, TYPE>
+
   interface BinaryEncoder<TYPE> : Encoder<TYPE, BinaryEncodedBytes>
   interface BinaryDecoder<TYPE> : Decoder<BinaryEncodedBytes, TYPE>
-
 }

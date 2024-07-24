@@ -1,30 +1,30 @@
 package io.toolisticon.kotlin.avro.serialization.serializer
 
-import com.github.avrokotlin.avro4k.decoder.ExtendedDecoder
-import com.github.avrokotlin.avro4k.encoder.ExtendedEncoder
+import com.github.avrokotlin.avro4k.AvroDecoder
+import com.github.avrokotlin.avro4k.AvroEncoder
 import io.toolisticon.kotlin.avro.logical.StringLogicalType
 import io.toolisticon.kotlin.avro.logical.conversion.StringLogicalTypeConversion
-import kotlinx.serialization.SerializationException
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.PrimitiveKind
-import org.apache.avro.Schema
-import org.apache.avro.util.Utf8
 
+@OptIn(ExperimentalSerializationApi::class)
 abstract class StringLogicalTypeSerializer<LOGICAL : StringLogicalType, CONVERTED_TYPE : Any>(
   conversion: StringLogicalTypeConversion<LOGICAL, CONVERTED_TYPE>
 ) : AvroLogicalTypeSerializer<LOGICAL, String, CONVERTED_TYPE>(
   conversion = conversion,
   primitiveKind = PrimitiveKind.STRING
 ) {
-  override fun decodeAvroValue(schema: Schema, decoder: ExtendedDecoder): CONVERTED_TYPE {
-    val value = requireNotNull(decoder.decodeAny()) { "Can't deserialize null" }
+
+  override fun serializeAvro(encoder: AvroEncoder, value: CONVERTED_TYPE) {
+    return encoder.encodeString(conversion.toAvro(value))
+  }
+
+  override fun deserializeAvro(decoder: AvroDecoder): CONVERTED_TYPE {
+    val value = requireNotNull(decoder.decodeValue()) { "Can't deserialize null" }
     @Suppress("UNCHECKED_CAST")
-    return when(value::class) {
+    return when (value::class) {
       conversion.convertedType -> value as CONVERTED_TYPE
       else -> conversion.fromAvro(decoder.decodeString())
     }
-  }
-
-  override fun encodeAvroValue(schema: Schema, encoder: ExtendedEncoder, obj: CONVERTED_TYPE) {
-    return encoder.encodeString(conversion.toAvro(obj))
   }
 }
