@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.generator.logical
 
-import com.github.avrokotlin.avro4k.ScalePrecision
 import com.github.avrokotlin.avro4k.serializer.BigDecimalSerializer
 import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi

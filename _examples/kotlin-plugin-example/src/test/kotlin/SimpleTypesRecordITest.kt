@@ -2,8 +2,8 @@ package io.toolisticon.kotlin.avro.generator.test
 
 import io.toolisticon.avro.avro4k.schema.SimpleTypesRecord
 import io.toolisticon.avro.avro4k.schema.SimpleTypesRecordData
+import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization
 import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes

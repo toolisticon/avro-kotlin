@@ -1,7 +1,6 @@
 package io.toolisticon.kotlin.avro.generator
 
 import _ktx.ResourceKtx.resourceUrl
-import com.github.avrokotlin.avro4k.AvroName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asTypeName
@@ -10,6 +9,7 @@ import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.spi.MavenProperties
 import io.toolisticon.kotlin.generation.test.KotlinCodeGenerationTest
 import io.toolisticon.kotlin.generation.test.model.KotlinCompilationCommand
+import kotlinx.serialization.SerialName
 import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
@@ -54,7 +54,7 @@ internal class AvroKotlinGeneratorTest {
       ?.typeSpecs?.find { "SomeEnumData" == it.name }
     assertThat(someEnumData).isNotNull
 
-    val avroName = someEnumData!!.annotations.find { AvroName::class.asTypeName() == it.typeName }
+    val avroName = someEnumData!!.annotations.find { SerialName::class.asTypeName() == it.typeName }
 
     assertThat(avroName?.members?.first()).isEqualTo(CodeBlock.of("value = %S", "SomeEnum"))
 

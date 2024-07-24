@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.serialization.serializer
 
+import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
-import io.toolisticon.kotlin.avro.repository.avroSchemaResolver
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestIntLogicalType
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.avroSerialization
 import kotlinx.serialization.Serializable

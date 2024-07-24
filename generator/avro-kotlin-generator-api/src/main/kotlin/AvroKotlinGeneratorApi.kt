@@ -1,7 +1,6 @@
 package io.toolisticon.kotlin.avro.generator.api
 
-import com.github.avrokotlin.avro4k.AvroName
-import com.github.avrokotlin.avro4k.ScalePrecision
+import com.github.avrokotlin.avro4k.AvroDecimal
 import com.github.avrokotlin.avro4k.serializer.AvroSerializer
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -14,6 +13,7 @@ import io.toolisticon.kotlin.avro.value.Namespace
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildAnnotation
 import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpec
 import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpecSupplier
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
@@ -26,14 +26,14 @@ object AvroKotlinGeneratorApi {
   }
 
   data class ScalePrecisionAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
-    override fun spec(): KotlinAnnotationSpec = buildAnnotation(ScalePrecision::class) {
+    override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroDecimal::class) {
       addNumberMember("precision", precision)
       addNumberMember("scale", scale)
     }
   }
 
   data class AvroNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
-    override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroName::class) {
+    override fun spec(): KotlinAnnotationSpec = buildAnnotation(SerialName::class) {
       addStringMember("value", name)
     }
   }

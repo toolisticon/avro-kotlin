@@ -1,15 +1,18 @@
 # avro-kotlin
 
 Avro Kotlin provides a type- and null-safe type-system that encapsulates the apache-java avro-types and makes them 
-easily accessible from kotlin.
+easily accessible from kotlin. The mission is to become your one-stop lib when dealing with avro and kotlin.
 
 [![stable](https://img.shields.io/badge/lifecycle-STABLE-green.svg)](https://github.com/holisticon#open-source-lifecycle)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlinx serialization](https://img.shields.io/badge/kotlinx--serialization-1.7.1-blue?logo=kotlin)](https://github.com/Kotlin/kotlinx.serialization)
+[![Avro spec](https://img.shields.io/badge/avro%20spec-1.11.3-blue.svg?logo=apache)](https://avro.apache.org/docs/1.11.3/specification/)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.kotlin.avro/avro-kotlin-bom)
 
-Since Version 1.11.4.2 we use a multi-module build. The GroupId changed, best use the provided BOM:
-
+> [!NOTE]
+> Since Version 1.11.4.2 we use a multi-module build. The GroupId changed, best use the provided BOM:
 ```xml
 <dependency>
     <groupId>io.toolisticon.kotlin.avro</groupId>

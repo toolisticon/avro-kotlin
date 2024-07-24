@@ -1,6 +1,6 @@
 package io.toolisticon.kotlin.avro.generator.processor
 
-import com.github.avrokotlin.avro4k.AvroName
+
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.asTypeName
 import io.toolisticon.kotlin.avro.AvroParser
@@ -10,6 +10,7 @@ import io.toolisticon.kotlin.avro.generator.context.AvroKotlinGeneratorContextFa
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
+import kotlinx.serialization.SerialName
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -38,7 +39,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
 
     val typeSpec = builder.build()
 
-    val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == AvroName::class.asTypeName() }
+    val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == SerialName::class.asTypeName() }
 
     assertThat(avroName).isNotNull
     assertThat(avroName!!.members.first().toString()).isEqualTo("""value = "Bar"""")
@@ -76,7 +77,7 @@ internal class AddAvroAnnotationsToTypeSpecProcessorTest {
 
     val typeSpec = builder.build()
 
-    val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == AvroName::class.asTypeName() }
+    val avroName = typeSpec.get().annotations.firstOrNull { it.typeName == SerialName::class.asTypeName() }
 
     assertThat(avroName!!.members.first()).isEqualTo(CodeBlock.of("value = %S", "Foo"))
   }

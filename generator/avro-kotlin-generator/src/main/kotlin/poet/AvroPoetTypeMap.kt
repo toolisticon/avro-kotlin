@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.generator.poet
 
-import com.github.avrokotlin.avro4k.schema.extractNonNull
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.asClassName
@@ -13,6 +12,7 @@ import io.toolisticon.kotlin.avro.generator.api.processor.LogicalTypeMap
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.avro.value.Namespace
+import org.apache.avro.Schema
 
 @JvmInline
 value class AvroPoetTypeMap(
@@ -111,5 +111,12 @@ value class AvroPoetTypeMap(
 
   override fun get(hashCode: AvroHashCode): AvroPoetType = requireNotNull(map[hashCode]) { "type not found for hashCode=$hashCode" }
   override fun iterator(): Iterator<AvroPoetType> = map.values.iterator()
+
 }
 
+// this was removed in avro4k 2, c&p here to compile again, need to figure out how to replace
+@Deprecated("copy & paste from avro4k 1.10.1")
+internal fun Schema.extractNonNull(): Schema = when (this.type) {
+  Schema.Type.UNION -> this.types.filter { it.type != Schema.Type.NULL }.let { if(it.size > 1) Schema.createUnion(it) else it[0] }
+  else -> this
+}
