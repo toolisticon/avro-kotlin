@@ -239,23 +239,24 @@ object AvroSchemaChecks {
   val AvroSchema.isUnion: Boolean get() = get().isUnion
   val AvroSchema.isUnionType: Boolean get() = SchemaType.UNION == type && isUnion && unionTypes.isNotEmpty()
 
-
   /**
    * Check if we can decode using this schema if the encoder used
    * [writer] schema.
    *
    * @param writer - the schema used to encode data
-   * @return [SchemaCompatibility.SchemaPairCompatibility] with reader=this
+   * @return [AvroSchemaCompatibility] with reader=this
    */
-  fun AvroSchema.compatibleToReadFrom(writer: AvroSchema): SchemaCompatibility.SchemaPairCompatibility =
-    SchemaCompatibility.checkReaderWriterCompatibility(get(), writer.get())
+  fun AvroSchema.compatibleToReadFrom(writer: AvroSchema): AvroSchemaCompatibility = AvroSchemaCompatibility(
+    value = SchemaCompatibility.checkReaderWriterCompatibility(get(), writer.get())
+  )
 
   /**
    * Check data encoded using this schema could be decoded from [reader] schema.
    *
    * @param reader - the schema to decode the data
-   * @return [SchemaCompatibility.SchemaPairCompatibility] with writer=this
+   * @return [AvroSchemaCompatibility] with writer=this
    */
-  fun AvroSchema.compatibleToBeReadFrom(reader: AvroSchema): SchemaCompatibility.SchemaPairCompatibility =
-    SchemaCompatibility.checkReaderWriterCompatibility(reader.get(), get())
+  fun AvroSchema.compatibleToBeReadFrom(reader: AvroSchema) = AvroSchemaCompatibility(
+    value = SchemaCompatibility.checkReaderWriterCompatibility(reader.get(), get())
+  )
 }

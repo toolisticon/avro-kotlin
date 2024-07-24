@@ -5,6 +5,7 @@ import _ktx.ResourceKtx.loadJsonString
 import _ktx.ResourceKtx.resourceUrl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.value.*
 import lib.test.event.BankAccountCreated
@@ -28,9 +29,11 @@ object TestFixtures {
 
   fun parseSchema(json: JsonString): Schema = Schema.Parser().parse(json.inputStream())
   fun loadSchema(resource: String): Schema = parseSchema(loadJsonString(resource))
+  fun loadAvroSchema(resource: String): AvroSchema = AvroSchema(loadSchema(resource))
 
   fun parseProtocol(json: JsonString): Protocol = Protocol.parse(json.inputStream())
   fun loadProtocol(resource: String): Protocol = parseProtocol(loadJsonString(resource))
+  fun loadAvroProtocol(resource: String): AvroProtocol = AvroProtocol(loadProtocol(resource))
 
   /**
    * this schema contains 5 types:
