@@ -19,7 +19,8 @@
     <avro4k.version>1.10.1</avro4k.version>
     <commons-compress.version>1.26.2</commons-compress.version>
     <jackson.version>2.17.2</jackson.version>
-    <kotlin-code-generation.version>0.0.1</kotlin-code-generation.version>
+    <kotlin-code-generation.version>0.0.2-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME us release -->
+<!--    <kotlin-code-generation.version>0.0.1</kotlin-code-generation.version>-->
   </properties>
 
   <dependencyManagement>

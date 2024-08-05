@@ -1,15 +1,17 @@
 package io.toolisticon.kotlin.avro.generator.api.processor
 
 import io.toolisticon.kotlin.avro.generator.api.Avro4kSerializerKClass
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.SerializableWithAnnotation
-import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi
+import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.WithLogicalType
 import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpi
+import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
 import kotlin.reflect.KClass
 
 /**
@@ -17,22 +19,29 @@ import kotlin.reflect.KClass
  * also provides the necessary [DataClassParameterSpecProcessor] functionality to apply the type on properties.
  */
 abstract class AvroKotlinLogicalTypeDefinition(
-  val name: LogicalTypeName,
+  val logicalTypeName: LogicalTypeName,
   val convertedType: KClass<*>,
   val serializerType: Avro4kSerializerKClass,
   val allowedTypes: Set<SchemaType>,
 
-  override val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean = { ctx, field ->
+  val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean = { ctx, field ->
     val avroType = ctx[field.hashCode].avroType
     avroType is WithLogicalType
       && avroType.hasLogicalType()
-      && name == avroType.logicalTypeName
+      && logicalTypeName == avroType.logicalTypeName
       && allowedTypes.contains(avroType.schema.type)
   },
 
-  override val order: Int = AvroKotlinGeneratorSpi.DEFAULT_ORDER
 
-) : DataClassParameterSpecProcessor {
+  ) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+  contextType = SchemaDeclarationContext::class,
+  inputType = RecordField::class,
+  order = KotlinCodeGenerationSpi.DEFAULT_ORDER
+) {
+
+  //  contextType: KClass<CONTEXT>,
+//  inputType: KClass<INPUT>,
+//  order: Int = KotlinCodeGenerationSpi.DEFAULT_ORDER
   companion object {
 
     operator fun AvroKotlinLogicalTypeDefinition.invoke(
@@ -45,7 +54,7 @@ abstract class AvroKotlinLogicalTypeDefinition(
     }
   }
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
+  fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
     builder.addAnnotation(SerializableWithAnnotation(serializerType))
   }
 
@@ -63,5 +72,5 @@ abstract class AvroKotlinLogicalTypeDefinition(
 value class LogicalTypeMap(
   private val map: Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition>
 ) : Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition> by map {
-  constructor(spis: AvroKotlinGeneratorSpiList) : this(spis.filterIsInstance(AvroKotlinLogicalTypeDefinition::class).associateBy { it.name })
+  constructor(spis: AvroKotlinGeneratorSpiList) : this(spis.filterIsInstance(AvroKotlinLogicalTypeDefinition::class).associateBy { it.logicalTypeName })
 }

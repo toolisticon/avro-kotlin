@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.api.processor
 
-import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi
+import io.toolisticon.kotlin.generation.spi.processor.FileSpecProcessorList
+
 
 /**
  * Contains all possible processors.
@@ -12,11 +13,5 @@ interface AvroKotlinGeneratorProcessors {
 
   val typeSpecProcessors: TypeSpecProcessorList
 
-  val fileSpecProcessors: FileSpecProcessorList
+  val fileSpecProcessors: FileSpecProcessorList<*,*>
 }
-
-/**
- * Root interface of all processors. Used to load all implementations
- * via ServiceLoader/SPI.
- */
-sealed interface AvroKotlinGeneratorProcessor : AvroKotlinGeneratorSpi

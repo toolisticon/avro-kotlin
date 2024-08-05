@@ -2,7 +2,7 @@ package io.toolisticon.kotlin.avro.generator.processor
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.asClassName
 import io.toolisticon.kotlin.avro.generator.api.processor.DataClassParameterSpecProcessor
 import io.toolisticon.kotlin.avro.generator.api.processor.TypeSpecProcessor
@@ -36,18 +36,18 @@ class AddJavaAnnotationsByPropertyProcessor : TypeSpecProcessor, DataClassParame
   override val order = DEFAULT_ORDER
 
 
-  override val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean = { _, field ->
+  override val processDataClassParameterSpecPredicate: (AvroDeclarationContextBak, RecordField) -> Boolean = { _, field ->
     field.properties.contains(JavaAnnotationProperty.PROPERTY_KEY)
   }
 
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
+  override fun processDataClassParameterSpec(ctx: AvroDeclarationContextBak, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
     createAnnotationSpecs(field.properties).forEach {
       builder.addAnnotation(it)
     }
   }
 
-  override fun processTypeSpec(ctx: AvroDeclarationContext, type: AvroNamedType, typeSpecClassName: ClassName, builder: KotlinGeneratorTypeSpecBuilder<*, *>) {
+  override fun processTypeSpec(ctx: AvroDeclarationContextBak, type: AvroNamedType, typeSpecClassName: ClassName, builder: KotlinGeneratorTypeSpecBuilder<*, *>) {
     createAnnotationSpecs(type.properties).forEach {
       builder.builder {
         addAnnotation(it.get())

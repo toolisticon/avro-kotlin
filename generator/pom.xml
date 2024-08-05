@@ -4,8 +4,9 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-kotlin-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.11.6.0-SNAPSHOT</version>
+    <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>avro-generator-root</artifactId>
@@ -18,10 +19,6 @@
     <module>avro-kotlin-generator</module>
     <module>avro-kotlin-generator-maven-plugin</module>
   </modules>
-
-  <properties>
-    <kotlin-code-generation.version>0.0.1</kotlin-code-generation.version>
-  </properties>
 
   <dependencyManagement>
     <dependencies>

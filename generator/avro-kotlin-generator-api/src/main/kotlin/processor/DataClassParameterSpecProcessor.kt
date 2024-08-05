@@ -1,23 +1,24 @@
 package io.toolisticon.kotlin.avro.generator.api.processor
 
-import com.squareup.kotlinpoet.ParameterSpec
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
-import io.toolisticon.kotlin.generation.builder.KotlinParameterSpecBuilder
+import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
 
-/**
- * Process [ParameterSpec.Builder]s in the context of a data class.
- *
- * Mainly used to enrich parameters with annotations (like serializeWith, ...).
- */
-interface DataClassParameterSpecProcessor : AvroKotlinGeneratorProcessor {
 
-  val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean
+class DataClassParameterSpecProcessor : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+  contextType = SchemaDeclarationContext::class,
+  inputType = RecordField::class
+) {
 
-  fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder)
-
+  override fun invoke(
+    context: SchemaDeclarationContext,
+    input: RecordField?,
+    builder: KotlinConstructorPropertySpecBuilder
+  ): KotlinConstructorPropertySpecBuilder {
+    TODO("Not yet implemented")
+  }
 }
 
 @JvmInline
@@ -30,9 +31,9 @@ value class DataClassParameterSpecProcessorList(private val list: List<DataClass
   /**
    * Execute all processors if predicate allows it.
    */
-  operator fun invoke(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) = forEach {
-    if (it.processDataClassParameterSpecPredicate(ctx, field)) {
-      it.processDataClassParameterSpec(ctx, field, builder)
+  operator fun invoke(ctx: SchemaDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) = forEach {
+    if (it.test(ctx, field)) {
+      it.invoke(ctx, field, builder)
     }
   }
 }

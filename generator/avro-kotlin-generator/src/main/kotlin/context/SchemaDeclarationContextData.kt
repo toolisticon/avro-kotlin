@@ -4,9 +4,10 @@ import com.squareup.kotlinpoet.ClassName
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
-import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.processor.AvroKotlinGeneratorProcessors
 import io.toolisticon.kotlin.avro.generator.api.strategy.AvroKotlinGeneratorStrategies
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 
 data class SchemaDeclarationContextData(
   override val rootClassName: ClassName,
@@ -15,7 +16,8 @@ data class SchemaDeclarationContextData(
   override val properties: AvroKotlinGeneratorProperties,
   override val avroPoetTypes: AvroPoetTypes,
   override val processors: AvroKotlinGeneratorProcessors,
-  override val strategies: AvroKotlinGeneratorStrategies
+  override val strategies: AvroKotlinGeneratorStrategies,
+  override val registry: KotlinCodeGenerationSpiRegistry<SchemaDeclarationContext>
 ) : SchemaDeclarationContext {
 
 

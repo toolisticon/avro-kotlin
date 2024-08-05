@@ -1,14 +1,15 @@
-package io.toolisticon.kotlin.avro.generator.api
+package io.toolisticon.kotlin.avro.generator.api.context
 
 import com.squareup.kotlinpoet.ClassName
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
+import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
+import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.api.processor.AvroKotlinGeneratorProcessors
 import io.toolisticon.kotlin.avro.generator.api.strategy.AvroKotlinGeneratorStrategies
 import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
 
-/**
- * Each [io.toolisticon.avro.avro4k.generator.api.spi.Avro4kGeneratorProcessor] needs to know the context it is running in.
- */
 sealed interface AvroKotlinGeneratorContext<T : AvroDeclaration> {
   /**
    * The root class name of the [com.squareup.kotlinpoet.FileSpec] we are building.
@@ -58,21 +59,16 @@ sealed interface AvroKotlinGeneratorContext<T : AvroDeclaration> {
   fun avroType(hashCode: AvroHashCode) = get(hashCode).avroType
   fun typeName(hashCode: AvroHashCode) = get(hashCode).typeName
   fun className(hashCode: AvroHashCode) = typeName(hashCode) as ClassName
-
-//  fun classNames(namedType: AvroNamedType): Pair<ClassName, ClassName> =
 }
 
-/**
- * Generic definition of the context, use this if you implement processors that could work for [org.apache.avro.Schema] and [org.apache.avro.Protocol].
- */
 interface AvroDeclarationContext : AvroKotlinGeneratorContext<AvroDeclaration>
 
 /**
  * Specific definition of the context, use this if you implement processors that work only for [org.apache.avro.Schema].
  */
-interface SchemaDeclarationContext : AvroDeclarationContext
+interface SchemaDeclarationContext : AvroDeclarationContext, KotlinCodeGenerationContext<SchemaDeclarationContext>
 
 /**
  * Specific definition of the context, use this if you implement processors that work only for [org.apache.avro.Protocol].
  */
-interface ProtocolDeclarationContext : AvroDeclarationContext
+interface ProtocolDeclarationContext : AvroDeclarationContext, KotlinCodeGenerationContext<ProtocolDeclarationContext>

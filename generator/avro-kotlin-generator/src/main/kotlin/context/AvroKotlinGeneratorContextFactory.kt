@@ -5,7 +5,7 @@ import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.ProtocolDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.ProtocolDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.processor.AvroKotlinGeneratorProcessors
 import io.toolisticon.kotlin.avro.generator.api.strategy.AvroKotlinGeneratorStrategies
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
@@ -46,7 +46,7 @@ class AvroKotlinGeneratorContextFactory(
     )
   }
 
-  fun create(declaration: ProtocolDeclaration): ProtocolDeclarationContext {
+  fun create(declaration: ProtocolDeclaration): ProtocolDeclarationContextBak {
     val rootClassName = AvroKotlinGeneratorApi.rootClassName(declaration, properties)
 
     val avroPoetTypes: AvroPoetTypeMap = AvroPoetTypeMap.avroPoetTypeMap(

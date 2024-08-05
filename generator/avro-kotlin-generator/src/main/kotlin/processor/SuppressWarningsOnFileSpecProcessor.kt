@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.processor
 
 import com.squareup.kotlinpoet.ClassName
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.processor.AbstractFileSpecProcessor
 import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
@@ -19,7 +19,7 @@ class SuppressWarningsOnFileSpecProcessor(
    */
   constructor() : this(DEFAULT_TYPES)
 
-  override fun processTypeSpec(ctx: AvroDeclarationContext, fileSpecClassName: ClassName, builder: KotlinFileSpecBuilder) {
+  override fun processTypeSpec(ctx: AvroDeclarationContextBak, fileSpecClassName: ClassName, builder: KotlinFileSpecBuilder) {
     addSuppressAnnotation(ctx.properties, builder)
   }
 

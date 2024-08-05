@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.logical
 
 import com.github.avrokotlin.avro4k.serializer.BigDecimalSerializer
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi
 import io.toolisticon.kotlin.avro.generator.api.processor.AvroKotlinLogicalTypeDefinition
 import io.toolisticon.kotlin.avro.logical.BuiltInLogicalType
@@ -11,7 +11,6 @@ import io.toolisticon.kotlin.avro.model.WithLogicalType
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import org.apache.avro.LogicalTypes.Decimal
 import java.math.BigDecimal
-import java.util.*
 
 
 /**
@@ -49,7 +48,7 @@ class DecimalDefinition() : AvroKotlinLogicalTypeDefinition(
   allowedTypes = setOf(SchemaType.BYTES, SchemaType.STRING)
 ) {
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
+  override fun processDataClassParameterSpec(ctx: AvroDeclarationContextBak, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
     super.processDataClassParameterSpec(ctx, field, builder)
     val type = ctx.avroType(field.schema.hashCode)
 

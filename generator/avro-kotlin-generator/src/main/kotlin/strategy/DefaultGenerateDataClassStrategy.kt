@@ -1,10 +1,10 @@
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.kdoc
-import io.toolisticon.kotlin.avro.generator.api.ProtocolDeclarationContext
-import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.ProtocolDeclarationContextBak
+import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateDataClassStrategy
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContextData
 import io.toolisticon.kotlin.avro.model.*
@@ -18,15 +18,15 @@ import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
 
   override fun generateDataClass(
-    ctx: AvroDeclarationContext,
-    recordType: RecordType
+      ctx: AvroDeclarationContextBak,
+      recordType: RecordType
   ): KotlinDataClassSpec = when (ctx) {
-    is SchemaDeclarationContext -> generateDataClass(ctx, recordType)
-    is ProtocolDeclarationContext -> generateDataClass(ctx, recordType)
+    is SchemaDeclarationContextBak -> generateDataClass(ctx, recordType)
+    is ProtocolDeclarationContextBak -> generateDataClass(ctx, recordType)
     else -> throw IllegalStateException("has to be one of SchemaDeclaration or ProtocolDeclaration")
   }
 
-  fun generateDataClass(ctx: SchemaDeclarationContext, recordType: RecordType): KotlinDataClassSpec {
+  fun generateDataClass(ctx: SchemaDeclarationContextBak, recordType: RecordType): KotlinDataClassSpec {
     val className: ClassName = if (ctx.isRoot) ctx.rootClassName else ctx.className(recordType.hashCode)
 
     val dataClassBuilder = KotlinDataClassSpecBuilder.builder(className)
@@ -50,7 +50,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
     return dataClassBuilder.build()
   }
 
-  fun generateDataClass(ctx: ProtocolDeclarationContext, recordType: RecordType): KotlinDataClassSpec {
+  fun generateDataClass(ctx: ProtocolDeclarationContextBak, recordType: RecordType): KotlinDataClassSpec {
     val className = ctx.className(recordType.hashCode)
 
     val dataClassBuilder = KotlinDataClassSpecBuilder.builder(className)
@@ -69,7 +69,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
     return dataClassBuilder.build()
   }
 
-  fun generateSubTypes(nonRootCtx: AvroDeclarationContext, dataClassBuilder: KotlinDataClassSpecBuilder) {
+  fun generateSubTypes(nonRootCtx: AvroDeclarationContextBak, dataClassBuilder: KotlinDataClassSpecBuilder) {
     require(!nonRootCtx.isRoot) { "subTypes are non-root by definition." }
 
     val subTypesToGenerate = nonRootCtx.avroPoetTypes.filter {
@@ -90,7 +90,7 @@ class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
   }
 
 
-  private fun AvroDeclarationContext.nonRoot() = when (this) {
+  private fun AvroDeclarationContextBak.nonRoot() = when (this) {
     is SchemaDeclarationContextData -> this.copy(isRoot = false)
     else -> this
   }

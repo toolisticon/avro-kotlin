@@ -24,7 +24,8 @@ class AvroKotlinGeneratorServiceLoader(
     fun load(): AvroKotlinGeneratorServiceLoader {
       val spis: AvroKotlinGeneratorSpiList = AvroKotlinGeneratorSpiList(ServiceLoader.load(AvroKotlinGeneratorSpi::class.java)
         .toList()
-        .sortedBy { it.order })
+        .sortedBy { it.order }
+      )
 
       return AvroKotlinGeneratorServiceLoader(
         // strategies

@@ -2,7 +2,7 @@ package io.toolisticon.kotlin.avro.generator.processor
 
 
 import com.squareup.kotlinpoet.ClassName
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.avroClassName
 import io.toolisticon.kotlin.avro.generator.api.processor.AbstractTypeSpecProcessor
@@ -15,10 +15,10 @@ import org.apache.avro.specific.AvroGenerated
 class AddAvroAnnotationsToTypeSpecProcessor : AbstractTypeSpecProcessor(order = DEFAULT_ORDER) {
 
   override fun processTypeSpec(
-    ctx: AvroDeclarationContext,
-    type: AvroNamedType,
-    typeSpecClassName: ClassName,
-    builder: KotlinGeneratorTypeSpecBuilder<*, *>
+      ctx: AvroDeclarationContextBak,
+      type: AvroNamedType,
+      typeSpecClassName: ClassName,
+      builder: KotlinGeneratorTypeSpecBuilder<*, *>
   ) {
     builder.builder {
       addAnnotation(Serializable::class)

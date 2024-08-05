@@ -2,8 +2,7 @@ package io.toolisticon.kotlin.avro.generator.api.processor
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeSpec
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContext
-import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpi.Order.DEFAULT_ORDER
+import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinGeneratorSpiList
 import io.toolisticon.kotlin.avro.model.AvroNamedType
 import io.toolisticon.kotlin.generation.builder.KotlinGeneratorTypeSpecBuilder
