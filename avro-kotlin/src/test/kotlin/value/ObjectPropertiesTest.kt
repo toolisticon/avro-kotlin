@@ -21,7 +21,7 @@ internal class ObjectPropertiesTest {
   @Test
   fun `with properties and logicalType`() {
     val schema = primitiveSchema(
-      type = BYTES,
+      type = STRING,
       properties = ObjectProperties("xxx" to "value"),
       logicalType = LogicalTypes.uuid()
     )
