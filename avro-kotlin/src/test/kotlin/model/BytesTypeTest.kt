@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.model
 
 import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.SchemaType.STRING
 import io.toolisticon.kotlin.avro.model.SchemaType.BYTES
 import io.toolisticon.kotlin.avro.value.ObjectProperties
 import org.apache.avro.LogicalTypes
@@ -12,13 +13,13 @@ internal class BytesTypeTest {
   @Test
   fun `verify to string`() {
     val schema = primitiveSchema(
-      type = BYTES,
+      type = STRING,
       logicalType = LogicalTypes.uuid(),
       properties = ObjectProperties("foo" to 5)
     )
-    val type = BytesType(schema)
+    val type = StringType(schema)
 
-    assertThat(type).hasToString("BytesType(logicalType='uuid', properties={foo=5})")
+    assertThat(type).hasToString("StringType(logicalType='uuid', properties={foo=5})")
   }
 
   @Test
