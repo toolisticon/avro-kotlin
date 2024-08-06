@@ -1,0 +1,38 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SchemaContainingArrayTypes",
+  "type": "record",
+  "doc": "This is a record with array fields.",
+  "fields": [
+    {
+      "name": "stringArray",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "intArray",
+      "type": {
+        "type": "array",
+        "items": "int"
+      }
+    },
+    {
+      "name": "complexArray",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "Child",
+          "type": "record",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
