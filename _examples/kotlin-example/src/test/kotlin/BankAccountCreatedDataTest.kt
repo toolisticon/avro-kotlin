@@ -31,12 +31,7 @@ internal class BankAccountCreatedDataTest {
     val customerId = CustomerId.random()
 
     val event = BankAccountCreatedData(accountId, customerId, amount)
-    // val resolver = avroSchemaResolver(KotlinExample.avro.schema(BankAccountCreatedData::class))
-
     val record = KotlinExample.avro.toRecord(event)
-
-    // val json = GenericRecordCodec.encodeJson(record)
-    // val decodedRecord = GenericRecordCodec.decodeJson(json, KotlinExample.avro.schema(BankAccountCreatedData::class))
 
     assertThat(KotlinExample.avro.fromRecord(record, BankAccountCreatedData::class)).isEqualTo(event)
   }
