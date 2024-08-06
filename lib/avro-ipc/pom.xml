@@ -13,38 +13,6 @@
   <name>lib: ${project.artifactId}</name>
   <description>Replace outdated dependencies of org.apache.avro/avro-ipc.</description>
 
-  <!--  <dependencyManagement>-->
-  <!--    <dependencies>-->
-
-  <!--      -->
-
-
-  <!--      &lt;!&ndash; commons-compress: replaces transitive dependency of org.apache.avro:avro &ndash;&gt;-->
-  <!--      <dependency>-->
-  <!--        <groupId>org.apache.commons</groupId>-->
-  <!--        <artifactId>commons-compress</artifactId>-->
-  <!--        <version>${commons-compress.version}</version>-->
-  <!--      </dependency>-->
-
-  <!--      &lt;!&ndash; AVRO4K(${avro4k.version}) &ndash;&gt;-->
-  <!--      <dependency>-->
-  <!--        <groupId>com.github.avro-kotlin.avro4k</groupId>-->
-  <!--        <artifactId>avro4k-core</artifactId>-->
-  <!--        <version>${avro4k.version}</version>-->
-  <!--        <exclusions>-->
-  <!--          <exclusion>-->
-  <!--            <groupId>org.apache.avro</groupId>-->
-  <!--            <artifactId>avro</artifactId>-->
-  <!--          </exclusion>-->
-  <!--          <exclusion>-->
-  <!--            <groupId>org.xerial.snappy</groupId>-->
-  <!--            <artifactId>snappy-java</artifactId>-->
-  <!--          </exclusion>-->
-  <!--        </exclusions>-->
-  <!--      </dependency>-->
-  <!--    </dependencies>-->
-  <!--  </dependencyManagement>-->
-
   <dependencies>
 
     <!-- AVRO-IPC(${avro.version}) - without snappy -->
@@ -87,10 +55,6 @@
   </dependencies>
 
   <build>
-    <!-- configure to be an ordinary Java Project -->
-    <!--    <sourceDirectory>src/main/java</sourceDirectory>-->
-    <!--    <testSourceDirectory>src/test/java</testSourceDirectory>-->
-
     <plugins>
       <plugin>
         <!-- skip kotlin compiler -->
