@@ -37,16 +37,16 @@ class BytesLogicalTypeSerializerTest {
   @Disabled("find out why this one is failing")
   @Test
   fun `reads forth and back`() {
-    val record = avroSerialization.toRecord(data)
-    assertThat(avroSerialization.fromRecord(record, Data::class)).isEqualTo(data)
+    val record = avroSerialization.toGenericRecord(data)
+    assertThat(avroSerialization.fromGenericRecord(record, Data::class)).isEqualTo(data)
   }
 
   @Test
   fun `reads forth and back from already converted logical type`() {
     val passedRecord = GenericRecordCodec.decodeSingleObject(
-      singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(avroSerialization.toRecord(data)),
+      singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(avroSerialization.toGenericRecord(data)),
       readerSchema = avroSchemaResolver(avroSerialization.schema(Data::class)).invoke(),
     )
-    assertThat(avroSerialization.fromRecord(passedRecord, Data::class)).isEqualTo(data)
+    assertThat(avroSerialization.fromGenericRecord(passedRecord, Data::class)).isEqualTo(data)
   }
 }

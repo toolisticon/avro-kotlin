@@ -1,5 +1,7 @@
 package io.toolisticon.kotlin.avro.model.wrapper
 
+import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.AvroKotlin.formatter
 import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
 import io.toolisticon.kotlin.avro.model.EmptyType
 import io.toolisticon.kotlin.avro.model.SchemaType
@@ -8,6 +10,7 @@ import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.apache.avro.SchemaCompatibility
+import org.apache.avro.SchemaFormatter
 import java.io.File
 import java.io.InputStream
 import java.net.URL
@@ -133,7 +136,7 @@ class AvroSchema(
   override fun equals(other: Any?): Boolean = other != null && other is AvroSchema && hashCode.value == other.hashCode()
   override fun hashCode(): Int = hashCode.value
   override fun toString(): String = toString(false)
-  fun toString(pretty: Boolean): String = schema.toString(pretty)
+  fun toString(pretty: Boolean): String = formatter.format(this, pretty)
 
   val logicalTypeName: LogicalTypeName? = LogicalTypeNameProperty.from(properties)?.value
 

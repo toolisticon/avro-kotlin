@@ -29,9 +29,9 @@ internal class AvroKotlinSerializationTest {
     val foo = Foo("name")
 
     val encoded = avro.encodeSingleObject(foo)
+    avro.registerSchema(avro.schema(Foo::class))
 
     val decoded: Foo = avro.decodeFromSingleObject(
-      schemaResolver = avroSchemaResolver(avro.schema(Foo::class)),
       singleObjectEncodedBytes = encoded
     )
 

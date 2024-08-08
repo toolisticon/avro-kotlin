@@ -31,9 +31,9 @@ internal class BankAccountCreatedDataTest {
     val customerId = CustomerId.random()
 
     val event = BankAccountCreatedData(accountId, customerId, amount)
-    val record = KotlinExample.avro.toRecord(event)
+    val record = KotlinExample.avro.toGenericRecord(event)
 
-    assertThat(KotlinExample.avro.fromRecord(record, BankAccountCreatedData::class)).isEqualTo(event)
+    assertThat(KotlinExample.avro.fromGenericRecord(record, BankAccountCreatedData::class)).isEqualTo(event)
   }
 
   @Test
@@ -45,15 +45,15 @@ internal class BankAccountCreatedDataTest {
     val event = BankAccountCreatedData(accountId, customerId, amount)
     val resolver = AvroKotlin.avroSchemaResolver(KotlinExample.avro.schema(BankAccountCreatedData::class))
 
-    val record = KotlinExample.avro.toRecord(event)
+    val record = KotlinExample.avro.toGenericRecord(event)
 
-    assertThat(KotlinExample.avro.fromRecord(record, BankAccountCreatedData::class)).isEqualTo(event)
+    assertThat(KotlinExample.avro.fromGenericRecord(record, BankAccountCreatedData::class)).isEqualTo(event)
 
     // go down and run through SOE
 
     val singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(record)
     val recordDecodedFromBytes = GenericRecordCodec.decodeSingleObject(singleObjectEncodedBytes, resolver.invoke())
-    val deserializedEvent = AvroKotlinSerialization().fromRecord<BankAccountCreatedData>(recordDecodedFromBytes)
+    val deserializedEvent = AvroKotlinSerialization().fromGenericRecord<BankAccountCreatedData>(recordDecodedFromBytes)
     assertThat(deserializedEvent).isEqualTo(event)
   }
 }
