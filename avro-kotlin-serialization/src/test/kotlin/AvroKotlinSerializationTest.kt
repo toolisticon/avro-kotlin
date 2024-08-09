@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.serialization
 
-import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.serialization._test.BarString
 import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
@@ -28,12 +27,10 @@ internal class AvroKotlinSerializationTest {
   fun `encode and decoded single object encoded`() {
     val foo = Foo("name")
 
-    val encoded = avro.encodeSingleObject(foo)
+    val encoded = avro.encodeToSingleObjectEncoded(foo)
     avro.registerSchema(avro.schema(Foo::class))
 
-    val decoded: Foo = avro.decodeFromSingleObject(
-      singleObjectEncodedBytes = encoded
-    )
+    val decoded: Foo = avro.decodeFromSingleObjectEncoded(encoded = encoded)
 
     assertThat(decoded).isEqualTo(foo)
   }
@@ -42,9 +39,9 @@ internal class AvroKotlinSerializationTest {
   fun `enum from-to single object encoded`() {
     val data = DummyEnum.BAR
 
-    val soe = avro.singleObjectEncoder<DummyEnum>().encode(data)
+    val soe = avro.avro4kSingleObjectCodec.encoder<DummyEnum>().encode(data)
 
-    val decoded = avro.singleObjectDecoder<DummyEnum>().decode(soe)
+    val decoded = avro.avro4kSingleObjectCodec.decoder<DummyEnum>().decode(soe)
 
     assertThat(decoded).isEqualTo(data)
   }
@@ -64,12 +61,22 @@ internal class AvroKotlinSerializationTest {
     assertThat(avro[barStringSchema.fingerprint]).isEqualTo(schema)
 
     val data = BarString("foo")
-    val encoded = avro.singleObjectEncoder<BarString>().encode(data)
+    val encoded = avro.avro4kSingleObjectCodec.encoder<BarString>().encode(data)
 
-    val decoded = avro.singleObjectDecoder<BarString>().decode(encoded)
+    val decoded = avro.avro4kSingleObjectCodec.decoder<BarString>().decode(encoded)
 
     assertThat(decoded).isEqualTo(data)
   }
 
+  @Test
+  fun `deserialize with anonymous class`() {
+    val foo = Foo("name")
+    val encoded = avro.encodeToSingleObjectEncoded(foo)
+
+    val anym = Class.forName(Foo::class.qualifiedName!!)
+    println(anym)
+    val decoded = avro.decodeFromSingleObjectEncoded(encoded, anym.kotlin)
+    println(decoded)
+  }
 }
 

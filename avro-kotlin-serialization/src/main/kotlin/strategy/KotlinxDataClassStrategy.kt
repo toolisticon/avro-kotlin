@@ -13,10 +13,10 @@ class KotlinxDataClassStrategy(
 
   @Suppress("UNCHECKED_CAST")
   override fun <T : Any> deserialize(serializedType: KClass<*>, data: GenericRecord): T {
-    return avroKotlinSerialization.genericRecordDecoder(serializedType).decode(data) as T
+    return avroKotlinSerialization.avro4kGenericRecordCodec.decoder(serializedType).decode(data) as T
   }
 
   override fun <T : Any> serialize(data: T): GenericRecord {
-    return avroKotlinSerialization.genericRecordEncoder<T>().encode(data)
+    return avroKotlinSerialization.avro4kGenericRecordCodec.encoder<T>().encode(data)
   }
 }

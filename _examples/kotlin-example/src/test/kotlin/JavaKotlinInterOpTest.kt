@@ -49,7 +49,7 @@ internal class JavaKotlinInterOpTest {
       readerSchema = avro.schema(BankAccountCreatedData::class)
     )
 
-    val decoded = avro.fromGenericRecord(record, BankAccountCreatedData::class)
+    val decoded = avro.decodeFromGenericRecord(record, BankAccountCreatedData::class)
 
     assertThat(decoded.accountId).isEqualTo(orig.accountId)
     assertThat(decoded.customerId).isEqualTo(orig.customerId)
