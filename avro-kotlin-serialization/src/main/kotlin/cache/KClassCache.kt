@@ -5,13 +5,13 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
-class KClassCache() {
+class KClassCache() : AvroCache.ClassBySchemaCache{
 
   private val store = ConcurrentHashMap<AvroSchema, KClass<*>>()
 
-
   @Suppress("UNCHECKED_CAST")
-  operator fun <T : Any> get(schema: AvroSchema): KClass<T> = store.computeIfAbsent(schema) { key ->
+  override operator fun <T : Any> get(schema: AvroSchema): KClass<T> = store.computeIfAbsent(schema) { key ->
     AvroKotlin.loadClassForSchema<T>(key)
   } as KClass<T>
+
 }
