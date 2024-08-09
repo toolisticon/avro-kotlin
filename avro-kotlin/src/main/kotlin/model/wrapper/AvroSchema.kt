@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.model.wrapper
 
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.AvroKotlin.formatter
 import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
 import io.toolisticon.kotlin.avro.model.EmptyType
@@ -10,7 +9,6 @@ import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
 import org.apache.avro.SchemaCompatibility
-import org.apache.avro.SchemaFormatter
 import java.io.File
 import java.io.InputStream
 import java.net.URL
@@ -189,7 +187,6 @@ class AvroSchema(
       schema.valueType?.let { AvroSchema(it) }
     }.getOrNull()
   }
-
 
   fun getIndexNamed(name: String): Int = schema.getIndexNamed(name)
 

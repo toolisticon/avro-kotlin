@@ -87,13 +87,13 @@ object AvroKotlin {
 
   @Suppress("ClassName")
   object formatter {
-    val json: SchemaFormatter = JsonSchemaFormatter(false)
-    val jsonPretty: SchemaFormatter = JsonSchemaFormatter(true)
+    internal val json: SchemaFormatter = JsonSchemaFormatter(false)
+    internal val jsonPretty: SchemaFormatter = JsonSchemaFormatter(true)
 
     fun format(avroSchema: AvroSchema, pretty: Boolean = false): String = if (pretty) {
-      json.format(avroSchema.get())
-    } else {
       jsonPretty.format(avroSchema.get())
+    } else {
+      json.format(avroSchema.get())
     }
   }
 
