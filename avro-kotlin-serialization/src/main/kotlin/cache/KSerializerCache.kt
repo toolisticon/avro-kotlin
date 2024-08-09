@@ -5,7 +5,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import mu.KLogging
-import java.util.concurrent.ConcurrentHashMap
+import org.apache.avro.util.WeakIdentityHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
@@ -19,26 +19,27 @@ import kotlin.reflect.full.createType
  *
  * TODO: avro4k internally keeps st similar, it would be nice if their cache would be accessible, then we could use it here (or omit this class completely).
  */
-class KSerializerCache private constructor(
-  private val serializersModule: SerializersModule,
-  private val store: ConcurrentHashMap<KClass<*>, KSerializer<*>>
-) : Set<KClass<*>> by store.keys {
+class KSerializerCache (
+  private val serializersModule: SerializersModule
+) : AvroCache.SerializerByClassCache {
   companion object : KLogging()
 
-  constructor(serializersModule: SerializersModule) : this(serializersModule, ConcurrentHashMap())
+  private val store: WeakIdentityHashMap<KClass<*>, KSerializer<*>> = WeakIdentityHashMap()
 
   @Suppress("UNCHECKED_CAST")
-  operator fun <T : Any> get(klass: KClass<out T>): KSerializer<out T> = store.computeIfAbsent(klass) { key ->
-    require(key.isSerializable()) {"$klass is not serializable with kotlinx-serialization."}
+  override operator fun <T : Any> get(klass: KClass<out T>): KSerializer<T> = store.getOrPut(klass) {
+    require(klass.isSerializable()) { "$klass is not serializable with kotlinx-serialization." }
 
     // TODO: if we use SpecificRecords, we could derive the schema from the class directly
-    logger.trace { "add kserializer for $key." }
+    logger.trace { "add kserializer for $klass." }
 
     // TODO: createType takes a lot of optional args. We probably won't need them but at least we should check them.
-    val type: KType = key.createType()
+    val type: KType = klass.createType()
 
     serializersModule.serializer(type)
   } as KSerializer<T>
 
-  override fun toString() = "KSerializerCache(keys=${store.keys.sortedBy { it.simpleName }})"
+  fun keys(): Set<KClass<*>> = store.keys.sortedBy { it.simpleName }.toSet()
+
+  override fun toString() = "KSerializerCache(keys=${keys()})"
 }
