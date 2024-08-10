@@ -12,10 +12,7 @@ import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolverMap
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
-import org.apache.avro.AvroRuntimeException
-import org.apache.avro.LogicalTypes
-import org.apache.avro.Protocol
-import org.apache.avro.Schema
+import org.apache.avro.*
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericDatumWriter
@@ -86,6 +83,18 @@ object AvroKotlin {
     return if (nullableJavaClassClass != null)
       nullableJavaClassClass.kotlin as KClass<T>
     else throw AvroRuntimeException("Klass could not be found for ${schema.canonicalName.fqn}")
+  }
+
+  @Suppress("ClassName")
+  object formatter {
+    internal val json: SchemaFormatter = JsonSchemaFormatter(false)
+    internal val jsonPretty: SchemaFormatter = JsonSchemaFormatter(true)
+
+    fun format(avroSchema: AvroSchema, pretty: Boolean = false): String = if (pretty) {
+      jsonPretty.format(avroSchema.get())
+    } else {
+      json.format(avroSchema.get())
+    }
   }
 
   @JvmStatic
