@@ -22,16 +22,16 @@ class DoubleLogicalTypeSerializerTest {
 
   @Test
   fun `reads forth and back`() {
-    val record = avroSerialization.toRecord(data)
-    assertThat(avroSerialization.fromRecord(record, Data::class)).isEqualTo(data)
+    val record = avroSerialization.encodeToGenericRecord(data)
+    assertThat(avroSerialization.decodeFromGenericRecord(record, Data::class)).isEqualTo(data)
   }
 
   @Test
   fun `reads forth and back from already converted logical type`() {
     val passedRecord = GenericRecordCodec.decodeSingleObject(
-      singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(avroSerialization.toRecord(data)),
+      singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(avroSerialization.encodeToGenericRecord(data)),
       readerSchema = avroSchemaResolver(avroSerialization.schema(Data::class)).invoke(),
     )
-    assertThat(avroSerialization.fromRecord(passedRecord, Data::class)).isEqualTo(data)
+    assertThat(avroSerialization.decodeFromGenericRecord(passedRecord, Data::class)).isEqualTo(data)
   }
 }

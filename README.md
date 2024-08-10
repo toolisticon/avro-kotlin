@@ -9,6 +9,7 @@ easily accessible from kotlin. The mission is to become your one-stop lib when d
 [![Kotlinx serialization](https://img.shields.io/badge/kotlinx--serialization-1.7.1-blue?logo=kotlin)](https://github.com/Kotlin/kotlinx.serialization)
 [![Avro spec](https://img.shields.io/badge/avro%20spec-1.11.3-blue.svg?logo=apache)](https://avro.apache.org/docs/1.11.3/specification/)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)
+[![codecov](https://codecov.io/gh/toolisticon/avro-kotlin/graph/badge.svg?token=GmJClsqTUt)](https://codecov.io/gh/toolisticon/avro-kotlin)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 
 > [!NOTE]
