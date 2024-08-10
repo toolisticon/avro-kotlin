@@ -9,7 +9,7 @@ internal class Avro4kReflectionTest {
 
   @Test
   fun `read from cache`() {
-    val avro: Avro = Avro.Default
+    val avro: Avro = Avro {}
     assertThat(avro.schemaCache()).isEmpty()
 
     val schema = avro.schema(BarString.serializer().descriptor)
