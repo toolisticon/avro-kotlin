@@ -37,7 +37,7 @@ class SingleObjectEncodedBytes private constructor(
       }
     })
 
-    fun of(bytes: ByteArrayValue) = SingleObjectEncodedBytes(bytes.value).also { requireNotNull(it.fingerprint) }
+    fun of(bytes: ByteArrayValue) = SingleObjectEncodedBytes(bytes.value)
 
     fun of(bytes: ByteBuffer) = of(ByteArrayValue(bytes))
 
@@ -46,9 +46,7 @@ class SingleObjectEncodedBytes private constructor(
     fun of(bytes: ByteArray) = of(ByteArrayValue(bytes))
   }
 
-  constructor(fingerprint: AvroFingerprint, payload: BinaryEncodedBytes) : this(value = AvroHeaderBytes.value + fingerprint.byteValue.value + payload.value) {
-    require(this.fingerprint == fingerprint)
-  }
+  constructor(fingerprint: AvroFingerprint, payload: BinaryEncodedBytes) : this(value = AvroHeaderBytes.value + fingerprint.byteValue.value + payload.value)
 
   override val hex: HexString by lazy { HexString.of(value) }
 
