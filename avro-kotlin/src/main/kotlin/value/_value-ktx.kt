@@ -36,7 +36,7 @@ interface ByteArrayValueType : ValueType<ByteArray>, WithHexString {
    */
   val size: Int get() = value.size
 
-  operator fun get(index: Int) = value[index]
+  operator fun get(index: Int): Byte = value[index]
 }
 
 
