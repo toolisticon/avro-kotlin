@@ -10,7 +10,6 @@ import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
 import io.toolisticon.kotlin.avro.value.Name.Companion.toName
 import org.assertj.core.api.Assertions.assertThat
 import org.javamoney.moneta.Money
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 
@@ -60,7 +59,6 @@ internal class BankAccountCreatedDataTest {
   }
 
   @Test
-  @Disabled("fails, we cannot load class by fqn when we use *Data suffix")
   fun `serialize single object encoded`() {
     val amount = Money.of(10, "EUR")
     val accountId = UUID.randomUUID()
@@ -70,9 +68,7 @@ internal class BankAccountCreatedDataTest {
 
     val soeb = avro.encodeToSingleObjectEncoded(event)
 
-    println(avro.schema(BankAccountCreatedData::class))
-
-    val decoded = avro.decodeFromSingleObjectEncoded<BankAccountCreatedData>(soeb)
+    val decoded = avro.decodeFromSingleObjectEncoded(soeb, BankAccountCreatedData::class)
     assertThat(decoded).isEqualTo(event)
   }
 }
