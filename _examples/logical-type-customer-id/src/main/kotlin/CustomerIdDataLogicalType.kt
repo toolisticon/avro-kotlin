@@ -19,7 +19,6 @@ object CustomerIdDataLogicalType : StringLogicalType(name = "customer-id-data".t
 
   class CustomerIdDataSerializer : StringLogicalTypeSerializer<CustomerIdDataLogicalType, CustomerIdData>(CustomerIdDataConversion())
 
-
   class CustomerIdDataSerializerModuleFactory : AvroSerializerModuleFactory {
     override fun invoke(): SerializersModule = SerializersModule {
       contextual(CustomerIdData::class, CustomerIdDataSerializer())

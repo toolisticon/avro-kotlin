@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.value
 
 import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.AvroKotlin.formatter.jsonPretty
 import io.toolisticon.kotlin.avro.model.SchemaType
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -30,7 +31,7 @@ value class JsonString private constructor(override val value: String) : ValueTy
       }
       // all other schema ar valid json
       else {
-        schema.toString(true)
+        jsonPretty.format(schema)
       }
     }
 

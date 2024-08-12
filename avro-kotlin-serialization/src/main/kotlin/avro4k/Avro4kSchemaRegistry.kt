@@ -11,10 +11,10 @@ import org.apache.avro.message.MissingSchemaException
  * This registry implements this requirement using our own [AvroSchemaResolver].
  */
 @JvmInline
-value class Avro4kSchemaRegistry(private val schemaResolver: AvroSchemaResolver) : (Long) -> Schema?{
+value class Avro4kSchemaRegistry(private val schemaResolver: AvroSchemaResolver) : (Long) -> Schema? {
 
   override fun invoke(fingerprint: Long): Schema? = try {
-      schemaResolver.findByFingerprint(fingerprint)
+    schemaResolver.findByFingerprint(fingerprint)
   } catch (e: MissingSchemaException) {
     null
   }
