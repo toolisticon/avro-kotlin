@@ -1,8 +1,8 @@
 package io.toolisticon.kotlin.avro.generator.logical
 
 import com.github.avrokotlin.avro4k.serializer.BigDecimalSerializer
-import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi
+import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.api.processor.AvroKotlinLogicalTypeDefinition
 import io.toolisticon.kotlin.avro.logical.BuiltInLogicalType
 import io.toolisticon.kotlin.avro.model.RecordField
@@ -42,13 +42,13 @@ import java.math.BigDecimal
  */
 // FIXME @AutoService(Avro4kLogicalTypeDefinition::class)
 class DecimalDefinition() : AvroKotlinLogicalTypeDefinition(
-  name = BuiltInLogicalType.DECIMAL.logicalTypeName,
+  logicalTypeName = BuiltInLogicalType.DECIMAL.logicalTypeName,
   convertedType = BigDecimal::class,
   serializerType = BigDecimalSerializer::class,
   allowedTypes = setOf(SchemaType.BYTES, SchemaType.STRING)
 ) {
 
-  override fun processDataClassParameterSpec(ctx: AvroDeclarationContextBak, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
+  fun invoke(ctx: AvroDeclarationContext, field: RecordField, builder: KotlinConstructorPropertySpecBuilder) {
     super.processDataClassParameterSpec(ctx, field, builder)
     val type = ctx.avroType(field.schema.hashCode)
 

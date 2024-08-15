@@ -4,14 +4,19 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-generator-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.12.2.0-SNAPSHOT</version>
+    <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro.generator</groupId>
-  <artifactId>avro-kotlin-generator-api</artifactId>
-  <name>generator: ${project.artifactId}</name>
-  <description>The API of the generator. Use to define custom generator behaviour</description>
+  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <artifactId>avro-kotlin-generator</artifactId>
+  <name>${project.artifactId}</name>
+
+  <properties>
+    <!-- needed for MavenProperties -->
+<!--    <avro-kotlin-generator.version>${project.version}</avro-kotlin-generator.version>-->
+  </properties>
 
   <dependencies>
     <dependency>
@@ -20,6 +25,18 @@
       <version>${project.version}</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.generation</groupId>
+      <artifactId>kotlin-code-generation</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.toolisticon.kotlin.avro.test</groupId>
+      <artifactId>avro-kotlin-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -32,6 +49,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.codehaus.mojo</groupId>-->
+<!--        <artifactId>properties-maven-plugin</artifactId>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>

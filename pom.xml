@@ -33,7 +33,11 @@
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
 
-    <module>generator</module>
+    <module>avro-kotlin-generator</module>
+
+
+
+<!--    <module>generator</module>-->
   </modules>
 
   <!-- this is the maven root, all dependencies have to be declared in the concrete modules, using avro-kotlin-parent -->

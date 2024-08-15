@@ -8,7 +8,7 @@ import java.time.Instant
 
 // FIXME @AutoService(Avro4kLogicalTypeDefinition::class)
 class TimestampMicrosDefinition : AvroKotlinLogicalTypeDefinition(
-  name = BuiltInLogicalType.TIMESTAMP_MICROS.logicalTypeName,
+  logicalTypeName = BuiltInLogicalType.TIMESTAMP_MICROS.logicalTypeName,
   convertedType = Instant::class,
   serializerType = InstantToMicroSerializer::class,
   allowedTypes = setOf(SchemaType.LONG)

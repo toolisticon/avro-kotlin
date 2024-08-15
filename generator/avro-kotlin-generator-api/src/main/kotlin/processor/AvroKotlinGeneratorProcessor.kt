@@ -1,5 +1,9 @@
 package io.toolisticon.kotlin.avro.generator.api.processor
 
+import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
+import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessorList
+import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessorList
+import io.toolisticon.kotlin.generation.spi.processor.EnumClassSpecProcessorList
 import io.toolisticon.kotlin.generation.spi.processor.FileSpecProcessorList
 
 
@@ -9,9 +13,10 @@ import io.toolisticon.kotlin.generation.spi.processor.FileSpecProcessorList
  */
 interface AvroKotlinGeneratorProcessors {
   val logicalTypes: LogicalTypeMap
-  val dataClassParameterSpecProcessors: DataClassParameterSpecProcessorList
+  val dataClassParameterSpecProcessors: ConstructorPropertySpecProcessorList<AvroDeclarationContext, *>
 
-  val typeSpecProcessors: TypeSpecProcessorList
+  val dataClassSpecProcessors: DataClassSpecProcessorList<AvroDeclarationContext, *>
+  val enumClassSpecProcessors: EnumClassSpecProcessorList<AvroDeclarationContext, *>
 
-  val fileSpecProcessors: FileSpecProcessorList<*,*>
+  val fileSpecProcessors: FileSpecProcessorList<AvroDeclarationContext, *>
 }

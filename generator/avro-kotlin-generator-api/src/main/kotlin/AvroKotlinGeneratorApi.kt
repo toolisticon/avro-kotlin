@@ -19,25 +19,6 @@ import kotlin.reflect.KClass
 
 object AvroKotlinGeneratorApi {
 
-  data class SerializableWithAnnotation(val serializerClass: Avro4kSerializerKClass) : KotlinAnnotationSpecSupplier {
-    override fun spec(): KotlinAnnotationSpec = buildAnnotation(Serializable::class) {
-      addKClassMember("with", serializerClass)
-    }
-  }
-
-  data class ScalePrecisionAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
-    override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroDecimal::class) {
-      addNumberMember("precision", precision)
-      addNumberMember("scale", scale)
-    }
-  }
-
-  data class AvroNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
-    override fun spec(): KotlinAnnotationSpec = buildAnnotation(SerialName::class) {
-      addStringMember("value", name)
-    }
-  }
-
   fun rootClassName(avroDeclaration: AvroDeclaration, properties: AvroKotlinGeneratorProperties? = null) = avroClassName(
     namespace = avroDeclaration.namespace,
     name = avroDeclaration.name,

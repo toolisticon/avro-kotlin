@@ -15,7 +15,7 @@ import java.util.*
  */
 // FIXME @AutoService(Avro4kLogicalTypeDefinition::class)
 class UuidDefinition : AvroKotlinLogicalTypeDefinition(
-  name = BuiltInLogicalType.UUID.logicalTypeName,
+  logicalTypeName = BuiltInLogicalType.UUID.logicalTypeName,
   convertedType = UUID::class,
   serializerType = UUIDSerializer::class,
   allowedTypes = setOf(SchemaType.STRING)

@@ -3,6 +3,8 @@ package io.toolisticon.kotlin.avro.generator
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.api.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.context.AvroKotlinGeneratorContextFactory
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
@@ -22,12 +24,12 @@ class AvroKotlinGenerator(
   )
 
   fun generate(declaration: SchemaDeclaration): KotlinFileSpec {
-    val ctx = contextFactory.create(declaration)
+    val ctx = contextFactory.create(declaration) as SchemaDeclarationContext
     val recordType = declaration.recordType
 
     val fileSpecBuilder = KotlinFileSpecBuilder.builder(ctx.rootClassName)
 
-    val dataClass = ctx.strategies.generateDataClassStrategy.generateDataClass(ctx, recordType)
+    val dataClass = ctx.strategies.generateDataClassStrategy.invoke(ctx, recordType)
 
     ctx.processors.fileSpecProcessors(ctx, ctx.rootClassName, fileSpecBuilder)
 

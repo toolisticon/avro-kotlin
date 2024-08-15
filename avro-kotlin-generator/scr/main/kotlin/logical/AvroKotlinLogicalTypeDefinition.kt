@@ -1,9 +1,7 @@
-package io.toolisticon.kotlin.avro.generator.api.processor
+package io.toolisticon.kotlin.avro.generator.logical
 
-import io.toolisticon.kotlin.avro.generator.api.Avro4kSerializerKClass
-import io.toolisticon.kotlin.avro.generator.api.context.AvroDeclarationContext
-import io.toolisticon.kotlin.avro.generator.api.context.SchemaDeclarationContext
-import io.toolisticon.kotlin.avro.generator.api.spi.AvroKotlinCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.Avro4kSerializerKClass
+import io.toolisticon.kotlin.avro.generator.context.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.WithLogicalType
@@ -12,6 +10,7 @@ import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBui
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpi
 import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
 import kotlin.reflect.KClass
+
 
 /**
  * A logical type definition is a special kind of [Avro4kGeneratorProcessor] as it defines the attributes required to identity and intepret a logical type but
@@ -23,7 +22,7 @@ abstract class AvroKotlinLogicalTypeDefinition(
   val serializerType: Avro4kSerializerKClass,
   val allowedTypes: Set<SchemaType>,
 
-  val processDataClassParameterSpecPredicate: (AvroDeclarationContext, RecordField) -> Boolean = { ctx, field ->
+  val processDataClassParameterSpecPredicate: (AvroDeclarationContext<*>, RecordField) -> Boolean = { ctx, field ->
     val avroType = ctx[field.hashCode].avroType
     avroType is WithLogicalType
       && avroType.hasLogicalType()
@@ -32,14 +31,14 @@ abstract class AvroKotlinLogicalTypeDefinition(
   },
 
 
-  ) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
-  contextType = SchemaDeclarationContext::class,
+  ) : ConstructorPropertySpecProcessor<AvroDeclarationContext<*>, RecordField>(
+  contextType = AvroDeclarationContext::class,
   inputType = RecordField::class,
   order = KotlinCodeGenerationSpi.DEFAULT_ORDER
 ) {
 
   override fun invoke(
-    context: SchemaDeclarationContext,
+    context: AvroDeclarationContext<*>,
     input: RecordField?,
     builder: KotlinConstructorPropertySpecBuilder
   ): KotlinConstructorPropertySpecBuilder {
@@ -54,13 +53,4 @@ abstract class AvroKotlinLogicalTypeDefinition(
     ", processDataClassParameterSpecPredicate=$processDataClassParameterSpecPredicate" +
     ")"
 
-}
-
-@JvmInline
-value class LogicalTypeMap(
-  private val map: Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition>
-) : Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition> by map {
-  constructor(registry: AvroKotlinCodeGenerationSpiRegistry) : this(registry.getProcessors().filterIsInstance<AvroKotlinLogicalTypeDefinition>()
-    .associateBy { it.logicalTypeName }
-  )
 }

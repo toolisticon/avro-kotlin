@@ -5,7 +5,7 @@ import io.toolisticon.kotlin.avro.generator.api.AvroDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.kdoc
 import io.toolisticon.kotlin.avro.generator.api.ProtocolDeclarationContextBak
 import io.toolisticon.kotlin.avro.generator.api.SchemaDeclarationContextBak
-import io.toolisticon.kotlin.avro.generator.api.strategy.AbstractGenerateDataClassStrategy
+import io.toolisticon.kotlin.avro.generator.api.strategy.GenerateDataClassStrategy
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContextData
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
@@ -15,7 +15,7 @@ import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 /**
  *
  */
-class DefaultGenerateDataClassStrategy : AbstractGenerateDataClassStrategy() {
+class DefaultGenerateDataClassStrategy : GenerateDataClassStrategy() {
 
   override fun generateDataClass(
       ctx: AvroDeclarationContextBak,
