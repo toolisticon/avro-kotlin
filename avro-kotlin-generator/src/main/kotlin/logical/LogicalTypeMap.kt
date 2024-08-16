@@ -1,6 +1,6 @@
 package io.toolisticon.kotlin.avro.generator.logical
 
-import io.toolisticon.kotlin.avro.generator.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.value.LogicalTypeName
 
 
@@ -8,7 +8,7 @@ import io.toolisticon.kotlin.avro.value.LogicalTypeName
 value class LogicalTypeMap(
   private val map: Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition>
 ) : Map<LogicalTypeName, AvroKotlinLogicalTypeDefinition> by map {
-  constructor(registry: AvroCodeGenerationSpiRegistry) : this(registry.getProcessors().filterIsInstance<AvroKotlinLogicalTypeDefinition>()
+  constructor(registry: AvroCodeGenerationSpiRegistry) : this(registry.processors.filterIsInstance<AvroKotlinLogicalTypeDefinition>()
     .associateBy { it.logicalTypeName }
   )
 }

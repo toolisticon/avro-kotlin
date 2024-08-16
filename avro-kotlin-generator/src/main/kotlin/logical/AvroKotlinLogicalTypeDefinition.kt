@@ -1,7 +1,9 @@
 package io.toolisticon.kotlin.avro.generator.logical
 
+import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.Avro4kSerializerKClass
 import io.toolisticon.kotlin.avro.generator.context.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.WithLogicalType
@@ -16,6 +18,7 @@ import kotlin.reflect.KClass
  * A logical type definition is a special kind of [Avro4kGeneratorProcessor] as it defines the attributes required to identity and intepret a logical type but
  * also provides the necessary [DataClassParameterSpecProcessor] functionality to apply the type on properties.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroKotlinLogicalTypeDefinition(
   val logicalTypeName: LogicalTypeName,
   val convertedType: KClass<*>,
@@ -31,14 +34,14 @@ abstract class AvroKotlinLogicalTypeDefinition(
   },
 
 
-  ) : ConstructorPropertySpecProcessor<AvroDeclarationContext<*>, RecordField>(
-  contextType = AvroDeclarationContext::class,
+  ) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+  contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class,
   order = KotlinCodeGenerationSpi.DEFAULT_ORDER
 ) {
 
   override fun invoke(
-    context: AvroDeclarationContext<*>,
+    context: SchemaDeclarationContext,
     input: RecordField?,
     builder: KotlinConstructorPropertySpecBuilder
   ): KotlinConstructorPropertySpecBuilder {

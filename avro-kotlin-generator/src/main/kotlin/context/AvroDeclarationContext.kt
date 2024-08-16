@@ -7,15 +7,13 @@ import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.FileName
-import io.toolisticon.kotlin.generation.spi.AbstractKotlinCodeGenerationContext
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 
 /**
  * The generator context, holds all data required for strategies and processors to do their work.
  * Also knows the registry of existing strategies and processors.
  */
-sealed interface AvroDeclarationContext<T : AvroDeclaration>: KotlinCodeGenerationContext<AvroDeclarationContext<*>> {
+sealed interface AvroDeclarationContext<T : AvroDeclaration> {
 
   /**
    * The root class name of the [com.squareup.kotlinpoet.FileSpec] we are building.

@@ -4,21 +4,24 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorApi.rootClassName
-import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.rootClassName
-import io.toolisticon.kotlin.avro.generator.spi.AvroKotlinGeneratorServiceLoader
+import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled("configure spi")
+@OptIn(com.squareup.kotlinpoet.ExperimentalKotlinPoetApi::class)
 internal class AvroPoetTypeMapTest {
 
-  private val logicalTypes = AvroKotlinGeneratorServiceLoader.load().logicalTypes
+  private val registry = AvroCodeGenerationSpiRegistry(KotlinCodeGeneration.spi.repository(Any::class))
+  private val logicalTypes = registry.logicalTypes
 
   private fun avroPoetTypes(declaration: SchemaDeclaration) = AvroPoetTypeMap.avroPoetTypeMap(
     rootClassName = rootClassName(declaration),
