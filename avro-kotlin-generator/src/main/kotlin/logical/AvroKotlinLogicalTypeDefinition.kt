@@ -2,7 +2,6 @@ package io.toolisticon.kotlin.avro.generator.logical
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.Avro4kSerializerKClass
-import io.toolisticon.kotlin.avro.generator.context.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.SchemaType
@@ -11,6 +10,7 @@ import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpi
 import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
+import io.toolisticon.kotlin.generation.support.ContextualAnnotation
 import kotlin.reflect.KClass
 
 
@@ -24,36 +24,31 @@ abstract class AvroKotlinLogicalTypeDefinition(
   val convertedType: KClass<*>,
   val serializerType: Avro4kSerializerKClass,
   val allowedTypes: Set<SchemaType>,
-
-  val processDataClassParameterSpecPredicate: (AvroDeclarationContext<*>, RecordField) -> Boolean = { ctx, field ->
-    val avroType = ctx[field.hashCode].avroType
-    avroType is WithLogicalType
-      && avroType.hasLogicalType()
-      && logicalTypeName == avroType.logicalTypeName
-      && allowedTypes.contains(avroType.schema.type)
-  },
-
-
-  ) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class,
   order = KotlinCodeGenerationSpi.DEFAULT_ORDER
 ) {
 
-  override fun invoke(
-    context: SchemaDeclarationContext,
-    input: RecordField?,
-    builder: KotlinConstructorPropertySpecBuilder
-  ): KotlinConstructorPropertySpecBuilder {
-    TODO("Not yet implemented")
+  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = when (input) {
+    is RecordField -> {
+      val avroType = ctx[input.hashCode].avroType
+      avroType is WithLogicalType && avroType.hasLogicalType() && logicalTypeName == avroType.logicalTypeName && allowedTypes.contains(avroType.schema.type)
+    }
+
+    else -> false
   }
 
-  override fun toString() = "Avro4kLogicalTypeDefinition(" +
-    "name=$name" +
-    ", convertedType=$convertedType" +
-    ", serializerType=$serializerType" +
-    ", allowedTypes=$allowedTypes" +
-    ", processDataClassParameterSpecPredicate=$processDataClassParameterSpecPredicate" +
-    ")"
+  override fun invoke(
+    context: SchemaDeclarationContext, input: RecordField?, builder: KotlinConstructorPropertySpecBuilder
+  ): KotlinConstructorPropertySpecBuilder {
+    if (test(context, input)) {
+      builder.addAnnotation(ContextualAnnotation)
+    }
+    return builder
+  }
+
+  override fun toString() =
+    "Avro4kLogicalTypeDefinition(name=$name, convertedType=$convertedType, serializerType=$serializerType, allowedTypes=$allowedTypes)"
 
 }

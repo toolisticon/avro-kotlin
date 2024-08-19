@@ -1,16 +1,17 @@
 package io.toolisticon.kotlin.avro.generator.context
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.generation.context.AbstractKotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [ProtocolDeclaration].
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 class ProtocolDeclarationContext(
   registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,

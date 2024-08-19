@@ -1,19 +1,24 @@
 package io.toolisticon.kotlin.avro.generator.context
 
 import com.squareup.kotlinpoet.ClassName
-import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
+import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.model.RecordField
+import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.context.AbstractKotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
+import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessorList
+import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessorList
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 class SchemaDeclarationContext(
   registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,
@@ -43,9 +48,11 @@ class SchemaDeclarationContext(
         declaration = declaration,
       )
     }
-
   }
 
   override val contextType = SchemaDeclarationContext::class
 
+  fun dataClassProcessors() : DataClassSpecProcessorList<SchemaDeclarationContext, RecordType> = DataClassSpecProcessorList.of(registry)
+
+  fun constructorPropertyProcessors() : ConstructorPropertySpecProcessorList<SchemaDeclarationContext, RecordField> = ConstructorPropertySpecProcessorList.of(registry)
 }

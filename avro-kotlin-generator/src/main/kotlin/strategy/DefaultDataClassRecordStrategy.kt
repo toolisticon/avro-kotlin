@@ -22,7 +22,7 @@ class DefaultDataClassRecordStrategy : DataClassSpecStrategy<SchemaDeclarationCo
       val typeName = context[field.hashCode].suffixedTypeName
 
       KotlinConstructorPropertySpecBuilder.builder(name = field.name.value, typeName).apply {
-        // context.processors.dataClassParameterSpecProcessors(context, field, this)
+        context.constructorPropertyProcessors()(context, field, this)
       }
     }
 //
@@ -32,6 +32,7 @@ class DefaultDataClassRecordStrategy : DataClassSpecStrategy<SchemaDeclarationCo
 //
 //    ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
 
+    context.dataClassProcessors().invoke(context, input, dataClassBuilder)
     parameterSpecs.forEach(dataClassBuilder::addConstructorProperty)
 
     return dataClassBuilder.build()

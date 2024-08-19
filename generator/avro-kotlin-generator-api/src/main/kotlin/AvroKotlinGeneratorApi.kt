@@ -19,51 +19,6 @@ import kotlin.reflect.KClass
 
 object AvroKotlinGeneratorApi {
 
-  fun rootClassName(avroDeclaration: AvroDeclaration, properties: AvroKotlinGeneratorProperties? = null) = avroClassName(
-    namespace = avroDeclaration.namespace,
-    name = avroDeclaration.name,
-    properties = properties
-  )
-
-  fun avroClassName(namespace: Namespace, name: Name, properties: AvroKotlinGeneratorProperties? = null) = ClassName(
-    packageName = namespace.value,
-    simpleNames = listOf((name.suffix(properties?.schemaTypeSuffix)).value)
-  )
-
-  fun avroClassName(namedType: AvroNamedType, properties: AvroKotlinGeneratorProperties? = null): ClassName = avroClassName(
-    namespace = namedType.namespace ?: Namespace(""),
-    name = namedType.name,
-    properties = properties
-  )
-
-  /**
-   * Generates KDoc documentation.
-   * @return code block.
-   */
-  fun AvroNamedType.kdoc(): CodeBlock = buildCodeBlock {
-    addStatement("%L", this@kdoc.documentation?.value ?: this@kdoc.name.value)
-
-    when (this@kdoc) {
-      is RecordType -> {
-        val fieldDocumentation = this@kdoc.fields.associate {
-          it.name to it.documentation
-        }
-        addStatement("")
-
-        fieldDocumentation.forEach { (name, doc) ->
-          doc?.let {
-            addStatement("@param %L - %L", name.value, it)
-          }
-        }
-      }
-
-      is EnumType -> {}
-      is ErrorType -> TODO()
-      is FixedType -> TODO()
-    }
-  }
-
-  fun CanonicalName.asClassName() = ClassName(this.namespace.value, this.name.value)
 }
 
 typealias Avro4kSerializerKClass = KClass<out AvroSerializer<*>>

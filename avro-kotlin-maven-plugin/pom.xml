@@ -4,12 +4,13 @@
 
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
-    <artifactId>avro-generator-root</artifactId>
+    <artifactId>avro-kotlin-parent</artifactId>
     <version>1.12.2.0-SNAPSHOT</version>
+    <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro.generator</groupId>
-  <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
+  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <artifactId>avro-kotlin-maven-plugin</artifactId>
   <name>generator: ${project.artifactId}</name>
   <packaging>maven-plugin</packaging>
 
@@ -24,7 +25,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.toolisticon.kotlin.avro.generator</groupId>
+      <groupId>io.toolisticon.kotlin.avro</groupId>
       <artifactId>avro-kotlin-generator</artifactId>
       <version>${project.version}</version>
     </dependency>

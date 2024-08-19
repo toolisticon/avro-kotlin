@@ -7,7 +7,6 @@ import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.FileName
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
 
 /**
  * The generator context, holds all data required for strategies and processors to do their work.

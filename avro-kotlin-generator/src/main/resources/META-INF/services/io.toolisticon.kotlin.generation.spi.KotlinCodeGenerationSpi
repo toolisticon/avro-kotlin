@@ -1,0 +1,33 @@
+# strategies
+
+io.toolisticon.kotlin.avro.generator.strategy.DefaultDataClassRecordStrategy
+
+# processors
+
+io.toolisticon.kotlin.avro.generator.processor.AddAnnotationsToDataClassProcessor
+io.toolisticon.kotlin.avro.generator.processor.AddKDocAndContextualToConstructorPropertyProcessor
+
+# logical types
+
+io.toolisticon.kotlin.avro.generator.logical.logical.UuidDefinition
+
+
+## LOGICAL TYPES
+#io.toolisticon.kotlin.avro.generator.logical.DecimalDefinition
+#io.toolisticon.kotlin.avro.generator.logical.TimestampMicrosDefinition
+#io.toolisticon.kotlin.avro.generator.logical.UuidDefinition
+#
+## TYPE SPEC
+#io.toolisticon.kotlin.avro.generator.processor.AddAvroAnnotationsToTypeSpecProcessor
+#
+## FILE SPEC
+#io.toolisticon.kotlin.avro.generator.processor.SuppressWarningsOnFileSpecProcessor
+#
+## FILE + PARAMETER SPEC
+#io.toolisticon.kotlin.avro.generator.processor.AddJavaAnnotationsByPropertyProcessor
+#
+##
+## STRATEGIES
+##
+#io.toolisticon.kotlin.avro.generator.strategy.DefaultGenerateDataClassStrategy
+#io.toolisticon.kotlin.avro.generator.strategy.DefaultGenerateEnumClassStrategy

@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.generator
 import com.squareup.kotlinpoet.ClassName
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.model.AvroNamedType
+import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.avro.value.Namespace
 
@@ -23,3 +24,5 @@ fun avroClassName(namedType: AvroNamedType, properties: AvroKotlinGeneratorPrope
   name = namedType.name,
   properties = properties
 )
+
+fun CanonicalName.asClassName() = ClassName(this.namespace.value, this.name.value)

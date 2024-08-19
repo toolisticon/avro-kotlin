@@ -15,14 +15,16 @@ import kotlinx.serialization.Serializable
  * logical types with custom serialization.
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-data class SerializableWithAnnotation(val serializerClass: Avro4kSerializerKClass) : KotlinAnnotationSpecSupplier {
+data class SerializableAnnotation(val serializerClass: Avro4kSerializerKClass? = null) : KotlinAnnotationSpecSupplier {
   override fun spec(): KotlinAnnotationSpec = buildAnnotation(Serializable::class) {
-    addKClassMember("with", serializerClass)
+    if (serializerClass != null) {
+      addKClassMember("with", serializerClass)
+    }
   }
 }
 
 @OptIn(ExperimentalSerializationApi::class, ExperimentalKotlinPoetApi::class)
-data class ScalePrecisionAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
+data class AvroDecimalAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
   override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroDecimal::class) {
     addNumberMember("precision", precision)
     addNumberMember("scale", scale)
@@ -30,7 +32,7 @@ data class ScalePrecisionAnnotation(val precision: Int = 0, val scale: Int = 0) 
 }
 
 @OptIn(ExperimentalKotlinPoetApi::class)
-data class AvroNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
+data class SerialNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
   override fun spec(): KotlinAnnotationSpec = buildAnnotation(SerialName::class) {
     addStringMember("value", name)
   }

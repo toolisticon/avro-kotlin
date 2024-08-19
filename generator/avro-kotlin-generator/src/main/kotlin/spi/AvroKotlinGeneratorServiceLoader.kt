@@ -37,8 +37,6 @@ class AvroKotlinGeneratorServiceLoader(
         // processors
         logicalTypes = LogicalTypeMap(spis),
         dataClassParameterSpecProcessors = DataClassParameterSpecProcessorList.of(spis),
-        typeSpecProcessors = TypeSpecProcessorList.of(spis),
-        fileSpecProcessors = FileSpecProcessorList.of(spis)
       )
     }
   }

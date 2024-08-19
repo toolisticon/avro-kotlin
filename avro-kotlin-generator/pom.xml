@@ -25,7 +25,6 @@
       <version>${project.version}</version>
     </dependency>
 
-
     <dependency>
       <groupId>io.toolisticon.kotlin.generation</groupId>
       <artifactId>kotlin-code-generation</artifactId>
@@ -49,6 +48,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.codehaus.mojo</groupId>-->
+<!--        <artifactId>properties-maven-plugin</artifactId>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>
