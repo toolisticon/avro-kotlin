@@ -9,7 +9,7 @@ import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
 @OptIn(ExperimentalKotlinPoetApi::class)
-class AddAnnotationsToDataClassProcessor : AbstractRecordTypeProcessor() {
+class AddAnnotationsToDataClassProcessor : AbstractDataClassFromRecordTypeProcessor() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType?, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder = builder.apply {
 

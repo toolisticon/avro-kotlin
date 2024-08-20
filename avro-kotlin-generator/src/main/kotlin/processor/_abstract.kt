@@ -11,14 +11,23 @@ import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
 import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessor
 
-abstract class AbstractRecordTypeProcessor :
-  DataClassSpecProcessor<SchemaDeclarationContext, RecordType>(contextType = SchemaDeclarationContext::class, inputType = RecordType::class) {
+abstract class AbstractDataClassFromRecordTypeProcessor : DataClassSpecProcessor<SchemaDeclarationContext, RecordType>(
+  contextType = SchemaDeclarationContext::class,
+  inputType = RecordType::class
+) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType?, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input)
 }
 
-abstract class AbstractRecordFieldProcessor :
-  ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(contextType = SchemaDeclarationContext::class, inputType = RecordField::class) {
-  abstract override fun invoke(context: SchemaDeclarationContext, input: RecordField?, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder
+abstract class AbstractPropertyFromRecordFieldProcessor : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+  contextType = SchemaDeclarationContext::class,
+  inputType = RecordField::class
+) {
+  abstract override fun invoke(
+    context: SchemaDeclarationContext,
+    input: RecordField?,
+    builder: KotlinConstructorPropertySpecBuilder
+  ): KotlinConstructorPropertySpecBuilder
+
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input)
 }

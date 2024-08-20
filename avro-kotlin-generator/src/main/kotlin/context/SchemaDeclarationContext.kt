@@ -8,12 +8,7 @@ import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
-import io.toolisticon.kotlin.avro.model.RecordField
-import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.generation.context.AbstractKotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
-import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessorList
-import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessorList
+import io.toolisticon.kotlin.generation.spi.context.AbstractKotlinCodeGenerationContext
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
@@ -29,7 +24,11 @@ class SchemaDeclarationContext(
 ) : AvroDeclarationContext<SchemaDeclaration>, AbstractKotlinCodeGenerationContext<SchemaDeclarationContext>(registry) {
   companion object {
 
-    fun of(declaration: SchemaDeclaration, registry: AvroCodeGenerationSpiRegistry, properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties()): SchemaDeclarationContext {
+    fun of(
+      declaration: SchemaDeclaration,
+      registry: AvroCodeGenerationSpiRegistry,
+      properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties()
+    ): SchemaDeclarationContext {
       val rootClassName: ClassName = rootClassName(declaration, properties = properties)
 
       val avroPoetTypes: AvroPoetTypeMap = AvroPoetTypeMap.avroPoetTypeMap(
@@ -52,7 +51,7 @@ class SchemaDeclarationContext(
 
   override val contextType = SchemaDeclarationContext::class
 
-  fun dataClassProcessors() : DataClassSpecProcessorList<SchemaDeclarationContext, RecordType> = DataClassSpecProcessorList.of(registry)
-
-  fun constructorPropertyProcessors() : ConstructorPropertySpecProcessorList<SchemaDeclarationContext, RecordField> = ConstructorPropertySpecProcessorList.of(registry)
+//  fun dataClassProcessors() = registry.processors.filter(DataClassSpecProcessor<>)
+//
+//  fun constructorPropertyProcessors() : ConstructorPropertySpecProcessorList<SchemaDeclarationContext, RecordField> = ConstructorPropertySpecProcessorList.of(registry)
 }

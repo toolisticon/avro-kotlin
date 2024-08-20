@@ -6,7 +6,7 @@ import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
-import io.toolisticon.kotlin.generation.context.AbstractKotlinCodeGenerationContext
+import io.toolisticon.kotlin.generation.spi.context.AbstractKotlinCodeGenerationContext
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [ProtocolDeclaration].

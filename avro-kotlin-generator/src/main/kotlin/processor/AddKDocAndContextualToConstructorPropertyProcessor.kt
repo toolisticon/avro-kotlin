@@ -7,7 +7,7 @@ import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBui
 import io.toolisticon.kotlin.generation.support.ContextualAnnotation
 
 @OptIn(ExperimentalKotlinPoetApi::class)
-class AddKDocAndContextualToConstructorPropertyProcessor : AbstractRecordFieldProcessor() {
+class AddKDocAndContextualToConstructorPropertyProcessor : AbstractPropertyFromRecordFieldProcessor() {
   override fun invoke(
     context: SchemaDeclarationContext,
     input: RecordField?,

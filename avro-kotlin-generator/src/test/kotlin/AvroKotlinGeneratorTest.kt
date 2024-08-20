@@ -18,6 +18,7 @@ internal class AvroKotlinGeneratorTest {
   fun `generate simple data class for schema`() {
     val declaration = AvroParser().parseSchema(
       SchemaBuilder.record("a.b.c.Dee")
+        .doc("This is the Dee message.")
         .fields()
         .name("x")
         .doc("this is x")

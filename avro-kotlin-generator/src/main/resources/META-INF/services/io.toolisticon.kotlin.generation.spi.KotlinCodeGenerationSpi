@@ -1,13 +1,20 @@
+######################################################################
 # strategies
+######################################################################
 
+# create data class from recordType
 io.toolisticon.kotlin.avro.generator.strategy.DefaultDataClassRecordStrategy
 
+######################################################################
 # processors
+######################################################################
 
 io.toolisticon.kotlin.avro.generator.processor.AddAnnotationsToDataClassProcessor
 io.toolisticon.kotlin.avro.generator.processor.AddKDocAndContextualToConstructorPropertyProcessor
 
+######################################################################
 # logical types
+######################################################################
 
 io.toolisticon.kotlin.avro.generator.logical.logical.UuidDefinition
 

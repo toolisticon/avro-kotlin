@@ -4,10 +4,10 @@ import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
-import io.toolisticon.kotlin.avro.model.RecordType
+import io.toolisticon.kotlin.avro.generator.strategy.AbstractDataClassFromRecordTypeStrategy
 import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
-import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
+import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 
 /**
  * This generator is the central class for code generation for avro schema and protocol declarations.
@@ -30,7 +30,8 @@ class AvroKotlinGenerator(
     val recordType = declaration.recordType
     val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName)
 
-    val dataClasses = context.findStrategies(RecordType::class, KotlinDataClassSpec::class).map { it.invoke(context, recordType) }
+    val dataClasses = context.strategies(AbstractDataClassFromRecordTypeStrategy::class)
+      .executeAll(context, recordType)
 
     //context.processors.fileSpecProcessors(context, context.rootClassName, fileSpecBuilder)
 
@@ -38,5 +39,4 @@ class AvroKotlinGenerator(
 
     return fileSpecBuilder.build()
   }
-
 }
