@@ -1,11 +1,11 @@
-package io.toolisticon.kotlin.avro.generator.maven
+package io.toolisticon.kotlin.avro.maven
 
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
-import io.toolisticon.kotlin.avro.generator.api.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.maven.AvroKotlinGeneratorMavenPlugin.DEFAULT_GENERATED_TEST_SOURCES
-import io.toolisticon.kotlin.avro.generator.maven.AvroKotlinGeneratorMavenPlugin.DEFAULT_SOURCE_DIRECTORY
-import io.toolisticon.kotlin.avro.generator.maven.AvroKotlinGeneratorMavenPlugin.DEFAULT_TEST_DIRECTORY
+import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_GENERATED_TEST_SOURCES
+import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_SOURCE_DIRECTORY
+import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_TEST_DIRECTORY
 import io.toolisticon.maven.fn.FileExt.createIfNotExists
 import io.toolisticon.maven.mojo.AbstractContextAwareMojo
 import org.apache.maven.plugins.annotations.LifecyclePhase
@@ -48,7 +48,7 @@ class GenerateAvroKotlinFromSchemaMojo : AbstractContextAwareMojo() {
   @Parameter(
     property = "outputDirectory",
     required = true,
-    defaultValue = AvroKotlinGeneratorMavenPlugin.DEFAULT_GENERATED_SOURCES
+    defaultValue = AvroKotlinMavenPlugin.DEFAULT_GENERATED_SOURCES
   )
   private lateinit var outputDirectory: File
 

@@ -1,6 +1,6 @@
-package io.toolisticon.kotlin.avro.generator.maven
+package io.toolisticon.kotlin.avro.maven
 
-object AvroKotlinGeneratorMavenPlugin {
+object AvroKotlinMavenPlugin {
 
   const val BUILD_DIRECTORY = "\${project.build.directory}"
   const val BUILD_GENERATED_SOURCES = "$BUILD_DIRECTORY/generated-sources"

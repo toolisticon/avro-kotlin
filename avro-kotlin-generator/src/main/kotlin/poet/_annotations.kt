@@ -2,13 +2,21 @@ package io.toolisticon.kotlin.avro.generator.poet
 
 import com.github.avrokotlin.avro4k.AvroDecimal
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import com.squareup.kotlinpoet.asTypeName
+import com.squareup.kotlinpoet.joinToCode
 import io.toolisticon.kotlin.avro.generator.Avro4kSerializerKClass
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildAnnotation
+import io.toolisticon.kotlin.generation.poet.FormatSpecifier.asCodeBlock
 import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpec
 import io.toolisticon.kotlin.generation.spec.KotlinAnnotationSpecSupplier
+import io.toolisticon.kotlin.generation.support.CodeBlockArray
+import jakarta.annotation.Generated
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.Instant
+import kotlin.reflect.KClass
 
 /**
  * Creates a [KotlinAnnotationSpec] for `@Serializable(with=MyCustomSerializer::class)` as required for
@@ -35,5 +43,30 @@ data class AvroDecimalAnnotation(val precision: Int = 0, val scale: Int = 0) : K
 data class SerialNameAnnotation(val name: String) : KotlinAnnotationSpecSupplier {
   override fun spec(): KotlinAnnotationSpec = buildAnnotation(SerialName::class) {
     addStringMember("value", name)
+  }
+}
+
+
+// TODO: move to kotlin-code-generation when fixed
+@ExperimentalKotlinPoetApi
+data class GeneratedAnnotation(
+  val value: String = KotlinCodeGeneration::class.asTypeName().toString(),
+  val date: Instant = Instant.now(),
+  val comments: List<String> = emptyList()
+) : KotlinAnnotationSpecSupplier {
+
+  fun generator(type: KClass<*>) = copy(value = type.asTypeName().toString())
+  fun date(instant: Instant) = copy(date = instant)
+  fun comment(comment: Pair<String, String>) = copy(comments = this.comments + "${comment.first} = ${comment.second}")
+
+  override fun spec(): KotlinAnnotationSpec = KotlinCodeGeneration.buildAnnotation(Generated::class) {
+    // TODO: addMember should accept oceBlockSupplier to avoid call to build
+    // TODO addMember for arrays
+    addMember("value = %L", CodeBlockArray(KotlinCodeGeneration.format.FORMAT_STRING, listOf(value)).build())
+    addStringMember("date", date.toString())
+
+    if (comments.isNotEmpty()) {
+      addStringMember("comments", comments.joinToString(separator = "; "))
+    }
   }
 }

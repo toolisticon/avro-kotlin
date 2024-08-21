@@ -21,7 +21,7 @@
       </plugin>
       <plugin>
         <groupId>@project.groupId@</groupId>
-        <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
+        <artifactId>avro-kotlin-maven-plugin</artifactId>
         <version>@project.version@</version>
         <executions>
           <execution>

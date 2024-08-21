@@ -98,8 +98,8 @@
       </plugin>
 
       <plugin>
-        <groupId>io.toolisticon.kotlin.avro.generator</groupId>
-        <artifactId>avro-kotlin-generator-maven-plugin</artifactId>
+        <groupId>io.toolisticon.kotlin.avro.maven</groupId>
+        <artifactId>avro-kotlin-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
           <rootFileSuffix>Data</rootFileSuffix>

@@ -9,9 +9,9 @@
     <relativePath>../_mvn/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>io.toolisticon.kotlin.avro</groupId>
+  <groupId>io.toolisticon.kotlin.avro.maven</groupId>
   <artifactId>avro-kotlin-maven-plugin</artifactId>
-  <name>generator: ${project.artifactId}</name>
+  <name>maven: ${project.artifactId}</name>
   <packaging>maven-plugin</packaging>
 
   <properties>

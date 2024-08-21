@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
@@ -24,6 +25,11 @@ class AvroKotlinGenerator(
   private val properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties(),
   private val registry: AvroCodeGenerationSpiRegistry
 ) {
+
+  constructor(properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties(), classLoader: ClassLoader = AvroKotlin.DEFAULT_CLASS_LOADER) : this(
+    properties = properties,
+    registry = AvroCodeGenerationSpiRegistry.load(classLoader)
+  )
 
   fun generate(declaration: SchemaDeclaration): KotlinFileSpec {
     val context = SchemaDeclarationContext.of(declaration, registry, properties)

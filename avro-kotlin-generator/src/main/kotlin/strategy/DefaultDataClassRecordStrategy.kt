@@ -44,4 +44,7 @@ class DefaultDataClassRecordStrategy : AbstractDataClassFromRecordTypeStrategy()
     return dataClassBuilder.build()
   }
 
+  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean {
+    return super.test(ctx, input) && input is RecordType
+  }
 }

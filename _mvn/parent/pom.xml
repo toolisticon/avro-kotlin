@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <kotlin-code-generation.version>0.0.2-SNAPSHOT</kotlin-code-generation.version> <!-- FIXME use release -->
+    <kotlin-code-generation.version>0.0.2</kotlin-code-generation.version>
   </properties>
 
   <dependencyManagement>

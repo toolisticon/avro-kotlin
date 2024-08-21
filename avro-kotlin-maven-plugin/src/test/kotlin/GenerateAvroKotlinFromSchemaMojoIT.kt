@@ -1,4 +1,4 @@
-package io.toolisticon.kotlin.avro.generator.maven
+package io.toolisticon.kotlin.avro.maven
 
 import com.soebes.itf.extension.assertj.MavenITAssertions.assertThat
 import com.soebes.itf.jupiter.extension.*
