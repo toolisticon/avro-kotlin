@@ -1,12 +1,14 @@
-package io.toolisticon.kotlin.avro.generator.context
+package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.FileName
+import java.time.Instant
 
 /**
  * The generator context, holds all data required for strategies and processors to do their work.
@@ -62,4 +64,8 @@ sealed interface AvroDeclarationContext<T : AvroDeclaration> {
   fun avroType(hashCode: AvroHashCode) = get(hashCode).avroType
   fun typeName(hashCode: AvroHashCode) = get(hashCode).typeName
   fun className(hashCode: AvroHashCode) = typeName(hashCode) as ClassName
+
+  val nowSupplier : () -> Instant
+
+
 }

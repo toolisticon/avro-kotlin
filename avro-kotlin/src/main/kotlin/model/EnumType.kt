@@ -29,7 +29,6 @@ value class EnumType(override val schema: AvroSchema) :
   fun hasEnumSymbol(symbol: String) = symbols.contains(symbol)
   fun enumOrdinal(symbol: String) = symbols.indexOf(symbol)
 
-
   override fun toString() = toString("EnumType") {
     addIfNotNull(property = "namespace", value = namespace, wrap = "'")
     addIfNotNull(property = "documentation", value = documentation, wrap = "'")

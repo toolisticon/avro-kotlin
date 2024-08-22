@@ -1,0 +1,25 @@
+package io.acme.schema
+
+import jakarta.`annotation`.Generated
+import kotlinx.serialization.Serializable
+
+/**
+ * This is a record with an enum field.
+ */
+@Generated(
+  value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"],
+  date = "2024-08-21T23:19:02.152209Z",
+)
+@Serializable
+public data class SchemaContainingEnum(
+  public val type: TypeEnum,
+) {
+  /**
+   * An enum defining the fixed values FOO and BAR
+   */
+  public enum class TypeEnum {
+    FOO,
+    BAR,
+  }
+}
+

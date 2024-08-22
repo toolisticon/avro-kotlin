@@ -2,9 +2,10 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.processor.AbstractDataClassFromRecordTypeProcessor
 import io.toolisticon.kotlin.avro.generator.processor.AbstractPropertyFromRecordFieldProcessor
+import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder

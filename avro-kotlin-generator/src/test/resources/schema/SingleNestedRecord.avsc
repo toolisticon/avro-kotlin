@@ -1,0 +1,23 @@
+{
+  "namespace": "io.acme.schema",
+  "name": "SingleNestedRecord",
+  "type": "record",
+  "doc": "This is a record with a nested subtype.",
+  "fields": [
+    {
+      "name": "complexValue",
+      "doc": "The nested value.",
+      "type": {
+        "name": "NestedRecord",
+        "type": "record",
+        "doc": "The nested record",
+        "fields": [
+          {
+            "name": "x",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  ]
+}

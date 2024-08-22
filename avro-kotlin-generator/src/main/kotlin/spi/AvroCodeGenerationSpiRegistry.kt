@@ -1,14 +1,15 @@
+@file:OptIn(ExperimentalKotlinPoetApi::class)
+
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.generator.context.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 import kotlin.reflect.KClass
 
-@OptIn(ExperimentalKotlinPoetApi::class)
+
 class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
 

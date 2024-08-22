@@ -1,33 +1,38 @@
-package io.toolisticon.kotlin.avro.generator.context
+@file:OptIn(ExperimentalKotlinPoetApi::class)
+
+package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
-import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.strategy.AvroEnumTypeSpecStrategy
+import io.toolisticon.kotlin.avro.generator.strategy.AvroRecordTypeSpecStrategy
 import io.toolisticon.kotlin.generation.spi.context.AbstractKotlinCodeGenerationContext
+import java.time.Instant
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
  */
-@OptIn(ExperimentalKotlinPoetApi::class)
-class SchemaDeclarationContext(
-  registry: AvroCodeGenerationSpiRegistry,
+data class SchemaDeclarationContext(
+  override val registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,
   override val rootClassName: ClassName,
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,
   override val declaration: SchemaDeclaration,
+  override val nowSupplier: () -> Instant = AvroKotlin.nowSupplier
 ) : AvroDeclarationContext<SchemaDeclaration>, AbstractKotlinCodeGenerationContext<SchemaDeclarationContext>(registry) {
   companion object {
 
     fun of(
       declaration: SchemaDeclaration,
       registry: AvroCodeGenerationSpiRegistry,
-      properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties()
+      properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties(),
     ): SchemaDeclarationContext {
       val rootClassName: ClassName = rootClassName(declaration, properties = properties)
 
@@ -50,6 +55,16 @@ class SchemaDeclarationContext(
   }
 
   override val contextType = SchemaDeclarationContext::class
+
+  fun copyNonRoot() = copy(isRoot = false)
+
+  val dataClassStrategies by lazy {
+    registry.strategies.filter(AvroRecordTypeSpecStrategy::class)
+  }
+
+  val enumClassStrategies by lazy {
+    registry.strategies.filter(AvroEnumTypeSpecStrategy::class)
+  }
 
 //  fun dataClassProcessors() = registry.processors.filter(DataClassSpecProcessor<>)
 //

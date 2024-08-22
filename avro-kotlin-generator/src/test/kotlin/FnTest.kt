@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class FnTest {
   @Test
   fun `classNames without suffix`() {
-    val recordType = TestFixtures.parser.parseSchema(
+    val recordType = TestFixtures.PARSER.parseSchema(
       resourceUrl("schema/SimpleStringRecord.avsc")
     ).recordType
     val properties = AvroKotlinGeneratorProperties(

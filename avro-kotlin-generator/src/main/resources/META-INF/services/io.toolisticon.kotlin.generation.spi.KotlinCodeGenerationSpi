@@ -1,23 +1,27 @@
-######################################################################
+################################################################################
 # strategies
-######################################################################
+################################################################################
 
 # create data class from recordType
-io.toolisticon.kotlin.avro.generator.strategy.DefaultDataClassRecordStrategy
+io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy
+io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
+io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
 
-######################################################################
+# create enum class from enumType
+#io.toolisticon.kotlin.avro.generator.strategy.DefaultEnumClassStrategy
+
+################################################################################
 # processors
-######################################################################
+################################################################################
 
-io.toolisticon.kotlin.avro.generator.processor.AddAnnotationsToDataClassProcessor
-io.toolisticon.kotlin.avro.generator.processor.AddKDocAndContextualToConstructorPropertyProcessor
+#io.toolisticon.kotlin.avro.generator.processor.AddAnnotationsToDataClassProcessor
+#io.toolisticon.kotlin.avro.generator.processor.AddKDocAndContextualToConstructorPropertyProcessor
 
-######################################################################
+################################################################################
 # logical types
-######################################################################
+################################################################################
 
-io.toolisticon.kotlin.avro.generator.logical.logical.UuidDefinition
-
+#io.toolisticon.kotlin.avro.generator.logical.logical.UuidDefinition
 
 ## LOGICAL TYPES
 #io.toolisticon.kotlin.avro.generator.logical.DecimalDefinition

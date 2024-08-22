@@ -4,7 +4,7 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.context.AvroDeclarationContext
+import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.value.AvroHashCode

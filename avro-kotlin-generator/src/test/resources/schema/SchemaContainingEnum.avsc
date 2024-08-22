@@ -9,8 +9,8 @@
       "foo": "bar",
       "type": {
         "name": "TypeEnum",
+        "doc": "An enum defining the fixed values FOO and BAR",
         "type": "enum",
-        "logicalType": "uuid",
         "symbols": ["FOO","BAR"]
       }
     }

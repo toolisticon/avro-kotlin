@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.processor
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.generator.context.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessor
