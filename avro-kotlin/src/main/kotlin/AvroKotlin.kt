@@ -28,7 +28,6 @@ import java.io.File
 import java.io.InputStream
 import java.net.URL
 import java.nio.file.Path
-import java.time.Instant
 import java.util.*
 import kotlin.io.path.writeText
 import kotlin.reflect.KClass
@@ -272,5 +271,4 @@ object AvroKotlin {
 
   fun <T : Any> Result<List<T>?>.orEmpty(): List<T> = getOrNull() ?: emptyList()
 
-  val nowSupplier : () -> Instant = { Instant.now() }
 }

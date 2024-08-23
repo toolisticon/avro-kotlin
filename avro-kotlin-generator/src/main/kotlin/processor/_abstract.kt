@@ -8,10 +8,10 @@ import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
-import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
-import io.toolisticon.kotlin.generation.spi.processor.DataClassSpecProcessor
+import io.toolisticon.kotlin.generation.spi.processor.KotlinConstructorPropertySpecProcessor
+import io.toolisticon.kotlin.generation.spi.processor.KotlinDataClassSpecProcessor
 
-abstract class AbstractDataClassFromRecordTypeProcessor : DataClassSpecProcessor<SchemaDeclarationContext, RecordType>(
+abstract class KotlinDataClassFromRecordTypeProcessorBase : KotlinDataClassSpecProcessor<SchemaDeclarationContext, RecordType>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordType::class
 ) {
@@ -19,7 +19,7 @@ abstract class AbstractDataClassFromRecordTypeProcessor : DataClassSpecProcessor
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input)
 }
 
-abstract class AbstractPropertyFromRecordFieldProcessor : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+abstract class ConstructorPropertyFromRecordFieldProcessorBase : KotlinConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class
 ) {

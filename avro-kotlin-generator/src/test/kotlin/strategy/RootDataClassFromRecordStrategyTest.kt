@@ -4,7 +4,8 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import _ktx.ResourceKtx.resourceUrl
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.generator.TestFixtures
+import io.toolisticon.kotlin.avro.generator.TestFixtures.DEFAULT_PROPERTIES
+import io.toolisticon.kotlin.avro.generator.TestFixtures.PARSER
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFile
@@ -19,20 +20,16 @@ internal class RootDataClassFromRecordStrategyTest {
   @Test
   fun `generate simple root data class`() {
     val url = resourceUrl("schema/SimpleStringRecord.avsc")
-    val declaration = TestFixtures.PARSER.parseSchema(url)
+    val declaration = PARSER.parseSchema(url)
     assertThat(declaration.schema.isRoot).isTrue()
 
     val context = SchemaDeclarationContext.of(declaration, registry)
-      .copy(nowSupplier = { TestFixtures.NOW })
+      .copy(properties = DEFAULT_PROPERTIES)
 
     val spec = requireNotNull(strategy.execute(context, declaration.recordType))
 
     val expectedContent = resourceUrl("generated/${spec.className}.txt").readText()
 
-
-
-    println(buildFile(spec.className) { addType(spec)}.code)
-
-    assertThat(buildFile(spec.className) { addType(spec)}.code).isEqualTo(expectedContent)
+    assertThat(buildFile(spec.className) { addType(spec) }.code).isEqualToIgnoringWhitespace(expectedContent)
   }
 }

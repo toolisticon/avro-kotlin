@@ -9,7 +9,7 @@ import io.toolisticon.kotlin.avro.model.WithLogicalType
 import io.toolisticon.kotlin.avro.value.LogicalTypeName
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpi
-import io.toolisticon.kotlin.generation.spi.processor.ConstructorPropertySpecProcessor
+import io.toolisticon.kotlin.generation.spi.processor.KotlinConstructorPropertySpecProcessor
 import io.toolisticon.kotlin.generation.support.ContextualAnnotation
 import kotlin.reflect.KClass
 
@@ -24,7 +24,7 @@ abstract class AvroKotlinLogicalTypeDefinition(
   val convertedType: KClass<*>,
   val serializerType: Avro4kSerializerKClass,
   val allowedTypes: Set<SchemaType>,
-) : ConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
+) : KotlinConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class,
   order = KotlinCodeGenerationSpi.DEFAULT_ORDER

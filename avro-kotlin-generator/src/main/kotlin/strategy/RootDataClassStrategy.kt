@@ -4,7 +4,6 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
-import io.toolisticon.kotlin.avro.generator.poet.GeneratedAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.AvroNamedType
@@ -15,19 +14,28 @@ import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
-import io.toolisticon.kotlin.generation.spi.strategy.executeSingle
+import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
-
+/**
+ * Generates a top-level data class for a given schema declaration.
+ *
+ * The generated class is the only top-level type in the file, all subtypes are generated
+ * as inner classes, so everything declared in one schema stys in one file.
+ */
 class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
     val rootDataClassBuilder = dataClassBuilder(context.rootClassName).apply {
       input.documentation?.value?.let(this::addKdoc)
-      addAnnotation(GeneratedAnnotation(value = AvroKotlinGenerator.NAME).date(context.nowSupplier()))
+      addAnnotation(
+        GeneratedAnnotation(value = AvroKotlinGenerator.NAME)
+          .date(context.properties.nowSupplier())
+      )
       addAnnotation(SerializableAnnotation())
     }
 
-    val parameterSpecs = parameterSpecs(context, input)
+    // add constructor properties for RecordFields
+    parameterSpecs(context, input).forEach(rootDataClassBuilder::addConstructorProperty)
 
     val nonRootCtx = context.copyNonRoot()
 
@@ -40,24 +48,12 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
       when (type) {
         is RecordType -> nonRootCtx.dataClassStrategies.executeAll(nonRootCtx, type)
         is EnumType -> nonRootCtx.enumClassStrategies.executeAll(nonRootCtx, type)
-        is ErrorType -> TODO()
-        is FixedType -> TODO()
+        is ErrorType -> TODO("error is not implemented yet")
+        is FixedType -> TODO("fixed is not implemented yet")
       }
     }
 
     typeSpecs.forEach(rootDataClassBuilder::addType)
-
-//
-//    ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
-//
-//    context.dataClassProcessors().invoke(context, input, dataClassBuilder)
-
-//    context.processors(
-//      AbstractDataClassFromRecordTypeProcessor::
-//      class
-//    ).executeAll(context, input, rootDataClassBuilder)
-    parameterSpecs.forEach(rootDataClassBuilder::addConstructorProperty)
-
     return rootDataClassBuilder.build()
   }
 

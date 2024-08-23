@@ -2,43 +2,18 @@
 # strategies
 ################################################################################
 
-# create data class from recordType
 io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
-
-# create enum class from enumType
-#io.toolisticon.kotlin.avro.generator.strategy.DefaultEnumClassStrategy
 
 ################################################################################
 # processors
 ################################################################################
 
-#io.toolisticon.kotlin.avro.generator.processor.AddAnnotationsToDataClassProcessor
-#io.toolisticon.kotlin.avro.generator.processor.AddKDocAndContextualToConstructorPropertyProcessor
+# - none
 
 ################################################################################
 # logical types
 ################################################################################
 
-#io.toolisticon.kotlin.avro.generator.logical.logical.UuidDefinition
-
-## LOGICAL TYPES
-#io.toolisticon.kotlin.avro.generator.logical.DecimalDefinition
-#io.toolisticon.kotlin.avro.generator.logical.TimestampMicrosDefinition
-#io.toolisticon.kotlin.avro.generator.logical.UuidDefinition
-#
-## TYPE SPEC
-#io.toolisticon.kotlin.avro.generator.processor.AddAvroAnnotationsToTypeSpecProcessor
-#
-## FILE SPEC
-#io.toolisticon.kotlin.avro.generator.processor.SuppressWarningsOnFileSpecProcessor
-#
-## FILE + PARAMETER SPEC
-#io.toolisticon.kotlin.avro.generator.processor.AddJavaAnnotationsByPropertyProcessor
-#
-##
-## STRATEGIES
-##
-#io.toolisticon.kotlin.avro.generator.strategy.DefaultGenerateDataClassStrategy
-#io.toolisticon.kotlin.avro.generator.strategy.DefaultGenerateEnumClassStrategy
+io.toolisticon.kotlin.avro.generator.logical.UuidLogicalTypeDefinition

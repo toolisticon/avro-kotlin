@@ -4,12 +4,10 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
-import io.toolisticon.kotlin.generation.spi.context.AbstractKotlinCodeGenerationContext
-import java.time.Instant
+import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [ProtocolDeclaration].
@@ -21,7 +19,6 @@ data class ProtocolDeclarationContext(
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,
   override val declaration: ProtocolDeclaration,
-  override val nowSupplier: () -> Instant = AvroKotlin.nowSupplier
-) : AvroDeclarationContext<ProtocolDeclaration>, AbstractKotlinCodeGenerationContext<ProtocolDeclarationContext>(registry) {
+) : AvroDeclarationContext<ProtocolDeclaration>, KotlinCodeGenerationContextBase<ProtocolDeclarationContext>(registry) {
   override val contextType = ProtocolDeclarationContext::class
 }

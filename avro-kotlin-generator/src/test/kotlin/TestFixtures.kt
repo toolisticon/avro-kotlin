@@ -12,7 +12,10 @@ object TestFixtures : KLogging() {
   val NOW_SUPPLER = { NOW }
   val PARSER = AvroParser()
 
-  fun parseDeclaration(path: String) = PARSER.parseSchema(resourceUrl("schema/SchemaContainingEnum.avsc"))
+  val DEFAULT_PROPERTIES = AvroKotlinGeneratorProperties(nowSupplier = NOW_SUPPLER)
+  val DEFAULT_GENERATOR = AvroKotlinGenerator(properties = DEFAULT_PROPERTIES)
+
+  fun parseDeclaration(path: String) = PARSER.parseSchema(resourceUrl(path))
 
   fun expectedSource(className: ClassName) = resourceUrl("generated/$className.txt").readText()
 

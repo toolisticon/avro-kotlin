@@ -19,10 +19,6 @@ class NestedEnumClassStrategy : AvroEnumTypeSpecStrategy() {
 
     input.symbols.forEach(enumBuilder::addEnumConstant)
 
-
-    // TODO: process enums
-    //ctx.processors.typeSpecProcessors(ctx, enumType, className, enumBuilder)
-
     return enumBuilder.build()
   }
 }

@@ -1,12 +1,13 @@
 package io.toolisticon.kotlin.avro.generator.poet
 
 import _ktx.ResourceKtx.resourceUrl
+import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import org.apache.avro.LogicalTypes
@@ -17,8 +18,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled("fix later")
-@OptIn(com.squareup.kotlinpoet.ExperimentalKotlinPoetApi::class)
+//@Disabled("fix later")
+@OptIn(ExperimentalKotlinPoetApi::class)
 internal class AvroPoetTypeMapTest {
 
   private val registry = AvroCodeGenerationSpiRegistry(KotlinCodeGeneration.spi.registry(AvroDeclarationContext::class))
@@ -82,6 +83,7 @@ internal class AvroPoetTypeMapTest {
   }
 
   @Test
+  @Disabled("fix logical")
   fun `resolve array of bigDecimals`() {
     val decimal: Schema = LogicalTypes.decimal(6, 2)
       .addToSchema(Schema.create(Type.BYTES))
@@ -109,6 +111,7 @@ internal class AvroPoetTypeMapTest {
   }
 
   @Test
+  @Disabled("fix logical")
   fun `resolve map of instant`() {
     val instant: Schema = LogicalTypes.timestampMicros()
       .addToSchema(Schema.create(Type.LONG))
@@ -169,5 +172,11 @@ internal class AvroPoetTypeMapTest {
 
     assertThat(poetTypes[AvroHashCode.of(foo)].typeName.toString())
       .isEqualTo("io.xxx.Bar.Foo")
+  }
+
+  @Test
+  @Disabled("fix logical")
+  fun `verify loaded logical types`() {
+    assertThat(logicalTypes).hasSize(17)
   }
 }

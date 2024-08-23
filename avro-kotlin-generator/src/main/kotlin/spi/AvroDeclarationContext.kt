@@ -1,14 +1,12 @@
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.FileName
-import java.time.Instant
 
 /**
  * The generator context, holds all data required for strategies and processors to do their work.
@@ -46,16 +44,6 @@ sealed interface AvroDeclarationContext<T : AvroDeclaration> {
    */
   val avroPoetTypes: AvroPoetTypes
 
-//  /**
-//   * All defined processors for x-use in other generators.
-//   *
-//   * example: We create an additional data class in the FileSpec and need to run
-//   * the same parameter modifiers as in the default root data class.
-//   */
-//  val processors: AvroKotlinGeneratorProcessors
-//
-//  val strategies: AvroKotlinGeneratorStrategies
-
   /**
    * Get an [AvroPoetType] from [avroPoetTypes]. Nullsafe, fails if type can not be found (which should never be the case).
    */
@@ -64,8 +52,5 @@ sealed interface AvroDeclarationContext<T : AvroDeclaration> {
   fun avroType(hashCode: AvroHashCode) = get(hashCode).avroType
   fun typeName(hashCode: AvroHashCode) = get(hashCode).typeName
   fun className(hashCode: AvroHashCode) = typeName(hashCode) as ClassName
-
-  val nowSupplier : () -> Instant
-
 
 }

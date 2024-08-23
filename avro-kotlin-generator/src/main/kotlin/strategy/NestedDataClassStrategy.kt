@@ -9,7 +9,10 @@ import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 
-
+/**
+ * Generates a data class that does not require to be top-level/single
+ * in a file. Used for inner types of schema and protocols.
+ */
 class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
@@ -21,6 +24,7 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
       addAnnotation(SerializableAnnotation())
     }
 
+    // adds RecordFields as constructor properties.
     parameterSpecs(context, input).forEach(rootDataClassBuilder::addConstructorProperty)
 //    ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
 //

@@ -42,11 +42,7 @@ internal class SimpleTypesRecordITest {
     val schemaResolver = avroSchemaResolver(AvroSchema(SimpleTypesRecord.getClassSchema()))
 
 
-    val kotlinInstance = avro.decodeFromSingleObject(
-      singleObjectEncodedBytes = javaBytes,
-      schemaResolver = schemaResolver,
-      readerType = SimpleTypesRecordData::class
-    )
+    val kotlinInstance: SimpleTypesRecordData = avro.decodeFromSingleObjectEncoded(javaBytes)
 
     assertThat(kotlinInstance.booleanValue).isEqualTo(msg.booleanValue)
     assertThat(kotlinInstance.doubleValue).isEqualTo(msg.doubleValue)

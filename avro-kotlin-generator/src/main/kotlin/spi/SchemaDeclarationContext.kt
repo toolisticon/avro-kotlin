@@ -4,7 +4,6 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
@@ -12,8 +11,7 @@ import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.strategy.AvroEnumTypeSpecStrategy
 import io.toolisticon.kotlin.avro.generator.strategy.AvroRecordTypeSpecStrategy
-import io.toolisticon.kotlin.generation.spi.context.AbstractKotlinCodeGenerationContext
-import java.time.Instant
+import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
@@ -24,9 +22,8 @@ data class SchemaDeclarationContext(
   override val rootClassName: ClassName,
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,
-  override val declaration: SchemaDeclaration,
-  override val nowSupplier: () -> Instant = AvroKotlin.nowSupplier
-) : AvroDeclarationContext<SchemaDeclaration>, AbstractKotlinCodeGenerationContext<SchemaDeclarationContext>(registry) {
+  override val declaration: SchemaDeclaration
+) : AvroDeclarationContext<SchemaDeclaration>, KotlinCodeGenerationContextBase<SchemaDeclarationContext>(registry) {
   companion object {
 
     fun of(
@@ -65,8 +62,4 @@ data class SchemaDeclarationContext(
   val enumClassStrategies by lazy {
     registry.strategies.filter(AvroEnumTypeSpecStrategy::class)
   }
-
-//  fun dataClassProcessors() = registry.processors.filter(DataClassSpecProcessor<>)
-//
-//  fun constructorPropertyProcessors() : ConstructorPropertySpecProcessorList<SchemaDeclarationContext, RecordField> = ConstructorPropertySpecProcessorList.of(registry)
 }

@@ -2,7 +2,7 @@ package io.toolisticon.kotlin.avro.generator
 
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.builder.AvroBuilder
-import io.toolisticon.kotlin.avro.generator.TestFixtures.NOW_SUPPLER
+import io.toolisticon.kotlin.avro.generator.TestFixtures.DEFAULT_GENERATOR
 import io.toolisticon.kotlin.avro.generator.TestFixtures.expectedSource
 import io.toolisticon.kotlin.avro.generator.TestFixtures.parseDeclaration
 import io.toolisticon.kotlin.avro.logical.BuiltInLogicalType
@@ -15,44 +15,44 @@ import org.junit.jupiter.api.Test
 
 internal class AvroKotlinGeneratorTest {
 
-    private val generator = AvroKotlinGenerator(nowSupplier = NOW_SUPPLER)
+  private val generator = AvroKotlinGenerator()
 
-    @Test
-    fun `generate simple data class for schema`() {
-        val declaration = AvroParser().parseSchema(
-            SchemaBuilder.record("a.b.c.Dee")
-                .doc("This is the Dee message.")
-                .fields()
-                .name("x")
-                .doc("this is x")
-                .type(
-                    AvroBuilder.primitiveSchema(
-                        SchemaType.STRING,
-                        object : StringLogicalType(BuiltInLogicalType.UUID.logicalTypeName) {}).get()
-                )
-                .noDefault()
-                .endRecord()
+  @Test
+  fun `generate simple data class for schema`() {
+    val declaration = AvroParser().parseSchema(
+      SchemaBuilder.record("a.b.c.Dee")
+        .doc("This is the Dee message.")
+        .fields()
+        .name("x")
+        .doc("this is x")
+        .type(
+          AvroBuilder.primitiveSchema(
+            SchemaType.STRING,
+            object : StringLogicalType(BuiltInLogicalType.UUID.logicalTypeName) {}).get()
         )
+        .noDefault()
+        .endRecord()
+    )
 
 
-        val file = generator.generate(declaration)
+    val file = generator.generate(declaration)
 
-        println(file.code)
-    }
+    println(file.code)
+  }
 
-    @Test
-    fun `simple nested data class`() {
-        val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
+  @Test
+  fun `simple nested data class`() {
+    val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
 
-        val file = generator.generate(declaration)
-        println(file.code)
-    }
+    val file = generator.generate(declaration)
+    println(file.code)
+  }
 
-    @Test
-    fun `generate SchemaContainingEnum`() {
-        val declaration = parseDeclaration("schema/SchemaContainingEnum.avsc")
-        val file = generator.generate(declaration)
+  @Test
+  fun `generate SchemaContainingEnum`() {
+    val declaration = parseDeclaration("schema/SchemaContainingEnum.avsc")
+    val file = DEFAULT_GENERATOR.generate(declaration)
 
-        assertThat(file.code).isEqualToIgnoringWhitespace(expectedSource(file.className))
-    }
+    assertThat(file.code).isEqualToIgnoringWhitespace(expectedSource(file.className))
+  }
 }

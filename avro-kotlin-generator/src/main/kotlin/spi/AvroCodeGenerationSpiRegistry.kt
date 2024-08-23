@@ -4,12 +4,15 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
+import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 import kotlin.reflect.KClass
 
-
+/**
+ * An implementation of [KotlinCodeGenerationSpiRegistry] that supports avro generation specific helpers.
+ */
 class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
 
@@ -23,6 +26,6 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
 
   val logicalTypes: LogicalTypeMap = LogicalTypeMap(this)
 
-//  val constructorPropertiesProcessor: ConstructorPropertySpecProcessorList<SchemaDeclarationContext, RecordField> =
-//    ConstructorPropertySpecProcessorList.of(registry)
+  internal val constructorPropertyStrategy = KotlinConstructorPropertyStrategy()
+
 }
