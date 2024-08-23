@@ -11,7 +11,7 @@
 
   <groupId>io.toolisticon.kotlin.avro._</groupId>
   <artifactId>avro-kotlin-root</artifactId>
-  <version>1.12.1.1</version>
+  <version>1.12.2.0</version>
 
   <name>pom: ${project.artifactId}</name>
   <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -29,8 +29,12 @@
     <module>lib</module>
 
     <module>_test</module>
+
     <module>avro-kotlin</module>
     <module>avro-kotlin-serialization</module>
+
+    <module>avro-kotlin-generator</module>
+    <module>avro-kotlin-maven-plugin</module>
   </modules>
 
   <!-- this is the maven root, all dependencies have to be declared in the concrete modules, using avro-kotlin-parent -->

@@ -1,0 +1,19 @@
+################################################################################
+# strategies
+################################################################################
+
+io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy
+io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
+io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
+
+################################################################################
+# processors
+################################################################################
+
+# - none
+
+################################################################################
+# logical types
+################################################################################
+
+io.toolisticon.kotlin.avro.generator.logical.UuidLogicalTypeDefinition

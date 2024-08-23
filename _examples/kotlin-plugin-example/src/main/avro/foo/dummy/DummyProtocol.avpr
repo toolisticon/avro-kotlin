@@ -1,0 +1,68 @@
+{
+  "namespace": "foo.dummy",
+  "protocol": "DummyProtocol",
+  "doc": "A dummy Protocol defining types and messages.",
+  "types": [
+    {
+      "name": "DummyRequest",
+      "type": "record",
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "type": "string",
+            "logicalType": "uuid"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DummyResponse",
+      "type": "record",
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "type": "string",
+            "logicalType": "uuid"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "DummyException",
+      "type": "error",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "name": "message",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "messages": {
+    "queryDummy": {
+      "request": [
+        {
+          "name": "query",
+          "type": "DummyRequest"
+        }
+      ],
+      "response": [
+        "null",
+        "DummyResponse"
+      ],
+      "errors": [
+        "DummyException"
+      ]
+    }
+  }
+}

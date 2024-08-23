@@ -1,0 +1,16 @@
+{
+  "namespace": "io.toolisticon.kotlin.avro.schema.enumeration",
+  "name": "SchemaContainingEnum",
+  "type": "record",
+  "doc": "This is a record with an enum field.",
+  "fields": [
+    {
+      "name": "type",
+      "type": {
+        "name": "TypeEnum",
+        "type": "enum",
+        "symbols": ["FOO","BAR"]
+      }
+    }
+  ]
+}
