@@ -270,4 +270,5 @@ object AvroKotlin {
   }
 
   fun <T : Any> Result<List<T>?>.orEmpty(): List<T> = getOrNull() ?: emptyList()
+
 }

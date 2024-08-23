@@ -13,7 +13,7 @@ easily accessible from kotlin. The mission is to become your one-stop lib when d
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 
 > [!NOTE]
-> Since Version 1.11.4.2 we use a multi module build. The GroupId changed, best use the provided BOM:
+> Since Version 1.11.4.2 we use a multi-module build. The GroupId changed, best use the provided BOM:
 ```xml
 <dependency>
     <groupId>io.toolisticon.kotlin.avro</groupId>
@@ -70,11 +70,25 @@ which uses version `1.11.3` of the `avro-core` lib:
 
 ### Releases
 
-* all issues and dependabot updates must releate to a milestone. The milestone must be labeled with the intended release version. It is ok to change the milestone label before releasing, so a template name like `1.11.2.x` is ok until you finally choose the minor/patch number.
+* all issues and dependabot updates must release to a milestone. The milestone must be labeled with the intended release version. It is ok to change the milestone label before releasing, so a template name like `1.11.2.x` is ok until you finally choose the minor/patch number.
 * Before releasing: close the milestone (and finalize its label). Remember to create a new template milestone for follow-up issues. 
-  * Closing the milestone triggers a github action that creates a draft release with the version of the milestone label.
-* Then, manually on your local console, run `mvn gitflow:release-start` which will create a release branch and interatively ask for the desired release version. It triggers a pipeline run that evaluates the release branch
+  * Closing the milestone triggers a GitHub action that creates a draft release with the version of the milestone label.
+* Then, manually on your local console, run `mvn gitflow:release-start` which will create a release branch and interactively ask for the desired release version. It triggers a pipeline run that evaluates the release branch
 * Finalize the release by running `mvn gitflow:release-finish` this will merge the release branch to `master` branch and thereby trigger the github release action that publishes the jar, sources and docs to sonatype/maven-central. 
 * Wait until the library is available on maven-central. This should take just a couple of minutes if you manually try to use it in a pom.xml via `mvn -U` (although it might take hours until it is indexed and the badge changes and dependabot starts to create requests).
-* Go to the github releases and finalize the draft that was created in step 2.
+* Go to the GitHub releases and finalize the draft that was created in step 2.
 * done
+
+### Project Structure
+
+- The root pom of the project only defines plugins and modules.
+- The `_pom/parent` defines a POM module, that is used by the implementation submodules as a parent and defines `dependencyManagement` and `dependencies`.
+- The `_pom/bom` defines a POM module used by the users of the libraries as a Bill of Material (BOM).
+- The `_test` defines a common module used on a Maven scope `test`. If you need test libraries, define it there.
+- The `avro-kotlin` defines main functions to effectively work with Avro from Kotlin. 
+- The `avro-kotlin-serialization` handles serialization issues for using `kotlinx-serialization` framework with Avro.
+- The `generator` defines a parent for Kotlin code generation.
+- The `generator/avro-kotlin-generator-api` provides an API/SPI module for the extensions of the Avro Kotlin code generator.
+- The `generator/avro-kotlin-generator` provides an Avro Kotlin code generator based on Kotlin Poet.
+- The `generator/avro-kotlin-generator-maven-plugin` provides a Maven Plugin using the Avro Kotlin from Maven.
+- The `_examples` provide a series of examples and test fixtures. Those take the external side and are considers as project users (and not implementers) and therefor use the BOM.

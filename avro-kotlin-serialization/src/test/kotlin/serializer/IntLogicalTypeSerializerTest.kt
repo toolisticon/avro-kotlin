@@ -2,37 +2,39 @@ package io.toolisticon.kotlin.avro.serialization.serializer
 
 import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
+import io.toolisticon.kotlin.avro.serialization.serializer.IntLogicalTypeSerializerTest.MyIntType
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestIntLogicalType
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.avroSerialization
 import kotlinx.serialization.Serializable
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
+
+@Serializable
+data class IntData(
+  @Serializable(with = TestIntLogicalType.TypeSerializer::class)
+  val intValue: MyIntType
+)
+
 class IntLogicalTypeSerializerTest {
 
   data class MyIntType(val value: Int)
 
-  @Serializable
-  data class Data(
-    @Serializable(with = TestIntLogicalType.TypeSerializer::class)
-    val intValue: MyIntType
-  )
-
-  private val data = Data(intValue = MyIntType(10))
+  private val data = IntData(intValue = MyIntType(10))
 
   @Test
   fun `reads forth and back`() {
     val record = avroSerialization.encodeToGenericRecord(data)
-    assertThat(avroSerialization.decodeFromGenericRecord(record, Data::class)).isEqualTo(data)
+    assertThat(avroSerialization.decodeFromGenericRecord(record, IntData::class)).isEqualTo(data)
   }
 
   @Test
   fun `reads forth and back from already converted logical type`() {
     val passedRecord = GenericRecordCodec.decodeSingleObject(
       singleObjectEncodedBytes = GenericRecordCodec.encodeSingleObject(avroSerialization.encodeToGenericRecord(data)),
-      readerSchema = avroSchemaResolver(avroSerialization.schema(Data::class)).invoke(),
+      readerSchema = avroSchemaResolver(avroSerialization.schema(IntData::class)).invoke(),
     )
-    assertThat(avroSerialization.decodeFromGenericRecord(passedRecord, Data::class)).isEqualTo(data)
+    assertThat(avroSerialization.decodeFromGenericRecord(passedRecord, IntData::class)).isEqualTo(data)
   }
 
 
