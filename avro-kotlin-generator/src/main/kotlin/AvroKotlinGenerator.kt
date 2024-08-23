@@ -32,8 +32,10 @@ class AvroKotlinGenerator(
     registry = AvroCodeGenerationSpiRegistry.load(classLoader)
   )
 
+  internal fun schemaDeclarationContext(declaration: SchemaDeclaration) = SchemaDeclarationContext.of(declaration, registry, properties)
+
   fun generate(declaration: SchemaDeclaration): KotlinFileSpec {
-    val context = SchemaDeclarationContext.of(declaration, registry, properties)
+    val context = schemaDeclarationContext(declaration)
 
     val recordType = declaration.recordType
     val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName)

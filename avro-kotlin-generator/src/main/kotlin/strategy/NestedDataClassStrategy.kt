@@ -2,7 +2,10 @@
 
 package io.toolisticon.kotlin.avro.generator.strategy
 
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
+import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordType
@@ -17,22 +20,28 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
     require(!context.isRoot) { "subTypes are non-root by definition." }
-    val className = context.className(input.hashCode)
 
-    val rootDataClassBuilder = dataClassBuilder(className).apply {
+    // TODO: builder API auf TypeName erweitern
+    val poetType: AvroPoetType = context[input.hashCode]
+
+    val nestedDataClassBuilder = dataClassBuilder(poetType.suffixedTypeName as ClassName).apply {
       input.documentation?.value?.let(this::addKdoc)
       addAnnotation(SerializableAnnotation())
+
+      if (poetType.isSuffixed) {
+        addAnnotation(SerialNameAnnotation(input.canonicalName.fqn))
+      }
     }
 
     // adds RecordFields as constructor properties.
-    parameterSpecs(context, input).forEach(rootDataClassBuilder::addConstructorProperty)
+    parameterSpecs(context, input).forEach(nestedDataClassBuilder::addConstructorProperty)
 //    ctx.processors.typeSpecProcessors(ctx, recordType, className, dataClassBuilder)
 //
 //    context.dataClassProcessors().invoke(context, input, dataClassBuilder)
 
     //context.processors(AbstractDataClassFromRecordTypeProcessor::class).executeAll(context, input, rootDataClassBuilder)
 
-    return rootDataClassBuilder.build()
+    return nestedDataClassBuilder.build()
   }
 
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input) && !ctx.isRoot

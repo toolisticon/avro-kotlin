@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test
 
 internal class SimpleUUIDRecordITest {
 
+  private val avro = AvroKotlinSerialization()
+
   @Test
   fun `schema of java and kotlin are identical`() {
     val fingerprintJava = AvroFingerprint.of(SimpleUUIDRecord.getClassSchema())
-    val fingerprintKotlin = AvroKotlinSerialization().schema(SimpleUUIDRecordData::class).fingerprint
+    val fingerprintKotlin = avro.schema(SimpleUUIDRecordData::class).fingerprint
 
     assertThat(fingerprintKotlin).isEqualTo(fingerprintJava)
   }

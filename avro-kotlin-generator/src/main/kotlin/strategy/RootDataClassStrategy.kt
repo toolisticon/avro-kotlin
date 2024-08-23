@@ -4,6 +4,8 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
+import io.toolisticon.kotlin.avro.generator.avroClassName
+import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.AvroNamedType
@@ -32,6 +34,10 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
           .date(context.properties.nowSupplier())
       )
       addAnnotation(SerializableAnnotation())
+
+      if (context.properties.schemaTypeSuffix.isNotBlank()) {
+        addAnnotation(SerialNameAnnotation(avroClassName(context.declaration.recordType)))
+      }
     }
 
     // add constructor properties for RecordFields

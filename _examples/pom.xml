@@ -36,6 +36,31 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
+        <artifactId>avro</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
+        <artifactId>avro-compiler</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
+        <artifactId>avro-ipc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.toolisticon.kotlin.avro.lib</groupId>
+        <artifactId>avro4k-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>io.github.microutils</groupId>
         <artifactId>kotlin-logging-jvm</artifactId>
@@ -55,4 +80,22 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

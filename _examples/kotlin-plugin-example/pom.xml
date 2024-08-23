@@ -50,9 +50,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.avro</groupId>
+      <groupId>io.toolisticon.kotlin.avro.lib</groupId>
       <artifactId>avro-ipc</artifactId>
-      <version>1.11.3</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -81,7 +80,7 @@
             <plugin>kotlinx-serialization</plugin>
           </compilerPlugins>
           <pluginOptions>
-<!--            <option>all-open:annotation=...fqn...</option>-->
+            <!--            <option>all-open:annotation=...fqn...</option>-->
           </pluginOptions>
         </configuration>
         <dependencies>
