@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-root</artifactId>
-    <version>1.12.1.0</version>
+    <version>1.12.1.1</version>
   </parent>
 
   <artifactId>avro-lib-root</artifactId>
@@ -16,10 +16,10 @@
   <properties>
     <avro.version>1.12.0</avro.version>
     <avro4k.version>2.0.0</avro4k.version>
-    <commons-compress.version>1.27.0</commons-compress.version>
+    <commons-compress.version>1.27.1</commons-compress.version>
     <commons-lang3.version>3.16.0</commons-lang3.version>
     <commons-text.version>1.12.0</commons-text.version>
-    <slf4j.version>2.0.15</slf4j.version>
+    <slf4j.version>2.0.16</slf4j.version>
   </properties>
 
   <modules>
