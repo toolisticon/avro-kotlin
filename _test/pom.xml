@@ -6,7 +6,7 @@
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
     <version>1.12.2.1-SNAPSHOT</version>
-    <relativePath>../_mvn/parent/pom.xml</relativePath>
+    <relativePath>../_build/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.test</groupId>

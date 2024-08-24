@@ -23,8 +23,8 @@
   </properties>
 
   <modules>
-    <module>_mvn/parent</module>
-    <module>_mvn/bom</module>
+    <module>_build/parent</module>
+    <module>avro-kotlin-bom</module>
 
     <module>lib</module>
 
@@ -88,7 +88,7 @@
       </activation>
       <modules>
         <module>_examples</module>
-        <module>_mvn/coverage-aggregator</module>
+        <module>_build/coverage-aggregator</module>
       </modules>
     </profile>
   </profiles>
