@@ -16,32 +16,32 @@ import org.junit.jupiter.api.Test
 
 internal class AvroKotlinGeneratorTest {
 
-  private val generator = AvroKotlinGenerator(
-    properties = DEFAULT_PROPERTIES.copy(schemaTypeSuffix = "Data"),
-  )
-
-
-  @Test
-  fun `generate simple data class for schema`() {
-    val declaration = AvroParser().parseSchema(
-      SchemaBuilder.record("a.b.c.Dee")
-        .doc("This is the Dee message.")
-        .fields()
-        .name("x")
-        .doc("this is x")
-        .type(
-          AvroBuilder.primitiveSchema(
-            SchemaType.STRING,
-            object : StringLogicalType(BuiltInLogicalType.UUID.logicalTypeName) {}).get()
-        )
-        .noDefault()
-        .endRecord()
+    private val generator = AvroKotlinGenerator(
+        properties = DEFAULT_PROPERTIES.copy(schemaTypeSuffix = "Data"),
     )
 
-    val file = generator.generate(declaration)
 
-    assertThat(file.code).isEqualToIgnoringWhitespace(
-      """
+    @Test
+    fun `generate simple data class for schema`() {
+        val declaration = AvroParser().parseSchema(
+            SchemaBuilder.record("a.b.c.Dee")
+                .doc("This is the Dee message.")
+                .fields()
+                .name("x")
+                .doc("this is x")
+                .type(
+                    AvroBuilder.primitiveSchema(
+                        SchemaType.STRING,
+                        object : StringLogicalType(BuiltInLogicalType.UUID.logicalTypeName) {}).get()
+                )
+                .noDefault()
+                .endRecord()
+        )
+
+        val file = generator.generate(declaration).single()
+
+        assertThat(file.code).isEqualToIgnoringWhitespace(
+            """
       package a.b.c
 
       import jakarta.`annotation`.Generated
@@ -66,18 +66,18 @@ internal class AvroKotlinGeneratorTest {
         public val x: UUID,
       )
     """.trimIndent()
-    )
-  }
+        )
+    }
 
-  @Test
-  fun `simple nested data class`() {
-    val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
+    @Test
+    fun `simple nested data class`() {
+        val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
 
-    val file = generator.generate(declaration)
-    println(file.code)
+        val file = generator.generate(declaration).single()
+        println(file.code)
 
-    assertThat(file.code).isEqualToIgnoringWhitespace(
-      """
+        assertThat(file.code).isEqualToIgnoringWhitespace(
+            """
       package io.acme.schema
 
       import jakarta.`annotation`.Generated
@@ -110,14 +110,14 @@ internal class AvroKotlinGeneratorTest {
         )
       }
     """.trimIndent()
-    )
-  }
+        )
+    }
 
-  @Test
-  fun `generate SchemaContainingEnum`() {
-    val declaration = parseDeclaration("schema/SchemaContainingEnum.avsc")
-    val file = DEFAULT_GENERATOR.generate(declaration)
+    @Test
+    fun `generate SchemaContainingEnum`() {
+        val declaration = parseDeclaration("schema/SchemaContainingEnum.avsc")
+        val file = DEFAULT_GENERATOR.generate(declaration).single()
 
-    assertThat(file.code).isEqualToIgnoringWhitespace(expectedSource(file.className))
-  }
+        assertThat(file.code).isEqualToIgnoringWhitespace(expectedSource(file.className))
+    }
 }

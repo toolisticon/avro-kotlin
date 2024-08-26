@@ -12,7 +12,7 @@ object TestFixtures : KLogging() {
   val NOW_SUPPLER = { NOW }
   val PARSER = AvroParser()
 
-  val DEFAULT_PROPERTIES = AvroKotlinGeneratorProperties(nowSupplier = NOW_SUPPLER)
+  val DEFAULT_PROPERTIES = DefaultAvroKotlinGeneratorProperties(nowSupplier = NOW_SUPPLER)
   val DEFAULT_GENERATOR = AvroKotlinGenerator(properties = DEFAULT_PROPERTIES)
 
   fun parseDeclaration(path: String) = PARSER.parseSchema(resourceUrl(path))

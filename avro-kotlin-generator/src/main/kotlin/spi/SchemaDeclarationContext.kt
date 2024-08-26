@@ -6,6 +6,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
@@ -29,7 +30,7 @@ data class SchemaDeclarationContext(
     fun of(
       declaration: SchemaDeclaration,
       registry: AvroCodeGenerationSpiRegistry,
-      properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties(),
+      properties: AvroKotlinGeneratorProperties = DefaultAvroKotlinGeneratorProperties(),
     ): SchemaDeclarationContext {
       val rootClassName: ClassName = rootClassName(declaration, properties = properties)
 

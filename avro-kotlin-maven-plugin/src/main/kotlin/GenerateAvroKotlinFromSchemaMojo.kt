@@ -2,7 +2,7 @@ package io.toolisticon.kotlin.avro.maven
 
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
-import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_GENERATED_TEST_SOURCES
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_SOURCE_DIRECTORY
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_TEST_DIRECTORY
@@ -97,7 +97,7 @@ class GenerateAvroKotlinFromSchemaMojo : AbstractContextAwareMojo() {
     log.info("Found AVRO Schema ${includedSchemaFiles.size} file(s) in ${sourceDirectory}.")
     log.debug("Found AVRO Schema files: ${includedSchemaFiles.joinToString(", ")}.")
 
-    val generatorProperties = AvroKotlinGeneratorProperties(
+    val generatorProperties = DefaultAvroKotlinGeneratorProperties(
       schemaTypeSuffix = rootFileSuffix,
       //additionalTopLevelAnnotations = listOf() // TODO -> read this from the props.
     )
@@ -108,7 +108,7 @@ class GenerateAvroKotlinFromSchemaMojo : AbstractContextAwareMojo() {
 
     val fileSpecs = includedSchemaFiles.map { File(sourceDirectory, it) }
       .map { parser.parseSchema(it) }
-      .map { generator.generate(it) }
+      .flatMap { generator.generate(it) }
 
 
     fileSpecs.forEach {

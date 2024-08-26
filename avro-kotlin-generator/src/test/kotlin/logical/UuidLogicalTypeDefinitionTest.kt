@@ -13,7 +13,7 @@ internal class UuidLogicalTypeDefinitionTest {
     assertThat(TestFixtures.DEFAULT_GENERATOR.registry.logicalTypes).isNotEmpty()
     assertThat(TestFixtures.DEFAULT_GENERATOR.registry.logicalTypes).isNotEmpty()
 
-    val file = TestFixtures.DEFAULT_GENERATOR.generate(declaration)
+    val file = TestFixtures.DEFAULT_GENERATOR.generate(declaration).single()
 
     println(file.code)
 

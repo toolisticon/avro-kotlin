@@ -4,6 +4,7 @@ package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.AvroKotlin
+import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
@@ -16,16 +17,16 @@ import io.toolisticon.kotlin.generation.spi.strategy.executeAll
  * takes a parsed schema or protocol declaration and generates one (or more?) file-specs that
  * can be written to file system and compiled.
  */
-class AvroKotlinGenerator(
+open class AvroKotlinGenerator(
   val registry: AvroCodeGenerationSpiRegistry,
-  val properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties()
+  val properties: AvroKotlinGeneratorProperties = DefaultAvroKotlinGeneratorProperties()
 ) {
   companion object {
     val NAME = AvroKotlinGenerator::class.java.name
   }
 
   constructor(
-    properties: AvroKotlinGeneratorProperties = AvroKotlinGeneratorProperties(),
+    properties: AvroKotlinGeneratorProperties = DefaultAvroKotlinGeneratorProperties(),
     classLoader: ClassLoader = AvroKotlin.DEFAULT_CLASS_LOADER
   ) : this(
     properties = properties,
@@ -34,7 +35,7 @@ class AvroKotlinGenerator(
 
   internal fun schemaDeclarationContext(declaration: SchemaDeclaration) = SchemaDeclarationContext.of(declaration, registry, properties)
 
-  fun generate(declaration: SchemaDeclaration): KotlinFileSpec {
+  fun generate(declaration: SchemaDeclaration): List<KotlinFileSpec> {
     val context = schemaDeclarationContext(declaration)
 
     val recordType = declaration.recordType
@@ -43,6 +44,11 @@ class AvroKotlinGenerator(
     val dataClasses = context.dataClassStrategies.executeAll(context, recordType)
 
     dataClasses.forEach(fileSpecBuilder::addType)
-    return fileSpecBuilder.build()
+    return listOf(fileSpecBuilder.build())
+  }
+
+  fun generate(declaration: ProtocolDeclaration) : List<KotlinFileSpec> {
+
+    return listOf()
   }
 }
