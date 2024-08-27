@@ -107,6 +107,11 @@ class AvroSchema(
   override val properties: ObjectProperties = ObjectProperties.ofNullable(schema)
 
   /**
+   * Extract typed Meta properties.
+   */
+  inline fun <reified META : Any> getMeta(extractor: AvroSchema.() -> META?): META? = this.extractor()
+
+  /**
    * `true` if [properties] is not empty.
    */
   val hasProps: Boolean = properties.isNotEmpty()

@@ -74,6 +74,8 @@ object AvroKotlin {
    */
   val AVRO_V1_HEADER = SingleObjectEncodedBytes.AVRO_V1_HEADER
 
+  const val META_PROPERTY = "meta"
+
   fun avroType(schema: AvroSchema): AvroType = AvroType.avroType(schema)
 
   fun <T : Any> loadClassForSchema(schema: AvroSchema): KClass<T> {

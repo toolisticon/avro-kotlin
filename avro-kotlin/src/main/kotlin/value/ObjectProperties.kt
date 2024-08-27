@@ -1,5 +1,6 @@
 package io.toolisticon.kotlin.avro.value
 
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.JsonProperties
 
@@ -68,6 +69,27 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
     } else {
       value as V
     }
+  }
+
+  @Throws(IllegalArgumentException::class)
+  @Suppress("UNCHECKED_CAST")
+  inline fun <reified V : Any> getValueOrNull(key: String): V? {
+    return if (contains(key)) {
+      getValue(key)
+    } else {
+      null
+    }
+  }
+
+  /**
+   * Extract typed Meta properties.
+   */
+  inline fun <reified META : Any> getMeta(extractor: ObjectProperties.() -> META?): META? = getMeta()?.extractor()
+
+  fun getMeta() : ObjectProperties? =   if (contains(AvroKotlin.META_PROPERTY)) {
+    getMap(AvroKotlin.META_PROPERTY)
+  } else {
+    null
   }
 
   /**

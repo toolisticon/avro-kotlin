@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.model.wrapper
 
 import _ktx.StringKtx.firstUppercase
 import _ktx.StringKtx.toString
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.builder.AvroBuilder
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.value.*
@@ -55,6 +56,11 @@ class AvroProtocol(
    */
   override val documentation = Documentation.ofNullable(protocol.doc)
   override val properties = ObjectProperties.ofNullable(protocol)
+
+  /**
+   * Extract typed Meta properties.
+   */
+  inline fun <reified META : Any> getMeta(extractor: AvroProtocol.() -> META?): META? = this.extractor()
 
   val md5: ByteArray by lazy { protocol.mD5 }
 
