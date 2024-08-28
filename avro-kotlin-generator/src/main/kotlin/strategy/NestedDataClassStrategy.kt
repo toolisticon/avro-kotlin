@@ -8,10 +8,12 @@ import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
+import io.toolisticon.kotlin.avro.generator.processor.KotlinDataClassFromRecordTypeProcessorBase
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
+import io.toolisticon.kotlin.generation.spi.processor.executeAll
 
 /**
  * Generates a data class that does not require to be top-level/single
@@ -33,6 +35,8 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
         addAnnotation(SerialNameAnnotation(input.canonicalName.fqn))
       }
     }
+
+    context.registry.processors.filter(KotlinDataClassFromRecordTypeProcessorBase::class).executeAll(context, input, nestedDataClassBuilder)
 
     // adds RecordFields as constructor properties.
     parameterSpecs(context, input).forEach(nestedDataClassBuilder::addConstructorProperty)

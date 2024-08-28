@@ -2,7 +2,6 @@ package io.toolisticon.kotlin.avro.model.wrapper
 
 import _ktx.StringKtx.firstUppercase
 import _ktx.StringKtx.toString
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.builder.AvroBuilder
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.value.*
@@ -37,6 +36,7 @@ class AvroProtocol(
     } else {
       AvroSchema(schema = message.request, name = requestName(message))
     }
+
   }
 
   /**
@@ -107,6 +107,7 @@ class AvroProtocol(
      */
     val request: AvroSchema
 
+    val response: MessageResponse
 
     val properties: ObjectProperties
 
@@ -118,9 +119,10 @@ class AvroProtocol(
     override val documentation: Documentation? = Documentation.ofNullable(message.doc)
 
     override val request: AvroSchema = schemaForMessageRequest(message)
-
+    override val response: MessageResponse = MessageResponse.of(EmptyType.schema)
     override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
+
     override fun equals(other: Any?): Boolean {
       if (this === other) return true
       if (other !is OneWayMessage) return false
@@ -142,9 +144,8 @@ class AvroProtocol(
 
     init {
       require(message.isOneWay) { "Message is not one-way." }
+      require(response == MessageResponse.NONE) { "OneWayMessage must not have a response-schema." }
     }
-
-
   }
 
   class TwoWayMessage(private val message: Protocol.Message) : Message {
@@ -157,7 +158,9 @@ class AvroProtocol(
     /**
      * The returned data.
      */
-    val response: AvroSchema = AvroSchema(message.response)
+    override val response: MessageResponse by lazy {
+      MessageResponse.of(AvroSchema(message.response))
+    }
 
     /**
      * Errors that might be thrown.
@@ -167,7 +170,6 @@ class AvroProtocol(
       val schema = AvroSchema(message.errors)
       val catalog = SchemaCatalog(schema = schema, excludeSelf = true)
 
-
       if (catalog.size > 1) {
         catalog.single(SchemaCatalog.notPrimitive()).second
       } else {
@@ -175,7 +177,7 @@ class AvroProtocol(
       }
     }
 
-    override fun enclosedTypes(): List<AvroSchema> = listOf(request, response, errors)
+    override fun enclosedTypes(): List<AvroSchema> = listOf(request, response.schema, errors)
 
     override fun toString(): String {
       return "TwoWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties, response=$response, errors=$errors)"
@@ -183,6 +185,7 @@ class AvroProtocol(
 
     init {
       require(!message.isOneWay) { "Message is not two-way." }
+      require(message.response != MessageResponse.NONE) { "TwoWayMessage must not have NONE response." }
     }
   }
 
