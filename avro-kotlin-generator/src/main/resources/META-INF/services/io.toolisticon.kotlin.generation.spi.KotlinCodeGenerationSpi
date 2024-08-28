@@ -6,6 +6,8 @@ io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
 
+io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy
+
 ################################################################################
 # processors
 ################################################################################

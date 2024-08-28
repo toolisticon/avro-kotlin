@@ -7,10 +7,13 @@ import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy
 import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
+import io.toolisticon.kotlin.generation.spi.strategy.executeSingle
 
 /**
  * Core class of `avro-kotlin-generator`. Configure via SPI/ServiceLoader and properties,
@@ -35,6 +38,8 @@ open class AvroKotlinGenerator(
 
   internal fun schemaDeclarationContext(declaration: SchemaDeclaration) = SchemaDeclarationContext.of(declaration, registry, properties)
 
+  internal fun protocolDeclarationContext(declaration: ProtocolDeclaration) = ProtocolDeclarationContext.of(declaration, registry, properties)
+
   fun generate(declaration: SchemaDeclaration): List<KotlinFileSpec> {
     val context = schemaDeclarationContext(declaration)
 
@@ -47,8 +52,15 @@ open class AvroKotlinGenerator(
     return listOf(fileSpecBuilder.build())
   }
 
-  fun generate(declaration: ProtocolDeclaration) : List<KotlinFileSpec> {
+  fun generate(declaration: ProtocolDeclaration): List<KotlinFileSpec> {
+    val context = protocolDeclarationContext(declaration)
 
-    return listOf()
+    val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName)
+
+    context.registry.strategies.filter(ProtocolObjectStrategy::class).executeSingle(context, declaration.protocol)?.let {
+      fileSpecBuilder.addType(it)
+    }
+
+    return listOf(fileSpecBuilder.build())
   }
 }

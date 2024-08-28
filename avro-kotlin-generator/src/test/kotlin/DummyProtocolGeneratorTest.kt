@@ -12,5 +12,9 @@ class DummyProtocolGeneratorTest {
   @Test
   fun `generate dummy protocol`() {
     println(declaration.originalJson)
+
+    val file = generator.generate(declaration).single()
+
+    println(file.code)
   }
 }

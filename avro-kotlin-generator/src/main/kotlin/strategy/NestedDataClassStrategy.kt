@@ -4,6 +4,7 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
@@ -25,7 +26,7 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
     val poetType: AvroPoetType = context[input.hashCode]
 
     val nestedDataClassBuilder = dataClassBuilder(poetType.suffixedTypeName as ClassName).apply {
-      input.documentation?.value?.let(this::addKdoc)
+      addKDoc(input.documentation)
       addAnnotation(SerializableAnnotation())
 
       if (poetType.isSuffixed) {

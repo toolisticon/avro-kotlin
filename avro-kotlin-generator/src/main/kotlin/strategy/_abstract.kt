@@ -57,4 +57,3 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
 }
 
 
-

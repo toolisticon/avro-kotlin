@@ -12,19 +12,27 @@ import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.strategy.AvroEnumTypeSpecStrategy
 import io.toolisticon.kotlin.avro.generator.strategy.AvroRecordTypeSpecStrategy
+import io.toolisticon.kotlin.avro.model.AvroTypesMap
+import io.toolisticon.kotlin.avro.model.RecordType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
  */
 data class SchemaDeclarationContext(
+  override val source: AvroSource,
   override val registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,
   override val rootClassName: ClassName,
+  override val canonicalName: CanonicalName,
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,
-  override val declaration: SchemaDeclaration
-) : AvroDeclarationContext<SchemaDeclaration>, KotlinCodeGenerationContextBase<SchemaDeclarationContext>(registry) {
+  override val avroTypes: AvroTypesMap,
+  val schema: AvroSchema,
+) : AvroDeclarationContext, KotlinCodeGenerationContextBase<SchemaDeclarationContext>(registry) {
   companion object {
 
     fun of(
@@ -42,12 +50,15 @@ data class SchemaDeclarationContext(
       )
 
       return SchemaDeclarationContext(
+        source = declaration.source,
         registry = registry,
         properties = properties,
         rootClassName = rootClassName,
         isRoot = true,
         avroPoetTypes = avroPoetTypes,
-        declaration = declaration,
+        canonicalName = declaration.canonicalName,
+        avroTypes = declaration.avroTypes,
+        schema = declaration.schema
       )
     }
   }
@@ -55,6 +66,10 @@ data class SchemaDeclarationContext(
   override val contextType = SchemaDeclarationContext::class
 
   fun copyNonRoot() = copy(isRoot = false)
+
+  val recordType by lazy {
+    RecordType(schema)
+  }
 
   val dataClassStrategies by lazy {
     registry.strategies.filter(AvroRecordTypeSpecStrategy::class)
