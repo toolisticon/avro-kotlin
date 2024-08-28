@@ -17,6 +17,7 @@ import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBu
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
+import mu.KLogging
 
 /**
  * Generates a top-level data class for a given schema declaration.
@@ -25,6 +26,7 @@ import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
  * as inner classes, so everything declared in one schema stys in one file.
  */
 class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
+  companion object : KLogging()
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
     val rootDataClassBuilder = dataClassBuilder(context.rootClassName).apply {
