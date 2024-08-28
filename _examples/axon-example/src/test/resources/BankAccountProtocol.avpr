@@ -1,0 +1,32 @@
+{
+  "namespace": "holi.bank",
+  "protocol": "BankAccountProtocol",
+  "doc": "Protocol declaration for bank-account.",
+  "types": [
+    {
+      "name": "CreateBankAccount",
+      "doc": "Creates a new bank account with given accountId",
+      "meta": {
+        "revision": "1",
+        "type": "command"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+          "meta": {
+            "type": "identifierRef"
+          }
+        },
+        {
+          "name": "initialBalance",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "messages": {
+  }
+}

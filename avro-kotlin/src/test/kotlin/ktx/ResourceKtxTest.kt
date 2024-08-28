@@ -34,6 +34,6 @@ internal class ResourceKtxTest {
     val resources = ResourceKtx.findAvroResources()
     assertThat(resources.keys).containsExactlyInAnyOrder(AvroSpecification.PROTOCOL, AvroSpecification.SCHEMA)
     assertThat(resources[AvroSpecification.SCHEMA]).hasSize(56)
-    assertThat(resources[AvroSpecification.PROTOCOL]).hasSize(25)
+    assertThat(resources[AvroSpecification.PROTOCOL]).hasSize(26)
   }
 }

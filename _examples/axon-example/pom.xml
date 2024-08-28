@@ -12,6 +12,23 @@
   <name>example: ${project.artifactId}</name>
   <description>Using the generator for axon specific types.</description>
 
+  <properties>
+    <axon-bom.version>4.10.0</axon-bom.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-bom</artifactId>
+        <version>${axon-bom.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- KOTLIN -->
     <dependency>
@@ -33,24 +50,17 @@
 
     <dependency>
       <groupId>io.toolisticon.kotlin.avro</groupId>
-      <artifactId>avro-kotlin-serialization</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro._</groupId>
-      <artifactId>logical-type-money</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.toolisticon.kotlin.avro._</groupId>
-      <artifactId>logical-type-customer-id</artifactId>
-      <version>${project.version}</version>
+      <artifactId>avro-kotlin-generator</artifactId>
     </dependency>
 
-    <!-- Why do we need a reference to another example ? -->
     <dependency>
-      <groupId>io.toolisticon.kotlin.avro._</groupId>
-      <artifactId>java-example</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-messaging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-modelling</artifactId>
     </dependency>
 
     <dependency>

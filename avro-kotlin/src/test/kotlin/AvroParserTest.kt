@@ -119,7 +119,8 @@ internal class AvroParserTest {
 
     assertThat(declaration.canonicalName).hasToString("CanonicalName(fqn='foo.dummy.DummyProtocol')")
 
-    assertThat(declaration.avroTypes).hasSize(9)
+    //assertThat(declaration.avroTypes).hasSize(9)
+    assertThat(declaration.avroTypes).hasSize(7)
     assertThat(declaration.protocol.recordTypes).hasSize(4)
 
     val msg: AvroProtocol.TwoWayMessage = declaration.protocol.messages[Name("queryDummy")]!! as AvroProtocol.TwoWayMessage

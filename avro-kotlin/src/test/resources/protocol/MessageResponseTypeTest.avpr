@@ -1,0 +1,71 @@
+{
+  "namespace": "io.toolisticon.kotlin.avro.model",
+  "protocol": "MessageResponseTypeTest",
+  "types": [
+    {
+      "name": "Query",
+      "type": "record",
+      "fields": [
+        {
+          "name": "id",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "Result",
+      "type": "record",
+      "fields": [
+        {
+          "name": "value",
+          "type": "int"
+        }
+      ]
+    }
+  ],
+  "messages": {
+    "NONE": {
+      "request": [
+        {
+          "name": "query",
+          "type": "Query"
+        }
+      ],
+      "one-way": true
+    },
+    "SINGLE": {
+      "request": [
+        {
+          "name": "query",
+          "type": "Query"
+        }
+      ],
+      "response": "Result"
+    },
+    "OPTIONAL": {
+      "request": [
+        {
+          "name": "query",
+          "type": "Query"
+        }
+      ],
+      "response": [
+        "null",
+        "Result"
+      ]
+    },
+    "MULTIPLE": {
+      "request": [
+        {
+          "name": "query",
+          "type": "Query"
+        }
+      ],
+      "response": {
+        "type": "array",
+        "items": "Result",
+        "default": []
+      }
+    }
+  }
+}
