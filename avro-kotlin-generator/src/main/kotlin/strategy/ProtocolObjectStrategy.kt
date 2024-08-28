@@ -48,8 +48,6 @@ class ProtocolObjectStrategy : KotlinObjectSpecStrategy<ProtocolDeclarationConte
       }
     }
 
-
-
     typeSpecs.forEach {
       when (it) {
         is KotlinDataClassSpec -> builder.addType(it)
