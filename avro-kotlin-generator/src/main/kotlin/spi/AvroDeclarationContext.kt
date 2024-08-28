@@ -5,19 +5,46 @@ import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
-import io.toolisticon.kotlin.avro.value.AvroHashCode
+import io.toolisticon.kotlin.avro.model.AvroTypesMap
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.generation.FileName
 
 /**
  * The generator context, holds all data required for strategies and processors to do their work.
  * Also knows the registry of existing strategies and processors.
  */
-sealed interface AvroDeclarationContext<T : AvroDeclaration> {
+sealed interface AvroDeclarationContext {
 
   /**
    * The root class name of the [com.squareup.kotlinpoet.FileSpec] we are building.
    */
   val rootClassName: FileName
+
+  /**
+   * What was the source of this declaration?
+   */
+  val source: AvroSource
+
+
+  val canonicalName: CanonicalName
+
+  /**
+   * For reference purposes, we keep the unmodified json as we read it from source.
+   */
+  val originalJson: JsonString get() = source.json
+
+  /**
+   * On Top level, we need a namespace.
+   */
+  val namespace: Namespace get() = canonicalName.namespace
+
+  /**
+   * The name of the root type.
+   */
+  val name: Name get() = canonicalName.name
+
+  val avroTypes: AvroTypesMap
 
   /**
    * Indicator if we are working on the root [com.squareup.kotlinpoet.TypeSpec] of our generated file.
@@ -26,11 +53,6 @@ sealed interface AvroDeclarationContext<T : AvroDeclaration> {
    * TODO: do we need this on top level? it might be relevant for schema, but not for protocol
    */
   val isRoot: Boolean
-
-  /**
-   * The [AvroDeclaration] we derived from the parsed avro json, either [SchemaDeclaration] or [ProtocolDeclaration].
-   */
-  val declaration: T
 
   /**
    * The configured properties for the generator.

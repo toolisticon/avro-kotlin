@@ -36,7 +36,7 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
       addAnnotation(SerializableAnnotation())
 
       if (context.properties.schemaTypeSuffix.isNotBlank()) {
-        addAnnotation(SerialNameAnnotation(avroClassName(context.declaration.recordType)))
+        addAnnotation(SerialNameAnnotation(avroClassName(context.recordType)))
       }
     }
 

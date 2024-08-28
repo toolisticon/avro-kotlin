@@ -16,8 +16,6 @@ class ProtocolDeclaration(
   override val source: AvroSource
 ) : AvroDeclaration {
 
-  override val originalJson: JsonString = source.json
-
   override val documentation: Documentation? = protocol.documentation
 
   override val avroTypes: AvroTypesMap = protocol.types
@@ -30,13 +28,11 @@ class ProtocolDeclaration(
     ", avroTypes=$avroTypes" +
     //", fields=$fields" +
     ")"
-
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is ProtocolDeclaration) return false
     if (protocol != other.protocol) return false
     return true
   }
-
   override fun hashCode(): Int = protocol.hashCode()
 }

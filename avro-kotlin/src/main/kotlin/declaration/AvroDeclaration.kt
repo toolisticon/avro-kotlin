@@ -20,7 +20,7 @@ sealed interface AvroDeclaration : WithDocumentation {
   /**
    * For reference purposes, we keep the unmodified json as we read it from source.
    */
-  val originalJson: JsonString
+  val originalJson: JsonString get() = source.json
 
   /**
    * What was the source of this declaration?
