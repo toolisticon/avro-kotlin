@@ -4,33 +4,34 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.TypeName
-import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
+import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext.Companion.toSchemaDeclarationContext
-import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.objectBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 import io.toolisticon.kotlin.generation.spec.KotlinEnumClassSpec
+import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
 import io.toolisticon.kotlin.generation.spec.KotlinObjectSpec
-import io.toolisticon.kotlin.generation.spi.strategy.KotlinObjectSpecStrategy
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
-class ProtocolObjectStrategy : KotlinObjectSpecStrategy<ProtocolDeclarationContext, AvroProtocol>(
-  contextType = ProtocolDeclarationContext::class, inputType = AvroProtocol::class
-) {
-  override fun invoke(context: ProtocolDeclarationContext, input: AvroProtocol): KotlinObjectSpec {
+class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
 
-    val builder = KotlinCodeGeneration.builder.objectBuilder(input.canonicalName.asClassName())
-      .addAnnotation(GeneratedAnnotation(value = AvroKotlinGenerator.NAME))
+  override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
+    val protocol = input.protocol
+    val className =  protocol.canonicalName.asClassName()
 
-    builder.addKDoc(input.documentation)
+    val builder = objectBuilder(className).apply {
+      addAnnotation(GeneratedAnnotation(value = AvroKotlinGenerator.NAME))
+      addKDoc(protocol.documentation)
+    }
 
     val schemaDeclarationContext = context.toSchemaDeclarationContext()
 
@@ -56,6 +57,8 @@ class ProtocolObjectStrategy : KotlinObjectSpecStrategy<ProtocolDeclarationConte
       }
     }
 
-    return builder.build()
+    val file = fileBuilder(className)
+    return file.build()
   }
+
 }
