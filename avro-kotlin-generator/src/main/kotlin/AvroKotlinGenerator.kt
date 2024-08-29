@@ -6,6 +6,7 @@ import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
+import io.toolisticon.kotlin.avro.generator.KotlinCodeGenerationIncubator.generateFn
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
@@ -51,10 +52,8 @@ open class AvroKotlinGenerator(
     return listOf(fileSpecBuilder.build())
   }
 
-  fun generate(declaration: ProtocolDeclaration): List<KotlinFileSpec> = with(protocolDeclarationContext(declaration)) {
-    strategies(AvroFileSpecFromProtocolDeclarationStrategy::class).executeAll(
-      context = this,
-      input = declaration
-    )
-  }
+  fun generate(declaration: ProtocolDeclaration): List<KotlinFileSpec> = generateFn<
+    ProtocolDeclaration,
+    ProtocolDeclarationContext,
+    AvroFileSpecFromProtocolDeclarationStrategy>(input = declaration, contextFactory = this::protocolDeclarationContext)
 }

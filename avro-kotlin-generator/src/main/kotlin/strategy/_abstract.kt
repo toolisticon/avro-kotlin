@@ -18,6 +18,7 @@ import io.toolisticon.kotlin.generation.spec.KotlinEnumClassSpec
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyBase
+import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecStrategy
 import kotlin.reflect.KClass
 
 /**
@@ -62,19 +63,35 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
     input != null && input is EnumType && !ctx.isRoot
 }
 
-abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinCodeGenerationStrategyBase<ProtocolDeclarationContext, ProtocolDeclaration, KotlinFileSpec>(
-  contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class, specType = KotlinFileSpec::class
+/**
+ * Use this base class to implement a strategy that takes a [ProtocolDeclaration] and uses the
+ * data provided to create a [KotlinFileSpec].
+ *
+ * If more than one [AvroFileSpecFromProtocolDeclarationStrategy] is registered, multiple files will be created.
+ * If they relay on each other, make sure that the ordering is correct. Sequential calls of multiple strategies may share their
+ * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
+ */
+abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
+  contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
   override fun test(context: ProtocolDeclarationContext, input: Any?): Boolean = super.test(context, input)
 
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec
 }
 
-
+/**
+ * Use this base class to implement a strategy that takes a [SchemaDeclaration] and uses the
+ * data provided to create a [KotlinFileSpec].
+ *
+ * If more than one [AvroFileSpecFromSchemaDeclarationStrategy] is registered, multiple files will be created.
+ * If they relay on each other, make sure that the ordering is correct. Sequential calls of multiple strategies may share their
+ * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
+ */
 abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, SchemaDeclaration, KotlinFileSpec>(
   contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class, specType = KotlinFileSpec::class
 ) {
-  override fun test(context: SchemaDeclarationContext, input: Any?): Boolean = super.test(context, input)
 
   abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec
+
+  override fun test(context: SchemaDeclarationContext, input: Any?): Boolean = super.test(context, input)
 }

@@ -7,7 +7,7 @@ import org.apache.avro.Schema
 import kotlin.io.path.Path
 
 @JvmInline
-value class Name(override val value: String) : ValueType<String> {
+value class Name(override val value: String) : ValueType<String>, Comparable<Name> {
   companion object {
     val EMPTY = Name("")
 
@@ -35,6 +35,7 @@ value class Name(override val value: String) : ValueType<String> {
 
   fun toPath(specification: AvroSpecification) = toPath(specification.value)
   fun toPath(fileExtension: String) = Path("$value$NAME$fileExtension")
+  override fun compareTo(other: Name): Int = this.value.compareTo(other.value)
 
   override fun toString() = value
 }
