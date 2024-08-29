@@ -28,5 +28,14 @@
     }
   ],
   "messages": {
+    "handle": {
+      "request": [
+        {
+          "name": "command",
+          "type": "CreateBankAccount"
+        }
+      ],
+      "one-way": true
+    }
   }
 }

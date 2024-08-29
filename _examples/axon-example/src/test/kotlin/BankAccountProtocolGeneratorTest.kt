@@ -14,14 +14,19 @@ class BankAccountProtocolGeneratorTest {
 
   @Test
   fun `generate protocol`() {
-    val file = TestFixtures.DEFAULT_GENERATOR.generate(declaration).single()
+    val files = TestFixtures.DEFAULT_GENERATOR.generate(declaration)
 
-    logger.info { file.code }
+
 
 
     val record =  declaration.protocol.types.values.filterIsInstance<RecordType>().first()
 
     println(record.recordMetaData())
     println(record.getField(Name("accountId"))?.fieldMetaData())
+
+    files.forEach{
+      logger.info { "===== FILE: ${it.fqn}\n${it.code}\n" }
+    }
+
   }
 }

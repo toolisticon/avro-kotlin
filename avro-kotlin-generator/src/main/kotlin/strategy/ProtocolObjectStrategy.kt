@@ -23,6 +23,7 @@ import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
 class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
+  override val order: Int = 0
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
     val protocol = input.protocol
@@ -58,6 +59,8 @@ class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
     }
 
     val file = fileBuilder(className)
+    file.addType(builder.build())
+
     return file.build()
   }
 
