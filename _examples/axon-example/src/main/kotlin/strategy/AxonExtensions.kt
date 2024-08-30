@@ -20,13 +20,15 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 fun AvroProtocol.Message.isQuery(): Boolean {
+/*
   return this.request.fields
     .map { AvroType.avroType<AvroType>(it.schema) }
     .filterIsInstance<RecordType>()
     .mapNotNull { it.recordMetaData() }
     .any { RecordMetaDataType.Query == it.type }
   // TODO: analyze response of query
-  // RecordMetaDataType.QueryResult == it.type
+ */
+  return this.fieldMetaData()?.type == MessageMetaDataType.Query
 }
 
 fun AvroProtocol.Message.isDecider(): Boolean {

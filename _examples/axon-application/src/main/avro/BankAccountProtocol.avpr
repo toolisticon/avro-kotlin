@@ -204,6 +204,7 @@
   "messages": {
     "createBankAccount": {
       "meta": {
+        "name": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -216,6 +217,7 @@
     },
     "withdrawMoney": {
       "meta": {
+        "name": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -228,6 +230,7 @@
     },
     "depositMoney": {
       "meta": {
+        "name": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -240,6 +243,7 @@
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
+        "name": "BankAccountProjection",
         "type": "query"
       },
       "request": [
@@ -255,6 +259,7 @@
     },
     "findAllMoneyTransfersForAccountId": {
       "meta": {
+        "name": "BankAccountProjection",
         "type": "query"
       },
       "request": [

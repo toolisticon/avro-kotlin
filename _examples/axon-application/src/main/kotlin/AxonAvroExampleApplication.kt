@@ -120,7 +120,7 @@ class AxonAvroExampleApplication {
   @Component
   class BankAccountProjection :
     BankAccountProtocolEventHandlers.BankAccountProtocolAllEventHandlers,
-    BankAccountProtocolQueryProtocol.BankAccountProtocolAllQueries {
+    BankAccountProtocolQueryProtocol.BankAccountProjection {
 
     private val balances: MutableMap<String, BankAccountProtocol.CurrentBalance> = mutableMapOf()
     private val transfers: MutableMap<String, MutableList<BankAccountProtocol.MoneyTransfer>> = mutableMapOf()
