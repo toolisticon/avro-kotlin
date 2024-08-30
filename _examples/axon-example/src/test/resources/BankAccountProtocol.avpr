@@ -266,8 +266,7 @@
           "type": "FindCurrentBalanceByAccountIdQuery"
         }
       ],
-      "one-way": true,
-      "später response": [
+      "response": [
         "null",
         "CurrentBalance"
       ]
@@ -282,8 +281,11 @@
           "type": "FindAllMoneyTransfersByAccountIdQuery"
         }
       ],
-      "one-way": true,
-      "später response": "MoneyTransfer"
+      "response": {
+        "type": "array",
+        "items": "MoneyTransfer",
+        "default": []
+      }
     }
   }
 }
