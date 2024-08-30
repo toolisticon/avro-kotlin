@@ -2,9 +2,12 @@ package io.toolisticon.kotlin.avro.generator
 
 import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
+import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
+import mu.KLogging
 import org.junit.jupiter.api.Test
 
 class DummyProtocolGeneratorTest {
+  companion object: KLogging()
 
   private val generator = TestFixtures.DEFAULT_GENERATOR
   private val declaration : ProtocolDeclaration = TestFixtures.PARSER.parseProtocol(resourceUrl("protocol/DummyProtocol.avpr"))
@@ -13,8 +16,8 @@ class DummyProtocolGeneratorTest {
   fun `generate dummy protocol`() {
     println(declaration.originalJson)
 
-    val file = generator.generate(declaration).single()
+    val files = generator.generate(declaration)
 
-    println(file.code)
+    files.map(KotlinFileSpec::code).forEach(logger::info)
   }
 }
