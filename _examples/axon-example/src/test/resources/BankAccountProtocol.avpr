@@ -4,7 +4,7 @@
   "doc": "Protocol declaration for bank-account.",
   "types": [
     {
-      "name": "CreateBankAccount",
+      "name": "CreateBankAccountCommand",
       "doc": "Creates a new bank account with given accountId",
       "meta": {
         "revision": "1",
@@ -25,17 +25,216 @@
           "default": 0
         }
       ]
-    }
+    },
+    {
+      "name": "WithdrawMoneyCommand",
+      "doc": "Withdraws money from a bank account",
+      "meta": {
+        "revision": "1",
+        "type": "command"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+          "meta": {
+            "type": "association"
+          }
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "default": 0
+        }
+      ],
+    },
+    {
+      "name": "DepositMoneyCommand",
+      "doc": "Deposits money from a bank account",
+      "meta": {
+        "revision": "1",
+        "type": "command"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+          "meta": {
+            "type": "association"
+          }
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "default": 0
+        }
+      ],
+    },
+    {
+      "name": "BankAccountCreatedEvent",
+      "doc": "A new BankAccount has been created with initial balance.",
+      "meta": {
+        "revision": "1",
+        "type": "event"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+        },
+        {
+          "name": "initialBalance",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "name": "MoneyDepositedEvent",
+      "doc": "Money was deposited from BankAccount.",
+      "meta": {
+        "revision": "1",
+        "type": "event"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "name": "MoneyWithdrawnEvent",
+      "doc": "Money was withdrawn from BankAccount.",
+      "meta": {
+        "revision": "1",
+        "type": "event"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "name": "FindCurrentBalanceByAccountIdQuery",
+      "doc": "Searches bank account balance for given account id.",
+      "meta": {
+        "revision": "1",
+        "type": "query"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+        }
+      ]
+    },
+    {
+      "name": "CurrentBalance",
+      "doc": "Current balance of bank account.",
+      "meta": {
+        "type": "queryResponse"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+        },
+        {
+          "name": "balance",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+
   ],
   "messages": {
-    "handle": {
+    "createBankAccount": {
       "request": [
         {
           "name": "command",
-          "type": "CreateBankAccount"
+          "type": "CreateBankAccountCommand"
         }
       ],
       "one-way": true
-    }
+    },
+    "withdrawMoney": {
+      "request": [
+        {
+          "name": "command",
+          "type": "WithdrawMoneyCommand"
+        }
+      ],
+      "one-way": true
+    },
+    "depositMoney": {
+      "request": [
+        {
+          "name": "command",
+          "type": "DepositMoneyCommand"
+        }
+      ],
+      "one-way": true
+    },
+    "bankAccountCreated": {
+      "request": [
+        {
+          "name": "event",
+          "type": "BankAccountCreatedEvent"
+        }
+      ],
+      "one-way": true
+    },
+    "moneyWithdrawn": {
+      "request": [
+        {
+          "name": "event",
+          "type": "MoneyWithdrawnEvent"
+        }
+      ],
+      "one-way": true
+    },
+    "moneyDeposited": {
+      "request": [
+        {
+          "name": "event",
+          "type": "MoneyDepositedEvent"
+        }
+      ],
+      "one-way": true
+    },
+    "findCurrentBalanceForAccountId": {
+      "request": [
+        {
+          "name": "query",
+          "type": "FindCurrentBalanceByAccountIdQuery"
+        }
+      ],
+      "response": [
+        "null",
+        "CurrentBalance"
+      ]
+    },
+
   }
 }
