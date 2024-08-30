@@ -266,8 +266,7 @@
           "type": "FindCurrentBalanceByAccountIdQuery"
         }
       ],
-      "one-way": true,
-      "spräter - response": [
+      "response": [
         "null",
         "CurrentBalance"
       ]
@@ -282,10 +281,7 @@
           "type": "FindAllMoneyTransfersByAccountIdQuery"
         }
       ],
-      "one-way": true,
-      "spräter - response": [
-        "MoneyTransfer"
-      ]
+      "response": "MoneyTransfer"
     }
   }
 }
