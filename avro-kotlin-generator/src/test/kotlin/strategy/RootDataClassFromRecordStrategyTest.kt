@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import _ktx.ResourceKtx.resourceUrl
@@ -12,6 +10,7 @@ import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 internal class RootDataClassFromRecordStrategyTest {
 
   private val registry = AvroCodeGenerationSpiRegistry(registry = AvroCodeGenerationSpiRegistry.load())

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -29,6 +27,7 @@ import mu.KLogging
  * The generated class is the only top-level type in the file, all subtypes are generated
  * as inner classes, so everything declared in one schema stys in one file.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
   companion object : KLogging()
 

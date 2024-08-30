@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
@@ -20,6 +18,7 @@ import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextB
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [ProtocolDeclaration].
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 data class ProtocolDeclarationContext(
   override val source: AvroSource,
   override val registry: AvroCodeGenerationSpiRegistry,

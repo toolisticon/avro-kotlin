@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ClassName
@@ -39,5 +37,6 @@ fun avroClassName(namedType: AvroNamedType, properties: AvroKotlinGeneratorPrope
 
 fun CanonicalName.asClassName() = ClassName(this.namespace.value, this.name.value)
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 fun KotlinDocumentableBuilder<*>.addKDoc(doc: Documentation?) = doc?.value?.let { this.addKdoc(it) }
 

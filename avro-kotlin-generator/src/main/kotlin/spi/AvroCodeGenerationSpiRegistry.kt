@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -13,6 +11,7 @@ import kotlin.reflect.KClass
 /**
  * An implementation of [KotlinCodeGenerationSpiRegistry] that supports avro generation specific helpers.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
 

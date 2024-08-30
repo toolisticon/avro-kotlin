@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy.internal
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -18,6 +16,7 @@ import io.toolisticon.kotlin.generation.spi.strategy.KotlinConstructorPropertySp
  * Create
  *
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 internal class KotlinConstructorPropertyStrategy : InternalStrategy, KotlinConstructorPropertySpecStrategy<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class, inputType = RecordField::class
 ) {
