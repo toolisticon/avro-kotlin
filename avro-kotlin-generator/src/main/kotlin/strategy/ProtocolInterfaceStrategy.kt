@@ -29,8 +29,7 @@ class ProtocolInterfaceStrategy  : AvroFileSpecFromProtocolDeclarationStrategy()
     input.protocol.messages.values.sortedBy { it.name }.forEach { msg ->
 
       val function = buildFun(msg.name.value) {
-        addModifiers(KModifier.ABSTRACT)
-
+        makeAbstract()
         msg.request.fields.forEach { f ->
           this.addParameter(f.name.value, context.avroPoetTypes[f.schema.hashCode].typeName)
         }
