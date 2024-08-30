@@ -47,7 +47,7 @@ class AxonQueryProtocolExtensionsStrategy : AvroFileSpecFromProtocolDeclarationS
       .map { (name, message) ->
 
       }.forEach { interfaceBuilder ->
-       
+
       }
 
 

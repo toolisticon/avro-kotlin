@@ -13,6 +13,7 @@ import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.avro.model.AvroType
+import io.toolisticon.kotlin.avro.model.MessageResponse
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.value.Documentation
@@ -59,6 +60,11 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
         message.request.fields.forEach { f ->
           this.addParameter(f.name.value, context.avroPoetTypes[f.schema.hashCode].typeName)
         }
+
+        context.avroPoetTypes.resolveQueryResponseTypeName(message.response)?.let {
+          returns(it)
+        }
+
       }
 
       interfaceBuilder.addFunction(function) // add function to the interface
