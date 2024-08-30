@@ -1,29 +1,45 @@
 package io.holixon.axon.avro.generator
 
+import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.holixon.axon.avro.generator.meta.FieldMetaData.Companion.fieldMetaData
 import io.holixon.axon.avro.generator.meta.RecordMetaData.Companion.recordMetaData
-import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.generation.test.KotlinCodeGenerationTest
+import io.toolisticon.kotlin.generation.test.model.KotlinCompilationCommand
 import mu.KLogging
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalKotlinPoetApi::class, ExperimentalCompilerApi::class)
 class BankAccountProtocolGeneratorTest {
   companion object : KLogging()
 
-  private val declaration: ProtocolDeclaration = TestFixtures.parseProtocol("BankAccountProtocol.avpr")
 
   @Test
   fun `generate protocol`() {
+
     val files = TestFixtures.DEFAULT_GENERATOR.generate(declaration)
-
-    val record =  declaration.protocol.types.values.filterIsInstance<RecordType>().first()
-
-    println(record.recordMetaData())
-    println(record.getField(Name("accountId"))?.fieldMetaData())
-
     files.forEach{
-      logger.info { "===== FILE: ${it.fqn}\n${it.code}\n" }
+      // logger.info { "===== FILE: ${it.fqn}\n${it.code}\n" }
     }
+
+    println("Compiling....")
+    val result = KotlinCodeGenerationTest.compile(
+      KotlinCompilationCommand(
+        fileSpecs = files
+      )
+    )
+    println("Compilation ready.")
+
+
+    result.shouldBeOk()
+    result.result.messages.lines()
+      .filter { line -> line.endsWith(".kt") }
+      .distinct()
+      .forEach { message -> println("file://$message") }
+//    result.result.compiledClassAndResourceFiles.map { file -> println("file://$file") }
   }
+
+  private val declaration = TestFixtures.parseProtocol("BankAccountProtocol.avpr")
 }
