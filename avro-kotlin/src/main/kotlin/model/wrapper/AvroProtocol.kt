@@ -194,7 +194,7 @@ class AvroProtocol(
 
     init {
       require(!message.isOneWay) { "Message is not two-way." }
-      require(message.response != MessageResponse.NONE) { "TwoWayMessage must not have NONE response." }
+      require(response != MessageResponse.NONE) { "TwoWayMessage must not have NONE response." }
     }
   }
 
