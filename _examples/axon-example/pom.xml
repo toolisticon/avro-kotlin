@@ -68,6 +68,11 @@
       <artifactId>avro-kotlin-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.toolisticon.kotlin.generation</groupId>
+      <artifactId>kotlin-code-generation-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

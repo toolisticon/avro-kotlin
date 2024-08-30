@@ -148,6 +148,21 @@
       ]
     },
     {
+      "name": "FindAllMoneyTransfersByAccountIdQuery",
+      "doc": "Searches bank account money transfers for given account id.",
+      "meta": {
+        "revision": "1",
+        "type": "query"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "CurrentBalance",
       "doc": "Current balance of bank account.",
       "meta": {
@@ -165,8 +180,26 @@
           "default": 0
         }
       ]
+    },
+    {
+      "name": "MoneyTransfer",
+      "doc": "Money transfer.",
+      "meta": {
+        "type": "queryResponse"
+      },
+      "type": "record",
+      "fields": [
+        {
+          "name": "type",
+          "type": "string"
+        },
+        {
+          "name": "balance",
+          "type": "int",
+          "default": 0
+        }
+      ]
     }
-
   ],
   "messages": {
     "createBankAccount": {
@@ -224,8 +257,8 @@
       "one-way": true
     },
     "findCurrentBalanceForAccountId": {
-      "meta" : {
-
+      "meta": {
+        "type": "query"
       },
       "request": [
         {
@@ -237,6 +270,21 @@
       "spräter - response": [
         "null",
         "CurrentBalance"
+      ]
+    },
+    "findAllMoneyTransfersForAccountId": {
+      "meta": {
+        "type": "query"
+      },
+      "request": [
+        {
+          "name": "query",
+          "type": "FindAllMoneyTransfersByAccountIdQuery"
+        }
+      ],
+      "one-way": true,
+      "spräter - response": [
+        "MoneyTransfer"
       ]
     }
   }

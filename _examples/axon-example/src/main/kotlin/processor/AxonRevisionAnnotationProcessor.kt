@@ -16,7 +16,6 @@ class AxonRevisionAnnotationProcessor : KotlinDataClassFromRecordTypeProcessorBa
     val meta = input.schema.recordMetaData()
 
     builder.addAnnotation(RevisionAnnotation(meta?.revision!!))
-
     return builder
   }
 
