@@ -6,6 +6,8 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.fieldMetaData
+import io.holixon.axon.avro.generator.meta.MessageMetaDataType
 import io.holixon.axon.avro.generator.meta.RecordMetaData.Companion.recordMetaData
 import io.holixon.axon.avro.generator.meta.RecordMetaDataType
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
@@ -25,6 +27,10 @@ fun AvroProtocol.Message.isQuery(): Boolean {
     .any { RecordMetaDataType.Query == it.type }
   // TODO: analyze response of query
   // RecordMetaDataType.QueryResult == it.type
+}
+
+fun AvroProtocol.Message.isDecider(): Boolean {
+  return this.fieldMetaData()?.type == MessageMetaDataType.Decider
 }
 
 /**
