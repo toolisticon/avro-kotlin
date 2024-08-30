@@ -55,7 +55,7 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
     val subTypesToGenerate = nonRootCtx.avroPoetTypes.filter {
       it.avroType is AvroNamedType
-    }.map { it.avroType as AvroNamedType to it.typeName }
+    }.distinctBy { it.avroType.hashCode }.map { it.avroType as AvroNamedType to it.typeName }
 
 
     val typeSpecs = subTypesToGenerate.flatMap { (type, _) ->
