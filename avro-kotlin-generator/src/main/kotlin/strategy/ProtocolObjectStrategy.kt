@@ -50,13 +50,7 @@ class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
       }
     }
 
-    typeSpecs.forEach {
-      when (it) {
-        is KotlinDataClassSpec -> builder.addType(it)
-        is KotlinEnumClassSpec -> builder.addType(it)
-        else -> TODO("not implemented, FIXME")
-      }
-    }
+    typeSpecs.forEach(builder::addType)
 
     val file = fileBuilder(className)
     file.addType(builder.build())
