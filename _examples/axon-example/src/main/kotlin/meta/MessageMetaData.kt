@@ -1,6 +1,7 @@
 package io.holixon.axon.avro.generator.meta
 
 import io.holixon.axon.avro.generator.meta.FieldMetaData.Companion.KEYS.TYPE
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.KEYS.NAME
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.value.Name
 
@@ -20,7 +21,7 @@ data class MessageMetaData(
     fun AvroProtocol.Message.fieldMetaData(): MessageMetaData? = this.properties.getMeta {
 
       MessageMetaData(
-        name = this@fieldMetaData.name,
+        name = this[NAME]?.let { it as String }?.let { Name(it.trim()) } ?: this@fieldMetaData.name,
         type = this[TYPE]?.let { it as String }?.let { MessageMetaDataType[it.trim()] }
       )
     }

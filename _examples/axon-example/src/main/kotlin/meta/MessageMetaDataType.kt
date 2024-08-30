@@ -7,7 +7,8 @@ import java.util.*
  * @see https://github.com/fraktalio
  */
 enum class MessageMetaDataType {
-  Decider;
+  Decider,
+  Query;
 
   val decapitalizedName = name.replaceFirstChar { c -> c.lowercase(Locale.getDefault()) }
 
