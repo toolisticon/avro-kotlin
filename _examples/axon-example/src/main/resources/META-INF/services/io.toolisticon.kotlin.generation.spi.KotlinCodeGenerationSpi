@@ -4,6 +4,7 @@
 
 io.holixon.axon.avro.generator.strategy.AxonCommandHandlerProtocolInterfaceStrategy
 io.holixon.axon.avro.generator.strategy.AxonEventHandlerInterfaceStrategy
+io.holixon.axon.avro.generator.strategy.AxonEventSourcingHandlerProtocolInterfaceStrategy
 io.holixon.axon.avro.generator.strategy.AxonQueryProtocolExtensionsStrategy
 io.holixon.axon.avro.generator.strategy.AxonQueryProtocolInterfaceStrategy
 

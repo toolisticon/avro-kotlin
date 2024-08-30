@@ -40,14 +40,14 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
     }
 
     /*
-    Single interface for each query
+    Single interface for each command
      */
     input.protocol.messages
       .filterValues { message -> message.isDecider() }
       .mapNotNull { (name, message) ->
 
         if (message.request.fields.size == 1) {
-          val commandHandlerInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase())).asClassName()
+          val commandHandlerInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase() + "CommandHandler")).asClassName()
           val interfaceBuilder = builder.interfaceBuilder(commandHandlerInterfaceName).apply {
             // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
             addKDoc(message.documentation)
