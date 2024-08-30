@@ -4,18 +4,23 @@ import _ktx.StringKtx.firstUppercase
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.KModifier
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.fieldMetaData
+import io.holixon.axon.avro.generator.strategy.AxonCommandHandlerProtocolInterfaceStrategy.Companion
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
+import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFun
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.objectBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
+import io.toolisticon.kotlin.generation.spec.KotlinFunSpec
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 import mu.KLogging
 import org.axonframework.eventsourcing.EventSourcingHandler
@@ -23,7 +28,9 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
 
-  companion object : KLogging()
+  companion object : KLogging() {
+    private const val UNKNOWN_GROUP = "__UNKNOWN__"
+  }
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
 
@@ -45,27 +52,36 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
     Single interface for each event souring handler
      */
     input.protocol.messages
-      .filterValues { message -> message.isDecider() }
-      .mapNotNull { (name, message) ->
-
-        val eventSouringHandlerInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase() + "EventSouringHandler")).asClassName()
-        val interfaceBuilder = builder.interfaceBuilder(eventSouringHandlerInterfaceName).apply {
-          // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
-          addKDoc(message.documentation)
+      .filterValues { message -> message.isDecider() || message.isDeciderInit() }
+      .entries
+      .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
+      .mapNotNull { (groupName, messages) ->
+        // named
+        if (groupName != UNKNOWN_GROUP) {
+          // create one enclosing type for all command handlers
+          val groupingTypeName = (input.canonicalName.namespace + Name(groupName.firstUppercase() + "SourcingHandler")).asClassName()
+          listOf(
+            builder
+              .interfaceBuilder(groupingTypeName)
+              .apply {
+                addKDoc(Documentation("Event souring handlers for ${groupingTypeName.simpleName}."))
+                messages
+                  .map { (_, message) ->
+                    addFunction(buildEventSourcingHandler(message, context.avroPoetTypes)) // add function to the interface
+                  }
+              }
+          )
+        } else {
+          messages.map { (name, message) ->
+            val eventSouringHandlerInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase() + "EventSouringHandler")).asClassName()
+            val interfaceBuilder = builder.interfaceBuilder(eventSouringHandlerInterfaceName).apply {
+              // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
+              addKDoc(message.documentation)
+            }
+            interfaceBuilder.addFunction(buildEventSourcingHandler(message, context.avroPoetTypes)) // add function to the interface
+          }
         }
-
-        val eventType = context.avroPoetTypes[message.response.schema.hashCode]
-        val function = buildFun("on" + eventType.avroType.name) {
-          addModifiers(KModifier.ABSTRACT)
-          addAnnotation(EventSourcingHandler::class)
-          this.addParameter("event", eventType.typeName)
-
-          // TODO: think of a special command handler for aggregate construction
-
-        }
-        interfaceBuilder.addFunction(function) // add function to the interface
-
-      }.forEach { interfaceBuilder ->
+      }.flatten().forEach { interfaceBuilder ->
         objectBuilder.addType(interfaceBuilder) // add interface to object
         allEventSourcingHandlersInterfaceBuilder.addSuperinterface(ClassName.bestGuess(interfaceBuilder.spec().className.simpleName))
       }
@@ -79,8 +95,19 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
     return fileBuilder.build()
   }
 
+  private fun buildEventSourcingHandler(message: AvroProtocol.Message, avroPoetTypes: AvroPoetTypes): KotlinFunSpec {
+    val eventType = avroPoetTypes[message.response.schema.hashCode]
+    return buildFun("on" + eventType.avroType.name) {
+      addModifiers(KModifier.ABSTRACT)
+      addAnnotation(EventSourcingHandler::class)
+      this.addParameter("event", eventType.typeName)
+    }
+  }
+
 
   override fun test(context: ProtocolDeclarationContext, input: Any?): Boolean {
-    return super.test(context, input) && input is ProtocolDeclaration && input.protocol.messages.values.any { message -> message.isDecider() }
+    return super.test(context, input)
+      && input is ProtocolDeclaration
+      && input.protocol.messages.values.any { message -> message.isDecider() || message.isDeciderInit() }
   }
 }

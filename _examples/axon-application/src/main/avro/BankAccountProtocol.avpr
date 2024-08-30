@@ -1,6 +1,6 @@
 {
   "namespace": "holi.bank",
-  "protocol": "BankAccountProtocol",
+  "protocol": "BankAccountContext",
   "doc": "Protocol declaration for bank-account.",
   "types": [
     {
@@ -204,8 +204,8 @@
   "messages": {
     "createBankAccount": {
       "meta": {
-        "name": "BankAccountAggregate",
-        "type" : "decider"
+        "name": "BankAccountAggregateSpec",
+        "type" : "deciderInit"
       },
       "request": [
         {
@@ -217,7 +217,7 @@
     },
     "withdrawMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "name": "BankAccountAggregateSpec",
         "type" : "decider"
       },
       "request": [
@@ -230,7 +230,7 @@
     },
     "depositMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "name": "BankAccountAggregateSpec",
         "type" : "decider"
       },
       "request": [
@@ -243,7 +243,7 @@
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "name": "BankAccountProjectionSpec",
         "type": "query"
       },
       "request": [
@@ -259,7 +259,7 @@
     },
     "findAllMoneyTransfersForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "name": "BankAccountProjectionSpec",
         "type": "query"
       },
       "request": [

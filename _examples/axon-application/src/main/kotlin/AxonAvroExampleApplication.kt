@@ -1,19 +1,16 @@
 package holi.bank
 
-import holi.bank.BankAccountProtocol.BankAccountCreatedEvent
-import holi.bank.BankAccountProtocol.CreateBankAccountCommand
-import holi.bank.BankAccountProtocol.DepositMoneyCommand
-import holi.bank.BankAccountProtocol.MoneyDepositedEvent
-import holi.bank.BankAccountProtocol.MoneyWithdrawnEvent
-import holi.bank.BankAccountProtocol.WithdrawMoneyCommand
-import holi.bank.BankAccountProtocolCommandHandlerProtocol.CreateBankAccountCommandHandler
-import holi.bank.BankAccountProtocolCommandHandlerProtocol.DepositMoneyCommandHandler
-import holi.bank.BankAccountProtocolCommandHandlerProtocol.WithdrawMoneyCommandHandler
-import holi.bank.BankAccountProtocolEventSourcingHandlerProtocol.CreateBankAccountEventSouringHandler
-import holi.bank.BankAccountProtocolEventSourcingHandlerProtocol.DepositMoneyEventSouringHandler
-import holi.bank.BankAccountProtocolEventSourcingHandlerProtocol.WithdrawMoneyEventSouringHandler
-import holi.bank.BankAccountProtocolQueryGatewayExt.findAllMoneyTransfersForAccountId
-import holi.bank.BankAccountProtocolQueryGatewayExt.findCurrentBalanceForAccountId
+import holi.bank.BankAccountContext.BankAccountCreatedEvent
+import holi.bank.BankAccountContext.CreateBankAccountCommand
+import holi.bank.BankAccountContext.DepositMoneyCommand
+import holi.bank.BankAccountContext.MoneyDepositedEvent
+import holi.bank.BankAccountContext.MoneyWithdrawnEvent
+import holi.bank.BankAccountContext.WithdrawMoneyCommand
+import holi.bank.BankAccountContextCommandHandlerProtocol.BankAccountAggregateSpec
+import holi.bank.BankAccountContextCommandHandlerProtocol.BankAccountAggregateSpec.BankAccountAggregateSpecFactory
+import holi.bank.BankAccountContextEventSourcingHandlerProtocol.BankAccountAggregateSpecSourcingHandler
+import holi.bank.BankAccountContextQueryGatewayExt.findAllMoneyTransfersForAccountId
+import holi.bank.BankAccountContextQueryGatewayExt.findCurrentBalanceForAccountId
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.gateway.CommandGateway
@@ -28,7 +25,10 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.*
 
-fun main() = runApplication<AxonAvroExampleApplication>().let { }
+fun main() {
+  System.setProperty("disable-axoniq-console-message", "true")
+  runApplication<AxonAvroExampleApplication>().let { }
+}
 
 @SpringBootApplication
 class AxonAvroExampleApplication {
@@ -43,6 +43,19 @@ class AxonAvroExampleApplication {
 
     @EventListener
     fun runExample(event: ApplicationStartedEvent) {
+      logger.info {
+        """
+          ===============================================================================
+
+
+
+          .                              S H O W T I M E
+
+
+
+          ================================================================================
+        """.trimIndent()
+      }
 
       val bankAccountId = UUID.randomUUID().toString()
       logger.info { "Created bank account id: $bankAccountId" }
@@ -52,43 +65,34 @@ class AxonAvroExampleApplication {
       commandGateway.send<Void>(DepositMoneyCommand(accountId = bankAccountId, amount = 99)).join()
       commandGateway.send<Void>(WithdrawMoneyCommand(accountId = bankAccountId, amount = 77)).join()
 
+      logger.info { "Taking a nap." }
       // wait two secs
       Thread.sleep(2000)
 
-      val currentBalance = queryGateway.findCurrentBalanceForAccountId(BankAccountProtocol.FindCurrentBalanceByAccountIdQuery(accountId = bankAccountId)).join()
+      val currentBalance = queryGateway.findCurrentBalanceForAccountId(BankAccountContext.FindCurrentBalanceByAccountIdQuery(accountId = bankAccountId)).join()
       logger.info { "Current balance for account $bankAccountId: $currentBalance" }
 
-      val transactions = queryGateway.findAllMoneyTransfersForAccountId(BankAccountProtocol.FindAllMoneyTransfersByAccountIdQuery(accountId = bankAccountId)).join()
+      val transactions = queryGateway.findAllMoneyTransfersForAccountId(BankAccountContext.FindAllMoneyTransfersByAccountIdQuery(accountId = bankAccountId)).join()
       logger.info { "Transactions for account $bankAccountId: $transactions" }
     }
   }
 
 
   @Aggregate
-  class BankAggregate :
-    DepositMoneyCommandHandler,
-    WithdrawMoneyCommandHandler,
-    CreateBankAccountEventSouringHandler,
-    DepositMoneyEventSouringHandler,
-    WithdrawMoneyEventSouringHandler {
+  class BankAccountAggregate :
+    BankAccountAggregateSpec,
+    BankAccountAggregateSpecSourcingHandler {
 
     @AggregateIdentifier
     private lateinit var accountId: String
     private var balance: Int = -1
 
-    companion object : CreateBankAccountCommandHandler {
-
-      // Workaround for the aggregate factory
-      @JvmStatic
-      @CommandHandler
-      fun create(command: CreateBankAccountCommand): BankAggregate {
-        return createBankAccount(command).let {
-          BankAggregate()
-        }
-      }
-
-      override fun createBankAccount(command: CreateBankAccountCommand) {
+    companion object : BankAccountAggregateSpecFactory {
+      @JvmStatic // need to be static
+      @CommandHandler // need to duplicate command handler
+      override fun createBankAccount(command: CreateBankAccountCommand): BankAccountAggregate { // overwriting return type!
         AggregateLifecycle.apply(BankAccountCreatedEvent(command.accountId, command.initialBalance))
+        return BankAccountAggregate()
       }
     }
 
@@ -119,33 +123,33 @@ class AxonAvroExampleApplication {
 
   @Component
   class BankAccountProjection :
-    BankAccountProtocolEventHandlers.BankAccountProtocolAllEventHandlers,
-    BankAccountProtocolQueryProtocol.BankAccountProjection {
+    BankAccountContextEventHandlers.BankAccountContextAllEventHandlers,
+    BankAccountContextQueryProtocol.BankAccountProjectionSpec {
 
-    private val balances: MutableMap<String, BankAccountProtocol.CurrentBalance> = mutableMapOf()
-    private val transfers: MutableMap<String, MutableList<BankAccountProtocol.MoneyTransfer>> = mutableMapOf()
+    private val balances: MutableMap<String, BankAccountContext.CurrentBalance> = mutableMapOf()
+    private val transfers: MutableMap<String, MutableList<BankAccountContext.MoneyTransfer>> = mutableMapOf()
 
-    override fun findCurrentBalanceForAccountId(query: BankAccountProtocol.FindCurrentBalanceByAccountIdQuery): Optional<BankAccountProtocol.CurrentBalance> {
+    override fun findCurrentBalanceForAccountId(query: BankAccountContext.FindCurrentBalanceByAccountIdQuery): Optional<BankAccountContext.CurrentBalance> {
       return Optional.ofNullable(balances[query.accountId])
     }
 
-    override fun findAllMoneyTransfersForAccountId(query: BankAccountProtocol.FindAllMoneyTransfersByAccountIdQuery): List<BankAccountProtocol.MoneyTransfer> {
+    override fun findAllMoneyTransfersForAccountId(query: BankAccountContext.FindAllMoneyTransfersByAccountIdQuery): List<BankAccountContext.MoneyTransfer> {
       return transfers[query.accountId] ?: emptyList()
     }
 
     override fun onBankAccountCreatedEvent(event: BankAccountCreatedEvent) {
-      balances[event.accountId] = BankAccountProtocol.CurrentBalance(event.accountId, event.initialBalance)
+      balances[event.accountId] = BankAccountContext.CurrentBalance(event.accountId, event.initialBalance)
       transfers[event.accountId] = mutableListOf()
     }
 
     override fun onMoneyDepositedEvent(event: MoneyDepositedEvent) {
       balances.computeIfPresent(event.accountId) { _, balance -> balance.copy(balance = balance.balance + event.amount) }
-      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountProtocol.MoneyTransfer("deposit", event.amount)) } }
+      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountContext.MoneyTransfer("deposit", event.amount)) } }
     }
 
     override fun onMoneyWithdrawnEvent(event: MoneyWithdrawnEvent) {
       balances.computeIfPresent(event.accountId) { _, balance -> balance.copy(balance = balance.balance - event.amount) }
-      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountProtocol.MoneyTransfer("withdraw", event.amount)) } }
+      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountContext.MoneyTransfer("withdraw", event.amount)) } }
     }
   }
 }
