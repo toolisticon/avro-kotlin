@@ -205,7 +205,7 @@
     "createBankAccount": {
       "meta": {
         "name": "BankAccountAggregate",
-        "type" : "decider"
+        "type" : "deciderInit"
       },
       "request": [
         {

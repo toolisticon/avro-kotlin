@@ -35,6 +35,11 @@ fun AvroProtocol.Message.isDecider(): Boolean {
   return this.fieldMetaData()?.type == MessageMetaDataType.Decider
 }
 
+fun AvroProtocol.Message.isDeciderInit(): Boolean {
+  return this.fieldMetaData()?.type == MessageMetaDataType.DeciderInit
+}
+
+
 /**
  * Resolves query response type.
  * TODO -> consider other collection types

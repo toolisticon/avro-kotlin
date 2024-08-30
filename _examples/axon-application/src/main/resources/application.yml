@@ -1,0 +1,4 @@
+logging:
+  level:
+    org.springframework.core.annotation.AnnotationTypeMapping: ERROR
+    org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore: ERROR
