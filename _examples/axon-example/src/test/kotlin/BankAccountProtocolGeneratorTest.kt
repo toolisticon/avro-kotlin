@@ -38,7 +38,6 @@ class BankAccountProtocolGeneratorTest {
       .filter { line -> line.endsWith(".kt") }
       .distinct()
       .forEach { message -> println("file://$message") }
-//    result.result.compiledClassAndResourceFiles.map { file -> println("file://$file") }
   }
 
   private val declaration = TestFixtures.parseProtocol("BankAccountProtocol.avpr")
