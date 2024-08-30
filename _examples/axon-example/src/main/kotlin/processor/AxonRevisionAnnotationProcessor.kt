@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.holixon.axon.avro.generator.processor
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -10,6 +8,7 @@ import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 class AxonRevisionAnnotationProcessor : KotlinDataClassFromRecordTypeProcessorBase() {
   override fun invoke(context: SchemaDeclarationContext, input: RecordType?, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder {
     requireNotNull(input)

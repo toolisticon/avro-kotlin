@@ -7,6 +7,7 @@ io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
 
 io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy
+# TODO remove interr
 io.toolisticon.kotlin.avro.generator.strategy.ProtocolInterfaceStrategy
 
 ################################################################################
