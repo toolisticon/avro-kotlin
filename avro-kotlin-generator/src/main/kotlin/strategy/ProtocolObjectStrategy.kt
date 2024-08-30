@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -22,6 +20,7 @@ import io.toolisticon.kotlin.generation.spec.KotlinObjectSpec
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
+@ExperimentalKotlinPoetApi
 class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
   override val order: Int = 0
 

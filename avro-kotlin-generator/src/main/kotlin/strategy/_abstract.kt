@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -26,6 +24,7 @@ import kotlin.reflect.KClass
  * (TODO: add more, see issue #114) )
  * from a given [AvroNamedType] input.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroNamedTypeSpecStrategy<INPUT : AvroNamedType, SPEC : KotlinGeneratorTypeSpec<SPEC>>(
   inputType: KClass<INPUT>, specType: KClass<SPEC>,
 ) : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, INPUT, SPEC>(
@@ -38,6 +37,7 @@ abstract class AvroNamedTypeSpecStrategy<INPUT : AvroNamedType, SPEC : KotlinGen
 /**
  * Base strategy to create a [KotlinDataClassSpec] from a [RecordType] input.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType, KotlinDataClassSpec>(
   inputType = RecordType::class, specType = KotlinDataClassSpec::class
 ) {
@@ -55,6 +55,7 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
 /**
  * Base strategy to create a [KotlinEnumClassSpec] from a [EnumType] input.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, KotlinEnumClassSpec>(
   inputType = EnumType::class, specType = KotlinEnumClassSpec::class
 ) {
@@ -71,6 +72,7 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
  * If they relay on each other, make sure that the ordering is correct. Sequential calls of multiple strategies may share their
  * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
@@ -87,6 +89,7 @@ abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrat
  * If they relay on each other, make sure that the ordering is correct. Sequential calls of multiple strategies may share their
  * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, SchemaDeclaration, KotlinFileSpec>(
   contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class, specType = KotlinFileSpec::class
 ) {

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
@@ -19,6 +17,7 @@ import io.toolisticon.kotlin.generation.spi.processor.executeAll
  * Generates a data class that does not require to be top-level/single
  * in a file. Used for inner types of schema and protocols.
  */
+@OptIn(ExperimentalKotlinPoetApi::class)
 class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {

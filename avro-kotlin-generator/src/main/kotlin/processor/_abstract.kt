@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.processor
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -11,6 +9,7 @@ import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 import io.toolisticon.kotlin.generation.spi.processor.KotlinConstructorPropertySpecProcessor
 import io.toolisticon.kotlin.generation.spi.processor.KotlinDataClassSpecProcessor
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class KotlinDataClassFromRecordTypeProcessorBase : KotlinDataClassSpecProcessor<SchemaDeclarationContext, RecordType>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordType::class
@@ -19,6 +18,7 @@ abstract class KotlinDataClassFromRecordTypeProcessorBase : KotlinDataClassSpecP
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input)
 }
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 abstract class ConstructorPropertyFromRecordFieldProcessorBase : KotlinConstructorPropertySpecProcessor<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class

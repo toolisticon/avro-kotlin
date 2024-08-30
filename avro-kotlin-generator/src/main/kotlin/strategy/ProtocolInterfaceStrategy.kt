@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
@@ -17,6 +15,7 @@ import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
+@OptIn(ExperimentalKotlinPoetApi::class)
 class ProtocolInterfaceStrategy  : AvroFileSpecFromProtocolDeclarationStrategy() {
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
