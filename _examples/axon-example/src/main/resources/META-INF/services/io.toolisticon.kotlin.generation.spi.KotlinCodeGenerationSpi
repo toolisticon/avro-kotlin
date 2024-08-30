@@ -2,7 +2,8 @@
 # strategies
 ################################################################################
 
-io.holixon.axon.avro.generator.strategy.AxonQueryProtocolStrategy
+io.holixon.axon.avro.generator.strategy.AxonQueryProtocolInterfaceStrategy
+io.holixon.axon.avro.generator.strategy.AxonQueryProtocolExtensionsStrategy
 
 ################################################################################
 # processors
