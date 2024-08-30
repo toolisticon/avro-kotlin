@@ -15,7 +15,8 @@
 
   <properties>
     <!-- all examples are excluded from install/deploy/release -->
-    <maven.install.skip>true</maven.install.skip>
+    <!-- FIXME THIS IS REQUIRED TO DEMONSTRATE OUR OWN DOG FOOD -->
+    <maven.install.skip>false</maven.install.skip>
     <gpg.skip>true</gpg.skip>
   </properties>
 
