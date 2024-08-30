@@ -7,7 +7,7 @@ import io.toolisticon.kotlin.avro.value.Name
 data class FieldMetaData(
   val name: Name,
   val type: FieldMetaDataType?
-) {
+) : AxonAvroMetaData{
   companion object {
     object KEYS {
       const val NAME = "name"

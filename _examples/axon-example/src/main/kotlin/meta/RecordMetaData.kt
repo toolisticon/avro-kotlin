@@ -13,7 +13,7 @@ data class RecordMetaData(
   val name: Name,
   val revision: String? = null,
   val type: RecordMetaDataType? = null
-) {
+) : AxonAvroMetaData {
   companion object {
     object KEYS {
       const val REVISION = "revision"
@@ -31,6 +31,7 @@ data class RecordMetaData(
         type = meta?.getValueOrNull<String>(TYPE)?.let { RecordMetaDataType[it.trim()] }
       )
     }
+
   }
 
   val fullName: CanonicalName = namespace + name
