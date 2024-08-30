@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotlinPoetApi::class)
-
 package io.holixon.axon.avro.generator.processor
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
@@ -11,6 +9,8 @@ import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 
+// TODO: rename to generic processor to support all Axon specific field annotations
+@OptIn(ExperimentalKotlinPoetApi::class)
 class AxonTargetIdentifierAnnotationProcessor : ConstructorPropertyFromRecordFieldProcessorBase() {
   override fun invoke(context: SchemaDeclarationContext, input: RecordField?, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder  = builder.apply {
     requireNotNull(input)
@@ -18,6 +18,6 @@ class AxonTargetIdentifierAnnotationProcessor : ConstructorPropertyFromRecordFie
   }
 
   override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean {
-    return super.test(ctx, input) && input is RecordField && input.fieldMetaData()?.type == FieldMetaDataType.IdentifierRef
+    return super.test(ctx, input) && input is RecordField && input.fieldMetaData()?.type == FieldMetaDataType.Association
   }
 }

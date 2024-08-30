@@ -40,6 +40,7 @@ open class AvroKotlinGenerator(
 
   internal fun protocolDeclarationContext(declaration: ProtocolDeclaration) = ProtocolDeclarationContext.of(declaration, registry, properties)
 
+  // TODO: use AvroFileFromSchemaDeclaration
   fun generate(declaration: SchemaDeclaration): List<KotlinFileSpec> {
     val context = schemaDeclarationContext(declaration)
 
@@ -52,8 +53,9 @@ open class AvroKotlinGenerator(
     return listOf(fileSpecBuilder.build())
   }
 
-  fun generate(declaration: ProtocolDeclaration): List<KotlinFileSpec> = generateFn<
-    ProtocolDeclaration,
-    ProtocolDeclarationContext,
-    AvroFileSpecFromProtocolDeclarationStrategy>(input = declaration, contextFactory = this::protocolDeclarationContext)
+  fun generate(declaration: ProtocolDeclaration): List<KotlinFileSpec> =
+    generateFn<ProtocolDeclaration, ProtocolDeclarationContext, AvroFileSpecFromProtocolDeclarationStrategy>(
+      input = declaration,
+      contextFactory = this::protocolDeclarationContext
+    )
 }

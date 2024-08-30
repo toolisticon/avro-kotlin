@@ -86,7 +86,7 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
    */
   inline fun <reified META : Any> getMeta(extractor: ObjectProperties.() -> META?): META? = getMeta()?.extractor()
 
-  fun getMeta() : ObjectProperties? =   if (contains(AvroKotlin.META_PROPERTY)) {
+  fun getMeta() : ObjectProperties? = if (contains(AvroKotlin.META_PROPERTY)) {
     getMap(AvroKotlin.META_PROPERTY)
   } else {
     null

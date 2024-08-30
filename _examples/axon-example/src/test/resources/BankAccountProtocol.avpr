@@ -16,7 +16,7 @@
           "name": "accountId",
           "type": "string",
           "meta": {
-            "type": "identifierRef"
+            "type": "association"
           }
         },
         {
