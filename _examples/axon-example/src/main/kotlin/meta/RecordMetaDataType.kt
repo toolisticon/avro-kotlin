@@ -19,5 +19,6 @@ enum class RecordMetaDataType {
     private val DECAPITALIZED_NAMES = RecordMetaDataType.entries.associateBy { it.decapitalizedName }
 
     operator fun get(name:String?) : RecordMetaDataType? = name?.let { DECAPITALIZED_NAMES[it] }
+
   }
 }
