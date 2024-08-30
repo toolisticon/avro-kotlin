@@ -47,12 +47,16 @@ class MessageResponseTest {
     val message = requireNotNull(protocol.messages[messageName])
     assertThat(message.name).isEqualTo(messageName)
     assertThat(message).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
-    assertThat(message.response).isInstanceOf(MessageResponse.MULTIPLE::class.java)
 
-    val type = AvroType.avroType<AvroType>(message.response.schema)
+    val response = message.response
+    assertThat(response).isInstanceOf(MessageResponse.MULTIPLE::class.java)
 
-    assertThat(type).isInstanceOf(RecordType::class.java)
-    assertThat(type.name).isEqualTo(Name("Result"))
+    val type = AvroType.avroType<AvroType>(response.schema)
+    val inner = AvroType.avroType<AvroType>(response.get())
+
+    assertThat(type).isInstanceOf(ArrayType::class.java)
+    assertThat(inner).isInstanceOf(RecordType::class.java)
+    assertThat(inner.name).isEqualTo(Name("Result"))
   }
 
   @Test
@@ -61,11 +65,15 @@ class MessageResponseTest {
     val message = requireNotNull(protocol.messages[messageName])
     assertThat(message.name).isEqualTo(messageName)
     assertThat(message).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
-    assertThat(message.response).isInstanceOf(MessageResponse.OPTIONAL::class.java)
 
-    val type = AvroType.avroType<AvroType>(message.response.schema)
+    val response = message.response
 
-    assertThat(type).isInstanceOf(RecordType::class.java)
-    assertThat(type.name).isEqualTo(Name("Result"))
+    assertThat(response).isInstanceOf(MessageResponse.OPTIONAL::class.java)
+
+    val type = AvroType.avroType<AvroType>(response.schema)
+    val inner = AvroType.avroType<AvroType>(response.get())
+    assertThat(type).isInstanceOf(UnionType::class.java)
+    assertThat(inner).isInstanceOf(RecordType::class.java)
+    assertThat(inner.name).isEqualTo(Name("Result"))
   }
 }

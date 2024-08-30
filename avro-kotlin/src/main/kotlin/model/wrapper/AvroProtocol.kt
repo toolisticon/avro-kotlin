@@ -4,6 +4,7 @@ import _ktx.StringKtx.firstUppercase
 import _ktx.StringKtx.toString
 import io.toolisticon.kotlin.avro.builder.AvroBuilder
 import io.toolisticon.kotlin.avro.model.*
+import io.toolisticon.kotlin.avro.model.AvroTypesMap.Companion.typesMap
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.sum
 import org.apache.avro.Protocol
@@ -164,16 +165,24 @@ class AvroProtocol(
 
     /**
      * Errors that might be thrown.
+     *
+     * Note: By default, avro uses a default `string` schema for the error response. This is not applicable when working
+     * with jvm, so we filter for errorTypes only.
+     *
      */
     val errors: AvroSchema by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
-      val catalog = SchemaCatalog(schema = schema, excludeSelf = true)
 
-      if (catalog.size > 1) {
-        catalog.single(SchemaCatalog.notPrimitive()).second
+      val errorSchemas = SchemaCatalog(schema = schema, excludeSelf = true).typesMap()
+        .values.filter { it is ErrorType }.map { it.schema }
+
+      check(errorSchemas.size < 2) { "Currently a protocol can only return 0 or 1 schemas, was: $errorSchemas."}
+
+      if (errorSchemas.size == 1) {
+        errorSchemas.single()
       } else {
-        schema
+        EmptyType.schema
       }
     }
 
