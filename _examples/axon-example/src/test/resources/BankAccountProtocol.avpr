@@ -203,58 +203,40 @@
   ],
   "messages": {
     "createBankAccount": {
+      "meta": {
+        "type" : "decider"
+      },
       "request": [
         {
           "name": "command",
           "type": "CreateBankAccountCommand"
         }
       ],
-      "one-way": true
+      "response": "BankAccountCreatedEvent"
     },
     "withdrawMoney": {
+      "meta": {
+        "type" : "decider"
+      },
       "request": [
         {
           "name": "command",
           "type": "WithdrawMoneyCommand"
         }
       ],
-      "one-way": true
+      "response": "MoneyWithdrawnEvent"
     },
     "depositMoney": {
+      "meta": {
+        "type" : "decider"
+      },
       "request": [
         {
           "name": "command",
           "type": "DepositMoneyCommand"
         }
       ],
-      "one-way": true
-    },
-    "bankAccountCreated": {
-      "request": [
-        {
-          "name": "event",
-          "type": "BankAccountCreatedEvent"
-        }
-      ],
-      "one-way": true
-    },
-    "moneyWithdrawn": {
-      "request": [
-        {
-          "name": "event",
-          "type": "MoneyWithdrawnEvent"
-        }
-      ],
-      "one-way": true
-    },
-    "moneyDeposited": {
-      "request": [
-        {
-          "name": "event",
-          "type": "MoneyDepositedEvent"
-        }
-      ],
-      "one-way": true
+      "response": "MoneyDepositedEvent"
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
