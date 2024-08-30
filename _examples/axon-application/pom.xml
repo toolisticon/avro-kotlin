@@ -123,24 +123,6 @@
             <artifactId>axon-example</artifactId>
             <version>${project.version}</version>
           </dependency>
-
-          <!-- TODO: I added some deps... maybe my class path was broken, check if really needed -->
-          <dependency>
-            <groupId>io.toolisticon.kotlin.avro.test</groupId>
-            <artifactId>avro-kotlin-test</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>1.12.0</version>
-          </dependency>
-          <dependency>
-            <groupId>io.toolisticon.kotlin.avro</groupId>
-            <artifactId>avro-kotlin-serialization</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-
         </dependencies>
       </plugin>
       <plugin>
