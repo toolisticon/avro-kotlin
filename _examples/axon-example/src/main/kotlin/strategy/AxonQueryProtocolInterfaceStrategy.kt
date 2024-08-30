@@ -23,9 +23,12 @@ import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.objectBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
+import mu.KLogging
 
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
+
+  companion object: KLogging() // TODO think about central logging
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
 
@@ -47,27 +50,33 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
      */
     input.protocol.messages
       .filterValues { message -> message.isQuery() }
-      .map { (name, message) ->
+      .mapNotNull { (name, message) ->
 
-      val queryInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase())).asClassName()
-      val interfaceBuilder = builder.interfaceBuilder(queryInterfaceName).apply {
-        // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
-        addKDoc(message.documentation)
-      }
+        if (message.request.fields.size == 1) {
+          val queryInterfaceName = (input.canonicalName.namespace + Name(name.value.firstUppercase())).asClassName()
+          val interfaceBuilder = builder.interfaceBuilder(queryInterfaceName).apply {
+            // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
+            addKDoc(message.documentation)
+          }
 
-      val function = buildFun(name.value) {
-        addModifiers(KModifier.ABSTRACT)
-        message.request.fields.forEach { f ->
-          this.addParameter(f.name.value, context.avroPoetTypes[f.schema.hashCode].typeName)
+          val function = buildFun(name.value) {
+            addModifiers(KModifier.ABSTRACT)
+            message.request.fields.forEach { f ->
+              this.addParameter(f.name.value, context.avroPoetTypes[f.schema.hashCode].typeName)
+            }
+
+            context.avroPoetTypes.resolveQueryResponseTypeName(message.response)?.let {
+              returns(it)
+            }
+
+          }
+          interfaceBuilder.addFunction(function) // add function to the interface
+
+        } else {
+          logger.warn { "Skipped query definition $name, because it had more then one parameter, but at most one is supported." }
+          null
         }
 
-        context.avroPoetTypes.resolveQueryResponseTypeName(message.response)?.let {
-          returns(it)
-        }
-
-      }
-
-      interfaceBuilder.addFunction(function) // add function to the interface
     }.forEach { interfaceBuilder ->
         objectBuilder.addType(interfaceBuilder) // add interface to object
         allQueriesInterfaceBuilder.addSuperinterface(ClassName.bestGuess(interfaceBuilder.spec().className.simpleName))
