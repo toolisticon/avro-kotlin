@@ -1,10 +1,6 @@
 package io.holixon.axon.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.holixon.axon.avro.generator.meta.FieldMetaData.Companion.fieldMetaData
-import io.holixon.axon.avro.generator.meta.RecordMetaData.Companion.recordMetaData
-import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.generation.test.KotlinCodeGenerationTest
 import io.toolisticon.kotlin.generation.test.model.KotlinCompilationCommand
 import mu.KLogging
@@ -15,6 +11,7 @@ import org.junit.jupiter.api.Test
 class BankAccountProtocolGeneratorTest {
   companion object : KLogging()
 
+  private val declaration = TestFixtures.parseProtocol("BankAccountProtocol.avpr")
 
   @Test
   fun `generate protocol`() {
@@ -40,5 +37,4 @@ class BankAccountProtocolGeneratorTest {
       .forEach { message -> println("file://$message") }
   }
 
-  private val declaration = TestFixtures.parseProtocol("BankAccountProtocol.avpr")
 }

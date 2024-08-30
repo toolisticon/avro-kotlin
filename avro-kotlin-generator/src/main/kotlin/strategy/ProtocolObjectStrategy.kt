@@ -37,7 +37,7 @@ class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
 
     val subTypesToGenerate = schemaDeclarationContext.avroPoetTypes.filter {
       it.avroType is AvroNamedType
-    }.map { it.avroType as AvroNamedType to it.typeName }
+    }.distinctBy { it.avroType.hashCode }.map { it.avroType as AvroNamedType to it.typeName }
 
 
     val typeSpecs: List<KotlinGeneratorTypeSpec<*>> = subTypesToGenerate.flatMap<Pair<AvroNamedType, TypeName>, KotlinGeneratorTypeSpec<*>> { (type, _) ->
