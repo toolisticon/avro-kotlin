@@ -47,7 +47,7 @@
           "type": "int",
           "default": 0
         }
-      ],
+      ]
     },
     {
       "name": "DepositMoneyCommand",
@@ -70,7 +70,7 @@
           "type": "int",
           "default": 0
         }
-      ],
+      ]
     },
     {
       "name": "BankAccountCreatedEvent",
@@ -83,7 +83,7 @@
       "fields": [
         {
           "name": "accountId",
-          "type": "string",
+          "type": "string"
         },
         {
           "name": "initialBalance",
@@ -103,7 +103,7 @@
       "fields": [
         {
           "name": "accountId",
-          "type": "string",
+          "type": "string"
         },
         {
           "name": "amount",
@@ -123,7 +123,7 @@
       "fields": [
         {
           "name": "accountId",
-          "type": "string",
+          "type": "string"
         },
         {
           "name": "amount",
@@ -143,7 +143,7 @@
       "fields": [
         {
           "name": "accountId",
-          "type": "string",
+          "type": "string"
         }
       ]
     },
@@ -157,7 +157,7 @@
       "fields": [
         {
           "name": "accountId",
-          "type": "string",
+          "type": "string"
         },
         {
           "name": "balance",
@@ -165,7 +165,7 @@
           "default": 0
         }
       ]
-    },
+    }
 
   ],
   "messages": {
@@ -224,17 +224,20 @@
       "one-way": true
     },
     "findCurrentBalanceForAccountId": {
+      "meta" : {
+
+      },
       "request": [
         {
           "name": "query",
           "type": "FindCurrentBalanceByAccountIdQuery"
         }
       ],
-      "response": [
+      "one-way": true,
+      "spräter - response": [
         "null",
         "CurrentBalance"
       ]
-    },
-
+    }
   }
 }

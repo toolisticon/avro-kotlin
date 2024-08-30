@@ -27,8 +27,8 @@ data class RecordMetaData(
       RecordMetaData(
         namespace = this.namespace,
         name = this.name,
-        revision = meta?.getValue(REVISION),
-        type = meta?.getValue<String>(TYPE)?.let { RecordMetaDataType[it.trim()] }
+        revision = meta?.getValueOrNull(REVISION),
+        type = meta?.getValueOrNull<String>(TYPE)?.let { RecordMetaDataType[it.trim()] }
       )
     }
   }
