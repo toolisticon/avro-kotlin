@@ -49,7 +49,7 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
     /*
     Single interface for each query
      */
-    input.protocol.messages
+    input.protocol.messages.filterTwoWay()
       .filterValues { message -> message.isQuery() }
       .entries
       .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
@@ -108,7 +108,7 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
     return fileBuilder.build()
   }
 
-  private fun buildQueryFunctionSpec(name: Name, message: AvroProtocol.Message, avroPoetTypes: AvroPoetTypes): KotlinFunSpec {
+  private fun buildQueryFunctionSpec(name: Name, message: AvroProtocol.TwoWayMessage, avroPoetTypes: AvroPoetTypes): KotlinFunSpec {
     return buildFun(name.value) {
       addModifiers(KModifier.ABSTRACT)
       addAnnotation(QueryHandler::class)

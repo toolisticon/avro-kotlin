@@ -4,6 +4,8 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.ProtocolMessageMap
+import io.toolisticon.kotlin.avro.value.TwoWayMessageMap
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,18 +21,10 @@ class MessageResponseTest {
   }
 
   @Test
-  fun `none for one-way`() {
-    val messageName = Name("NONE")
-    val message = requireNotNull(protocol.messages[messageName])
-    assertThat(message.name).isEqualTo(messageName)
-    assertThat(message).isInstanceOf(AvroProtocol.OneWayMessage::class.java)
-    assertThat(message.response).isEqualTo(MessageResponse.NONE)
-  }
-
-  @Test
   fun `single for two-way with single response`() {
+    val messages: TwoWayMessageMap = protocol.messages.filterTwoWay()
     val messageName = Name("SINGLE")
-    val message = requireNotNull(protocol.messages[messageName])
+    val message = requireNotNull(messages[messageName])
     assertThat(message.name).isEqualTo(messageName)
     assertThat(message).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
     assertThat(message.response).isInstanceOf(MessageResponse.SINGLE::class.java)
@@ -43,8 +37,9 @@ class MessageResponseTest {
 
   @Test
   fun `multiple for two-way with array response`() {
+    val messages: TwoWayMessageMap = protocol.messages.filterTwoWay()
     val messageName = Name("MULTIPLE")
-    val message = requireNotNull(protocol.messages[messageName])
+    val message = requireNotNull(messages[messageName])
     assertThat(message.name).isEqualTo(messageName)
     assertThat(message).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
 
@@ -61,8 +56,9 @@ class MessageResponseTest {
 
   @Test
   fun `optional for two-way with nullable response`() {
+    val messages: TwoWayMessageMap = protocol.messages.filterTwoWay()
     val messageName = Name("OPTIONAL")
-    val message = requireNotNull(protocol.messages[messageName])
+    val message = requireNotNull(messages[messageName])
     assertThat(message.name).isEqualTo(messageName)
     assertThat(message).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
 

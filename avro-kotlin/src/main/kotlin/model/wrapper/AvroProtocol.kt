@@ -108,8 +108,6 @@ class AvroProtocol(
      */
     val request: AvroSchema
 
-    val response: MessageResponse
-
     val properties: ObjectProperties
 
     fun enclosedTypes(): List<AvroSchema>
@@ -120,7 +118,6 @@ class AvroProtocol(
     override val documentation: Documentation? = Documentation.ofNullable(message.doc)
 
     override val request: AvroSchema = schemaForMessageRequest(message)
-    override val response: MessageResponse = MessageResponse.of(EmptyType.schema)
     override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
 
@@ -145,7 +142,6 @@ class AvroProtocol(
 
     init {
       require(message.isOneWay) { "Message is not one-way." }
-      require(response == MessageResponse.NONE) { "OneWayMessage must not have a response-schema." }
     }
   }
 
@@ -159,7 +155,7 @@ class AvroProtocol(
     /**
      * The returned data.
      */
-    override val response: MessageResponse by lazy {
+    val response: MessageResponse by lazy {
       MessageResponse.of(AvroSchema(message.response))
     }
 
@@ -194,7 +190,6 @@ class AvroProtocol(
 
     init {
       require(!message.isOneWay) { "Message is not two-way." }
-      require(response != MessageResponse.NONE) { "TwoWayMessage must not have NONE response." }
     }
   }
 
@@ -218,18 +213,11 @@ class AvroProtocol(
   /**
    * The messages of this protocol.
    */
-  val messages: Map<Name, Message> by lazy {
-    protocol.messages.values.map {
-      if (it.isOneWay) {
-        OneWayMessage(it)
-      } else {
-        TwoWayMessage(it)
-      }
-    }.associateBy { it.name }
+  val messages: ProtocolMessageMap<Message> by lazy {
+    ProtocolMessageMap.of(protocol)
   }
 
   fun getMessage(name: Name): Message? = messages[name]
-
 
   /**
    * Render this as [JSON](https://json.org/).

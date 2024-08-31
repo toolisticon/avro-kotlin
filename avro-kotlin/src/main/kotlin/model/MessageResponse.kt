@@ -11,9 +11,7 @@ import java.util.function.Supplier
  */
 sealed interface MessageResponse : Supplier<AvroSchema> {
   companion object {
-    fun of(schema: AvroSchema): MessageResponse = if (EmptyType.schema == schema) {
-      NONE
-    } else if (schema.isArrayType) {
+    fun of(schema: AvroSchema): MessageResponse = if (schema.isArrayType) {
       MULTIPLE(schema)
     } else if (schema.isUnionType && schema.isNullable) {
       OPTIONAL(schema)
@@ -28,17 +26,6 @@ sealed interface MessageResponse : Supplier<AvroSchema> {
    * Gets the effective schema for the given response type (elementType for Array, ...)
    */
   abstract override fun get(): AvroSchema
-
-  /**
-   * NONE - the message has no response, only valid for one-way messages.
-   */
-  data object NONE : MessageResponse {
-    /**
-     * The original schema as read from message.
-     */
-    override val schema: AvroSchema = EmptyType.schema
-    override fun get(): AvroSchema = schema
-  }
 
   /**
    * SINGLE - the message has single, non-null response.

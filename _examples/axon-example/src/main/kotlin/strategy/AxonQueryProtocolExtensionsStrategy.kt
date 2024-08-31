@@ -33,9 +33,9 @@ class AxonQueryProtocolExtensionsStrategy : AvroFileSpecFromProtocolDeclarationS
     /*
     Single interface for each query
      */
-    input.protocol.messages
-      .filterValues { message -> message.isQuery() }
-      .forEach { (name, message) ->
+    input.protocol.messages.filterTwoWay()
+      .filter { (name, message) -> message.isQuery() }
+      .forEach {  (_, message) ->
         if (message.request.fields.size == 1) {
 
           val queryTypeName = context.avroPoetTypes[message.request.fields.first().schema.hashCode].typeName
@@ -45,7 +45,7 @@ class AxonQueryProtocolExtensionsStrategy : AvroFileSpecFromProtocolDeclarationS
           val responseTypeName = context.avroPoetTypes[message.response.get().hashCode].typeName
 
           objectBuilder.addFunction(
-            builder.funBuilder(name.value)
+            builder.funBuilder(message.name.value)
               .receiver(QueryGateway::class)
               .addParameter(queryParameter)
               .returns(completableFutureResultTypeName)
