@@ -27,7 +27,7 @@ import java.util.*
 
 fun main() {
   System.setProperty("disable-axoniq-console-message", "true")
-  runApplication<AxonAvroExampleApplication>().let { }
+  runApplication<AxonAvroExampleApplication>()
 }
 
 @SpringBootApplication

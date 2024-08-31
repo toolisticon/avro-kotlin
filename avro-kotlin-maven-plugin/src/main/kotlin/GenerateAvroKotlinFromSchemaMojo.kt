@@ -6,6 +6,8 @@ import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_GENERATED_TEST_SOURCES
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_SOURCE_DIRECTORY
 import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.DEFAULT_TEST_DIRECTORY
+import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.findIncludedFiles
+import io.toolisticon.kotlin.avro.maven.AvroKotlinMavenPlugin.writeToFormatted
 import io.toolisticon.maven.fn.FileExt.createIfNotExists
 import io.toolisticon.maven.mojo.AbstractContextAwareMojo
 import org.apache.maven.plugins.annotations.LifecyclePhase
@@ -110,29 +112,12 @@ class GenerateAvroKotlinFromSchemaMojo : AbstractContextAwareMojo() {
       .map { parser.parseSchema(it) }
       .flatMap { generator.generate(it) }
 
-
     fileSpecs.forEach {
-      log.info("Generating ${outputDirectory}/${it.get().name}.kt")
-      it.get().writeTo(outputDirectory)
+      val file = it.writeToFormatted(outputDirectory)
+      log.info("Generating: $file")
     }
   }
 
-  private fun findIncludedFiles(absPath: String, excludes: Array<String> = emptyArray(), includes: Array<String>): List<String> {
-    val fileSetManager = FileSetManager()
-    val fs = FileSet().apply {
-      directory = absPath
-      isFollowSymlinks = false
-    }
-
-    for (include in includes) {
-      fs.addInclude(include)
-    }
-    for (exclude in excludes) {
-      fs.addExclude(exclude)
-    }
-    return fileSetManager.getIncludedFiles(fs)
-      .filterNotNull()
-  }
 
   private fun sanitizeParameters() {
     // FIXME: late init seem to be not working with an empty default -> rootFileSuffix remains uninitialized

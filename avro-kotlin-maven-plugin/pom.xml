@@ -20,6 +20,7 @@
     <maven-plugin-api.version>3.9.9</maven-plugin-api.version>
     <maven-plugin-annotations.version>3.15.0</maven-plugin-annotations.version>
     <mojo-executor.version>2.4.0</mojo-executor.version>
+    <ktfmt.version>0.52</ktfmt.version>
     <itf.version>0.13.1</itf.version>
   </properties>
 
@@ -77,6 +78,12 @@
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>file-management</artifactId>
       <version>3.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.facebook</groupId>
+      <artifactId>ktfmt</artifactId>
+      <version>${ktfmt.version}</version>
     </dependency>
 
     <dependency>
