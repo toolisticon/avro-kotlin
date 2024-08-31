@@ -14,6 +14,7 @@ import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol.TwoWayMessage
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFun
@@ -51,7 +52,7 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
     /*
     Single interface for each event souring handler
      */
-    input.protocol.messages
+    input.protocol.messages.filterTwoWay()
       .filterValues { message -> message.isDecider() || message.isDeciderInit() }
       .entries
       .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
@@ -95,7 +96,7 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
     return fileBuilder.build()
   }
 
-  private fun buildEventSourcingHandler(message: AvroProtocol.Message, avroPoetTypes: AvroPoetTypes): KotlinFunSpec {
+  private fun buildEventSourcingHandler(message: TwoWayMessage, avroPoetTypes: AvroPoetTypes): KotlinFunSpec {
     val eventType = avroPoetTypes[message.response.schema.hashCode]
     return buildFun("on" + eventType.avroType.name) {
       addModifiers(KModifier.ABSTRACT)
