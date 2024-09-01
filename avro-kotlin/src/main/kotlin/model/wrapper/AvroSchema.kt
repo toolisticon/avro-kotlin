@@ -235,6 +235,8 @@ object AvroSchemaChecks {
   val AvroSchema.isNullable: Boolean get() = get().isNullable
   val AvroSchema.isNullType: Boolean get() = SchemaType.NULL == type
 
+  val AvroSchema.isOptionalType : Boolean get() = isUnion && isNullable &&  get().types?.size == 2 && get().types?.map { it.type }?.any { SchemaType.NULL.get() == it } == true
+
   val AvroSchema.isPrimitive: Boolean get() = type.isPrimitive
 
   val AvroSchema.isRecordType: Boolean get() = SchemaType.RECORD == type && !isError

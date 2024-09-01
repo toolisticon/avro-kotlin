@@ -8,6 +8,7 @@ import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext.Companion.toSchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinErrorTypeStrategy
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
@@ -44,7 +45,7 @@ class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
       when (type) {
         is RecordType -> schemaDeclarationContext.dataClassStrategies.executeAll(schemaDeclarationContext, type)
         is EnumType -> schemaDeclarationContext.enumClassStrategies.executeAll(schemaDeclarationContext, type)
-        is ErrorType -> emptyList() // TODO("fixed is not implemented yet")
+        is ErrorType -> listOf(KotlinErrorTypeStrategy().execute(schemaDeclarationContext, type)).filterNotNull()
         is FixedType -> emptyList() // TODO("fixed is not implemented yet")
       }
     }

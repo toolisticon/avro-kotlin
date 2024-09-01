@@ -1,10 +1,6 @@
 package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecStrategy
-import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import mu.KLogging
 
 /**

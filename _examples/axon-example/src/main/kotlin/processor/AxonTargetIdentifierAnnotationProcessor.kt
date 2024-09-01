@@ -12,12 +12,15 @@ import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBui
 // TODO: rename to generic processor to support all Axon specific field annotations
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonTargetIdentifierAnnotationProcessor : ConstructorPropertyFromRecordFieldProcessorBase() {
-  override fun invoke(context: SchemaDeclarationContext, input: RecordField?, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder  = builder.apply {
+
+  override fun invoke(context: SchemaDeclarationContext, input: RecordField, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder  = builder.apply {
     requireNotNull(input)
     addAnnotation(TargetAggregateIdentifierAnnotation)
   }
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean {
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean {
     return super.test(ctx, input) && input is RecordField && input.fieldMetaData()?.type == FieldMetaDataType.Association
   }
+
+
 }

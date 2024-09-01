@@ -1,6 +1,6 @@
 {
   "namespace": "holi.bank",
-  "protocol": "BankAccountProtocol",
+  "protocol": "BankAccountContext",
   "doc": "Protocol declaration for bank-account.",
   "types": [
     {
@@ -23,6 +23,18 @@
           "name": "initialBalance",
           "type": "int",
           "default": 0
+        }
+      ],
+      "errors": [
+        {
+          "name": "CreateBankAccountCreatedException",
+          "type": "error",
+          "fields": [
+            {
+              "name": "message",
+              "type": "string"
+            }
+          ]
         }
       ]
     },
@@ -133,16 +145,6 @@
       ]
     },
     {
-      "name": "CreateBankAccountCreatedException",
-      "type": "error",
-      "fields": [
-        {
-          "name": "message",
-          "type": "string"
-        }
-      ]
-    },
-    {
       "name": "FindCurrentBalanceByAccountIdQuery",
       "doc": "Searches bank account balance for given account id.",
       "meta": {
@@ -214,7 +216,7 @@
   "messages": {
     "createBankAccount": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "name": "BankAccountAggregateSpec",
         "type" : "deciderInit"
       },
       "request": [
@@ -223,12 +225,11 @@
           "type": "CreateBankAccountCommand"
         }
       ],
-      "response": "BankAccountCreatedEvent",
-      "errors": ["CreateBankAccountCreatedException"]
+      "response": "BankAccountCreatedEvent"
     },
     "withdrawMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "name": "BankAccountAggregateSpec",
         "type" : "decider"
       },
       "request": [
@@ -241,7 +242,7 @@
     },
     "depositMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "name": "BankAccountAggregateSpec",
         "type" : "decider"
       },
       "request": [
@@ -254,7 +255,7 @@
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "name": "BankAccountProjectionSpec",
         "type": "query"
       },
       "request": [
@@ -270,7 +271,7 @@
     },
     "findAllMoneyTransfersForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "name": "BankAccountProjectionSpec",
         "type": "query"
       },
       "request": [

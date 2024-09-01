@@ -65,6 +65,10 @@ value class AvroPoetTypeMap(
             result[avroType.hashCode] = type.nullable(true)
           }
 
+          is OptionalType -> {
+            result[avroType.hashCode] = requireNotNull(result[avroType.type.hashCode]).nullable(true)
+          }
+
           is ArrayType -> {
             val type = requireNotNull(result[avroType.elementType.hashCode]) {
               "element type for array does not exist: $result"

@@ -44,7 +44,7 @@ class ProtocolInterfaceStrategy  : AvroFileSpecFromProtocolDeclarationStrategy()
     }
   }
 
-  override fun test(context: ProtocolDeclarationContext, input: Any?): Boolean {
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean {
     return super.test(context, input) && input is ProtocolDeclaration && input.protocol.messages.isNotEmpty()
   }
 }

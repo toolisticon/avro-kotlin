@@ -110,6 +110,16 @@ class AvroProtocol(
 
     val properties: ObjectProperties
 
+
+    /**
+     * Errors that might be thrown.
+     *
+     * Note: By default, avro uses a default `string` schema for the error response. This is not applicable when working
+     * with jvm, so we filter for errorTypes only.
+     *
+     */
+    val errors: AvroSchema
+
     fun enclosedTypes(): List<AvroSchema>
   }
 
@@ -130,9 +140,25 @@ class AvroProtocol(
       return true
     }
 
+    override val errors: AvroSchema by lazy {
+      // FIXME: string is a default error type in protocol, we need to filter this
+      val schema = AvroSchema(message.errors)
+
+      val errorSchemas = SchemaCatalog(schema = schema, excludeSelf = true).typesMap()
+        .values.filter { it is ErrorType }.map { it.schema }
+
+      check(errorSchemas.size < 2) { "Currently a protocol can only return 0 or 1 schemas, was: $errorSchemas."}
+
+      if (errorSchemas.size == 1) {
+        errorSchemas.single()
+      } else {
+        EmptyType.schema
+      }
+    }
+
     override fun hashCode(): Int = message.hashCode()
 
-    override fun enclosedTypes(): List<AvroSchema> = listOf(request)
+    override fun enclosedTypes(): List<AvroSchema> = listOf(request, errors)
     override fun toString() = toString("OneWayMessage") {
       add("name", name)
       addIfNotNull("documentation", documentation)
@@ -159,14 +185,7 @@ class AvroProtocol(
       MessageResponse.of(AvroSchema(message.response))
     }
 
-    /**
-     * Errors that might be thrown.
-     *
-     * Note: By default, avro uses a default `string` schema for the error response. This is not applicable when working
-     * with jvm, so we filter for errorTypes only.
-     *
-     */
-    val errors: AvroSchema by lazy {
+    override val errors: AvroSchema  by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
 

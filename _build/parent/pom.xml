@@ -14,10 +14,6 @@
   <description>Parent for avro-kotlin summarizing used libraries and versions.</description>
   <packaging>pom</packaging>
 
-  <properties>
-    <kotlin-code-generation.version>0.0.5</kotlin-code-generation.version>
-  </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>

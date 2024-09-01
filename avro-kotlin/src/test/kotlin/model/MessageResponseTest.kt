@@ -3,8 +3,8 @@ package io.toolisticon.kotlin.avro.model
 import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isRecordType
 import io.toolisticon.kotlin.avro.value.Name
-import io.toolisticon.kotlin.avro.value.ProtocolMessageMap
 import io.toolisticon.kotlin.avro.value.TwoWayMessageMap
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -66,10 +66,8 @@ class MessageResponseTest {
 
     assertThat(response).isInstanceOf(MessageResponse.OPTIONAL::class.java)
 
-    val type = AvroType.avroType<AvroType>(response.schema)
-    val inner = AvroType.avroType<AvroType>(response.get())
-    assertThat(type).isInstanceOf(UnionType::class.java)
-    assertThat(inner).isInstanceOf(RecordType::class.java)
-    assertThat(inner.name).isEqualTo(Name("Result"))
+    val optionalType = AvroType.avroType<OptionalType>(response.schema)
+    assertThat(optionalType.type.isRecordType).isTrue()
+    assertThat(optionalType.type.name).isEqualTo(Name("Result"))
   }
 }
