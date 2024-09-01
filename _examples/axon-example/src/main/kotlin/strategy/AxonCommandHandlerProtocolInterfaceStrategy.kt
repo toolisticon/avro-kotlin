@@ -11,20 +11,32 @@ import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.asClassName
+import io.toolisticon.kotlin.avro.generator.processor.KotlinFunSpecFromProtocolMessageProcessor
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
+import io.toolisticon.kotlin.avro.model.MessageResponse
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol.TwoWayMessage
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isErrorType
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.Name
+import io.toolisticon.kotlin.avro.value.TwoWayMessageMap
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildAnnotation
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFun
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.funBuilder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.objectBuilder
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.format.FORMAT_KCLASS
+import io.toolisticon.kotlin.generation.builder.KotlinFunSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spec.KotlinFunSpec
+import io.toolisticon.kotlin.generation.spi.processor.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import javax.print.Doc
+import kotlin.jvm.Throws
 
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
@@ -70,6 +82,12 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
                   .mapNotNull { (name, message) ->
                     if (message.isDecider()) {
                       buildCommandHandlerFunction(name, message, context.avroPoetTypes)?.let { function ->
+                        context.registry.processors.filter(KotlinFunSpecFromProtocolMessageProcessor::class).executeAll(
+                          context = context,
+                          input = message,
+                          builder = function
+                        )
+
                         addFunction(function)
                       }
                     } else {
@@ -78,8 +96,16 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
                         .apply {
                           addKDoc(Documentation("Factory for ${groupingTypeName.simpleName}."))
                           buildInitCommandHandlerFunction(name, message, groupingTypeName, context.avroPoetTypes)?.let { function ->
+                            context.registry.processors.filter(KotlinFunSpecFromProtocolMessageProcessor::class).executeAll(
+                              context = context,
+                              input = message,
+                              builder = function
+                            )
+
                             addFunction(function)
+
                           }
+
                         }
                       addType(factory)
                     }
@@ -95,6 +121,12 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
                 // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
                 addKDoc(message.documentation)
               }
+              context.registry.processors.filter(KotlinFunSpecFromProtocolMessageProcessor::class).executeAll(
+                context = context,
+                input = message,
+                builder = function
+              )
+
               interfaceBuilder.addFunction(function) // add function to the interface
             }
           }
@@ -113,10 +145,10 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
     return fileBuilder.build()
   }
 
-  private fun buildCommandHandlerFunction(name: Name, message: AvroProtocol.Message, avroPoetTypes: AvroPoetTypes): KotlinFunSpec? {
+  private fun buildCommandHandlerFunction(name: Name, message: AvroProtocol.Message, avroPoetTypes: AvroPoetTypes): KotlinFunSpecBuilder? {
     return if (message.request.fields.size == 1) {
       // TODO: the strategy should be a fall-through in order: on message, on message type, on referenced-type
-      buildFun(name.value) {
+      funBuilder(name.value).apply {
         addModifiers(KModifier.ABSTRACT)
         addAnnotation(CommandHandler::class)
         message.request.fields.forEach { f ->
@@ -129,9 +161,9 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
     }
   }
 
-  private fun buildInitCommandHandlerFunction(name: Name, message: AvroProtocol.Message, groupName: ClassName, avroPoetTypes: AvroPoetTypes): KotlinFunSpec? {
+  private fun buildInitCommandHandlerFunction(name: Name, message: AvroProtocol.Message, groupName: ClassName, avroPoetTypes: AvroPoetTypes): KotlinFunSpecBuilder? {
     return if (message.request.fields.size == 1) {
-      buildFun(name.value) {
+      funBuilder(name.value).apply {
         addModifiers(KModifier.ABSTRACT)
         addAnnotation(CommandHandler::class)
         returns(ClassName.bestGuess(groupName.simpleName))
@@ -146,7 +178,7 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
   }
 
 
-  override fun test(context: ProtocolDeclarationContext, input: Any?): Boolean {
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean {
     return super.test(context, input)
       && input is ProtocolDeclaration
       && input.protocol.messages.values.any { message -> message.isDecider() || message.isDeciderInit() }

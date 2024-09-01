@@ -1,10 +1,8 @@
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
-import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.AvroNamedType
@@ -31,7 +29,7 @@ abstract class AvroNamedTypeSpecStrategy<INPUT : AvroNamedType, SPEC : KotlinGen
   contextType = SchemaDeclarationContext::class, inputType = inputType, specType = specType
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: INPUT): SPEC
-  abstract override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean
+  abstract override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean
 }
 
 /**
@@ -42,7 +40,7 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
   inputType = RecordType::class, specType = KotlinDataClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = input != null && input is RecordType
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
 
   protected fun parameterSpecs(
     context: SchemaDeclarationContext,
@@ -60,8 +58,7 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
   inputType = EnumType::class, specType = KotlinEnumClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: EnumType): KotlinEnumClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean =
-    input != null && input is EnumType && !ctx.isRoot
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is EnumType && !ctx.isRoot
 }
 
 /**
@@ -76,7 +73,7 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
 abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
-  override fun test(context: ProtocolDeclarationContext, input: Any?): Boolean = super.test(context, input)
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
 
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec
 }
@@ -96,5 +93,5 @@ abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationS
 
   abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec
 
-  override fun test(context: SchemaDeclarationContext, input: Any?): Boolean = super.test(context, input)
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }

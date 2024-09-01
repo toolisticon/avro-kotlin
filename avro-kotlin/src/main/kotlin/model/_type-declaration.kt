@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.model
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isOptionalType
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.LogicalType
@@ -46,7 +47,7 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
       SchemaType.RECORD -> {
         if (schema.isError) {
           ErrorType(schema)
-        } else if(schema.isEmptyType) {
+        } else if (schema.isEmptyType) {
           EmptyType
         } else {
           RecordType(schema)
@@ -59,7 +60,14 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
       // Container
       SchemaType.ARRAY -> ArrayType(schema)
       SchemaType.MAP -> MapType(schema)
-      SchemaType.UNION -> UnionType(schema)
+      SchemaType.UNION -> {
+        if (schema.isOptionalType) {
+          OptionalType(schema)
+          //UnionType(schema)
+        } else {
+          UnionType(schema)
+        }
+      }
 
       // Primitive
       SchemaType.BOOLEAN -> BooleanType(schema)

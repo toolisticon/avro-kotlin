@@ -25,7 +25,8 @@ internal class ProtocolDeclarationTest {
     assertThat(declaration.avroTypes.findTypes<RecordType>()).hasSize(3)
     assertThat(declaration.avroTypes.findTypes<StringType>()).hasSize(3)
     assertThat(declaration.avroTypes.findTypes<ErrorType>()).hasSize(1)
-    assertThat(declaration.avroTypes.findTypes<UnionType>()).hasSize(1)
+    assertThat(declaration.avroTypes.findTypes<UnionType>()).hasSize(0)
+    assertThat(declaration.avroTypes.findTypes<OptionalType>()).hasSize(1)
     assertThat(declaration.avroTypes.findTypes<NullType>()).hasSize(1)
   }
 }

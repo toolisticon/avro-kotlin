@@ -93,6 +93,16 @@
       ]
     },
     {
+      "name": "CreateBankAccountCreatedException",
+      "type": "error",
+      "fields": [
+        {
+          "name": "message",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "MoneyDepositedEvent",
       "doc": "Money was deposited from BankAccount.",
       "meta": {
@@ -213,7 +223,10 @@
           "type": "CreateBankAccountCommand"
         }
       ],
-      "response": "BankAccountCreatedEvent"
+      "response": "BankAccountCreatedEvent",
+      "errors": [
+        "CreateBankAccountCreatedException"
+      ]
     },
     "withdrawMoney": {
       "meta": {

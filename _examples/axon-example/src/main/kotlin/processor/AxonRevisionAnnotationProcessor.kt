@@ -10,8 +10,8 @@ import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
 
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonRevisionAnnotationProcessor : KotlinDataClassFromRecordTypeProcessorBase() {
-  override fun invoke(context: SchemaDeclarationContext, input: RecordType?, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder {
-    requireNotNull(input)
+
+  override fun invoke(context: SchemaDeclarationContext, input: RecordType, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder {
 
     val meta = input.schema.recordMetaData()
 
@@ -19,7 +19,7 @@ class AxonRevisionAnnotationProcessor : KotlinDataClassFromRecordTypeProcessorBa
     return builder
   }
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean {
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean {
     return super.test(ctx, input) && input is RecordType && input.schema.recordMetaData()?.revision != null
   }
 }

@@ -48,5 +48,5 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
     return nestedDataClassBuilder.build()
   }
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = super.test(ctx, input) && !ctx.isRoot
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = super.test(ctx, input) && !ctx.isRoot
 }

@@ -14,7 +14,7 @@ io.toolisticon.kotlin.avro.generator.strategy.ProtocolInterfaceStrategy
 # processors
 ################################################################################
 
-# - none
+io.toolisticon.kotlin.avro.generator.processor.AddThrowsForProtocolMessageErrorProcessor
 
 ################################################################################
 # logical types
