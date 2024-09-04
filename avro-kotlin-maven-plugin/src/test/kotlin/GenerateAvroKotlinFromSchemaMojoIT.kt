@@ -4,6 +4,8 @@ import com.soebes.itf.extension.assertj.MavenITAssertions.assertThat
 import com.soebes.itf.jupiter.extension.*
 import com.soebes.itf.jupiter.maven.MavenExecutionResult
 import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 @MavenJupiterExtension
 @MavenRepository
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Disabled
   MavenOption("--no-transfer-progress")
 )
 @MavenPredefinedRepository
+@DisabledOnOs(OS.WINDOWS)
 class GenerateAvroKotlinFromSchemaMojoIT {
 
   @MavenTest
