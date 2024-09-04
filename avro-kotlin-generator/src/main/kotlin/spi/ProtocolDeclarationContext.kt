@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
@@ -12,6 +13,7 @@ import io.toolisticon.kotlin.avro.model.AvroTypesMap
 import io.toolisticon.kotlin.avro.model.EmptyType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
@@ -73,4 +75,6 @@ data class ProtocolDeclarationContext(
   }
 
   override val contextType = ProtocolDeclarationContext::class
+
+  override val generatedTypes: MutableMap<AvroFingerprint, TypeName> = mutableMapOf()
 }

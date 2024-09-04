@@ -32,7 +32,8 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
   companion object : KLogging()
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
-    val rootDataClassBuilder = dataClassBuilder(context.rootClassName).apply {
+    val className = context.rootClassName
+    val rootDataClassBuilder = dataClassBuilder(className).apply {
       addKDoc(input.documentation)
 
       addAnnotation(
@@ -68,6 +69,7 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
     }
 
     typeSpecs.forEach(rootDataClassBuilder::addType)
+    context.generatedTypes[input.fingerprint] = className
     return rootDataClassBuilder.build()
   }
 

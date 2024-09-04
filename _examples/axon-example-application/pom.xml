@@ -70,7 +70,7 @@
     <dependency>
       <groupId>io.holixon.axon.avro</groupId>
       <artifactId>axon-avro-serializer-spring-autoconfigure</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

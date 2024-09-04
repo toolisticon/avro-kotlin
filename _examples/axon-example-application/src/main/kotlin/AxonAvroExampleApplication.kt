@@ -11,16 +11,26 @@ import holi.bank.BankAccountContextCommandHandlerProtocol.BankAccountAggregateSp
 import holi.bank.BankAccountContextEventSourcingHandlerProtocol.BankAccountAggregateSpecSourcingHandler
 import holi.bank.BankAccountContextQueryGatewayExt.findAllMoneyTransfersForAccountId
 import holi.bank.BankAccountContextQueryGatewayExt.findCurrentBalanceForAccountId
+import io.holixon.axon.avro.serializer.AvroSerializer
+import io.holixon.axon.avro.serializer.spring.AvroSchemaScan
+import io.holixon.axon.avro.serializer.spring.EnableAxonAvroSerializer
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.queryhandling.QueryGateway
+import org.axonframework.serialization.Serializer
+import org.axonframework.serialization.json.JacksonSerializer
 import org.axonframework.spring.stereotype.Aggregate
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.*
@@ -32,6 +42,27 @@ fun main() {
 
 @SpringBootApplication
 class AxonAvroExampleApplication {
+
+  @Configuration
+  @EnableAxonAvroSerializer
+  @AvroSchemaScan(
+    basePackageClasses = [BankAccountContext::class] // commands and events
+  )
+  class AvroSerializerConfiguration {
+
+    @Bean
+    @Primary
+    fun defaultSerializer(): Serializer = JacksonSerializer.builder().build()
+
+    @Bean
+    @Qualifier("eventSerializer")
+    fun eventSerializer(builder: AvroSerializer.Builder): Serializer = builder.build()
+
+    @Bean
+    @Qualifier("messageSerializer")
+    fun messageSerializer(builder: AvroSerializer.Builder): Serializer = builder.build()
+  }
+
 
   @Component
   class ExampleRunner(
@@ -58,8 +89,8 @@ class AxonAvroExampleApplication {
       }
 
       val bankAccountId = UUID.randomUUID().toString()
-      logger.info { "Created bank account id: $bankAccountId" }
-      commandGateway.send<Void>(CreateBankAccountCommand(accountId = bankAccountId, initialBalance = 100)).join()
+      val createdAccountId = commandGateway.send<String>(CreateBankAccountCommand(accountId = bankAccountId, initialBalance = 100)).join()
+      logger.info { "Created bank account id: $createdAccountId" }
 
       logger.info { "Doing some money transfer: $bankAccountId" }
       commandGateway.send<Void>(DepositMoneyCommand(accountId = bankAccountId, amount = 99)).join()
@@ -74,6 +105,14 @@ class AxonAvroExampleApplication {
 
       val transactions = queryGateway.findAllMoneyTransfersForAccountId(BankAccountContext.FindAllMoneyTransfersByAccountIdQuery(accountId = bankAccountId)).join()
       logger.info { "Transactions for account $bankAccountId: $transactions" }
+
+      logger.info {
+        """
+          ===============================================================================
+           D O N E !
+          ===============================================================================
+        """.trimIndent()
+      }
     }
   }
 
