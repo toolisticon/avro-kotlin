@@ -4,8 +4,7 @@ import _ktx.StringKtx.firstUppercase
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.TypeName
-import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.fieldMetaData
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.messageMetaData
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
@@ -14,29 +13,18 @@ import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.processor.KotlinFunSpecFromProtocolMessageProcessor
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
-import io.toolisticon.kotlin.avro.model.MessageResponse
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
-import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol.TwoWayMessage
-import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
-import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isErrorType
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.Name
-import io.toolisticon.kotlin.avro.value.TwoWayMessageMap
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildAnnotation
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFun
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.funBuilder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.objectBuilder
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.format.FORMAT_KCLASS
 import io.toolisticon.kotlin.generation.builder.KotlinFunSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
-import io.toolisticon.kotlin.generation.spec.KotlinFunSpec
 import io.toolisticon.kotlin.generation.spi.processor.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
-import javax.print.Doc
-import kotlin.jvm.Throws
 
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
@@ -67,7 +55,7 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
     input.protocol.messages
       .filterValues { message -> message.isDecider() || message.isDeciderInit() }
       .entries
-      .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
+      .groupBy { message -> message.value.messageMetaData()?.group?.value ?: UNKNOWN_GROUP }
       .mapNotNull { (groupName, messages) ->
 
         // named
@@ -91,7 +79,7 @@ class AxonCommandHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtocolDecl
                         addFunction(function)
                       }
                     } else {
-                      require(message.isDeciderInit()) { "Sanity check failed, expected the message to be a decider init but it was ${message.fieldMetaData()?.type}" }
+                      require(message.isDeciderInit()) { "Sanity check failed, expected the message to be a decider init but it was ${message.messageMetaData()?.type}" }
                       val factory = builder.interfaceBuilder((input.canonicalName.namespace + Name(groupName.firstUppercase() + "Factory")).asClassName())
                         .apply {
                           addKDoc(Documentation("Factory for ${groupingTypeName.simpleName}."))

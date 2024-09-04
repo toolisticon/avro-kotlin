@@ -4,8 +4,7 @@ import _ktx.StringKtx.firstUppercase
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.KModifier
-import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.fieldMetaData
-import io.holixon.axon.avro.generator.strategy.AxonCommandHandlerProtocolInterfaceStrategy.Companion
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.messageMetaData
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
@@ -13,7 +12,6 @@ import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
-import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol.TwoWayMessage
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.Name
@@ -55,7 +53,7 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
     input.protocol.messages.filterTwoWay()
       .filterValues { message -> message.isDecider() || message.isDeciderInit() }
       .entries
-      .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
+      .groupBy { message -> message.value.messageMetaData()?.group?.value ?: UNKNOWN_GROUP }
       .mapNotNull { (groupName, messages) ->
         // named
         if (groupName != UNKNOWN_GROUP) {

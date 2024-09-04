@@ -4,7 +4,7 @@ import _ktx.StringKtx.firstUppercase
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.KModifier
-import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.fieldMetaData
+import io.holixon.axon.avro.generator.meta.MessageMetaData.Companion.messageMetaData
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
@@ -52,7 +52,7 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
     input.protocol.messages.filterTwoWay()
       .filterValues { message -> message.isQuery() }
       .entries
-      .groupBy { message -> message.value.fieldMetaData()?.name?.value ?: UNKNOWN_GROUP }
+      .groupBy { message -> message.value.messageMetaData()?.group?.value ?: UNKNOWN_GROUP }
       .mapNotNull { (groupName, messages) ->
 
         // named

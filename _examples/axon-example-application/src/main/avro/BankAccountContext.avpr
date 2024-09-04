@@ -215,7 +215,7 @@
     "createBankAccount": {
       "doc": "Creates a new bank account.",
       "meta": {
-        "name": "BankAccountAggregate",
+        "group": "BankAccountAggregate",
         "type" : "deciderInit"
       },
       "request": [
@@ -229,7 +229,7 @@
     },
     "withdrawMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "group": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -242,7 +242,7 @@
     },
     "depositMoney": {
       "meta": {
-        "name": "BankAccountAggregate",
+        "group": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -255,7 +255,7 @@
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "group": "BankAccountProjection",
         "type": "query"
       },
       "request": [
@@ -271,7 +271,7 @@
     },
     "findAllMoneyTransfersForAccountId": {
       "meta": {
-        "name": "BankAccountProjection",
+        "group": "BankAccountProjection",
         "type": "query"
       },
       "request": [
