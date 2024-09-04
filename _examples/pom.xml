@@ -27,7 +27,7 @@
     <module>java-example</module>
     <module>kotlin-plugin-example</module>
     <module>axon-example</module>
-    <module>axon-example-application</module>
+<!--    <module>axon-example-application</module>-->
   </modules>
 
   <dependencyManagement>

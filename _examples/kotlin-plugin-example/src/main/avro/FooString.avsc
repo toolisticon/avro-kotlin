@@ -1,5 +1,5 @@
 {
-  "namespace": "com.github.avrokotlin.avro4k.decoder.java",
+  "namespace": "io.toolisticon.kotlin.avro.generator.test",
   "name": "FooString",
   "type": "record",
   "fields": [
