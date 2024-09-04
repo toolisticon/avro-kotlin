@@ -34,7 +34,7 @@ class AxonQueryProtocolExtensionsStrategy : AvroFileSpecFromProtocolDeclarationS
     Single interface for each query
      */
     input.protocol.messages.filterTwoWay()
-      .filter { (name, message) -> message.isQuery() }
+      .filter { (_, message) -> message.isQuery() }
       .forEach {  (_, message) ->
         if (message.request.fields.size == 1) {
 

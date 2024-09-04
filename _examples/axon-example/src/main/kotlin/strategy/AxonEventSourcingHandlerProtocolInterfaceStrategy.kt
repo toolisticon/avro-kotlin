@@ -35,7 +35,7 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
 
-    val fileName: ClassName = (input.canonicalName.namespace + Name(input.name.value + "EventSourcingHandlerProtocol")).asClassName()
+    val fileName: ClassName = (input.canonicalName.namespace + Name(input.name.value + "EventSourcingHandlers")).asClassName()
     val fileBuilder = builder.fileBuilder(fileName)
 
     val objectBuilder = objectBuilder(fileName).apply {
@@ -60,7 +60,7 @@ class AxonEventSourcingHandlerProtocolInterfaceStrategy : AvroFileSpecFromProtoc
         // named
         if (groupName != UNKNOWN_GROUP) {
           // create one enclosing type for all command handlers
-          val groupingTypeName = (input.canonicalName.namespace + Name(groupName.firstUppercase() + "SourcingHandler")).asClassName()
+          val groupingTypeName = (input.canonicalName.namespace + Name(groupName.firstUppercase() + "SourcingHandlers")).asClassName()
           listOf(
             builder
               .interfaceBuilder(groupingTypeName)

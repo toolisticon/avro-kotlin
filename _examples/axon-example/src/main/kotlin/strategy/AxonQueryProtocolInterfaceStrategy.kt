@@ -33,7 +33,7 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
 
-    val fileName: ClassName = (input.canonicalName.namespace + Name(input.name.value + "QueryProtocol")).asClassName()
+    val fileName: ClassName = (input.canonicalName.namespace + Name(input.name.value + "Queries")).asClassName()
     val fileBuilder = builder.fileBuilder(fileName)
 
     val objectBuilder = objectBuilder(fileName).apply {
@@ -60,7 +60,7 @@ class AxonQueryProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationSt
           // create one enclosing type for all queries
           listOf(
             builder
-            .interfaceBuilder((input.canonicalName.namespace + Name(groupName.firstUppercase())).asClassName())
+            .interfaceBuilder((input.canonicalName.namespace + Name(groupName.firstUppercase() + "Queries")).asClassName())
             .apply {
               messages
                 .mapNotNull { (name, message) ->

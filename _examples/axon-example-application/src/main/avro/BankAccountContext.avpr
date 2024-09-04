@@ -24,17 +24,15 @@
           "type": "int",
           "default": 0
         }
-      ],
-      "errors": [
+      ]
+    },
+    {
+      "name": "IllegalInitialBalance",
+      "type": "error",
+      "fields": [
         {
-          "name": "CreateBankAccountCreatedException",
-          "type": "error",
-          "fields": [
-            {
-              "name": "message",
-              "type": "string"
-            }
-          ]
+          "name": "message",
+          "type": "string"
         }
       ]
     },
@@ -215,8 +213,9 @@
   ],
   "messages": {
     "createBankAccount": {
+      "doc": "Creates a new bank account.",
       "meta": {
-        "name": "BankAccountAggregateSpec",
+        "name": "BankAccountAggregate",
         "type" : "deciderInit"
       },
       "request": [
@@ -225,11 +224,12 @@
           "type": "CreateBankAccountCommand"
         }
       ],
-      "response": "BankAccountCreatedEvent"
+      "response": "BankAccountCreatedEvent",
+      "errors": [ "IllegalInitialBalance" ]
     },
     "withdrawMoney": {
       "meta": {
-        "name": "BankAccountAggregateSpec",
+        "name": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -242,7 +242,7 @@
     },
     "depositMoney": {
       "meta": {
-        "name": "BankAccountAggregateSpec",
+        "name": "BankAccountAggregate",
         "type" : "decider"
       },
       "request": [
@@ -255,7 +255,7 @@
     },
     "findCurrentBalanceForAccountId": {
       "meta": {
-        "name": "BankAccountProjectionSpec",
+        "name": "BankAccountProjection",
         "type": "query"
       },
       "request": [
@@ -271,7 +271,7 @@
     },
     "findAllMoneyTransfersForAccountId": {
       "meta": {
-        "name": "BankAccountProjectionSpec",
+        "name": "BankAccountProjection",
         "type": "query"
       },
       "request": [

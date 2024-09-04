@@ -2,13 +2,20 @@ package holi.bank
 
 import holi.bank.BankAccountContext.BankAccountCreatedEvent
 import holi.bank.BankAccountContext.CreateBankAccountCommand
+import holi.bank.BankAccountContext.CurrentBalance
 import holi.bank.BankAccountContext.DepositMoneyCommand
+import holi.bank.BankAccountContext.FindAllMoneyTransfersByAccountIdQuery
+import holi.bank.BankAccountContext.FindCurrentBalanceByAccountIdQuery
+import holi.bank.BankAccountContext.IllegalInitialBalance
 import holi.bank.BankAccountContext.MoneyDepositedEvent
+import holi.bank.BankAccountContext.MoneyTransfer
 import holi.bank.BankAccountContext.MoneyWithdrawnEvent
 import holi.bank.BankAccountContext.WithdrawMoneyCommand
-import holi.bank.BankAccountContextCommandHandlerProtocol.BankAccountAggregateSpec
-import holi.bank.BankAccountContextCommandHandlerProtocol.BankAccountAggregateSpec.BankAccountAggregateSpecFactory
-import holi.bank.BankAccountContextEventSourcingHandlerProtocol.BankAccountAggregateSpecSourcingHandler
+import holi.bank.BankAccountContextCommandHandlers.BankAccountAggregateCommandHandlers
+import holi.bank.BankAccountContextCommandHandlers.BankAccountAggregateCommandHandlers.BankAccountAggregateFactory
+import holi.bank.BankAccountContextEventHandlers.BankAccountContextAllEventHandlers
+import holi.bank.BankAccountContextEventSourcingHandlers.BankAccountAggregateSourcingHandlers
+import holi.bank.BankAccountContextQueries.BankAccountProjectionQueries
 import holi.bank.BankAccountContextQueryGatewayExt.findAllMoneyTransfersForAccountId
 import holi.bank.BankAccountContextQueryGatewayExt.findCurrentBalanceForAccountId
 import io.holixon.axon.avro.serializer.AvroSerializer
@@ -30,7 +37,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
-import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.*
@@ -46,7 +52,7 @@ class AxonAvroExampleApplication {
   @Configuration
   @EnableAxonAvroSerializer
   @AvroSchemaScan(
-    basePackageClasses = [BankAccountContext::class] // commands and events
+    basePackageClasses = [BankAccountContext::class] // commands, events, queries
   )
   class AvroSerializerConfiguration {
 
@@ -100,10 +106,10 @@ class AxonAvroExampleApplication {
       // wait two secs
       Thread.sleep(2000)
 
-      val currentBalance = queryGateway.findCurrentBalanceForAccountId(BankAccountContext.FindCurrentBalanceByAccountIdQuery(accountId = bankAccountId)).join()
+      val currentBalance = queryGateway.findCurrentBalanceForAccountId(FindCurrentBalanceByAccountIdQuery(accountId = bankAccountId)).join()
       logger.info { "Current balance for account $bankAccountId: $currentBalance" }
 
-      val transactions = queryGateway.findAllMoneyTransfersForAccountId(BankAccountContext.FindAllMoneyTransfersByAccountIdQuery(accountId = bankAccountId)).join()
+      val transactions = queryGateway.findAllMoneyTransfersForAccountId(FindAllMoneyTransfersByAccountIdQuery(accountId = bankAccountId)).join()
       logger.info { "Transactions for account $bankAccountId: $transactions" }
 
       logger.info {
@@ -118,18 +124,23 @@ class AxonAvroExampleApplication {
 
 
   @Aggregate
-  class BankAccountAggregate :
-    BankAccountAggregateSpec,
-    BankAccountAggregateSpecSourcingHandler {
+  class BankAccountAggregate : BankAccountAggregateCommandHandlers, BankAccountAggregateSourcingHandlers {
 
     @AggregateIdentifier
     private lateinit var accountId: String
     private var balance: Int = -1
 
-    companion object : BankAccountAggregateSpecFactory {
+    companion object : BankAccountAggregateFactory {
+
+      private const val INITIAL_BALANCE_MIN = 20
+
       @JvmStatic // need to be static
       @CommandHandler // need to duplicate command handler
+      @Throws(IllegalInitialBalance::class)
       override fun createBankAccount(command: CreateBankAccountCommand): BankAccountAggregate { // overwriting return type!
+        if (command.initialBalance < INITIAL_BALANCE_MIN) {
+          throw IllegalInitialBalance("Initial balance of the account must exceed ${INITIAL_BALANCE_MIN}, but it was ${command.initialBalance}.")
+        }
         AggregateLifecycle.apply(BankAccountCreatedEvent(command.accountId, command.initialBalance))
         return BankAccountAggregate()
       }
@@ -161,34 +172,32 @@ class AxonAvroExampleApplication {
   }
 
   @Component
-  class BankAccountProjection :
-    BankAccountContextEventHandlers.BankAccountContextAllEventHandlers,
-    BankAccountContextQueryProtocol.BankAccountProjectionSpec {
+  class BankAccountProjection : BankAccountContextAllEventHandlers, BankAccountProjectionQueries {
 
-    private val balances: MutableMap<String, BankAccountContext.CurrentBalance> = mutableMapOf()
-    private val transfers: MutableMap<String, MutableList<BankAccountContext.MoneyTransfer>> = mutableMapOf()
+    private val balances: MutableMap<String, CurrentBalance> = mutableMapOf()
+    private val transfers: MutableMap<String, MutableList<MoneyTransfer>> = mutableMapOf()
 
-    override fun findCurrentBalanceForAccountId(query: BankAccountContext.FindCurrentBalanceByAccountIdQuery): Optional<BankAccountContext.CurrentBalance> {
+    override fun findCurrentBalanceForAccountId(query: FindCurrentBalanceByAccountIdQuery): Optional<CurrentBalance> {
       return Optional.ofNullable(balances[query.accountId])
     }
 
-    override fun findAllMoneyTransfersForAccountId(query: BankAccountContext.FindAllMoneyTransfersByAccountIdQuery): List<BankAccountContext.MoneyTransfer> {
+    override fun findAllMoneyTransfersForAccountId(query: FindAllMoneyTransfersByAccountIdQuery): List<MoneyTransfer> {
       return transfers[query.accountId] ?: emptyList()
     }
 
     override fun onBankAccountCreatedEvent(event: BankAccountCreatedEvent) {
-      balances[event.accountId] = BankAccountContext.CurrentBalance(event.accountId, event.initialBalance)
+      balances[event.accountId] = CurrentBalance(event.accountId, event.initialBalance)
       transfers[event.accountId] = mutableListOf()
     }
 
     override fun onMoneyDepositedEvent(event: MoneyDepositedEvent) {
       balances.computeIfPresent(event.accountId) { _, balance -> balance.copy(balance = balance.balance + event.amount) }
-      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountContext.MoneyTransfer("deposit", event.amount)) } }
+      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(MoneyTransfer("deposit", event.amount)) } }
     }
 
     override fun onMoneyWithdrawnEvent(event: MoneyWithdrawnEvent) {
       balances.computeIfPresent(event.accountId) { _, balance -> balance.copy(balance = balance.balance - event.amount) }
-      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(BankAccountContext.MoneyTransfer("withdraw", event.amount)) } }
+      transfers.computeIfPresent(event.accountId) { _, transfer -> transfer.apply { add(MoneyTransfer("withdraw", event.amount)) } }
     }
   }
 }
