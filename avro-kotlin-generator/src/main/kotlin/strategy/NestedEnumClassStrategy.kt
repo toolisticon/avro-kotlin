@@ -20,6 +20,7 @@ class NestedEnumClassStrategy : AvroEnumTypeSpecStrategy() {
 
     input.symbols.forEach(enumBuilder::addEnumConstant)
 
+    context.generatedTypes[input.fingerprint] = className
     return enumBuilder.build()
   }
 }

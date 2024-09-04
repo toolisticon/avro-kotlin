@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
@@ -25,7 +26,6 @@ sealed interface AvroDeclarationContext {
    * What was the source of this declaration?
    */
   val source: AvroSource
-
 
   val canonicalName: CanonicalName
 
@@ -75,4 +75,5 @@ sealed interface AvroDeclarationContext {
   fun typeName(hashCode: AvroHashCode) = get(hashCode).typeName
   fun className(hashCode: AvroHashCode) = typeName(hashCode) as ClassName
 
+  val generatedTypes : MutableMap<AvroFingerprint, TypeName>
 }

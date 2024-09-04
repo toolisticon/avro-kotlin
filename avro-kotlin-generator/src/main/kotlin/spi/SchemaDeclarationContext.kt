@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
@@ -14,6 +15,7 @@ import io.toolisticon.kotlin.avro.model.AvroTypesMap
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
+import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
@@ -77,4 +79,6 @@ data class SchemaDeclarationContext(
   val enumClassStrategies by lazy {
     registry.strategies.filter(AvroEnumTypeSpecStrategy::class)
   }
+
+  override val generatedTypes: MutableMap<AvroFingerprint, TypeName> = mutableMapOf()
 }

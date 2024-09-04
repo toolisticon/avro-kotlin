@@ -21,12 +21,11 @@ import io.toolisticon.kotlin.generation.spi.processor.executeAll
 class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
-    require(!context.isRoot) { "subTypes are non-root by definition." }
+    val poetType: AvroPoetType = context[input.hashCode]
+    val className = poetType.suffixedTypeName as ClassName
 
     // TODO: builder API auf TypeName erweitern
-    val poetType: AvroPoetType = context[input.hashCode]
-
-    val nestedDataClassBuilder = dataClassBuilder(poetType.suffixedTypeName as ClassName).apply {
+    val nestedDataClassBuilder = dataClassBuilder(className).apply {
       addKDoc(input.documentation)
       addAnnotation(SerializableAnnotation())
 
@@ -45,6 +44,7 @@ class NestedDataClassStrategy : AvroRecordTypeSpecStrategy() {
 
     //context.processors(AbstractDataClassFromRecordTypeProcessor::class).executeAll(context, input, rootDataClassBuilder)
 
+    context.generatedTypes[input.fingerprint] = className
     return nestedDataClassBuilder.build()
   }
 
