@@ -5,6 +5,7 @@ import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
 import io.toolisticon.kotlin.avro.model.EmptyType
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.value.*
+import io.toolisticon.kotlin.avro.value.property.AvroMetaData
 import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalType
 import org.apache.avro.Schema
@@ -121,11 +122,6 @@ class AvroSchema internal constructor(
   override val properties: ObjectProperties = ObjectProperties.ofNullable(schema)
 
   /**
-   * Extract typed Meta properties.
-   */
-  inline fun <reified META : Any> getMeta(extractor: AvroSchema.() -> META?): META? = this.extractor()
-
-  /**
    * `true` if [properties] is not empty.
    */
   val hasProps: Boolean = properties.isNotEmpty()
@@ -221,6 +217,7 @@ class AvroSchema internal constructor(
   override fun get(): Schema = schema
 
 }
+
 
 object AvroSchemaChecks {
 

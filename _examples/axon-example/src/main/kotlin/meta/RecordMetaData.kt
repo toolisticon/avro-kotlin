@@ -7,6 +7,8 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.avro.value.Name
 import io.toolisticon.kotlin.avro.value.Namespace
+import io.toolisticon.kotlin.avro.value.property.meta
+import io.toolisticon.kotlin.avro.value.property.metaData
 
 data class RecordMetaData(
   val namespace: Namespace,
@@ -21,14 +23,15 @@ data class RecordMetaData(
     }
 
     fun RecordType.recordMetaData(): RecordMetaData? = this.schema.recordMetaData()
-    fun AvroSchema.recordMetaData(): RecordMetaData? = this.getMeta {
-      val meta = this.properties.getMeta()
+    fun AvroSchema.recordMetaData(): RecordMetaData? = this.metaData {
+      val meta = this.properties.meta
+
 
       RecordMetaData(
         namespace = this.namespace,
         name = this.name,
-        revision = meta?.getValueOrNull(REVISION),
-        type = meta?.getValueOrNull<String>(TYPE)?.let { RecordMetaDataType[it.trim()] }
+        revision = meta.getValueOrNull(REVISION),
+        type = meta.getValueOrNull<String>(TYPE)?.let { RecordMetaDataType[it.trim()] }
       )
     }
 

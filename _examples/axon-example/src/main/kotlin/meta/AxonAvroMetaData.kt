@@ -7,13 +7,14 @@ import io.toolisticon.kotlin.avro.model.AvroType
 import io.toolisticon.kotlin.avro.model.RecordField
 import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
+import io.toolisticon.kotlin.avro.value.property.AvroMetaData
 
 /**
  * Access meta data from avro schema for axon/ddd declarations.
  *
  *
  */
-sealed interface AxonAvroMetaData {
+sealed interface AxonAvroMetaData : AvroMetaData {
   companion object {
     fun AvroType.metaData(): AxonAvroMetaData? {
       return when (this) {
