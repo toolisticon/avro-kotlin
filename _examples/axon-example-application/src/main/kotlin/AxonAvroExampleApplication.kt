@@ -86,7 +86,7 @@ class AxonAvroExampleApplication {
 
 
 
-          .                              S H O W T I M E
+                                         S H O W T I M E
 
 
 
@@ -115,7 +115,7 @@ class AxonAvroExampleApplication {
       logger.info {
         """
           ===============================================================================
-           D O N E !
+                                           D O N E !
           ===============================================================================
         """.trimIndent()
       }
