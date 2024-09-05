@@ -118,10 +118,7 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
 }
 
 sealed interface WithEnclosedTypes {
-
   val typesMap: AvroTypesMap
-
-
 }
 
 /**
@@ -152,6 +149,11 @@ sealed interface AvroNamedType : AvroType, WithDocumentation {
  * * UNION - array of subTypes with "oneOf" semantic. Currently only unions of null and one other type are supported, effectively resulting in an optional type.
  */
 sealed interface AvroContainerType : AvroType, WithEnclosedTypes
+
+/**
+ * Messages in avro protocols define a record-schema, the fields of the record represent the method parameters.
+ */
+sealed interface AvroMessageRequestType
 
 
 /**

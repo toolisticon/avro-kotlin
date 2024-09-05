@@ -19,8 +19,12 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   companion object {
     private val CONTEXT_UPPER_BOUND =  AvroDeclarationContext::class
 
-    fun load(classLoader: ClassLoader = defaultClassLoader()): AvroCodeGenerationSpiRegistry {
-      val registry = KotlinCodeGeneration.spi.registry(contextTypeUpperBound = AvroDeclarationContext::class, classLoader = classLoader)
+    fun load(classLoader: ClassLoader = defaultClassLoader(), exclusions: Set<String> = emptySet()): AvroCodeGenerationSpiRegistry {
+      val registry = KotlinCodeGeneration.spi.registry(
+        contextTypeUpperBound = AvroDeclarationContext::class,
+        classLoader = classLoader,
+        exclusions = exclusions
+      )
       return AvroCodeGenerationSpiRegistry(registry)
     }
   }

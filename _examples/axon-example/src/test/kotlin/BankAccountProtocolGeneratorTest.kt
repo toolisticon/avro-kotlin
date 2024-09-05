@@ -1,6 +1,8 @@
 package io.holixon.axon.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
+import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.test.KotlinCodeGenerationTest
 import io.toolisticon.kotlin.generation.test.model.KotlinCompilationCommand
@@ -21,7 +23,15 @@ class BankAccountProtocolGeneratorTest {
 
   @BeforeEach
   fun generate() {
-    files = TestFixtures.DEFAULT_GENERATOR.generate(declaration)
+    val spi = AvroCodeGenerationSpiRegistry.load(
+      exclusions = setOf(
+        "io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy",
+        "io.toolisticon.kotlin.avro.generator.strategy.ProtocolInterfaceStrategy"
+      )
+    )
+    val generator = AvroKotlinGenerator(registry = spi, properties = TestFixtures.DEFAULT_PROPERTIES)
+
+    files = generator.generate(declaration)
     files.forEach {
       val written = it.get().writeTo(outputDirectory)
       logger.info("Generated file://${written.absolutePath}")

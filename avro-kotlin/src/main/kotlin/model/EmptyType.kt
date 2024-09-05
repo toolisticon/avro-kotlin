@@ -13,7 +13,7 @@ import org.apache.avro.Schema
  * Its only use case is when it is used as an empty request array when defining a protocol message.
  * It is based on an invalid [Schema] and can not be created via parsing a string or building a schema.
  */
-data object EmptyType : AvroType {
+data object EmptyType : AvroType, AvroMessageRequestType {
   /**
    * As this type does not conform to the RECORD statements of the specification (it has no name and no fields),
    * we con only create it by parsing a protocol and extract the request type.
