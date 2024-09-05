@@ -18,7 +18,7 @@ import kotlin.io.path.inputStream
 /**
  * A kotlin type- and null-safe wrapper around the java [Schema].
  */
-class AvroSchema(
+class AvroSchema internal constructor(
   /**
    * The original [Schema] wrapped by this class. Accessible via #get.
    */
@@ -37,6 +37,11 @@ class AvroSchema(
    * name via constructor.
    */
   override val name: Name = Name.of(schema),
+
+  /**
+   * Marks a schema as a message request schema, so we are able to tret it differently in code generation.
+   */
+  internal val isMessageRequest: Boolean = false
 ) : SchemaSupplier, WithObjectProperties {
 
   companion object {
@@ -53,7 +58,16 @@ class AvroSchema(
     fun ofNullable(schema: Schema?): AvroSchema = schema?.let { AvroSchema(it) } ?: EmptyType.schema
 
     const val FILE_EXTENSION = "avsc"
+
+    internal fun AvroSchema.copy(
+      schema: Schema = this.get(),
+      isRoot: Boolean = this.isRoot,
+      name: Name = this.name,
+      isMessageRequest: Boolean = this.isMessageRequest
+    ) = AvroSchema(schema = schema, isRoot = isRoot, name = name, isMessageRequest = isMessageRequest)
   }
+
+  constructor(schema: Schema, isRoot: Boolean = false) : this(schema = schema, isRoot = isRoot, name = Name.of(schema), isMessageRequest = false)
 
   /**
    * The [AvroHashCode] representing the [Schema]. This hash contains additional information like logicalType or documentation.
@@ -223,6 +237,7 @@ object AvroSchemaChecks {
   val AvroSchema.isEmptyType: Boolean get() = SchemaType.RECORD == type && fields.isEmpty()
   val AvroSchema.isError: Boolean get() = runCatching { get().isError }.getOrDefault(false)
   val AvroSchema.isErrorType: Boolean get() = SchemaType.RECORD == type && isError
+  val AvroSchema.isMessageRequestType: Boolean get() = SchemaType.RECORD == type && isMessageRequest
 
   val AvroSchema.isFloatType: Boolean get() = SchemaType.FLOAT == type
 
@@ -235,7 +250,8 @@ object AvroSchemaChecks {
   val AvroSchema.isNullable: Boolean get() = get().isNullable
   val AvroSchema.isNullType: Boolean get() = SchemaType.NULL == type
 
-  val AvroSchema.isOptionalType : Boolean get() = isUnion && isNullable &&  get().types?.size == 2 && get().types?.map { it.type }?.any { SchemaType.NULL.get() == it } == true
+  val AvroSchema.isOptionalType: Boolean
+    get() = isUnion && isNullable && get().types?.size == 2 && get().types?.map { it.type }?.any { SchemaType.NULL.get() == it } == true
 
   val AvroSchema.isPrimitive: Boolean get() = type.isPrimitive
 
@@ -266,4 +282,5 @@ object AvroSchemaChecks {
   fun AvroSchema.compatibleToBeReadFrom(reader: AvroSchema) = AvroSchemaCompatibility(
     value = SchemaCompatibility.checkReaderWriterCompatibility(reader.get(), get())
   )
+
 }

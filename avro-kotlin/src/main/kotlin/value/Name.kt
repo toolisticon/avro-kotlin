@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.value
 
 import _ktx.StringKtx.trimToNull
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import io.toolisticon.kotlin.avro.AvroKotlin.Separator.NAME
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -39,3 +40,5 @@ value class Name(override val value: String) : ValueType<String>, Comparable<Nam
 
   override fun toString() = value
 }
+
+fun Name.toKebabCase() = Name(value = PropertyNamingStrategies.KebabCaseStrategy().translate(value))

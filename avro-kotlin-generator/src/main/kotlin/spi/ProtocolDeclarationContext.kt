@@ -15,6 +15,7 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
 import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.CanonicalName
+import io.toolisticon.kotlin.avro.value.Namespace
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
 
 /**
@@ -25,12 +26,12 @@ data class ProtocolDeclarationContext(
   override val source: AvroSource,
   override val registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,
-  override val rootClassName: ClassName,
+  override val rootClassName: ClassName?,
   override val canonicalName: CanonicalName,
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,
   override val avroTypes: AvroTypesMap,
-  val protocol: AvroProtocol
+  val protocol: AvroProtocol,
 ) : AvroDeclarationContext, KotlinCodeGenerationContextBase<ProtocolDeclarationContext>(registry) {
   companion object {
 
@@ -54,7 +55,7 @@ data class ProtocolDeclarationContext(
       val rootClassName: ClassName = rootClassName(declaration, properties = properties)
 
       val avroPoetTypes: AvroPoetTypeMap = AvroPoetTypeMap.avroPoetTypeMap(
-        rootClassName = rootClassName,
+        rootClassName = null, // FIXME: root/nested behaviour must be redesigned/configurable
         properties = properties,
         avroTypes = declaration.avroTypes,
         logicalTypeMap = registry.logicalTypes,

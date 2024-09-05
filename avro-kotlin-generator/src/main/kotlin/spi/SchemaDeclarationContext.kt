@@ -27,7 +27,7 @@ data class SchemaDeclarationContext(
   override val source: AvroSource,
   override val registry: AvroCodeGenerationSpiRegistry,
   override val properties: AvroKotlinGeneratorProperties,
-  override val rootClassName: ClassName,
+  override val rootClassName: ClassName?,
   override val canonicalName: CanonicalName,
   override val isRoot: Boolean,
   override val avroPoetTypes: AvroPoetTypes,

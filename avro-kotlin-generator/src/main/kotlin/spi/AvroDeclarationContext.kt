@@ -18,9 +18,14 @@ import io.toolisticon.kotlin.generation.FileName
 sealed interface AvroDeclarationContext {
 
   /**
+   * Everything we generate will reside under this root package.
+   */
+  val rootPackageNamespace: Namespace get() = canonicalName.namespace
+
+  /**
    * The root class name of the [com.squareup.kotlinpoet.FileSpec] we are building.
    */
-  val rootClassName: FileName
+  val rootClassName: FileName? get() = null
 
   /**
    * What was the source of this declaration?

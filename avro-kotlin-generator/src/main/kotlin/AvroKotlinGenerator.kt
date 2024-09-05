@@ -44,7 +44,7 @@ open class AvroKotlinGenerator(
     val context = schemaDeclarationContext(declaration)
 
     val recordType = declaration.recordType
-    val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName)
+    val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName!!) // FIXME: fails without root class
 
     val dataClasses = context.dataClassStrategies.executeAll(context, recordType)
 

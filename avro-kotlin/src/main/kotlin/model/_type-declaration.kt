@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.model
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isMessageRequestType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isOptionalType
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
@@ -45,7 +46,9 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
     inline fun <reified T : AvroType> avroType(schema: AvroSchema): T = when (schema.type) {
       // Named
       SchemaType.RECORD -> {
-        if (schema.isError) {
+        if (schema.isMessageRequestType) {
+          RequestType(schema)
+        } else if (schema.isError) {
           ErrorType(schema)
         } else if (schema.isEmptyType) {
           EmptyType

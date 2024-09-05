@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.model
 
 import _ktx.StringKtx.toString
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema.Companion.copy
 import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Protocol
 import org.apache.avro.Schema
@@ -18,7 +19,7 @@ data object EmptyType : AvroType, AvroMessageRequestType {
    * As this type does not conform to the RECORD statements of the specification (it has no name and no fields),
    * we con only create it by parsing a protocol and extract the request type.
    */
-  private val SCHEMA = Protocol.parse(
+  private val SCHEMA: AvroSchema = AvroSchema(schema = Protocol.parse(
     """{ "namespace": "", "protocol":"",
         "messages": {
           "empty": {
@@ -29,10 +30,10 @@ data object EmptyType : AvroType, AvroMessageRequestType {
         }
     }
   """.trimIndent()
-  ).messages["empty"]!!.request
+  ).messages["empty"]!!.request, name = Name.EMPTY)
 
   override val name: Name get() = Name.EMPTY
-  override val schema: AvroSchema = AvroSchema(schema = SCHEMA, name = name)
+  override val schema: AvroSchema = SCHEMA
   override val hashCode: AvroHashCode get() = schema.hashCode
 
   override val fingerprint: AvroFingerprint get() = schema.fingerprint

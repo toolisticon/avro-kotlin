@@ -3,17 +3,13 @@ package io.toolisticon.kotlin.avro.generator.strategy
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
+import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.avroClassName
 import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.processor.KotlinDataClassFromRecordTypeProcessorBase
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
-import io.toolisticon.kotlin.avro.model.AvroNamedType
-import io.toolisticon.kotlin.avro.model.EnumType
-import io.toolisticon.kotlin.avro.model.ErrorType
-import io.toolisticon.kotlin.avro.model.FixedType
-import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration
+import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
 import io.toolisticon.kotlin.generation.spi.processor.executeAll
@@ -32,7 +28,7 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
   companion object : KLogging()
 
   override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec {
-    val className = context.rootClassName
+    val className = context.rootClassName ?: input.canonicalName.asClassName()
     val rootDataClassBuilder = dataClassBuilder(className).apply {
       addKDoc(input.documentation)
 
@@ -63,8 +59,14 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
       when (type) {
         is RecordType -> nonRootCtx.dataClassStrategies.executeAll(nonRootCtx, type)
         is EnumType -> nonRootCtx.enumClassStrategies.executeAll(nonRootCtx, type)
-        is ErrorType -> TODO("error is not implemented yet")
-        is FixedType -> TODO("fixed is not implemented yet")
+        is ErrorType -> {
+          logger.warn { "ignoring errorType: ${type.canonicalName}" }
+          emptyList()
+        }
+        is FixedType, is RequestType -> {
+          logger.debug { "ignoring ${type::class.simpleName} type: $type.canonicalName" }
+          emptyList()
+        }
       }
     }
 
