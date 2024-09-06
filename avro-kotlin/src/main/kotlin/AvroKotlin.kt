@@ -8,8 +8,10 @@ import io.toolisticon.kotlin.avro.logical.AvroLogicalType
 import io.toolisticon.kotlin.avro.model.AvroType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.repository.AvroKClassResolver
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolverMap
+import io.toolisticon.kotlin.avro.repository.DefaultAvroKClassResolvers
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.CanonicalName.Companion.toCanonicalName
 import org.apache.avro.*
@@ -74,18 +76,11 @@ object AvroKotlin {
    */
   val AVRO_V1_HEADER = SingleObjectEncodedBytes.AVRO_V1_HEADER
 
-  const val META_PROPERTY = "meta"
-
   fun avroType(schema: AvroSchema): AvroType = AvroType.avroType(schema)
 
-  fun <T : Any> loadClassForSchema(schema: AvroSchema): KClass<T> {
-    val nullableJavaClassClass: Class<*>? = specificData.getClass(schema.get())
+  private val specificDataKClassResolver = DefaultAvroKClassResolvers.specificDataKClassResolver(specificData)
 
-    @Suppress("UNCHECKED_CAST")
-    return if (nullableJavaClassClass != null)
-      nullableJavaClassClass.kotlin as KClass<T>
-    else throw AvroRuntimeException("Klass could not be found for ${schema.canonicalName.fqn}")
-  }
+  fun <T : Any> loadClassForSchema(schema: AvroSchema): KClass<T> = specificDataKClassResolver[schema]
 
   @Suppress("ClassName")
   object formatter {

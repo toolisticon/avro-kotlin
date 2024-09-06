@@ -3,6 +3,8 @@ package io.toolisticon.kotlin.avro.model
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isMessageRequestType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isOptionalType
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.LogicalType
@@ -44,9 +46,11 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
     inline fun <reified T : AvroType> avroType(schema: AvroSchema): T = when (schema.type) {
       // Named
       SchemaType.RECORD -> {
-        if (schema.isError) {
+        if (schema.isMessageRequestType) {
+          RequestType(schema)
+        } else if (schema.isError) {
           ErrorType(schema)
-        } else if(schema.isEmptyType) {
+        } else if (schema.isEmptyType) {
           EmptyType
         } else {
           RecordType(schema)
@@ -59,7 +63,14 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
       // Container
       SchemaType.ARRAY -> ArrayType(schema)
       SchemaType.MAP -> MapType(schema)
-      SchemaType.UNION -> UnionType(schema)
+      SchemaType.UNION -> {
+        if (schema.isOptionalType) {
+          OptionalType(schema)
+          //UnionType(schema)
+        } else {
+          UnionType(schema)
+        }
+      }
 
       // Primitive
       SchemaType.BOOLEAN -> BooleanType(schema)
@@ -110,10 +121,7 @@ sealed interface AvroType : SchemaSupplier, WithObjectProperties {
 }
 
 sealed interface WithEnclosedTypes {
-
   val typesMap: AvroTypesMap
-
-
 }
 
 /**
@@ -144,6 +152,11 @@ sealed interface AvroNamedType : AvroType, WithDocumentation {
  * * UNION - array of subTypes with "oneOf" semantic. Currently only unions of null and one other type are supported, effectively resulting in an optional type.
  */
 sealed interface AvroContainerType : AvroType, WithEnclosedTypes
+
+/**
+ * Messages in avro protocols define a record-schema, the fields of the record represent the method parameters.
+ */
+sealed interface AvroMessageRequestType
 
 
 /**

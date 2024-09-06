@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.builder
 import io.toolisticon.kotlin.avro.model.NullType
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema.Companion.copy
 import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.avro.value.Documentation
 import io.toolisticon.kotlin.avro.value.ObjectProperties
@@ -62,7 +63,7 @@ object AvroBuilder {
       schema = Schema.create(type.get()).apply {
         logicalType.addToSchema(this)
         properties.forEach { (k, v) -> this.addProp(k, v) }
-      }, isRoot = false
+      }
     )
   }
 
@@ -86,10 +87,6 @@ object AvroBuilder {
     return AvroSchema(schema)
   }
 
-  fun AvroSchema.withLogicalType(logicalType: LogicalType) = AvroSchema(
-    schema = logicalType.addToSchema(get()),
-    name = name,
-    isRoot = isRoot
-  )
+  fun AvroSchema.withLogicalType(logicalType: LogicalType) = copy(schema = logicalType.addToSchema(get()))
 
 }

@@ -14,7 +14,6 @@
   <packaging>pom</packaging>
 
   <properties>
-    <!-- all examples are excluded from install/deploy/release -->
     <maven.install.skip>true</maven.install.skip>
     <gpg.skip>true</gpg.skip>
   </properties>
@@ -33,6 +32,13 @@
         <groupId>io.toolisticon.kotlin.avro</groupId>
         <artifactId>avro-kotlin-bom</artifactId>
         <version>${project.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>io.toolisticon.kotlin.generation</groupId>
+        <artifactId>kotlin-code-generation-bom</artifactId>
+        <version>${kotlin-code-generation.version}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
