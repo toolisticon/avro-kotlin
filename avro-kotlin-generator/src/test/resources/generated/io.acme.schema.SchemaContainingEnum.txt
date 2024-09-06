@@ -14,6 +14,7 @@ public data class SchemaContainingEnum(
   /**
    * An enum defining the fixed values FOO and BAR
    */
+  @Serializable
   public enum class TypeEnum {
     FOO,
     BAR,

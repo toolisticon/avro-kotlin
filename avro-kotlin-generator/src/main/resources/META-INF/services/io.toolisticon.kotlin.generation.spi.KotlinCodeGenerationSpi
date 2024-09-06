@@ -6,10 +6,10 @@ io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedDataClassStrategy
 io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
 
-io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy
+#io.toolisticon.kotlin.avro.generator.strategy.ProtocolObjectStrategy
 io.toolisticon.kotlin.avro.generator.strategy.ProtocolTypesToFileStrategy
 # TODO remove interr
-io.toolisticon.kotlin.avro.generator.strategy.ProtocolInterfaceStrategy
+#io.toolisticon.kotlin.avro.generator.strategy.ProtocolInterfaceStrategy
 
 ################################################################################
 # processors

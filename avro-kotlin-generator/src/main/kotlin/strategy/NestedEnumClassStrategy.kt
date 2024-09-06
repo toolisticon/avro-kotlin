@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.generator.strategy
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.addKDoc
+import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.EnumType
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.enumClassBuilder
@@ -16,6 +17,7 @@ class NestedEnumClassStrategy : AvroEnumTypeSpecStrategy() {
 
     val enumBuilder = enumClassBuilder(className).apply {
       this.addKDoc(input.documentation)
+      addAnnotation(SerializableAnnotation())
     }
 
     input.symbols.forEach(enumBuilder::addEnumConstant)

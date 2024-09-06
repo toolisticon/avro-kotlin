@@ -24,62 +24,13 @@ import java.io.File
   requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME,
   requiresProject = true
 )
-class GenerateAvroKotlinFromProtocolMojo : AbstractContextAwareMojo() {
+class GenerateAvroKotlinFromProtocolMojo : AbstractGenerateAvroKotlinMojo() {
 
   companion object {
     const val GOAL = "generate-avro-kotlin-from-protocol"
   }
 
-  /**
-   * The source directory of avro files. This directory is added to the classpath
-   * at schema compiling time. All files can therefore be referenced as classpath
-   * resources following the directory structure under the source directory.
-   */
-  @Parameter(
-    property = "sourceDirectory",
-    defaultValue = DEFAULT_SOURCE_DIRECTORY,
-    required = false,
-    readonly = true
-  )
-  private lateinit var sourceDirectory: File
-
-
-  /**
-   * The output directory will contain the final generated sources.
-   */
-  @Parameter(
-    property = "outputDirectory",
-    required = true,
-    defaultValue = AvroKotlinMavenPlugin.DEFAULT_GENERATED_SOURCES
-  )
-  private lateinit var outputDirectory: File
-
-  @Parameter(
-    property = "testSourceDirectory",
-    required = true,
-    defaultValue = DEFAULT_TEST_DIRECTORY
-  )
-  private lateinit var testSourceDirectory: File
-
-  /**
-   * The output directory will contain the final generated sources.
-   */
-  @Parameter(
-    property = "testOutputDirectory",
-    required = true,
-    defaultValue = DEFAULT_GENERATED_TEST_SOURCES
-  )
-  private lateinit var testOutputDirectory: File
-
-  @Parameter(
-    property = "rootFileSuffix",
-    required = false,
-    defaultValue = ""
-  )
-  private lateinit var rootFileSuffix: String
-
   override fun execute() {
-
     sanitizeParameters()
 
     outputDirectory.createIfNotExists()
@@ -113,15 +64,8 @@ class GenerateAvroKotlinFromProtocolMojo : AbstractContextAwareMojo() {
       .flatMap { generator.generate(it) }
 
     fileSpecs.forEach {
-      val file = it.writeToFormatted(outputDirectory)
+      val file = formatter(outputDirectory, it)
       log.info("Generating: $file")
-    }
-  }
-
-  private fun sanitizeParameters() {
-    // FIXME: late init seem to be not working with an empty default -> rootFileSuffix remains uninitialized
-    if (!this::rootFileSuffix.isInitialized) {
-      this.rootFileSuffix = ""
     }
   }
 }

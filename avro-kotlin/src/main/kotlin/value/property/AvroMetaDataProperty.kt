@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.value.property
 
-import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.value.ObjectProperties
 import io.toolisticon.kotlin.avro.value.ValueType
 
@@ -11,7 +10,7 @@ value class AvroMetaDataProperty(override val value: ObjectProperties) : ValueTy
 
     override fun from(properties: ObjectProperties): AvroMetaDataProperty {
       val metaProperties = if (properties.containsKey(PROPERTY_KEY)) {
-        properties.getMap(AvroKotlin.META_PROPERTY)
+        properties.getMap(PROPERTY_KEY)
       } else {
         ObjectProperties.EMPTY
       }

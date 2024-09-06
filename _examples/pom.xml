@@ -14,9 +14,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <!-- all examples are excluded from install/deploy/release -->
-    <!-- FIXME THIS IS REQUIRED TO DEMONSTRATE OUR OWN DOG FOOD -->
-    <maven.install.skip>false</maven.install.skip>
+    <maven.install.skip>true</maven.install.skip>
     <gpg.skip>true</gpg.skip>
   </properties>
 
@@ -26,8 +24,6 @@
     <module>kotlin-example</module>
     <module>java-example</module>
     <module>kotlin-plugin-example</module>
-    <module>axon-example</module>
-<!--    <module>axon-example-application</module>-->
   </modules>
 
   <dependencyManagement>

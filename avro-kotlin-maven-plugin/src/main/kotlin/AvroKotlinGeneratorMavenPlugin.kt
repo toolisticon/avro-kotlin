@@ -17,7 +17,14 @@ object AvroKotlinMavenPlugin {
   const val DEFAULT_GENERATED_SOURCES = "$BUILD_GENERATED_SOURCES/avro-kotlin"
   const val DEFAULT_GENERATED_TEST_SOURCES = "$BUILD_GENERATED_TEST_SOURCES/avro-kotlin"
 
-
+  enum class CodeFormatter : (File, KotlinFileSpec) -> File {
+    KTFMT {
+      override fun invoke(outputDirectory: File, fileSpec: KotlinFileSpec): File = fileSpec.writeToFormatted(outputDirectory)
+    },
+    NONE {
+      override fun invoke(outputDirectory: File, fileSpec: KotlinFileSpec): File = fileSpec.get().writeTo(outputDirectory)
+    }
+  }
 
   /**
    * Format of generated code.
