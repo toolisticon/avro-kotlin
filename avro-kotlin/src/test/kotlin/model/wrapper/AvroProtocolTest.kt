@@ -6,6 +6,7 @@ import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.value.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 
 internal class AvroProtocolTest {
 
@@ -27,10 +28,12 @@ internal class AvroProtocolTest {
     val protocol = AvroKotlin.parseProtocol("org.apache.avro/protocol/bulk-data.avpr")
     val readMessage = requireNotNull(protocol.getMessage(Name("read"))) as AvroProtocol.TwoWayMessage
 
-    assertThat(readMessage).isInstanceOf(AvroProtocol.TwoWayMessage::class.java)
-    assertThat(readMessage.request).isEqualTo(EmptyType.schema)
-    assertThat(readMessage.name.value).isEqualTo("read")
-    assertThat(readMessage.request.type).isEqualTo(SchemaType.RECORD)
-    assertThat(readMessage.request.name).isEqualTo(Name.EMPTY)
+    assertAll(
+      { assertThat(readMessage).isInstanceOf(AvroProtocol.TwoWayMessage::class.java) },
+      { assertThat(readMessage.request).isEqualTo(EmptyType.schema) },
+      { assertThat(readMessage.name.value).isEqualTo("read") },
+      { assertThat(readMessage.request.type).isEqualTo(SchemaType.RECORD) },
+      { assertThat(readMessage.request.name).isEqualTo(Name("ReadRequest")) },
+    )
   }
 }

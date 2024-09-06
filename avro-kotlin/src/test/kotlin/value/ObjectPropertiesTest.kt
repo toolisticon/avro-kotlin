@@ -1,11 +1,13 @@
 package io.toolisticon.kotlin.avro.value
 
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
-import io.toolisticon.kotlin.avro.model.SchemaType.BYTES
 import io.toolisticon.kotlin.avro.model.SchemaType.STRING
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.LogicalTypes
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class ObjectPropertiesTest {
@@ -57,4 +59,5 @@ internal class ObjectPropertiesTest {
   fun `empty properties has logicalTypeName null`() {
     assertThat(LogicalTypeNameProperty.from(ObjectProperties.EMPTY)).isNull()
   }
+
 }

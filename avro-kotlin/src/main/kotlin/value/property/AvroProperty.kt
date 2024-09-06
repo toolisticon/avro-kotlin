@@ -18,3 +18,5 @@ fun interface AvroPropertySupplier<T> {
  * This always returns a list, in case the definition in json is a single string, the list only contains one element.
  */
 val ObjectProperties.javaAnnotations: List<JavaAnnotationProperty> get() = JavaAnnotationProperty.from(this)
+
+val ObjectProperties.meta get() = AvroMetaDataProperty.from(this)

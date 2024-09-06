@@ -1,0 +1,20 @@
+{
+  "namespace": "io.toolisticon.kotlin.avro.generator.test",
+  "name": "NestedFooString",
+  "type": "record",
+  "fields": [
+    {
+      "name": "bar",
+      "type": {
+        "name": "BarString",
+        "type": "record",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}

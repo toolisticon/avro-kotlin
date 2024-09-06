@@ -38,7 +38,7 @@ internal class AvroKotlinGeneratorTest {
         .endRecord()
     )
 
-    val file = generator.generate(declaration)
+    val file = generator.generate(declaration).single()
 
     assertThat(file.code).isEqualToIgnoringWhitespace(
       """
@@ -73,7 +73,7 @@ internal class AvroKotlinGeneratorTest {
   fun `simple nested data class`() {
     val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
 
-    val file = generator.generate(declaration)
+    val file = generator.generate(declaration).single()
     println(file.code)
 
     assertThat(file.code).isEqualToIgnoringWhitespace(
@@ -116,7 +116,7 @@ internal class AvroKotlinGeneratorTest {
   @Test
   fun `generate SchemaContainingEnum`() {
     val declaration = parseDeclaration("schema/SchemaContainingEnum.avsc")
-    val file = DEFAULT_GENERATOR.generate(declaration)
+    val file = DEFAULT_GENERATOR.generate(declaration).single()
 
     assertThat(file.code).isEqualToIgnoringWhitespace(expectedSource(file.className))
   }

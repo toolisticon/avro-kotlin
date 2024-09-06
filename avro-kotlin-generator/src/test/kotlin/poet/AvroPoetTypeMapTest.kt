@@ -5,6 +5,7 @@ import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
@@ -27,7 +28,7 @@ internal class AvroPoetTypeMapTest {
 
   private fun avroPoetTypes(declaration: SchemaDeclaration) = AvroPoetTypeMap.avroPoetTypeMap(
     rootClassName = rootClassName(declaration),
-    properties = AvroKotlinGeneratorProperties(),
+    properties = DefaultAvroKotlinGeneratorProperties(),
     avroTypes = declaration.avroTypes,
     logicalTypeMap = logicalTypes,
   )

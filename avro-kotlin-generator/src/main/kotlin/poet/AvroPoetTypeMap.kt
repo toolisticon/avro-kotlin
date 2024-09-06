@@ -20,7 +20,7 @@ value class AvroPoetTypeMap(
 ) : AvroPoetTypes {
   companion object {
     fun avroPoetTypeMap(
-      rootClassName: ClassName,
+      rootClassName: ClassName? = null,
       properties: AvroKotlinGeneratorProperties,
       avroTypes: AvroTypesMap,
       logicalTypeMap: LogicalTypeMap,
@@ -65,6 +65,10 @@ value class AvroPoetTypeMap(
             result[avroType.hashCode] = type.nullable(true)
           }
 
+          is OptionalType -> {
+            result[avroType.hashCode] = requireNotNull(result[avroType.type.hashCode]).nullable(true)
+          }
+
           is ArrayType -> {
             val type = requireNotNull(result[avroType.elementType.hashCode]) {
               "element type for array does not exist: $result"
@@ -92,10 +96,22 @@ value class AvroPoetTypeMap(
             val namespace = avroType.namespace ?: Namespace.EMPTY
             val suffixed = avroType.name.suffix(properties.schemaTypeSuffix)
 
+            val typeName = if (rootClassName != null) {
+              rootClassName.nestedClass(avroType.name.value)
+            } else {
+              ClassName(namespace.value, avroType.name.value)
+            }
+
+            val suffixedTypeName = if (rootClassName != null) {
+              rootClassName.nestedClass(suffixed.value)
+            } else {
+              ClassName(namespace.value, suffixed.value)
+            }
+
             result[avroType.hashCode] = AvroPoetType(
               avroType = avroType,
-              typeName = rootClassName.nestedClass(avroType.name.value),
-              suffixedTypeName = rootClassName.nestedClass(suffixed.value)
+              typeName = typeName,
+              suffixedTypeName = suffixedTypeName
             )
           }
 

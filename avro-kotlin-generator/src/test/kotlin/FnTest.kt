@@ -11,7 +11,7 @@ internal class FnTest {
     val recordType = TestFixtures.PARSER.parseSchema(
       resourceUrl("schema/SimpleStringRecord.avsc")
     ).recordType
-    val properties = AvroKotlinGeneratorProperties(
+    val properties = DefaultAvroKotlinGeneratorProperties(
       schemaTypeSuffix = ""
     )
 
@@ -25,7 +25,7 @@ internal class FnTest {
     val recordType = AvroParser().parseSchema(
       resourceUrl("schema/SimpleStringRecord.avsc")
     ).recordType
-    val properties = AvroKotlinGeneratorProperties(
+    val properties = DefaultAvroKotlinGeneratorProperties(
       schemaTypeSuffix = "Dto"
     )
 

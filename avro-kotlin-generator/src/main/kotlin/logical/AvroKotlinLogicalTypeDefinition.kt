@@ -30,7 +30,7 @@ abstract class AvroKotlinLogicalTypeDefinition(
   order = KotlinCodeGenerationSpi.DEFAULT_ORDER
 ) {
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any?): Boolean = when (input) {
+  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = when (input) {
     is RecordField -> {
       val avroType = ctx[input.hashCode].avroType
       avroType is WithLogicalType && avroType.hasLogicalType() && logicalTypeName == avroType.logicalTypeName && allowedTypes.contains(avroType.schema.type)
@@ -40,7 +40,7 @@ abstract class AvroKotlinLogicalTypeDefinition(
   }
 
   override fun invoke(
-    context: SchemaDeclarationContext, input: RecordField?, builder: KotlinConstructorPropertySpecBuilder
+    context: SchemaDeclarationContext, input: RecordField, builder: KotlinConstructorPropertySpecBuilder
   ): KotlinConstructorPropertySpecBuilder {
     if (test(context, input)) {
       builder.addAnnotation(ContextualAnnotation)

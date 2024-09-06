@@ -12,13 +12,16 @@ import io.toolisticon.kotlin.avro.value.JsonString
  */
 class SchemaDeclaration(
   val schema: AvroSchema,
-  override val source: AvroSource
+  override val source: AvroSource,
+  private val avroTypesSupplier: () -> AvroTypesMap
 ) : AvroDeclaration {
+
+  constructor(schema: AvroSchema, source: AvroSource) : this(schema, source, { AvroTypesMap(schema) })
 
   override val canonicalName = schema.canonicalName
 
   override val avroTypes: AvroTypesMap by lazy {
-    AvroTypesMap(schema)
+    avroTypesSupplier()
   }
 
   val recordType by lazy {
@@ -26,8 +29,6 @@ class SchemaDeclaration(
   }
 
   override val documentation = schema.documentation
-
-  override val originalJson: JsonString = source.json
 
   override fun toString() = "SchemaDeclaration(" +
     "namespace='$namespace'" +

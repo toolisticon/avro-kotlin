@@ -5,13 +5,13 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2024.8.3</version>
+    <version>2024.9.0</version>
     <relativePath/>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro._</groupId>
   <artifactId>avro-kotlin-root</artifactId>
-  <version>1.12.2.0</version>
+  <version>1.12.3.0</version>
 
   <name>pom: ${project.artifactId}</name>
   <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -19,12 +19,16 @@
   <packaging>pom</packaging>
 
   <properties>
+    <kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
+    <kotlin.compiler.languageVersion>1.9</kotlin.compiler.languageVersion>
+
     <jackson.version>2.17.2</jackson.version>
+    <kotlin-code-generation.version>0.0.6</kotlin-code-generation.version>
   </properties>
 
   <modules>
-    <module>_mvn/parent</module>
-    <module>_mvn/bom</module>
+    <module>_build/parent</module>
+    <module>avro-kotlin-bom</module>
 
     <module>lib</module>
 
@@ -88,7 +92,7 @@
       </activation>
       <modules>
         <module>_examples</module>
-        <module>_mvn/coverage-aggregator</module>
+        <module>_build/coverage-aggregator</module>
       </modules>
     </profile>
   </profiles>

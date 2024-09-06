@@ -5,6 +5,7 @@ import _ktx.ResourceKtx.resourceUrl
 import io.toolisticon.kotlin.avro.TestFixtures.DEFAULT_PARSER
 import io.toolisticon.kotlin.avro._test.CustomLogicalTypeFactory
 import io.toolisticon.kotlin.avro.builder.AvroBuilder.primitiveSchema
+import io.toolisticon.kotlin.avro.model.RequestType
 import io.toolisticon.kotlin.avro.model.SchemaType.STRING
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
@@ -120,7 +121,8 @@ internal class AvroParserTest {
     assertThat(declaration.canonicalName).hasToString("CanonicalName(fqn='foo.dummy.DummyProtocol')")
 
     assertThat(declaration.avroTypes).hasSize(9)
-    assertThat(declaration.protocol.recordTypes).hasSize(4)
+    assertThat(declaration.protocol.recordTypes).hasSize(3)
+    assertThat(declaration.protocol.types.findTypes<RequestType>()).hasSize(1)
 
     val msg: AvroProtocol.TwoWayMessage = declaration.protocol.messages[Name("queryDummy")]!! as AvroProtocol.TwoWayMessage
 

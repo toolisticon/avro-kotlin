@@ -1,5 +1,6 @@
 package io.toolisticon.kotlin.avro.value
 
+import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.value.property.LogicalTypeNameProperty
 import org.apache.avro.JsonProperties
 
@@ -67,6 +68,15 @@ value class ObjectProperties(override val value: Map<String, Any> = emptyMap()) 
       ObjectProperties(value as Map<String, Any>) as V
     } else {
       value as V
+    }
+  }
+
+  @Throws(IllegalArgumentException::class)
+  inline fun <reified V : Any> getValueOrNull(key: String): V? {
+    return if (contains(key)) {
+      getValue(key)
+    } else {
+      null
     }
   }
 

@@ -16,7 +16,7 @@ value class JavaAnnotationProperty private constructor(override val value: Pair<
   companion object : AvroPropertySupplier<List<JavaAnnotationProperty>> {
     const val PROPERTY_KEY = "javaAnnotation"
 
-    override fun from(properties: ObjectProperties): List<JavaAnnotationProperty> = when (val annotationsValue = properties.get(PROPERTY_KEY)) {
+    override fun from(properties: ObjectProperties): List<JavaAnnotationProperty> = when (val annotationsValue = properties[PROPERTY_KEY]) {
       is String -> listOf(JavaAnnotationProperty(annotationsValue))
       is List<*> -> annotationsValue.filterIsInstance<String>().map { JavaAnnotationProperty(it) }
       else -> emptyList()

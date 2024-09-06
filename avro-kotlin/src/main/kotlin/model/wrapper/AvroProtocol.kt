@@ -1,9 +1,9 @@
 package io.toolisticon.kotlin.avro.model.wrapper
 
-import _ktx.StringKtx.firstUppercase
 import _ktx.StringKtx.toString
 import io.toolisticon.kotlin.avro.builder.AvroBuilder
 import io.toolisticon.kotlin.avro.model.*
+import io.toolisticon.kotlin.avro.model.AvroTypesMap.Companion.typesMap
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.AvroFingerprint.Companion.sum
 import org.apache.avro.Protocol
@@ -29,13 +29,6 @@ class AvroProtocol(
 
     const val FILE_EXTENSION = "avpr"
 
-    fun requestName(message: Protocol.Message): Name = Name("${message.name.firstUppercase()}Request")
-
-    fun schemaForMessageRequest(message: Protocol.Message): AvroSchema = if (message.request.fields.isEmpty()) {
-      EmptyType.schema
-    } else {
-      AvroSchema(schema = message.request, name = requestName(message))
-    }
   }
 
   /**
@@ -55,6 +48,11 @@ class AvroProtocol(
    */
   override val documentation = Documentation.ofNullable(protocol.doc)
   override val properties = ObjectProperties.ofNullable(protocol)
+
+  /**
+   * Extract typed Meta properties.
+   */
+  inline fun <reified META : Any> getMeta(extractor: AvroProtocol.() -> META?): META? = this.extractor()
 
   val md5: ByteArray by lazy { protocol.mD5 }
 
@@ -101,8 +99,17 @@ class AvroProtocol(
      */
     val request: AvroSchema
 
-
     val properties: ObjectProperties
+
+
+    /**
+     * Errors that might be thrown.
+     *
+     * Note: By default, avro uses a default `string` schema for the error response. This is not applicable when working
+     * with jvm, so we filter for errorTypes only.
+     *
+     */
+    val errors: AvroSchema
 
     fun enclosedTypes(): List<AvroSchema>
   }
@@ -111,10 +118,10 @@ class AvroProtocol(
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = Documentation.ofNullable(message.doc)
 
-    override val request: AvroSchema = schemaForMessageRequest(message)
-
+    override val request: AvroSchema = RequestType.of(message).schema
     override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
+
     override fun equals(other: Any?): Boolean {
       if (this === other) return true
       if (other !is OneWayMessage) return false
@@ -124,9 +131,25 @@ class AvroProtocol(
       return true
     }
 
+    override val errors: AvroSchema by lazy {
+      // FIXME: string is a default error type in protocol, we need to filter this
+      val schema = AvroSchema(message.errors)
+
+      val errorSchemas = SchemaCatalog(schema = schema, excludeSelf = true).typesMap()
+        .values.filter { it is ErrorType }.map { it.schema }
+
+      check(errorSchemas.size < 2) { "Currently a protocol can only return 0 or 1 schemas, was: $errorSchemas." }
+
+      if (errorSchemas.size == 1) {
+        errorSchemas.single()
+      } else {
+        EmptyType.schema
+      }
+    }
+
     override fun hashCode(): Int = message.hashCode()
 
-    override fun enclosedTypes(): List<AvroSchema> = listOf(request)
+    override fun enclosedTypes(): List<AvroSchema> = listOf(request, errors)
     override fun toString() = toString("OneWayMessage") {
       add("name", name)
       addIfNotNull("documentation", documentation)
@@ -137,39 +160,39 @@ class AvroProtocol(
     init {
       require(message.isOneWay) { "Message is not one-way." }
     }
-
-
   }
 
   class TwoWayMessage(private val message: Protocol.Message) : Message {
     override val name: Name = Name(message.name)
     override val documentation: Documentation? = Documentation.ofNullable(message.doc)
-    override val request: AvroSchema = schemaForMessageRequest(message)
+    override val request: AvroSchema = RequestType.of(message).schema
     override val properties: ObjectProperties = ObjectProperties.ofNullable(message)
     override fun get() = message
 
     /**
      * The returned data.
      */
-    val response: AvroSchema = AvroSchema(message.response)
+    val response: MessageResponse by lazy {
+      MessageResponse.of(AvroSchema(message.response))
+    }
 
-    /**
-     * Errors that might be thrown.
-     */
-    val errors: AvroSchema by lazy {
+    override val errors: AvroSchema by lazy {
       // FIXME: string is a default error type in protocol, we need to filter this
       val schema = AvroSchema(message.errors)
-      val catalog = SchemaCatalog(schema = schema, excludeSelf = true)
 
+      val errorSchemas = SchemaCatalog(schema = schema, excludeSelf = true).typesMap()
+        .values.filter { it is ErrorType }.map { it.schema }
 
-      if (catalog.size > 1) {
-        catalog.single(SchemaCatalog.notPrimitive()).second
+      check(errorSchemas.size < 2) { "Currently a protocol can only return 0 or 1 schemas, was: $errorSchemas." }
+
+      if (errorSchemas.size == 1) {
+        errorSchemas.single()
       } else {
-        schema
+        EmptyType.schema
       }
     }
 
-    override fun enclosedTypes(): List<AvroSchema> = listOf(request, response, errors)
+    override fun enclosedTypes(): List<AvroSchema> = listOf(request, response.schema, errors)
 
     override fun toString(): String {
       return "TwoWayMessage(message=$message, name=$name, documentation=$documentation, request=$request, properties=$properties, response=$response, errors=$errors)"
@@ -200,18 +223,11 @@ class AvroProtocol(
   /**
    * The messages of this protocol.
    */
-  val messages: Map<Name, Message> by lazy {
-    protocol.messages.values.map {
-      if (it.isOneWay) {
-        OneWayMessage(it)
-      } else {
-        TwoWayMessage(it)
-      }
-    }.associateBy { it.name }
+  val messages: ProtocolMessageMap<Message> by lazy {
+    ProtocolMessageMap.of(protocol)
   }
 
   fun getMessage(name: Name): Message? = messages[name]
-
 
   /**
    * Render this as [JSON](https://json.org/).

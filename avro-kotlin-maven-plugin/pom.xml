@@ -5,8 +5,8 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
-    <version>1.12.2.0</version>
-    <relativePath>../_mvn/parent/pom.xml</relativePath>
+    <version>1.12.3.0</version>
+    <relativePath>../_build/parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.maven</groupId>
@@ -15,11 +15,12 @@
   <packaging>maven-plugin</packaging>
 
   <properties>
-    <maven.version>3.9.6</maven.version>
+    <maven.version>3.9.9</maven.version>
     <kotlin-mojo-helper.version>0.1.0</kotlin-mojo-helper.version>
-    <maven-plugin-api.version>3.9.6</maven-plugin-api.version>
-    <maven-plugin-annotations.version>3.12.0</maven-plugin-annotations.version>
+    <maven-plugin-api.version>3.9.9</maven-plugin-api.version>
+    <maven-plugin-annotations.version>3.15.0</maven-plugin-annotations.version>
     <mojo-executor.version>2.4.0</mojo-executor.version>
+    <ktfmt.version>0.52</ktfmt.version>
     <itf.version>0.13.1</itf.version>
   </properties>
 
@@ -80,6 +81,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.facebook</groupId>
+      <artifactId>ktfmt</artifactId>
+      <version>${ktfmt.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.auto</groupId>
       <artifactId>auto-common</artifactId>
       <version>1.2.2</version>
@@ -125,7 +132,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.15.0</version>
         <configuration>
           <!--          <extractors>-->
           <!--            <extractor>kotlin</extractor>-->
