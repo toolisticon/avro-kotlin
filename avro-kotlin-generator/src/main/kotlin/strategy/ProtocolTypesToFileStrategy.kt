@@ -1,6 +1,5 @@
 package io.toolisticon.kotlin.avro.generator.strategy
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
