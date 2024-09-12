@@ -8,13 +8,10 @@ import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.AvroNamedType
 import io.toolisticon.kotlin.avro.model.EnumType
 import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.generation.spec.KotlinConstructorPropertySpecSupplier
-import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
-import io.toolisticon.kotlin.generation.spec.KotlinEnumClassSpec
-import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
-import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
+import io.toolisticon.kotlin.generation.spec.*
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyBase
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecStrategy
+import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecsStrategy
 import kotlin.reflect.KClass
 
 /**
@@ -29,7 +26,7 @@ abstract class AvroNamedTypeSpecStrategy<INPUT : AvroNamedType, SPEC : KotlinGen
   contextType = SchemaDeclarationContext::class, inputType = inputType, specType = specType
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: INPUT): SPEC
-  abstract override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean
+  abstract override fun test(context: SchemaDeclarationContext, input: Any): Boolean
 }
 
 /**
@@ -40,7 +37,7 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
   inputType = RecordType::class, specType = KotlinDataClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
 
   protected fun parameterSpecs(
     context: SchemaDeclarationContext,
@@ -58,7 +55,7 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
   inputType = EnumType::class, specType = KotlinEnumClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: EnumType): KotlinEnumClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is EnumType && !ctx.isRoot
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = input is EnumType && !context.isRoot
 }
 
 /**
@@ -73,9 +70,16 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
 abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
-  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
-
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
+
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class AvroFileSpecsFromProtocolDeclarationStrategy : KotlinFileSpecsStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
+  contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
+) {
+  abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpecs
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
 
 /**
@@ -90,8 +94,6 @@ abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrat
 abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, SchemaDeclaration, KotlinFileSpec>(
   contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class, specType = KotlinFileSpec::class
 ) {
-
   abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec
-
   override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }

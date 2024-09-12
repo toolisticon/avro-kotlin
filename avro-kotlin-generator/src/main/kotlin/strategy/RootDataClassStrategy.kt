@@ -75,5 +75,5 @@ class RootDataClassStrategy : AvroRecordTypeSpecStrategy() {
     return rootDataClassBuilder.build()
   }
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = super.test(ctx, input) && ctx.isRoot
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input) && context.isRoot
 }

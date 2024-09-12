@@ -19,7 +19,7 @@ abstract class KotlinDataClassFromRecordTypeProcessorBase : KotlinDataClassSpecP
   inputType = RecordType::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType, builder: KotlinDataClassSpecBuilder): KotlinDataClassSpecBuilder
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = super.test(ctx, input)
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
 
 @OptIn(ExperimentalKotlinPoetApi::class)
@@ -29,7 +29,7 @@ abstract class ConstructorPropertyFromRecordFieldProcessorBase : KotlinConstruct
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordField, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder
 
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = super.test(ctx, input)
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
 
 /**
