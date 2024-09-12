@@ -5,6 +5,7 @@ import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContextFactory
 import kotlin.reflect.KClass
 
 /**
@@ -15,9 +16,9 @@ typealias Avro4kSerializerKClass = KClass<out AvroSerializer<*>>
 /**
  * Function to create the context from protocol.
  */
-typealias ProtocolDeclarationContextFactory = (ProtocolDeclaration) -> ProtocolDeclarationContext
+typealias ProtocolDeclarationContextFactory = KotlinCodeGenerationContextFactory<ProtocolDeclarationContext, ProtocolDeclaration>
 
 /**
  * Function to create the context from schema.
  */
-typealias SchemaDeclarationContextFactory = (SchemaDeclaration) -> SchemaDeclarationContext
+typealias SchemaDeclarationContextFactory = KotlinCodeGenerationContextFactory<SchemaDeclarationContext, SchemaDeclaration>
