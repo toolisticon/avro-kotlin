@@ -2,6 +2,8 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
+import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
+import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecsFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
@@ -37,6 +39,7 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
 
   val logicalTypes: LogicalTypeMap = LogicalTypeMap(this)
 
-  internal val constructorPropertyStrategy = KotlinConstructorPropertyStrategy()
 
+  fun protocolFileSpecsStrategies() = strategies.filter(AvroFileSpecsFromProtocolDeclarationStrategy::class)
+  fun protocolFileSpecStrategies() = strategies.filter(AvroFileSpecFromProtocolDeclarationStrategy::class)
 }

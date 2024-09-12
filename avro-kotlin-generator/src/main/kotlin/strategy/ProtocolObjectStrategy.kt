@@ -43,7 +43,7 @@ class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
       when (type) {
         is RecordType -> schemaDeclarationContext.dataClassStrategies.executeAll(schemaDeclarationContext, type)
         is EnumType -> schemaDeclarationContext.enumClassStrategies.executeAll(schemaDeclarationContext, type)
-        is ErrorType -> listOf(KotlinErrorTypeStrategy().execute(schemaDeclarationContext, type)).filterNotNull()
+        is ErrorType -> listOf(KotlinErrorTypeStrategy.execute(schemaDeclarationContext, type)).filterNotNull()
         is FixedType, is RequestType -> {
           logger.debug { "ignoring ${type::class.simpleName} type: $type.canonicalName" }
           emptyList()

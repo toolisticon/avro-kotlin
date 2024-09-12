@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.generation.spec.KotlinFileSpecs
 import mu.KLogging
 
 /**
@@ -11,5 +12,7 @@ import mu.KLogging
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
 internal object KotlinCodeGenerationIncubator : KLogging() {
+
+  operator fun KotlinFileSpecs.plus(other: KotlinFileSpecs): KotlinFileSpecs = other.fold(this, KotlinFileSpecs::plus)
 
 }

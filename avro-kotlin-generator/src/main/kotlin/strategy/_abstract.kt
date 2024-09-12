@@ -5,6 +5,7 @@ import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
 import io.toolisticon.kotlin.avro.model.AvroNamedType
 import io.toolisticon.kotlin.avro.model.EnumType
 import io.toolisticon.kotlin.avro.model.RecordType
@@ -43,7 +44,7 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
     context: SchemaDeclarationContext,
     input: RecordType
   ): List<KotlinConstructorPropertySpecSupplier> {
-    return input.fields.map { context.registry.constructorPropertyStrategy(context, it) }
+    return input.fields.map { KotlinConstructorPropertyStrategy(context, it) }
   }
 }
 
@@ -74,12 +75,17 @@ abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrat
   override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
 
+/**
+ * Use this base class to implement a strategy that takes a [ProtocolDeclaration] and creates multiple source files wrapped in [KotlinFileSpecs].
+ */
 @OptIn(ExperimentalKotlinPoetApi::class)
 abstract class AvroFileSpecsFromProtocolDeclarationStrategy : KotlinFileSpecsStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpecs
   override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
+
+  override fun execute(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpecs =  super.execute(context, input) ?: KotlinFileSpecs.EMPTY
 }
 
 /**

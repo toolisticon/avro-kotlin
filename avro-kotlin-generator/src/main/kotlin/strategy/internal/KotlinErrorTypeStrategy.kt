@@ -20,7 +20,7 @@ import org.apache.avro.AvroRemoteException
  * string field, which value will be used as the message of the runtime exception.
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-class KotlinErrorTypeStrategy : InternalStrategy, KotlinClassSpecStrategy<SchemaDeclarationContext, ErrorType>(
+data object KotlinErrorTypeStrategy : InternalStrategy, KotlinClassSpecStrategy<SchemaDeclarationContext, ErrorType>(
   contextType = SchemaDeclarationContext::class, inputType = ErrorType::class
 ) {
 
