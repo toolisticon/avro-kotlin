@@ -36,9 +36,19 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
 
   override val contextTypeUpperBound: KClass<*> = CONTEXT_UPPER_BOUND
 
+  /**
+   * Map of all registered logical types.
+   */
   val logicalTypes: LogicalTypeMap = LogicalTypeMap(this)
 
 
+  /**
+   * Filter all strategies that create a fileSpecList for a given protocol declaration.
+   */
   fun protocolFileSpecListStrategies() = strategies.filter(AvroFileSpecListFromProtocolDeclarationStrategy::class)
+
+  /**
+   * Filter all strategies that create a fileSpec for a given protocol declaration.
+   */
   fun protocolFileSpecStrategies() = strategies.filter(AvroFileSpecFromProtocolDeclarationStrategy::class)
 }
