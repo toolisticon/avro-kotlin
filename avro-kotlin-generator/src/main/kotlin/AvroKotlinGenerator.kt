@@ -8,9 +8,6 @@ import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.generateFiles
-import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
-import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
-import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 
 /**
  * Core class of `avro-kotlin-generator`. Configure via SPI/ServiceLoader and properties,
@@ -42,24 +39,27 @@ open class AvroKotlinGenerator(
     ProtocolDeclarationContext.of(it, registry, properties)
   }
 
-  // TODO: use AvroFileFromSchemaDeclaration
-  fun generate(declaration: SchemaDeclaration): List<KotlinFileSpec> {
-    val context = schemaDeclarationContext(declaration)
+  /**
+   * Generate one or more files from given context and schema declaration.
+   */
+  fun generate(context: SchemaDeclarationContext, input: SchemaDeclaration) = generateFiles(context = context, input = input)
 
-    val recordType = declaration.recordType
-    val fileSpecBuilder = KotlinFileSpecBuilder.builder(context.rootClassName!!) // FIXME: fails without root class
-
-    val dataClasses = context.dataClassStrategies.executeAll(context, recordType)
-
-    dataClasses.forEach(fileSpecBuilder::addType)
-    return listOf(fileSpecBuilder.build())
-  }
-
-  fun generate(context: ProtocolDeclarationContext, input: ProtocolDeclaration) = generateFiles(
-    context = context,
-    input = input
+  /**
+   * Generate one or more files from given schema declaration, using contextFactory.
+   */
+  fun generate(declaration: SchemaDeclaration, contextFactory: SchemaDeclarationContextFactory = schemaDeclarationContext) = generateFiles(
+    contextFactory = contextFactory,
+    input = declaration,
   )
 
+  /**
+   * Generate one or more files from given context and protocol declaration.
+   */
+  fun generate(context: ProtocolDeclarationContext, input: ProtocolDeclaration) = generateFiles(context = context, input = input)
+
+  /**
+   * Generate one or more files from given protocol declaration, using contextFactory.
+   */
   fun generate(declaration: ProtocolDeclaration, contextFactory: ProtocolDeclarationContextFactory = protocolDeclarationContext) = generateFiles(
     contextFactory = contextFactory,
     input = declaration

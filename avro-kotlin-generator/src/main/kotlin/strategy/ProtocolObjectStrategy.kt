@@ -8,7 +8,7 @@ import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext.Companion.toSchemaDeclarationContext
-import io.toolisticon.kotlin.avro.generator.strategy.RootDataClassStrategy.Companion.logger
+import io.toolisticon.kotlin.avro.generator.strategy.SchemaTypesToFileStrategy.Companion.logger
 import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinErrorTypeStrategy
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
@@ -18,7 +18,8 @@ import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
-@ExperimentalKotlinPoetApi
+@OptIn(ExperimentalKotlinPoetApi::class)
+@Deprecated("Creates object with nested types, does not work because of #138")
 class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
   override val order: Int = 0
 

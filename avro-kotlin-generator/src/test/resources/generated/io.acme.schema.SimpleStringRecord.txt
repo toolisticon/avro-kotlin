@@ -1,3 +1,5 @@
+@file:Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date = "2024-08-21T23:19:02.152209Z")
+
 package io.acme.schema
 
 import jakarta.`annotation`.Generated
@@ -9,7 +11,6 @@ import kotlinx.serialization.Serializable
  *
  * @param stringValue The single string value, no extras.
  */
-@Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date = "2024-08-21T23:19:02.152209Z")
 @Serializable
 public data class SimpleStringRecord(
   /**

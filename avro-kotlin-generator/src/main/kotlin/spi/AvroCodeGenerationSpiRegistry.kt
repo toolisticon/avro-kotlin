@@ -3,8 +3,7 @@ package io.toolisticon.kotlin.avro.generator.spi
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
-import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecsFromProtocolDeclarationStrategy
-import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
+import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecListFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
@@ -19,7 +18,7 @@ import kotlin.reflect.KClass
 @OptIn(ExperimentalKotlinPoetApi::class)
 class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
-    private val CONTEXT_UPPER_BOUND =  AvroDeclarationContext::class
+    private val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
 
     fun load(classLoader: ClassLoader = defaultClassLoader(), exclusions: Set<String> = emptySet()): AvroCodeGenerationSpiRegistry {
       val registry = KotlinCodeGeneration.spi.registry(
@@ -40,6 +39,6 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   val logicalTypes: LogicalTypeMap = LogicalTypeMap(this)
 
 
-  fun protocolFileSpecsStrategies() = strategies.filter(AvroFileSpecsFromProtocolDeclarationStrategy::class)
+  fun protocolFileSpecListStrategies() = strategies.filter(AvroFileSpecListFromProtocolDeclarationStrategy::class)
   fun protocolFileSpecStrategies() = strategies.filter(AvroFileSpecFromProtocolDeclarationStrategy::class)
 }

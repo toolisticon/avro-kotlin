@@ -20,7 +20,6 @@ internal class AvroKotlinGeneratorTest {
     properties = DEFAULT_PROPERTIES.copy(schemaTypeSuffix = "Data"),
   )
 
-
   @Test
   fun `generate simple data class for schema`() {
     val declaration = AvroParser().parseSchema(
@@ -42,6 +41,8 @@ internal class AvroKotlinGeneratorTest {
 
     assertThat(file.code).isEqualToIgnoringWhitespace(
       """
+      @file:Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date = "2024-08-21T23:19:02.152209Z")
+
       package a.b.c
 
       import jakarta.`annotation`.Generated
@@ -55,7 +56,6 @@ internal class AvroKotlinGeneratorTest {
        *
        * @param x this is x
        */
-      @Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date = "2024-08-21T23:19:02.152209Z")
       @Serializable
       @SerialName(value = "a.b.c.Dee")
       public data class DeeData(
@@ -74,10 +74,11 @@ internal class AvroKotlinGeneratorTest {
     val declaration = parseDeclaration("schema/SingleNestedRecord.avsc")
 
     val file = generator.generate(declaration).single()
-    println(file.code)
 
     assertThat(file.code).isEqualToIgnoringWhitespace(
       """
+      @file:Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date = "2024-08-21T23:19:02.152209Z")
+
       package io.acme.schema
 
       import jakarta.`annotation`.Generated
@@ -90,8 +91,6 @@ internal class AvroKotlinGeneratorTest {
        *
        * @param complexValue The nested value.
        */
-      @Generated(value = ["io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator"], date =
-          "2024-08-21T23:19:02.152209Z")
       @Serializable
       @SerialName(value = "io.acme.schema.SingleNestedRecord")
       public data class SingleNestedRecordData(
@@ -99,16 +98,17 @@ internal class AvroKotlinGeneratorTest {
          * The nested value.
          */
         public val complexValue: NestedRecordData,
-      ) {
-        /**
-         * The nested record
-         */
-        @Serializable
-        @SerialName(value = "io.acme.schema.NestedRecord")
-        public data class NestedRecordData(
-          public val x: Boolean,
-        )
-      }
+      )
+
+      /**
+       * The nested record
+       */
+      @Serializable
+      @SerialName(value = "io.acme.schema.NestedRecord")
+      public data class NestedRecordData(
+        public val x: Boolean,
+      )
+
     """.trimIndent()
     )
   }

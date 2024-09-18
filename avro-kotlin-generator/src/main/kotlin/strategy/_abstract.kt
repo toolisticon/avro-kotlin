@@ -76,10 +76,10 @@ abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrat
 }
 
 /**
- * Use this base class to implement a strategy that takes a [ProtocolDeclaration] and creates multiple source files wrapped in [KotlinFileSpecs].
+ * Use this base class to implement a strategy that takes a [ProtocolDeclaration] and creates multiple source files wrapped in [KotlinFileSpecList].
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-abstract class AvroFileSpecsFromProtocolDeclarationStrategy : KotlinFileSpecListStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
+abstract class AvroFileSpecListFromProtocolDeclarationStrategy : KotlinFileSpecListStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpecList
@@ -95,9 +95,20 @@ abstract class AvroFileSpecsFromProtocolDeclarationStrategy : KotlinFileSpecList
  * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, SchemaDeclaration, KotlinFileSpec>(
-  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class, specType = KotlinFileSpec::class
+abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinFileSpecStrategy<SchemaDeclarationContext, SchemaDeclaration>(
+  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
+
+/**
+ * Use this base class to implement a strategy that takes a [SchemaDeclaration] and creates multiple source files wrapped in [KotlinFileSpecList].
+ */
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class AvroFileSpecListFromSchemaDeclarationStrategy : KotlinFileSpecListStrategy<SchemaDeclarationContext, SchemaDeclaration>(
+  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class
+) {
+  abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpecList
   override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }

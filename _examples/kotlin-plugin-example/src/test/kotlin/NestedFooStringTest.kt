@@ -12,13 +12,13 @@ class NestedFooStringTest {
   @Test
   fun `load class`() {
     val schema = avro.schema(NestedFooStringData::class)
-    val s2 = avro.schema(NestedFooStringData.BarStringData::class)
+    val s2 = avro.schema(BarStringData::class)
 
     println(schema)
     println(s2)
 
-    val x = AvroKotlin.loadClassForSchema<NestedFooStringData.BarStringData>(s2)
+    val x = AvroKotlin.loadClassForSchema<BarStringData>(s2)
     println(x)
-    println(Class.forName("io.toolisticon.kotlin.avro.generator.test.NestedFooStringData\$BarStringData"))
+    println(Class.forName("io.toolisticon.kotlin.avro.generator.test.BarStringData"))
   }
 }

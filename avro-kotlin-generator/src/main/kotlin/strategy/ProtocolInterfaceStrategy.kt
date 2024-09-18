@@ -2,7 +2,6 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import com.squareup.kotlinpoet.KModifier
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
@@ -16,7 +15,8 @@ import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 
 @OptIn(ExperimentalKotlinPoetApi::class)
-class ProtocolInterfaceStrategy  : AvroFileSpecFromProtocolDeclarationStrategy() {
+@Deprecated("The protocol interface strategy creates a sync. api, this is not always useful.")
+class ProtocolInterfaceStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
     val fileName: ClassName = (input.canonicalName.namespace + Name(input.name.value + "Interface")).asClassName()
