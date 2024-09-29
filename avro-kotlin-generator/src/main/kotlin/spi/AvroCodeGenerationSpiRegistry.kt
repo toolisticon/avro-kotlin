@@ -48,12 +48,12 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   /**
    * Filter all strategies that create a fileSpecList for a given protocol declaration.
    */
-  fun protocolFileSpecListStrategies() = strategies.filter(AvroFileSpecListFromProtocolDeclarationStrategy::class)
+  fun protocolFileSpecListStrategies() = strategies(AvroFileSpecListFromProtocolDeclarationStrategy::class)
 
   /**
    * Filter all strategies that create a fileSpec for a given protocol declaration.
    */
-  fun protocolFileSpecStrategies() = strategies.filter(AvroFileSpecFromProtocolDeclarationStrategy::class)
+  fun protocolFileSpecStrategies() = strategies(AvroFileSpecFromProtocolDeclarationStrategy::class)
 
   /**
    * Get filtered processors of given type.
