@@ -15,6 +15,8 @@ import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.className
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
+import io.toolisticon.kotlin.generation.spi.EmptyInput
+import io.toolisticon.kotlin.generation.spi.processor.executeAll
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
 import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 import mu.KLogging
@@ -52,11 +54,7 @@ class ProtocolTypesToFileStrategy(
   constructor() : this(determineFileName = defaultDetermineFileName, avroNamedTypeFilter = defaultAvroNamedTypeFilter)
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {
-    val fileBuilder = fileBuilder(
-      className = determineFileName(context, input)
-    ).apply {
-      addAnnotation(GeneratedAnnotation(AvroKotlinGenerator.NAME))
-    }
+    val fileBuilder = fileBuilder(className = determineFileName(context, input))
 
     val schemaDeclarationContext = context.toSchemaDeclarationContext()
 
@@ -79,7 +77,7 @@ class ProtocolTypesToFileStrategy(
 
     typeSpecs.forEach(fileBuilder::addType)
 
-    context.registry.processors.filter(ProtocolFileSpecProcessor::class).forEach { it.execute(context, fileBuilder) }
+    context.registry.processors(ProtocolFileSpecProcessor::class).executeAll(context, EmptyInput, fileBuilder)
     return fileBuilder.build()
   }
 }

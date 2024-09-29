@@ -8,9 +8,11 @@ import io.toolisticon.kotlin.avro.model.RecordType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.generation.builder.KotlinConstructorPropertySpecBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinDataClassSpecBuilder
+import io.toolisticon.kotlin.generation.builder.KotlinFileSpecBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinFunSpecBuilder
 import io.toolisticon.kotlin.generation.spi.processor.KotlinConstructorPropertySpecProcessor
 import io.toolisticon.kotlin.generation.spi.processor.KotlinDataClassSpecProcessor
+import io.toolisticon.kotlin.generation.spi.processor.KotlinFileSpecEmptyInputProcessor
 import io.toolisticon.kotlin.generation.spi.processor.KotlinFunSpecProcessor
 
 @OptIn(ExperimentalKotlinPoetApi::class)
@@ -27,7 +29,11 @@ abstract class ConstructorPropertyFromRecordFieldProcessorBase : KotlinConstruct
   contextType = SchemaDeclarationContext::class,
   inputType = RecordField::class
 ) {
-  abstract override fun invoke(context: SchemaDeclarationContext, input: RecordField, builder: KotlinConstructorPropertySpecBuilder): KotlinConstructorPropertySpecBuilder
+  abstract override fun invoke(
+    context: SchemaDeclarationContext,
+    input: RecordField,
+    builder: KotlinConstructorPropertySpecBuilder
+  ): KotlinConstructorPropertySpecBuilder
 
   override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
@@ -42,4 +48,23 @@ abstract class KotlinFunSpecFromProtocolMessageProcessor : KotlinFunSpecProcesso
   abstract override fun invoke(context: ProtocolDeclarationContext, input: AvroProtocol.Message, builder: KotlinFunSpecBuilder): KotlinFunSpecBuilder
 
   override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
+
+
+/**
+ * Process files created from [ProtocolDeclarationContext].
+ */
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class ProtocolFileSpecProcessor : KotlinFileSpecEmptyInputProcessor<ProtocolDeclarationContext>(contextType = ProtocolDeclarationContext::class) {
+  abstract override fun invoke(context: ProtocolDeclarationContext, builder: KotlinFileSpecBuilder): KotlinFileSpecBuilder
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
+
+/**
+ * Process files created from [SchemaDeclarationContext].
+ */
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class SchemaFileSpecProcessor : KotlinFileSpecEmptyInputProcessor<SchemaDeclarationContext>(contextType = SchemaDeclarationContext::class) {
+  abstract override fun invoke(context: SchemaDeclarationContext, builder: KotlinFileSpecBuilder): KotlinFileSpecBuilder
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }

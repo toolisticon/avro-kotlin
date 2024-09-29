@@ -6,7 +6,10 @@ import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDec
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecListFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationProcessor
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationStrategy
 import io.toolisticon.kotlin.generation.spi.processor.KotlinCodeGenerationProcessorList
 import io.toolisticon.kotlin.generation.spi.registry.KotlinCodeGenerationServiceRepository
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyList
@@ -51,4 +54,14 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
    * Filter all strategies that create a fileSpec for a given protocol declaration.
    */
   fun protocolFileSpecStrategies() = strategies.filter(AvroFileSpecFromProtocolDeclarationStrategy::class)
+
+  /**
+   * Get filtered processors of given type.
+   */
+  fun <PROCESSOR : KotlinCodeGenerationProcessor<CONTEXT, INPUT, BUILDER>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, BUILDER : Any> processors(type: KClass<PROCESSOR>): List<PROCESSOR> = processors.filter(type)
+
+  /**
+   * Get filtered strategies of given type.
+   */
+  fun <STRATEGY : KotlinCodeGenerationStrategy<CONTEXT, INPUT, SPEC>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, SPEC : Any> strategies(type: KClass<STRATEGY>): List<STRATEGY> = strategies.filter(type)
 }

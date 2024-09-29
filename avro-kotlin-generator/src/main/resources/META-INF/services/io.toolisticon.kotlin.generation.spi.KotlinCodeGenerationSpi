@@ -17,6 +17,8 @@ io.toolisticon.kotlin.avro.generator.strategy.NestedEnumClassStrategy
 ################################################################################
 
 io.toolisticon.kotlin.avro.generator.processor.AddThrowsForProtocolMessageErrorProcessor
+io.toolisticon.kotlin.avro.generator.processor.GeneratedAnnotationFileProtocolProcessor
+io.toolisticon.kotlin.avro.generator.processor.GeneratedAnnotationFileSchemaProcessor
 
 ################################################################################
 # logical types
