@@ -22,7 +22,7 @@
     <kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
     <kotlin.compiler.languageVersion>1.9</kotlin.compiler.languageVersion>
 
-    <jackson.version>2.18.1</jackson.version>
+    <jackson.version>2.18.2</jackson.version>
     <kotlin-code-generation.version>0.0.10</kotlin-code-generation.version>
   </properties>
 
