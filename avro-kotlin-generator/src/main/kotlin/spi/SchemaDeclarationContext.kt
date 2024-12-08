@@ -44,7 +44,7 @@ data class SchemaDeclarationContext(
       val rootClassName: ClassName = rootClassName(declaration, properties = properties)
 
       val avroPoetTypes: AvroPoetTypeMap = AvroPoetTypeMap.avroPoetTypeMap(
-        rootClassName = rootClassName,
+        rootClassName = null, // FIXME: root/nested behaviour must be redesigned/configurable,
         properties = properties,
         avroTypes = declaration.avroTypes - declaration.recordType.hashCode,
         logicalTypeMap = registry.logicalTypes,

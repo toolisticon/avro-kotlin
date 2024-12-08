@@ -6,15 +6,14 @@ import io.toolisticon.kotlin.avro.generator.TestFixtures.DEFAULT_PROPERTIES
 import io.toolisticon.kotlin.avro.generator.TestFixtures.PARSER
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.buildFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalKotlinPoetApi::class)
-internal class RootDataClassFromRecordStrategyTest {
+internal class SchemaTypesToFileStrategyTest {
 
   private val registry = AvroCodeGenerationSpiRegistry(registry = AvroCodeGenerationSpiRegistry.load())
-  private val strategy = RootDataClassStrategy()
+  private val strategy = SchemaTypesToFileStrategy()
 
   @Test
   fun `generate simple root data class`() {
@@ -25,10 +24,10 @@ internal class RootDataClassFromRecordStrategyTest {
     val context = SchemaDeclarationContext.of(declaration, registry)
       .copy(properties = DEFAULT_PROPERTIES)
 
-    val spec = requireNotNull(strategy.execute(context, declaration.recordType))
+    val file = requireNotNull(strategy.execute(context, declaration))
 
-    val expectedContent = resourceUrl("generated/${spec.className}.txt").readText()
+    val expectedContent = resourceUrl("generated/${file.className}.txt").readText()
 
-    assertThat(buildFile(spec.className) { addType(spec) }.code).isEqualToIgnoringWhitespace(expectedContent)
+    assertThat(file.code).isEqualToIgnoringWhitespace(expectedContent)
   }
 }

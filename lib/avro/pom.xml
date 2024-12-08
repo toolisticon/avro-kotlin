@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-lib-root</artifactId>
-    <version>1.12.3.0</version>
+    <version>1.12.4.0</version>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.lib</groupId>
@@ -84,10 +84,17 @@
         <!-- skip kotlin compiler -->
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

@@ -10,6 +10,7 @@ import mu.KLogging
  * In an ideal world, this object is empty
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
+@Deprecated("everything tried here will move to kotlin-code-generation.")
 internal object KotlinCodeGenerationIncubator : KLogging() {
 
 }

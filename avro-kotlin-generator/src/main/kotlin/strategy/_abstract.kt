@@ -5,15 +5,13 @@ import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
+import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
 import io.toolisticon.kotlin.avro.model.AvroNamedType
 import io.toolisticon.kotlin.avro.model.EnumType
 import io.toolisticon.kotlin.avro.model.RecordType
-import io.toolisticon.kotlin.generation.spec.KotlinConstructorPropertySpecSupplier
-import io.toolisticon.kotlin.generation.spec.KotlinDataClassSpec
-import io.toolisticon.kotlin.generation.spec.KotlinEnumClassSpec
-import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
-import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
+import io.toolisticon.kotlin.generation.spec.*
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyBase
+import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecListStrategy
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinFileSpecStrategy
 import kotlin.reflect.KClass
 
@@ -29,7 +27,7 @@ abstract class AvroNamedTypeSpecStrategy<INPUT : AvroNamedType, SPEC : KotlinGen
   contextType = SchemaDeclarationContext::class, inputType = inputType, specType = specType
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: INPUT): SPEC
-  abstract override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean
+  abstract override fun test(context: SchemaDeclarationContext, input: Any): Boolean
 }
 
 /**
@@ -40,13 +38,13 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
   inputType = RecordType::class, specType = KotlinDataClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
 
   protected fun parameterSpecs(
     context: SchemaDeclarationContext,
     input: RecordType
   ): List<KotlinConstructorPropertySpecSupplier> {
-    return input.fields.map { context.registry.constructorPropertyStrategy(context, it) }
+    return input.fields.map { KotlinConstructorPropertyStrategy(context, it) }
   }
 }
 
@@ -58,7 +56,7 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
   inputType = EnumType::class, specType = KotlinEnumClassSpec::class
 ) {
   abstract override fun invoke(context: SchemaDeclarationContext, input: EnumType): KotlinEnumClassSpec
-  override fun test(ctx: SchemaDeclarationContext, input: Any): Boolean = input is EnumType && !ctx.isRoot
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = input is EnumType && !context.isRoot
 }
 
 /**
@@ -73,9 +71,19 @@ abstract class AvroEnumTypeSpecStrategy : AvroNamedTypeSpecStrategy<EnumType, Ko
 abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
   contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
 ) {
-  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
-
   abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
+
+/**
+ * Use this base class to implement a strategy that takes a [ProtocolDeclaration] and creates multiple source files wrapped in [KotlinFileSpecList].
+ */
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class AvroFileSpecListFromProtocolDeclarationStrategy : KotlinFileSpecListStrategy<ProtocolDeclarationContext, ProtocolDeclaration>(
+  contextType = ProtocolDeclarationContext::class, inputType = ProtocolDeclaration::class
+) {
+  abstract override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpecList
+  override fun test(context: ProtocolDeclarationContext, input: Any): Boolean = super.test(context, input)
 }
 
 /**
@@ -87,11 +95,20 @@ abstract class AvroFileSpecFromProtocolDeclarationStrategy : KotlinFileSpecStrat
  * generated state using a mutable context (strategy `A` creates base types, strategy `B` reuses these types to provide messages interfaces).
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinCodeGenerationStrategyBase<SchemaDeclarationContext, SchemaDeclaration, KotlinFileSpec>(
-  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class, specType = KotlinFileSpec::class
+abstract class AvroFileSpecFromSchemaDeclarationStrategy : KotlinFileSpecStrategy<SchemaDeclarationContext, SchemaDeclaration>(
+  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class
 ) {
-
   abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec
+  override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
+}
 
+/**
+ * Use this base class to implement a strategy that takes a [SchemaDeclaration] and creates multiple source files wrapped in [KotlinFileSpecList].
+ */
+@OptIn(ExperimentalKotlinPoetApi::class)
+abstract class AvroFileSpecListFromSchemaDeclarationStrategy : KotlinFileSpecListStrategy<SchemaDeclarationContext, SchemaDeclaration>(
+  contextType = SchemaDeclarationContext::class, inputType = SchemaDeclaration::class
+) {
+  abstract override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpecList
   override fun test(context: SchemaDeclarationContext, input: Any): Boolean = super.test(context, input)
 }

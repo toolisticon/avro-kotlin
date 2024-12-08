@@ -13,11 +13,11 @@ import io.toolisticon.kotlin.generation.spi.processor.executeSingle
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinConstructorPropertySpecStrategy
 
 /**
- * Create
+ * Create a constructor property and call all matching processors.
  *
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-internal class KotlinConstructorPropertyStrategy : InternalStrategy, KotlinConstructorPropertySpecStrategy<SchemaDeclarationContext, RecordField>(
+internal data object KotlinConstructorPropertyStrategy : InternalStrategy, KotlinConstructorPropertySpecStrategy<SchemaDeclarationContext, RecordField>(
   contextType = SchemaDeclarationContext::class, inputType = RecordField::class
 ) {
 
@@ -30,15 +30,5 @@ internal class KotlinConstructorPropertyStrategy : InternalStrategy, KotlinConst
     context.processors(ConstructorPropertyFromRecordFieldProcessorBase::class).executeAll(context, input, builder)
 
     return builder.build()
-  }
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-    return true
-  }
-
-  override fun hashCode(): Int {
-    return javaClass.hashCode()
   }
 }
