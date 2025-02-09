@@ -1,12 +1,12 @@
 package io.toolisticon.kotlin.avro
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.model.wrapper.*
 import io.toolisticon.kotlin.avro.value.AvroSpecification
 import io.toolisticon.kotlin.avro.value.JsonString
-import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.LogicalTypes.LogicalTypeFactory
 import org.apache.avro.Protocol
@@ -22,7 +22,7 @@ import java.net.URL
 class AvroParser(
   val verifyPackageConvention: Boolean = true,
 ) {
-  companion object : KLogging()
+  private val logger = KotlinLogging.logger {}
 
   /**
    * Adds custom [LogicalTypeFactory] to static avro context.

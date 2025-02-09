@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.asClassName
@@ -11,7 +12,6 @@ import io.toolisticon.kotlin.avro.generator.processor.KotlinDataClassFromRecordT
 import io.toolisticon.kotlin.avro.generator.processor.SchemaFileSpecProcessor
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy
-import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinConstructorPropertyStrategy.invoke
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.dataClassBuilder
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
@@ -20,7 +20,6 @@ import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spi.EmptyInput
 import io.toolisticon.kotlin.generation.spi.processor.executeAll
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
-import mu.KLogging
 
 /**
  * Generates a top-level data class for a given schema declaration.
@@ -30,7 +29,7 @@ import mu.KLogging
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
 class SchemaTypesToFileStrategy : AvroFileSpecFromSchemaDeclarationStrategy() {
-  companion object : KLogging()
+  private val logger = KotlinLogging.logger {}
 
   override fun invoke(context: SchemaDeclarationContext, input: SchemaDeclaration): KotlinFileSpec {
     val className = context.rootClassName ?: input.canonicalName.asClassName()

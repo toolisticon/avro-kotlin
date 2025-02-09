@@ -2,13 +2,13 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.TypeName
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.asClassName
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext.Companion.toSchemaDeclarationContext
-import io.toolisticon.kotlin.avro.generator.strategy.SchemaTypesToFileStrategy.Companion.logger
 import io.toolisticon.kotlin.avro.generator.strategy.internal.KotlinErrorTypeStrategy
 import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
@@ -21,6 +21,8 @@ import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
 @OptIn(ExperimentalKotlinPoetApi::class)
 @Deprecated("Creates object with nested types, does not work because of #138")
 class ProtocolObjectStrategy : AvroFileSpecFromProtocolDeclarationStrategy() {
+  private val logger = KotlinLogging.logger {}
+
   override val order: Int = 0
 
   override fun invoke(context: ProtocolDeclarationContext, input: ProtocolDeclaration): KotlinFileSpec {

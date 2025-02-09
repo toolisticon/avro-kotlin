@@ -1,10 +1,10 @@
 package io.toolisticon.kotlin.avro.serialization.cache
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.toolisticon.kotlin.avro.serialization.isSerializable
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import mu.KLogging
 import org.apache.avro.util.WeakIdentityHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -19,10 +19,10 @@ import kotlin.reflect.full.createType
  *
  * TODO: avro4k internally keeps st similar, it would be nice if their cache would be accessible, then we could use it here (or omit this class completely).
  */
-class KSerializerCache (
+class KSerializerCache(
   private val serializersModule: SerializersModule
 ) : AvroCache.SerializerByClassCache {
-  companion object : KLogging()
+  private val logger = KotlinLogging.logger {}
 
   private val store: WeakIdentityHashMap<KClass<*>, KSerializer<*>> = WeakIdentityHashMap()
 

@@ -19,7 +19,6 @@ import io.toolisticon.kotlin.avro.value.SingleObjectEncodedBytes
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
-import mu.KLogging
 import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
 import java.lang.Runtime.Version
@@ -33,7 +32,7 @@ class AvroKotlinSerialization(
   @PublishedApi
   internal val genericData: GenericData = AvroKotlin.genericData
 ) : AvroSchemaResolver by schemaResolver {
-  companion object : KLogging() {
+  companion object {
 
     fun configure(vararg serializersModules: SerializersModule): AvroKotlinSerialization {
       return AvroKotlinSerialization(
@@ -41,6 +40,15 @@ class AvroKotlinSerialization(
           serializersModule = serializersModules.toList().reduce()
         }
       )
+    }
+
+    // somehow parsing the version 1.8.0 fails ... this should fix it.
+    internal fun version(vnum: String): Version {
+      return try {
+        Version.parse(vnum)
+      } catch (e: Exception) {
+        version(vnum.substringBeforeLast('.'))
+      }
     }
   }
 
@@ -71,7 +79,8 @@ class AvroKotlinSerialization(
      * We _need_ `kotlinx.serialization >= 1.7`. spring boot provides an outdated version (1.6.3).
      * This is a pita to resolve. This check makes sure, any misconfigurations are found on app-start.
      */
-    check(Version.parse(KSerializer::class.java.`package`.implementationVersion) >= Version.parse("1.7")) { "avro4k uses features that required kotlinx.serialization version >= 1.7.0. Make sure to include the correct versions, especially when you use spring-boot." }
+    val serializationVersion = KSerializer::class.java.`package`?.implementationVersion ?: "1.7"
+    check(version(serializationVersion) >= version("1.7")) { "avro4k uses features that required kotlinx.serialization version >= 1.7.0. Make sure to include the correct versions, especially when you use spring-boot." }
   }
 
   constructor() : this(

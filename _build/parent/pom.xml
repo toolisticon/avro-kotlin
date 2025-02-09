@@ -65,16 +65,9 @@
       <scope>compile</scope>
     </dependency>
     <!-- KOTLIN LOGGING -->
-    <!-- also replaces slf4j-api excluded from org.apache.avro:avro -->
     <dependency>
-      <groupId>io.github.microutils</groupId>
+      <groupId>io.github.oshai</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
       <scope>compile</scope>
     </dependency>
     <dependency>
