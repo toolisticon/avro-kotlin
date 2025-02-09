@@ -1,7 +1,7 @@
 package io.toolisticon.kotlin.avro.generator
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
-import mu.KLogging
+
 
 /**
  * Things we notice are useful, but should be implemented in the `kotlin code generation` lib.
@@ -11,6 +11,6 @@ import mu.KLogging
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
 @Deprecated("everything tried here will move to kotlin-code-generation.")
-internal object KotlinCodeGenerationIncubator : KLogging() {
-
+internal object KotlinCodeGenerationIncubator {
+  // empty
 }

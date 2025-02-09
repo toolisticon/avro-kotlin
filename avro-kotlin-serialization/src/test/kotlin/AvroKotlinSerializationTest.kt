@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.serialization
 
 import io.toolisticon.kotlin.avro.model.SchemaType
+import io.toolisticon.kotlin.avro.serialization.AvroKotlinSerialization.Companion.version
 import io.toolisticon.kotlin.avro.serialization._test.BarString
 import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
 import io.toolisticon.kotlin.avro.serialization._test.Foo
@@ -21,6 +22,12 @@ internal class AvroKotlinSerializationTest {
     assertThat(schema.fields.map { it.name.value to it.type }).containsExactly(
       "name" to SchemaType.STRING
     )
+  }
+
+  @Test
+  fun parseVersion() {
+    val version = version("1.8.0")
+    assertThat(version.version()).containsExactly(1, 8)
   }
 
   @Test
