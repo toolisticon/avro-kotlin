@@ -13,7 +13,6 @@ import io.toolisticon.kotlin.avro.model.wrapper.JsonSource
 import io.toolisticon.kotlin.avro.value.*
 import io.toolisticon.kotlin.avro.value.AvroSpecification.PROTOCOL
 import io.toolisticon.kotlin.avro.value.AvroSpecification.SCHEMA
-import mu.KLogging
 import org.apache.avro.LogicalTypes
 import org.apache.avro.SchemaBuilder
 import org.assertj.core.api.Assertions.assertThat
@@ -28,9 +27,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource
 import java.io.File
 
 internal class AvroParserTest {
-  companion object : KLogging() {
-    // empty
-  }
 
   @Test
   @DisabledOnOs(OS.WINDOWS)

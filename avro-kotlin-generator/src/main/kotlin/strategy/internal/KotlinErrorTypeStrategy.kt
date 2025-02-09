@@ -6,13 +6,11 @@ import io.toolisticon.kotlin.avro.generator.addKDoc
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.avro.model.ErrorType
 import io.toolisticon.kotlin.avro.model.SchemaType
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.format.FORMAT_NAME
 import io.toolisticon.kotlin.generation.builder.KotlinClassSpecBuilder
 import io.toolisticon.kotlin.generation.builder.KotlinFunSpecBuilder
 import io.toolisticon.kotlin.generation.spec.KotlinClassSpec
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinClassSpecStrategy
-import mu.KLogging
 import org.apache.avro.AvroRemoteException
 
 /**

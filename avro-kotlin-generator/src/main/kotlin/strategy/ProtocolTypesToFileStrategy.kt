@@ -2,8 +2,8 @@ package io.toolisticon.kotlin.avro.generator.strategy
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import com.squareup.kotlinpoet.TypeName
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
-import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator
 import io.toolisticon.kotlin.avro.generator.processor.ProtocolFileSpecProcessor
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext.Companion.toSchemaDeclarationContext
@@ -18,15 +18,13 @@ import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
 import io.toolisticon.kotlin.generation.spi.EmptyInput
 import io.toolisticon.kotlin.generation.spi.processor.executeAll
 import io.toolisticon.kotlin.generation.spi.strategy.executeAll
-import io.toolisticon.kotlin.generation.support.GeneratedAnnotation
-import mu.KLogging
 
 @OptIn(ExperimentalKotlinPoetApi::class)
 class ProtocolTypesToFileStrategy(
   private val determineFileName: DetermineFileName,
   private val avroNamedTypeFilter: AvroNamedTypeFilter,
 ) : AvroFileSpecFromProtocolDeclarationStrategy() {
-  companion object : KLogging() {
+  companion object {
 
     /**
      * Gives the name of the generated file.
@@ -46,6 +44,8 @@ class ProtocolTypesToFileStrategy(
 
     val defaultAvroNamedTypeFilter = AvroNamedTypeFilter { true }
   }
+
+  private val logger = KotlinLogging.logger {}
 
   /**
    * Default constructor used by spi.

@@ -5,10 +5,9 @@ import _ktx.ResourceKtx.resourceUrl
 import com.squareup.kotlinpoet.ClassName
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
-import mu.KLogging
 import java.time.Instant
 
-object TestFixtures : KLogging() {
+object TestFixtures {
   val NOW = Instant.parse("2024-08-21T23:19:02.152209Z")
   val NOW_SUPPLER = { NOW }
   val PARSER = AvroParser()
