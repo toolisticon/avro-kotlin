@@ -19,9 +19,6 @@
   <packaging>pom</packaging>
 
   <properties>
-    <kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
-    <kotlin.compiler.languageVersion>1.9</kotlin.compiler.languageVersion>
-
     <jackson.version>2.18.2</jackson.version>
     <kotlin-code-generation.version>0.1.2</kotlin-code-generation.version>
   </properties>
