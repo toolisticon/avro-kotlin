@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://avro-kotlin.toolisticon.io/1.12.4.3/index.html</loc>
+         <lastmod>2025-04-28</lastmod>
+    </url>
+    <url>
+         <loc>https://avro-kotlin.toolisticon.io/1.12.4.3/developer-guide/contribution.html</loc>
+         <lastmod>2025-04-28</lastmod>
+    </url>
+    <url>
+         <loc>https://avro-kotlin.toolisticon.io/1.12.4.3/developer-guide/project-setup.html</loc>
+         <lastmod>2025-04-28</lastmod>
+    </url>
+    <url>
+         <loc>https://avro-kotlin.toolisticon.io/1.12.4.3/getting-started/index.html</loc>
+         <lastmod>2025-04-28</lastmod>
+    </url>
+    <url>
+         <loc>https://avro-kotlin.toolisticon.io/1.12.4.3/reference-guide/index.html</loc>
+         <lastmod>2025-04-28</lastmod>
+    </url>
+</urlset>
