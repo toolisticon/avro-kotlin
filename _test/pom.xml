@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
-    <version>1.12.4.2</version>
+    <version>1.12.4.3</version>
     <relativePath>../_build/parent/pom.xml</relativePath>
   </parent>
 
@@ -16,13 +16,13 @@
 
   <properties>
     <assertj.version>3.27.3</assertj.version>
-    <equalsverifier.version>3.19.1</equalsverifier.version>
-    <logback.version>1.5.17</logback.version>
+    <equalsverifier.version>3.19.3</equalsverifier.version>
+    <logback.version>1.5.18</logback.version>
     <mockito-kotlin.version>5.4.0</mockito-kotlin.version>
     <moneta.version>1.4.4</moneta.version>
     <okio.version>3.9.0</okio.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <icu4j.version>76.1</icu4j.version>
+    <icu4j.version>77.1</icu4j.version>
   </properties>
 
   <dependencies>

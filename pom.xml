@@ -5,13 +5,13 @@
   <parent>
     <groupId>io.toolisticon.maven.parent</groupId>
     <artifactId>maven-parent-kotlin-base</artifactId>
-    <version>2025.3.0</version>
+    <version>2025.4.0</version>
     <relativePath/>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro._</groupId>
   <artifactId>avro-kotlin-root</artifactId>
-  <version>1.12.4.2</version>
+  <version>1.12.4.3</version>
 
   <name>pom: ${project.artifactId}</name>
   <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -19,7 +19,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <jackson.version>2.18.3</jackson.version>
+    <jackson.version>2.19.0</jackson.version>
     <kotlin-code-generation.version>0.1.3</kotlin-code-generation.version>
   </properties>
 

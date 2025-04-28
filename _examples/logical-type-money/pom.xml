@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-examples-root</artifactId>
-    <version>1.12.4.2</version>
+    <version>1.12.4.3</version>
   </parent>
 
   <artifactId>logical-type-money</artifactId>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.javamoney.moneta</groupId>
       <artifactId>moneta-core</artifactId>
-      <version>1.4.4</version>
+      <version>1.4.5</version>
     </dependency>
 
     <dependency>
