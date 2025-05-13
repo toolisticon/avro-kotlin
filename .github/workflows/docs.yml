@@ -1,5 +1,8 @@
 name: Build the docs
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
