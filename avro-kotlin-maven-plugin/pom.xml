@@ -20,7 +20,7 @@
     <maven-plugin-api.version>3.9.10</maven-plugin-api.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <mojo-executor.version>2.4.0</mojo-executor.version>
-    <ktfmt.version>0.55</ktfmt.version>
+    <ktfmt.version>0.56</ktfmt.version>
     <itf.version>0.13.1</itf.version>
   </properties>
 
