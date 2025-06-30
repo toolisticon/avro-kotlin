@@ -14,6 +14,7 @@ import org.apache.avro.Schema
  * endless loops or duplicates, and this proved to be working.
  */
 @Suppress("DataClassPrivateConstructor")
+@ConsistentCopyVisibility
 internal data class SchemaCatalog private constructor(
   private val map: Map<AvroHashCode, AvroSchema>,
   val graph: Graph<AvroHashCode>

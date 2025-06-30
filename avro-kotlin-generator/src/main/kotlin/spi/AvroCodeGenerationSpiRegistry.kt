@@ -19,7 +19,9 @@ import kotlin.reflect.KClass
  * An implementation of [KotlinCodeGenerationSpiRegistry] that supports avro generation specific helpers.
  */
 @OptIn(ExperimentalKotlinPoetApi::class)
-class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
+class AvroCodeGenerationSpiRegistry(
+  registry: KotlinCodeGenerationSpiRegistry
+) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
     private val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
 
@@ -37,7 +39,7 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
     registry = KotlinCodeGenerationServiceRepository(CONTEXT_UPPER_BOUND, processors, strategies)
   )
 
-  override val contextTypeUpperBound: KClass<*> = CONTEXT_UPPER_BOUND
+  val contextTypeUpperBound: KClass<*> = CONTEXT_UPPER_BOUND
 
   /**
    * Map of all registered logical types.
@@ -58,10 +60,13 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   /**
    * Get filtered processors of given type.
    */
-  fun <PROCESSOR : KotlinCodeGenerationProcessor<CONTEXT, INPUT, BUILDER>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, BUILDER : Any> processors(type: KClass<PROCESSOR>): List<PROCESSOR> = processors.filter(type)
+  fun <PROCESSOR : KotlinCodeGenerationProcessor<CONTEXT, INPUT, BUILDER>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, BUILDER : Any> processors(
+    type: KClass<PROCESSOR>
+  ): List<PROCESSOR> = processors.filter(type)
 
   /**
    * Get filtered strategies of given type.
    */
-  fun <STRATEGY : KotlinCodeGenerationStrategy<CONTEXT, INPUT, SPEC>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, SPEC : Any> strategies(type: KClass<STRATEGY>): List<STRATEGY> = strategies.filter(type)
+  fun <STRATEGY : KotlinCodeGenerationStrategy<CONTEXT, INPUT, SPEC>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, SPEC : Any> strategies(type: KClass<STRATEGY>): List<STRATEGY> =
+    strategies.filter(type)
 }
