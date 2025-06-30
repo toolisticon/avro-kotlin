@@ -69,8 +69,6 @@
         <artifactId>kotlin-maven-plugin</artifactId>
         <configuration>
           <jvmTarget>${java.version}</jvmTarget>
-          <apiVersion>1.9</apiVersion>
-          <languageVersion>1.9</languageVersion>
           <args>
             <arg>-Xjsr305=strict</arg>
           </args>

@@ -1,18 +1,17 @@
 package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
+import io.toolisticon.kotlin.avro.generator.AvroKotlinGenerator.Companion.CONTEXT_UPPER_BOUND
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecListFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationProcessor
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
-import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationStrategy
-import io.toolisticon.kotlin.generation.spi.processor.KotlinCodeGenerationProcessorList
-import io.toolisticon.kotlin.generation.spi.registry.KotlinCodeGenerationServiceRepository
-import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyList
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.filter.all
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.filter.hasContextType
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.filter.hasNameIn
+import io.toolisticon.kotlin.generation.spi.*
+import io.toolisticon.kotlin.generation.spi.registry.KotlinCodeGenerationSpiList
 import kotlin.reflect.KClass
 
 /**
@@ -23,20 +22,18 @@ class AvroCodeGenerationSpiRegistry(
   registry: KotlinCodeGenerationSpiRegistry
 ) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
-    private val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
+    private val hasContextType = hasContextType(CONTEXT_UPPER_BOUND)
 
     fun load(classLoader: ClassLoader = defaultClassLoader(), exclusions: Set<String> = emptySet()): AvroCodeGenerationSpiRegistry {
-      val registry = KotlinCodeGeneration.spi.registry(
-        contextTypeUpperBound = AvroDeclarationContext::class,
-        classLoader = classLoader,
-        exclusions = exclusions
-      )
-      return AvroCodeGenerationSpiRegistry(registry)
+      val spiList = KotlinCodeGeneration.spi.load(classLoader)
+        .filterNot(hasNameIn(exclusions))
+
+      return AvroCodeGenerationSpiRegistry(spiList)
     }
   }
 
-  constructor(strategies: KotlinCodeGenerationStrategyList, processors: KotlinCodeGenerationProcessorList = KotlinCodeGenerationProcessorList()) : this(
-    registry = KotlinCodeGenerationServiceRepository(CONTEXT_UPPER_BOUND, processors, strategies)
+  constructor(spiList: KotlinCodeGenerationSpiList, filter: KotlinCodeGenerationSpiPredicate = all) : this(
+    spiList.filter(hasContextType).filter(filter).registry()
   )
 
   val contextTypeUpperBound: KClass<*> = CONTEXT_UPPER_BOUND
@@ -45,7 +42,6 @@ class AvroCodeGenerationSpiRegistry(
    * Map of all registered logical types.
    */
   val logicalTypes: LogicalTypeMap = LogicalTypeMap(this)
-
 
   /**
    * Filter all strategies that create a fileSpecList for a given protocol declaration.

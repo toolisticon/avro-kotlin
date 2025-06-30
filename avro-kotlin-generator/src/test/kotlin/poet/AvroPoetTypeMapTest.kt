@@ -4,13 +4,10 @@ import _ktx.ResourceKtx.resourceUrl
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.AvroParser
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
-import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
+import io.toolisticon.kotlin.avro.generator.TestFixtures
 import io.toolisticon.kotlin.avro.generator.rootClassName
-import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
-import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.value.AvroHashCode
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
@@ -23,8 +20,7 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalKotlinPoetApi::class)
 internal class AvroPoetTypeMapTest {
 
-  private val registry = AvroCodeGenerationSpiRegistry(KotlinCodeGeneration.spi.registry(AvroDeclarationContext::class))
-  private val logicalTypes = registry.logicalTypes
+  private val logicalTypes = TestFixtures.DEFAULT_REGISTRY.logicalTypes
 
   private fun avroPoetTypes(declaration: SchemaDeclaration) = AvroPoetTypeMap.avroPoetTypeMap(
     rootClassName = rootClassName(declaration),

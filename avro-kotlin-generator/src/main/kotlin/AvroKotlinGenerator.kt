@@ -5,6 +5,7 @@ import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
+import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.ProtocolDeclarationContext
 import io.toolisticon.kotlin.avro.generator.spi.SchemaDeclarationContext
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.generateFiles
@@ -20,6 +21,7 @@ open class AvroKotlinGenerator(
   val properties: AvroKotlinGeneratorProperties = DefaultAvroKotlinGeneratorProperties()
 ) {
   companion object {
+    val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
     val NAME = AvroKotlinGenerator::class.java.name
   }
 
