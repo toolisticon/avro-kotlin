@@ -11,6 +11,7 @@
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin-serialization</artifactId>
+  <name>${project.artifactId}</name>
   <description>Using kotlinx-serialization to encode/decode kotlin to avro.</description>
 
   <dependencies>

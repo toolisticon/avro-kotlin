@@ -11,6 +11,7 @@
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin</artifactId>
+  <name>${project.artifactId}</name>
   <description>Opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
 
   <dependencies>
