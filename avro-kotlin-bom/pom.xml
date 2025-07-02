@@ -10,6 +10,7 @@
 
   <groupId>io.toolisticon.kotlin.avro</groupId>
   <artifactId>avro-kotlin-bom</artifactId>
+  <name>${project.artifactId}</name>
   <description>Bill of material for avro-kotlin.</description>
   <packaging>pom</packaging>
 
