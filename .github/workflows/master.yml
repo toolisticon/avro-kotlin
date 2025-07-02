@@ -17,13 +17,13 @@ jobs:
         uses: actions/checkout@v4
 
       # Setup JDK and .m2/settings.xml
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version-file: .java-version
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
           server-password: OSS_CENTRAL_PASSWORD # env variable for Maven Central
 
@@ -44,10 +44,11 @@ jobs:
 
       # Publish release
       - name: Deploy a new release version to Maven Central
-        run: ./mvnw clean deploy -B -ntp -DskipTests -DskipExamples -Prelease -Dgpg.keyname="${{ secrets.GPG_KEYNAME }}" -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
+        run: ./mvnw clean deploy -B -ntp -DskipTests -DskipITests -DskipExamples -Prelease -Dgpg.keyname="${{ secrets.GPG_KEYNAME }}"
         env:
           OSS_CENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           OSS_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
 
       - name: Upload coverage information
         uses: codecov/codecov-action@v5.4.3

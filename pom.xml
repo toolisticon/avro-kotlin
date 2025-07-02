@@ -20,7 +20,7 @@
 
   <properties>
     <jackson.version>2.19.1</jackson.version>
-    <kotlin-code-generation.version>0.1.4</kotlin-code-generation.version>
+    <kotlin-code-generation.version>0.2.2</kotlin-code-generation.version>
   </properties>
 
   <modules>
@@ -107,17 +107,6 @@
     <developerConnection>scm:git:git@github.com:toolisticon/avro-kotlin.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 
   <developers>
     <developer>

@@ -11,6 +11,7 @@ import io.toolisticon.kotlin.avro.generator.spi.AvroCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.avro.generator.spi.AvroDeclarationContext
 import io.toolisticon.kotlin.avro.value.AvroHashCode
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
+import io.toolisticon.kotlin.generation.spi.registry.DefaultKotlinCodeGenerationServiceRegistry
 import org.apache.avro.LogicalTypes
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
@@ -23,7 +24,11 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalKotlinPoetApi::class)
 internal class AvroPoetTypeMapTest {
 
-  private val registry = AvroCodeGenerationSpiRegistry(KotlinCodeGeneration.spi.registry(AvroDeclarationContext::class))
+  private val registry = AvroCodeGenerationSpiRegistry(
+    DefaultKotlinCodeGenerationServiceRegistry(
+      KotlinCodeGeneration.spi.load()
+    )
+  )
   private val logicalTypes = registry.logicalTypes
 
   private fun avroPoetTypes(declaration: SchemaDeclaration) = AvroPoetTypeMap.avroPoetTypeMap(

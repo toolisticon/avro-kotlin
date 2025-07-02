@@ -11,7 +11,7 @@ import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationProcessor
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationStrategy
 import io.toolisticon.kotlin.generation.spi.processor.KotlinCodeGenerationProcessorList
-import io.toolisticon.kotlin.generation.spi.registry.KotlinCodeGenerationServiceRepository
+import io.toolisticon.kotlin.generation.spi.registry.DefaultKotlinCodeGenerationServiceRegistry
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyList
 import kotlin.reflect.KClass
 
@@ -23,21 +23,26 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   companion object {
     private val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
 
-    fun load(classLoader: ClassLoader = defaultClassLoader(), exclusions: Set<String> = emptySet()): AvroCodeGenerationSpiRegistry {
-      val registry = KotlinCodeGeneration.spi.registry(
-        contextTypeUpperBound = AvroDeclarationContext::class,
+    fun load(
+      classLoader: ClassLoader = defaultClassLoader(),
+      exclusions: Set<String> = emptySet()
+    ): AvroCodeGenerationSpiRegistry {
+      val codeGenerationSpiList = KotlinCodeGeneration.spi.load(
         classLoader = classLoader,
-        exclusions = exclusions
+        filter = {
+          it.name !in exclusions
+        },
       )
-      return AvroCodeGenerationSpiRegistry(registry)
+      val registry = DefaultKotlinCodeGenerationServiceRegistry(codeGenerationSpiList)
+      return AvroCodeGenerationSpiRegistry(
+        registry
+      )
     }
   }
 
   constructor(strategies: KotlinCodeGenerationStrategyList, processors: KotlinCodeGenerationProcessorList = KotlinCodeGenerationProcessorList()) : this(
-    registry = KotlinCodeGenerationServiceRepository(CONTEXT_UPPER_BOUND, processors, strategies)
+    registry = DefaultKotlinCodeGenerationServiceRegistry(processors, strategies)
   )
-
-  override val contextTypeUpperBound: KClass<*> = CONTEXT_UPPER_BOUND
 
   /**
    * Map of all registered logical types.
