@@ -20,7 +20,7 @@
 
   <properties>
     <jackson.version>2.19.1</jackson.version>
-    <kotlin-code-generation.version>0.1.4</kotlin-code-generation.version>
+    <kotlin-code-generation.version>0.2.2</kotlin-code-generation.version>
   </properties>
 
   <modules>
