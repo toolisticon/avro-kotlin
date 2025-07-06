@@ -15,8 +15,8 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroProtocol
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
 import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.CanonicalName
-import io.toolisticon.kotlin.avro.value.Namespace
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
+import kotlin.reflect.KClass
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [ProtocolDeclaration].
@@ -32,20 +32,27 @@ data class ProtocolDeclarationContext(
   override val avroPoetTypes: AvroPoetTypes,
   override val avroTypes: AvroTypesMap,
   val protocol: AvroProtocol,
+  val tags: MutableMap<KClass<*>, Any?> = mutableMapOf(),
 ) : AvroDeclarationContext, KotlinCodeGenerationContextBase<ProtocolDeclarationContext>(registry) {
   companion object {
 
-    internal fun ProtocolDeclarationContext.toSchemaDeclarationContext() = SchemaDeclarationContext(
-      source = this.source,
-      registry = this.registry,
-      properties = this.properties,
-      rootClassName = this.rootClassName,
-      canonicalName = this.canonicalName,
-      isRoot = false,
-      avroPoetTypes = this.avroPoetTypes,
-      avroTypes = this.avroTypes,
-      schema = EmptyType.schema
-    )
+    internal fun ProtocolDeclarationContext.toSchemaDeclarationContext(): SchemaDeclarationContext {
+      val schemaCtx = SchemaDeclarationContext(
+        source = this.source,
+        registry = this.registry,
+        properties = this.properties,
+        rootClassName = this.rootClassName,
+        canonicalName = this.canonicalName,
+        isRoot = false,
+        avroPoetTypes = this.avroPoetTypes,
+        avroTypes = this.avroTypes,
+        schema = EmptyType.schema
+      )
+
+      schemaCtx.tags.putAll(this.tags)
+
+      return schemaCtx
+    }
 
     fun of(
       declaration: ProtocolDeclaration,
@@ -78,4 +85,7 @@ data class ProtocolDeclarationContext(
   override val contextType = ProtocolDeclarationContext::class
 
   override val generatedTypes: MutableMap<AvroFingerprint, TypeName> = mutableMapOf()
+
+  @Suppress("UNCHECKED_CAST")
+  override fun <T : Any> tag(type: KClass<T>): T? = tags[type] as? T
 }

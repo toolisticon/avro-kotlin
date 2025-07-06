@@ -7,6 +7,7 @@ import io.toolisticon.kotlin.avro.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema.Companion.copy
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isRecordType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaField
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.Protocol.Message
@@ -18,7 +19,9 @@ import org.apache.avro.Protocol.Message
  *
  * When we read a protocol, we create this abstraction.
  */
-class RequestType(override val schema: AvroSchema) : AvroNamedType, AvroMessageRequestType,
+class RequestType(override val schema: AvroSchema) :
+  AvroNamedTypeWithFields<RequestType, RequestField>,
+  AvroMessageRequestType,
   WithEnclosedTypes,
   WithDocumentation,
   SchemaSupplier by schema,
@@ -49,9 +52,7 @@ class RequestType(override val schema: AvroSchema) : AvroNamedType, AvroMessageR
   override val fingerprint: AvroFingerprint = schema.fingerprint
   override val documentation: Documentation? = schema.documentation
 
-  val fields: List<RecordField> by lazy { schema.fields.map { RecordField(it) } }
-
-  fun getField(name: Name): RecordField? = fields.find { it.name == name }
+  override val fields: List<RequestField> by lazy { schema.fields.map { RequestField(it, this) } }
 
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(fields.map { it.schema }) }
 
@@ -71,3 +72,8 @@ class RequestType(override val schema: AvroSchema) : AvroNamedType, AvroMessageR
   override fun equals(other: Any?) = equalsFn(other)
   override fun hashCode() = hashCodeFn()
 }
+
+/**
+ * Used by [RequestType] to encapsulate [org.apache.avro.Schema.Field].
+ */
+class RequestField(schemaField: AvroSchemaField, memberOf: RequestType) : AvroFieldType<RequestType>(schemaField, memberOf)

@@ -18,6 +18,7 @@ import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
 import io.toolisticon.kotlin.avro.value.AvroFingerprint
 import io.toolisticon.kotlin.avro.value.CanonicalName
 import io.toolisticon.kotlin.generation.spi.context.KotlinCodeGenerationContextBase
+import kotlin.reflect.KClass
 
 /**
  * Concrete implementation of [AvroDeclarationContext] for a [SchemaDeclaration].
@@ -33,6 +34,7 @@ data class SchemaDeclarationContext(
   override val avroPoetTypes: AvroPoetTypes,
   override val avroTypes: AvroTypesMap,
   val schema: AvroSchema,
+  val tags: MutableMap<KClass<*>, Any?> = mutableMapOf(),
 ) : AvroDeclarationContext, KotlinCodeGenerationContextBase<SchemaDeclarationContext>(registry) {
   companion object {
 
@@ -81,4 +83,7 @@ data class SchemaDeclarationContext(
   }
 
   override val generatedTypes: MutableMap<AvroFingerprint, TypeName> = mutableMapOf()
+
+  @Suppress("UNCHECKED_CAST")
+  override fun <T : Any> tag(type: KClass<T>): T? = tags[type] as? T
 }

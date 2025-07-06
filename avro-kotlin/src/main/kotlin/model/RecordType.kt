@@ -6,9 +6,9 @@ import io.toolisticon.kotlin.avro.model.AvroType.Companion.equalsFn
 import io.toolisticon.kotlin.avro.model.AvroType.Companion.hashCodeFn
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isRecordType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaField
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
-
 
 /**
  * Records use the type name “record” and support the following attributes:
@@ -23,9 +23,7 @@ import io.toolisticon.kotlin.avro.value.*
  *   * type: a schema, as defined above
  *   * default: A default value for this field, only used when reading instances that lack the field for schema evolution purposes. The presence of a default value does not make the field optional at encoding time. Permitted values depend on the field’s schema type, according to the table below. Default values for union fields correspond to the first schema in the union. Default values for bytes and fixed fields are JSON strings, where Unicode code points 0-255 are mapped to unsigned 8-bit byte values 0-255. Avro encodes a field even if its value is equal to its default.
  */
-class RecordType(override val schema: AvroSchema) :
-  AvroNamedType,
-  WithEnclosedTypes,
+class RecordType(override val schema: AvroSchema) : AvroNamedTypeWithFields<RecordType, RecordField>, WithEnclosedTypes,
   WithDocumentation,
   SchemaSupplier by schema,
   WithObjectProperties by schema {
@@ -42,9 +40,7 @@ class RecordType(override val schema: AvroSchema) :
   override val documentation: Documentation? get() = schema.documentation
 
   val isRoot: Boolean get() = schema.isRoot
-  val fields: List<RecordField> by lazy { schema.fields.map { RecordField(it) } }
-
-  fun getField(name: Name): RecordField? = fields.find { it.name == name }
+  override val fields: List<RecordField> by lazy { schema.fields.map { RecordField(it, this) } }
 
   override val typesMap: AvroTypesMap by lazy { AvroTypesMap(fields.map { it.schema }) }
 
@@ -66,3 +62,8 @@ class RecordType(override val schema: AvroSchema) :
   override fun equals(other: Any?) = equalsFn(other)
   override fun hashCode() = hashCodeFn()
 }
+
+/**
+ * Used by [RecordType] to encapsulate [org.apache.avro.Schema.Field].
+ */
+class RecordField(schemaField: AvroSchemaField, memberOf: RecordType) : AvroFieldType<RecordType>(schemaField, memberOf)
