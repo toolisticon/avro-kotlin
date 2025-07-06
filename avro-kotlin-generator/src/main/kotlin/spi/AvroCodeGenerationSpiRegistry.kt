@@ -6,12 +6,14 @@ import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecFromProtocolDec
 import io.toolisticon.kotlin.avro.generator.strategy.AvroFileSpecListFromProtocolDeclarationStrategy
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.defaultClassLoader
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.spi.filter.hasContextType
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationContext
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationProcessor
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationSpiRegistry
 import io.toolisticon.kotlin.generation.spi.KotlinCodeGenerationStrategy
 import io.toolisticon.kotlin.generation.spi.processor.KotlinCodeGenerationProcessorList
 import io.toolisticon.kotlin.generation.spi.registry.DefaultKotlinCodeGenerationServiceRegistry
+import io.toolisticon.kotlin.generation.spi.registry.KotlinCodeGenerationSpiList
 import io.toolisticon.kotlin.generation.spi.strategy.KotlinCodeGenerationStrategyList
 import kotlin.reflect.KClass
 
@@ -22,6 +24,7 @@ import kotlin.reflect.KClass
 class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) : KotlinCodeGenerationSpiRegistry by registry {
   companion object {
     private val CONTEXT_UPPER_BOUND = AvroDeclarationContext::class
+    val hasContextType = hasContextType(CONTEXT_UPPER_BOUND)
 
     fun load(
       classLoader: ClassLoader = defaultClassLoader(),
@@ -33,12 +36,11 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
           it.name !in exclusions
         },
       )
-      val registry = DefaultKotlinCodeGenerationServiceRegistry(codeGenerationSpiList)
-      return AvroCodeGenerationSpiRegistry(
-        registry
-      )
+      return AvroCodeGenerationSpiRegistry(codeGenerationSpiList)
     }
   }
+
+  constructor(spi: KotlinCodeGenerationSpiList) : this(registry = spi.filter(hasContextType).registry())
 
   constructor(strategies: KotlinCodeGenerationStrategyList, processors: KotlinCodeGenerationProcessorList = KotlinCodeGenerationProcessorList()) : this(
     registry = DefaultKotlinCodeGenerationServiceRegistry(processors, strategies)
@@ -63,10 +65,13 @@ class AvroCodeGenerationSpiRegistry(registry: KotlinCodeGenerationSpiRegistry) :
   /**
    * Get filtered processors of given type.
    */
-  fun <PROCESSOR : KotlinCodeGenerationProcessor<CONTEXT, INPUT, BUILDER>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, BUILDER : Any> processors(type: KClass<PROCESSOR>): List<PROCESSOR> = processors.filter(type)
+  fun <PROCESSOR : KotlinCodeGenerationProcessor<CONTEXT, INPUT, BUILDER>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, BUILDER : Any> processors(
+    type: KClass<PROCESSOR>
+  ): List<PROCESSOR> = processors.filter(type)
 
   /**
    * Get filtered strategies of given type.
    */
-  fun <STRATEGY : KotlinCodeGenerationStrategy<CONTEXT, INPUT, SPEC>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, SPEC : Any> strategies(type: KClass<STRATEGY>): List<STRATEGY> = strategies.filter(type)
+  fun <STRATEGY : KotlinCodeGenerationStrategy<CONTEXT, INPUT, SPEC>, CONTEXT : KotlinCodeGenerationContext<CONTEXT>, INPUT : Any, SPEC : Any> strategies(type: KClass<STRATEGY>): List<STRATEGY> =
+    strategies.filter(type)
 }
