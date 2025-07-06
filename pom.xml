@@ -11,7 +11,7 @@
 
   <groupId>io.toolisticon.kotlin.avro._</groupId>
   <artifactId>avro-kotlin-root</artifactId>
-  <version>1.12.5.0</version>
+  <version>1.12.5.1</version>
 
   <name>pom: ${project.artifactId}</name>
   <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
@@ -20,7 +20,7 @@
 
   <properties>
     <jackson.version>2.19.1</jackson.version>
-    <kotlin-code-generation.version>0.2.2</kotlin-code-generation.version>
+    <kotlin-code-generation.version>0.2.3</kotlin-code-generation.version>
   </properties>
 
   <modules>

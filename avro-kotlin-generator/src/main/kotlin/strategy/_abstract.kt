@@ -40,6 +40,11 @@ abstract class AvroRecordTypeSpecStrategy : AvroNamedTypeSpecStrategy<RecordType
   abstract override fun invoke(context: SchemaDeclarationContext, input: RecordType): KotlinDataClassSpec
   override fun test(context: SchemaDeclarationContext, input: Any): Boolean = input is RecordType
 
+  /**
+   * Creates a list of [KotlinConstructorPropertySpecSupplier] for the fields of the given [RecordType].
+   *
+   * Runs [KotlinConstructorPropertyStrategy] for each field in the record type.
+   */
   protected fun parameterSpecs(
     context: SchemaDeclarationContext,
     input: RecordType

@@ -7,18 +7,21 @@ internal class AvroTypeTest {
 
   @Test
   fun `list all subtypes`() {
-    assertThat(avroTypes()).hasSize(22)
+    assertThat(avroTypes()).hasSize(26)
       .containsExactlyInAnyOrder(
         ArrayType::class,
         AvroContainerType::class,
         AvroNamedType::class,
+        AvroNamedTypeWithFields::class,
         AvroPrimitiveType::class,
+        AvroFieldType::class,
         BooleanType::class,
         BytesType::class,
         DoubleType::class,
         EmptyType::class,
         EnumType::class,
         ErrorType::class,
+        ErrorField::class,
         FixedType::class,
         FloatType::class,
         IntType::class,
@@ -29,9 +32,9 @@ internal class AvroTypeTest {
         RecordField::class,
         RecordType::class,
         RequestType::class,
+        RequestField::class,
         StringType::class,
         UnionType::class,
       )
-
   }
 }

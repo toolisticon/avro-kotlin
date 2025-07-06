@@ -1,10 +1,12 @@
 package io.toolisticon.kotlin.avro.model
 
+import _ktx.StringKtx
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isEmptyType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isError
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isMessageRequestType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isOptionalType
+import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaField
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaSupplier
 import io.toolisticon.kotlin.avro.value.*
 import org.apache.avro.LogicalType
@@ -141,6 +143,49 @@ sealed interface AvroPrimitiveType : AvroType {
 sealed interface AvroNamedType : AvroType, WithDocumentation {
   val namespace: Namespace?
 }
+
+/**
+ * Marks the types that have fields, like RECORD, REQUEST and ERROR.
+ */
+sealed interface AvroNamedTypeWithFields<SELF : AvroNamedTypeWithFields<SELF, *>, T : AvroFieldType<SELF>> : AvroNamedType {
+  /**
+   * @return the fields of this type.
+   */
+  val fields: List<T>
+
+  /**
+   * @return the field with the given [name], or `null` if not found.
+   */
+  fun getField(name: Name): T? = fields.find { it.name == name }
+}
+
+/**
+ * Used by [ErrorType], [RecordType] and [RequestType] to encapsulate [org.apache.avro.Schema.Field].
+ */
+sealed class AvroFieldType<T : AvroNamedTypeWithFields<*, *>>(
+  protected val schemaField: AvroSchemaField,
+  val memberOf: T
+) : AvroType, WithDocumentation,
+  WithObjectProperties,
+  SchemaSupplier by schemaField {
+
+  override val schema: AvroSchema = schemaField.schema
+  override val name: Name = schemaField.name
+  override val hashCode: AvroHashCode = schemaField.schema.hashCode
+  override val fingerprint: AvroFingerprint = schemaField.schema.fingerprint
+  override val properties: ObjectProperties = schemaField.properties
+  val type: AvroType by lazy { AvroType.avroType(schema) }
+  override val documentation: Documentation? = schemaField.documentation
+
+  override fun toString() = StringKtx.toString(this::class.java.simpleName) {
+    add("name", name)
+    add("type", type)
+    addIfNotNull("documentation", schemaField.documentation)
+    addIfNotEmpty("properties", properties.filterIgnoredKeys())
+    add("memberOf", memberOf.schema.canonicalName)
+  }
+}
+
 
 /**
  * A container type is an anonymous wrapper around other [AvroType](s).
