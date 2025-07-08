@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-root</artifactId>
-    <version>1.12.5.1</version>
+    <version>1.12.5.2</version>
   </parent>
 
   <artifactId>avro-kotlin-examples-root</artifactId>
@@ -67,18 +67,6 @@
         <version>${project.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>io.github.microutils</groupId>
-        <artifactId>kotlin-logging-jvm</artifactId>
-        <version>3.0.5</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-        <scope>compile</scope>
-      </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
