@@ -40,6 +40,12 @@
       <groupId>org.javamoney.moneta</groupId>
       <artifactId>moneta-core</artifactId>
       <version>1.4.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib-common</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

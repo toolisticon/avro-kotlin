@@ -49,6 +49,12 @@
       <groupId>io.toolisticon.maven</groupId>
       <artifactId>kotlin-mojo-helper</artifactId>
       <version>${kotlin-mojo-helper.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib-common</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
