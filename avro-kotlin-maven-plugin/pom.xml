@@ -17,7 +17,7 @@
   <properties>
     <maven.version>3.9.11</maven.version>
     <kotlin-mojo-helper.version>0.1.0</kotlin-mojo-helper.version>
-    <maven-plugin-api.version>3.9.10</maven-plugin-api.version>
+    <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <mojo-executor.version>2.4.0</mojo-executor.version>
     <ktfmt.version>0.56</ktfmt.version>
