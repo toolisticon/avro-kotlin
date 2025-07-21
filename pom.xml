@@ -19,7 +19,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <jackson.version>2.19.1</jackson.version>
+    <jackson.version>2.19.2</jackson.version>
     <kotlin-code-generation.version>0.2.4</kotlin-code-generation.version>
   </properties>
 
