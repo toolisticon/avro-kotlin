@@ -20,7 +20,7 @@
 
   <properties>
     <jackson.version>2.19.2</jackson.version>
-    <kotlin-code-generation.version>0.2.4</kotlin-code-generation.version>
+    <kotlin-code-generation.version>0.2.5</kotlin-code-generation.version>
   </properties>
 
   <modules>
@@ -42,7 +42,7 @@
   <dependencyManagement>
     <dependencies>
       <!-- JACKSON BOM -->
-      <!-- apache avro brings outdated jackson, we include latest versions  -->
+      <!-- Apache Avro brings outdated jackson, we include later versions, preferably the ones also used by current spring boot.  -->
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
