@@ -5,13 +5,16 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-lib-root</artifactId>
-    <version>1.12.5.2</version>
+    <version>1.12.5.3</version>
   </parent>
 
   <groupId>io.toolisticon.kotlin.avro.lib</groupId>
   <artifactId>avro</artifactId>
   <name>lib: ${project.artifactId}</name>
-  <description>Replace outdated dependencies of org.apache.avro/avro.</description>
+  <description>
+    Custom wrapper of 'org.apache.avro/avro' for internal use in 'io.toolisticon.kotlin.avro' only.
+    Replaces transitive dependency versions without modifying the wrapped dependency.
+  </description>
 
   <dependencies>
     <!-- AVRO-CORE(${avro.version}) with clean transitive dependencies -->

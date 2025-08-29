@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
-    <version>1.12.5.2</version>
+    <version>1.12.5.3</version>
     <relativePath>../_build/parent/pom.xml</relativePath>
   </parent>
 
@@ -15,12 +15,12 @@
   <packaging>maven-plugin</packaging>
 
   <properties>
-    <maven.version>3.9.10</maven.version>
+    <maven.version>3.9.11</maven.version>
     <kotlin-mojo-helper.version>0.1.0</kotlin-mojo-helper.version>
-    <maven-plugin-api.version>3.9.10</maven-plugin-api.version>
+    <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <mojo-executor.version>2.4.0</mojo-executor.version>
-    <ktfmt.version>0.56</ktfmt.version>
+    <ktfmt.version>0.58</ktfmt.version>
     <itf.version>0.13.1</itf.version>
   </properties>
 

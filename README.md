@@ -62,7 +62,7 @@ The assumption is, that the location of an avro file follows the java fqn/packag
 
 ### Semantic Versioning
 
-To reflect the version of the underlying `avro-core` library, we use a 4-digit semantic versioning concept (semVer). Take the current release version: `1.11.2.0`, 
+To reflect the version of the underlying `avro-core` library, we use a 4-digit semantic versioning concept (semVer). For example, our release version: `1.11.2.0`, 
 which uses version `1.11.3` of the `avro-core` lib:
 
 * The first two digits `1.11` refer to the major/minor digits of the apache lib. Together they build the `major` version of `avro-kotlin`. We assume our lib to not have breaking (major) changes, unless the underlying apache library provides them
