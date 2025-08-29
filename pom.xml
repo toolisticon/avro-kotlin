@@ -11,7 +11,7 @@
 
   <groupId>io.toolisticon.kotlin.avro._</groupId>
   <artifactId>avro-kotlin-root</artifactId>
-  <version>1.12.5.3-SNAPSHOT</version>
+  <version>1.12.5.3</version>
 
   <name>pom: ${project.artifactId}</name>
   <description>Root of opinionated extension functions and helpers for using Apache Avro with Kotlin.</description>
