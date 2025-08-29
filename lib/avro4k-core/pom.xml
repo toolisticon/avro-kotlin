@@ -11,7 +11,10 @@
   <groupId>io.toolisticon.kotlin.avro.lib</groupId>
   <artifactId>avro4k-core</artifactId>
   <name>lib: ${project.artifactId}</name>
-  <description>Replace outdated dependencies of com.github.avro-kotlin.avro4k/avro4k-core.</description>
+  <description>
+    Custom wrapper of 'com.github.avro-kotlin.avro4k/avro4k-core' for internal use in 'io.toolisticon.kotlin.avro' only.
+    Replaces transitive dependency versions without modifying the wrapped dependency.
+  </description>
 
   <properties>
     <jacoco.skip>true</jacoco.skip>

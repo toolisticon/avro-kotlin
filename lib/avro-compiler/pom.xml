@@ -11,7 +11,10 @@
   <groupId>io.toolisticon.kotlin.avro.lib</groupId>
   <artifactId>avro-compiler</artifactId>
   <name>lib: ${project.artifactId}</name>
-  <description>Replace outdated dependencies of org.apache.avro/avro-compiler.</description>
+  <description>
+    Custom wrapper of 'org.apache.avro/avro-compiler' for internal use in 'io.toolisticon.kotlin.avro' only.
+    Replaces transitive dependency versions without modifying the wrapped dependency.
+  </description>
 
   <dependencies>
     <!-- AVRO-COMPILER(${avro.version}) -->
