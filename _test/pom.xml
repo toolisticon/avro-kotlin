@@ -16,7 +16,7 @@
 
   <properties>
     <assertj.version>3.27.4</assertj.version>
-    <equalsverifier.version>4.0.9</equalsverifier.version>
+    <equalsverifier.version>4.1</equalsverifier.version>
     <logback.version>1.5.18</logback.version>
     <mockito-kotlin.version>6.0.0</mockito-kotlin.version>
     <moneta.version>1.4.5</moneta.version>
