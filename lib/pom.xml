@@ -15,7 +15,7 @@
 
   <properties>
     <avro.version>1.12.0</avro.version>
-    <avro4k.version>v2.4.1</avro4k.version>
+    <avro4k.version>2.5.2</avro4k.version>
     <commons-compress.version>1.28.0</commons-compress.version>
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <commons-text.version>1.14.0</commons-text.version>
