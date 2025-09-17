@@ -5,8 +5,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.logical.AvroKotlinLogicalTypeDefinition
 import io.toolisticon.kotlin.avro.generator.logical.LogicalTypeMap
 import io.toolisticon.kotlin.avro.model.*
