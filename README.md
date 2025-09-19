@@ -24,7 +24,6 @@ easily accessible from kotlin. The mission is to become your one-stop lib when d
 </dependency>
 ```
 
-
 ## Apache Avro
 
 > **Apache Avro is a data serialization system.**
