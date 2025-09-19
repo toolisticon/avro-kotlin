@@ -5,7 +5,7 @@ easily accessible from kotlin. The mission is to become your one-stop lib when d
 
 [![stable](https://img.shields.io/badge/lifecycle-STABLE-green.svg)](https://github.com/holisticon#open-source-lifecycle)
 [![Maven Central Version](https://img.shields.io/maven-central/v/io.toolisticon.kotlin.avro/avro-kotlin-bom)](https://central.sonatype.com/namespace/io.toolisticon.kotlin.avro)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Kotlinx serialization](https://img.shields.io/badge/kotlinx--serialization-1.9.0-blue?logo=kotlin)](https://github.com/Kotlin/kotlinx.serialization)
 [![Avro spec](https://img.shields.io/badge/avro%20spec-1.12.0-blue.svg?logo=apache)](https://avro.apache.org/docs/1.12.0/specification/)
 [![Build Status](https://github.com/toolisticon/avro-kotlin/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/avro-kotlin/actions)
@@ -23,7 +23,6 @@ easily accessible from kotlin. The mission is to become your one-stop lib when d
     <scope>import</scope>
 </dependency>
 ```
-
 
 ## Apache Avro
 

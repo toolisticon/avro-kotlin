@@ -6,7 +6,7 @@ import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.ProtocolDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
+import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.model.AvroTypesMap

@@ -12,7 +12,7 @@ import io.toolisticon.kotlin.avro.model.*
 import io.toolisticon.kotlin.avro.value.toKebabCase
 import io.toolisticon.kotlin.generation.FileName
 import io.toolisticon.kotlin.generation.KotlinCodeGeneration.builder.fileBuilder
-import io.toolisticon.kotlin.generation.KotlinCodeGeneration.className
+import io.toolisticon.kotlin.generation.KotlinCodeGeneration.name.className
 import io.toolisticon.kotlin.generation.spec.KotlinFileSpec
 import io.toolisticon.kotlin.generation.spec.KotlinGeneratorTypeSpec
 import io.toolisticon.kotlin.generation.spi.EmptyInput

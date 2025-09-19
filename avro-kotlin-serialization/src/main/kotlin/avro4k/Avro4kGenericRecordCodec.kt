@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.serialization.avro4k
 
 import com.github.avrokotlin.avro4k.Avro
+import com.github.avrokotlin.avro4k.ExperimentalAvro4kApi
 import com.github.avrokotlin.avro4k.decodeFromGenericData
 import com.github.avrokotlin.avro4k.encodeToGenericData
 import io.toolisticon.kotlin.avro.codec.AvroCodec
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
 /**
  * Provides [GenericRecordDecoder] and [GenericRecordEncoder] using avro4k.
  */
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 class Avro4kGenericRecordCodec(
   private val avro4k: Avro,
   private val serializerCache: AvroCache.SerializerByClassCache,

@@ -2,6 +2,7 @@ package io.toolisticon.kotlin.avro.serialization
 
 import com.github.avrokotlin.avro4k.Avro
 import com.github.avrokotlin.avro4k.AvroSingleObject
+import com.github.avrokotlin.avro4k.ExperimentalAvro4kApi
 import io.toolisticon.kotlin.avro.AvroKotlin
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchema
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolver
@@ -24,7 +25,7 @@ import org.apache.avro.generic.GenericRecord
 import java.lang.Runtime.Version
 import kotlin.reflect.KClass
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 class AvroKotlinSerialization(
   val avro4k: Avro,
   private val schemaResolver: AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY,

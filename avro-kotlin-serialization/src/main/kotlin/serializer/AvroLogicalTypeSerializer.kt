@@ -3,6 +3,7 @@ package io.toolisticon.kotlin.avro.serialization.serializer
 import _ktx.StringKtx
 import com.github.avrokotlin.avro4k.AvroDecoder
 import com.github.avrokotlin.avro4k.AvroEncoder
+import com.github.avrokotlin.avro4k.ExperimentalAvro4kApi
 import com.github.avrokotlin.avro4k.serializer.AvroSerializer
 import com.github.avrokotlin.avro4k.serializer.SchemaSupplierContext
 import io.toolisticon.kotlin.avro.logical.AvroLogicalType
@@ -13,7 +14,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.PrimitiveKind
 import org.apache.avro.Schema
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 sealed class AvroLogicalTypeSerializer<LOGICAL : AvroLogicalType<JVM_TYPE>, JVM_TYPE : Any, CONVERTED_TYPE : Any>(
   val conversion: AvroLogicalTypeConversion<LOGICAL, JVM_TYPE, CONVERTED_TYPE>,
   private val primitiveKind: PrimitiveKind,

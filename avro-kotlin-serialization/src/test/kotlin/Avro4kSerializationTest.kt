@@ -10,7 +10,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 internal class Avro4kSerializationTest {
 
   private val avro4k = Avro.Default

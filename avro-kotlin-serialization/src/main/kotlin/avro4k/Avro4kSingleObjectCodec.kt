@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.serialization.avro4k
 
 import com.github.avrokotlin.avro4k.AvroSingleObject
+import com.github.avrokotlin.avro4k.ExperimentalAvro4kApi
 import com.github.avrokotlin.avro4k.encodeToByteArray
 import io.toolisticon.kotlin.avro.codec.AvroCodec
 import io.toolisticon.kotlin.avro.codec.AvroCodec.SingleObjectDecoder
@@ -14,7 +15,7 @@ import kotlin.reflect.KClass
 /**
  * Provides [SingleObjectDecoder] and [SingleObjectEncoder] using avro4k.
  */
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 class Avro4kSingleObjectCodec(
   private val avro4kSingleObject: AvroSingleObject,
   private val schemaResolver: AvroSchemaResolver,

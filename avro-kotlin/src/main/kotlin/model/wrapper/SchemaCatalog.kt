@@ -1,7 +1,6 @@
 package io.toolisticon.kotlin.avro.model.wrapper
 
 import io.toolisticon.kotlin.avro.AvroKotlin.orEmpty
-import io.toolisticon.kotlin.avro.model.AvroTypesMap.Companion.typesMap
 import io.toolisticon.kotlin.avro.model.SchemaType
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSchemaChecks.isPrimitive
 import io.toolisticon.kotlin.avro.model.wrapper.SchemaCatalog.Companion.bySchemaType
@@ -13,8 +12,7 @@ import org.apache.avro.Schema
  * Internal helper class to create the map of enclosed schemas. We can have self-referencing schemas and need to carefully remove them to avoid
  * endless loops or duplicates, and this proved to be working.
  */
-@Suppress("DataClassPrivateConstructor")
-internal data class SchemaCatalog private constructor(
+internal class SchemaCatalog private constructor(
   private val map: Map<AvroHashCode, AvroSchema>,
   val graph: Graph<AvroHashCode>
 ) : Map<AvroHashCode, AvroSchema> by map {
@@ -74,28 +72,28 @@ internal data class SchemaCatalog private constructor(
     } else {
       val enclosed = schema.get().enclosed()
 
-      copy(
+      SchemaCatalog(
         map = map + mapOf(schema.hashCode to schema),
         graph = graph + schema.hashCode + enclosed.map { schema.hashCode to it.hashCode }
       ).plus(enclosed)
     }
   }
 
-  operator fun minus(hashCode: AvroHashCode) = copy(
+  operator fun minus(hashCode: AvroHashCode) = SchemaCatalog(
     map = map - hashCode,
     graph = graph - hashCode
   )
 
-  val allHashCodes : Set<AvroHashCode> by lazy {
+  val allHashCodes: Set<AvroHashCode> by lazy {
     LinkedHashSet(graph.vertexes)
   }
 
-  fun sub(hashCode: AvroHashCode) : SchemaCatalog {
+  fun sub(hashCode: AvroHashCode): SchemaCatalog {
     val newGraph = graph.subGraphFor(hashCode)
     val remainingHashCodes = newGraph.vertexes.toSet()
     val newMap = map.filter { remainingHashCodes.contains(it.key) }
 
-    return copy(graph = newGraph, map = newMap)
+    return SchemaCatalog(graph = newGraph, map = newMap)
   }
 }
 

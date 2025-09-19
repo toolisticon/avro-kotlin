@@ -1,4 +1,4 @@
-package io.toolisticon.kotlin.avro.generator.api
+package io.toolisticon.kotlin.avro.generator.poet
 
 import _ktx.StringKtx
 import com.squareup.kotlinpoet.TypeName

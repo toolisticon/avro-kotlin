@@ -16,6 +16,7 @@ import org.apache.avro.SchemaBuilder
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.support.ParameterDeclarations
 import java.util.*
 import java.util.stream.Stream
 import kotlin.streams.asStream
@@ -104,7 +105,7 @@ object TestFixtures {
    * used by parameterized tests.
    */
   class AvroFilesArgumentProvider : ArgumentsProvider {
-    override fun provideArguments(ctx: ExtensionContext): Stream<out Arguments> = findAvroResources()
+    override fun provideArguments(parameters: ParameterDeclarations, ctx: ExtensionContext): Stream<out Arguments> = findAvroResources()
       .flatMap { (k, v) ->
         v.map { k to it }
       }.asSequence()
