@@ -3,7 +3,7 @@ package io.toolisticon.kotlin.avro.generator.strategy
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.addKDoc
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
+import io.toolisticon.kotlin.avro.generator.poet.AvroPoetType
 import io.toolisticon.kotlin.avro.generator.poet.SerialNameAnnotation
 import io.toolisticon.kotlin.avro.generator.poet.SerializableAnnotation
 import io.toolisticon.kotlin.avro.generator.processor.KotlinDataClassFromRecordTypeProcessorBase

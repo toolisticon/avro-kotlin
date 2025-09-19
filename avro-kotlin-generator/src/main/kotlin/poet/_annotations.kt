@@ -1,6 +1,7 @@
 package io.toolisticon.kotlin.avro.generator.poet
 
 import com.github.avrokotlin.avro4k.AvroDecimal
+import com.github.avrokotlin.avro4k.ExperimentalAvro4kApi
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ExperimentalKotlinPoetApi
 import io.toolisticon.kotlin.avro.generator.Avro4kSerializerKClass
@@ -28,7 +29,7 @@ data class SerializableAnnotation(val serializerClass: Avro4kSerializerKClass? =
  * Creates a [KotlinAnnotationSpec] for `@AvroDecimal(precision=..., scale=..)` as required for
  * logical type decimal when not using defaults.
  */
-@OptIn(ExperimentalKotlinPoetApi::class, ExperimentalSerializationApi::class)
+@OptIn(ExperimentalKotlinPoetApi::class, ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 data class AvroDecimalAnnotation(val precision: Int = 0, val scale: Int = 0) : KotlinAnnotationSpecSupplier {
   override fun spec(): KotlinAnnotationSpec = buildAnnotation(AvroDecimal::class) {
     addNumberMember("precision", precision)

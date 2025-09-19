@@ -2,10 +2,9 @@ package io.toolisticon.kotlin.avro.generator.spi
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
-import io.toolisticon.kotlin.avro.declaration.AvroDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetType
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
+import io.toolisticon.kotlin.avro.generator.poet.AvroPoetType
+import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypes
 import io.toolisticon.kotlin.avro.model.AvroTypesMap
 import io.toolisticon.kotlin.avro.model.wrapper.AvroSource
 import io.toolisticon.kotlin.avro.value.*

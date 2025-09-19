@@ -6,8 +6,8 @@ import com.squareup.kotlinpoet.TypeName
 import io.toolisticon.kotlin.avro.declaration.SchemaDeclaration
 import io.toolisticon.kotlin.avro.generator.AvroKotlinGeneratorProperties
 import io.toolisticon.kotlin.avro.generator.DefaultAvroKotlinGeneratorProperties
-import io.toolisticon.kotlin.avro.generator.api.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypeMap
+import io.toolisticon.kotlin.avro.generator.poet.AvroPoetTypes
 import io.toolisticon.kotlin.avro.generator.rootClassName
 import io.toolisticon.kotlin.avro.generator.strategy.AvroEnumTypeSpecStrategy
 import io.toolisticon.kotlin.avro.generator.strategy.AvroRecordTypeSpecStrategy
