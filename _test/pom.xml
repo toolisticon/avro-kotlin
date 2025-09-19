@@ -15,7 +15,7 @@
   <description>Common test library for all libraries provided by avro-kotlin.</description>
 
   <properties>
-    <assertj.version>3.27.4</assertj.version>
+    <assertj.version>3.27.5</assertj.version>
     <equalsverifier.version>4.1</equalsverifier.version>
     <logback.version>1.5.18</logback.version>
     <mockito-kotlin.version>6.0.0</mockito-kotlin.version>
