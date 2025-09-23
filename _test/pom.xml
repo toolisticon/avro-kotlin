@@ -15,7 +15,7 @@
   <description>Common test library for all libraries provided by avro-kotlin.</description>
 
   <properties>
-    <equalsverifier.version>4.1</equalsverifier.version>
+    <equalsverifier.version>4.1.1</equalsverifier.version>
     <logback.version>1.5.18</logback.version>
     <moneta.version>1.4.5</moneta.version>
     <okio.version>3.9.0</okio.version>
