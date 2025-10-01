@@ -16,7 +16,7 @@
 
   <properties>
     <equalsverifier.version>4.1.1</equalsverifier.version>
-    <logback.version>1.5.18</logback.version>
+    <logback.version>1.5.19</logback.version>
     <moneta.version>1.4.5</moneta.version>
     <okio.version>3.9.0</okio.version>
     <slf4j.version>2.0.17</slf4j.version>
