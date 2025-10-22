@@ -13,7 +13,7 @@ import java.util.*
 import javax.money.format.AmountFormatQuery
 import javax.money.format.MonetaryFormats
 
-object MoneyLogicalType : StringLogicalType("money".toLogicalTypeName()) {
+data object MoneyLogicalType : StringLogicalType("money".toLogicalTypeName()) {
 
   val convertedType = Money::class
   val conversion = MoneyConversion()

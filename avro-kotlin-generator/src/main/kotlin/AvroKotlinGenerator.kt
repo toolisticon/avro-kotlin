@@ -20,7 +20,7 @@ open class AvroKotlinGenerator(
   val properties: AvroKotlinGeneratorProperties = DefaultAvroKotlinGeneratorProperties()
 ) {
   companion object {
-    val NAME = AvroKotlinGenerator::class.java.name
+    val NAME: String = AvroKotlinGenerator::class.java.name
   }
 
   constructor(
