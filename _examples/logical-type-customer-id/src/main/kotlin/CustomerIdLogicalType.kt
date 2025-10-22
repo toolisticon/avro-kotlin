@@ -8,7 +8,7 @@ import io.toolisticon.kotlin.avro.serialization.spi.AvroSerializerModuleFactory
 import io.toolisticon.kotlin.avro.value.LogicalTypeName.Companion.toLogicalTypeName
 import kotlinx.serialization.modules.SerializersModule
 
-object CustomerIdLogicalType : StringLogicalType(name = "customer-id".toLogicalTypeName()) {
+data object CustomerIdLogicalType : StringLogicalType(name = "customer-id".toLogicalTypeName()) {
 
   class CustomerIdLogicalTypeFactory : StringLogicalTypeFactory<CustomerIdLogicalType>(logicalType = CustomerIdLogicalType)
 
