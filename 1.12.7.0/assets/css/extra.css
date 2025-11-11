@@ -1,0 +1,64 @@
+/*
+ * General customizations
+ */
+/* Customize logo size */
+.md-header__button.md-logo img, .md-header__button.md-logo {
+  height: 15%;
+  width: 15%;
+}
+
+
+
+[data-md-color-scheme="default"] {
+
+  /*
+ Holisticon colors
+ */
+  --bright-green: #C8FFA5;
+  --black-green: #102924;
+  --forest-green: #1E4132;
+  --blue-gray: #C7CFEB;
+  --blue-gray-d2: #9CA4B8;
+  --black: #141419;
+  --forest-green-b2: #396D55;
+  --forest-green-b3: #478467;
+
+  --red: #ff0000;
+
+
+  /*
+   Default colors adjustments
+   */
+  --md-primary-fg-color: var(--forest-green);
+  --md-accent-fg-color: var(--blue-gray-d2);
+  --md-footer-bg-color: var(--forest-green);
+  --md-typeset-a-color: var(--forest-green-b2);
+}
+
+[data-md-color-scheme="slate"] {
+
+  --bright-green: #C8FFA5;
+  --black-green: #102924;
+  --forest-green: #1E4132;
+  --blue-gray: #C7CFEB;
+  --black: #141419;
+
+  --forest-green-b2: #396D55;
+  --forest-green-b3: #478467;
+
+
+  --red: #ff0000;
+  /*
+   Default colors adjustments
+   */
+  --md-default-bg-color: var(--black-green);
+  --md-primary-fg-color: var(--black-green);
+  --md-default-fg-color--light: var(--bright-green);
+  --md-default-fg-color--dark: var(--bright-green);
+
+  --md-typeset-color: var(--bright-green);
+  --md-typeset-a-color: var(--blue-gray);
+
+  --md-accent-fg-color: var(--forest-green-b3);
+  --md-footer-bg-color: var(--black);
+}
