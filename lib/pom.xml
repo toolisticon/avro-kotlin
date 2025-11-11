@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-root</artifactId>
-    <version>1.12.6.1</version>
+    <version>1.12.7.0</version>
   </parent>
 
   <artifactId>avro-lib-root</artifactId>
@@ -14,12 +14,11 @@
   <name>pom: ${project.artifactId}</name>
 
   <properties>
-    <avro.version>1.12.0</avro.version>
-    <avro4k.version>2.6.0</avro4k.version>
+    <avro.version>1.12.1</avro.version>
+    <avro4k.version>2.7.0</avro4k.version>
     <commons-compress.version>1.28.0</commons-compress.version>
     <commons-lang3.version>3.19.0</commons-lang3.version>
     <commons-text.version>1.14.0</commons-text.version>
-    <slf4j.version>2.0.17</slf4j.version>
   </properties>
 
   <modules>
@@ -50,12 +49,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-text</artifactId>
         <version>${commons-text.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

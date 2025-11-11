@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.toolisticon.kotlin.avro._</groupId>
     <artifactId>avro-kotlin-parent</artifactId>
-    <version>1.12.6.1</version>
+    <version>1.12.7.0</version>
     <relativePath>../_build/parent/pom.xml</relativePath>
   </parent>
 
@@ -15,12 +15,9 @@
   <description>Common test library for all libraries provided by avro-kotlin.</description>
 
   <properties>
-    <equalsverifier.version>4.1.1</equalsverifier.version>
-    <logback.version>1.5.18</logback.version>
     <moneta.version>1.4.5</moneta.version>
     <okio.version>3.9.0</okio.version>
-    <slf4j.version>2.0.17</slf4j.version>
-    <icu4j.version>77.1</icu4j.version>
+    <icu4j.version>78.1</icu4j.version>
   </properties>
 
   <dependencies>
@@ -77,7 +74,6 @@
     <dependency>
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
-      <version>${equalsverifier.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -88,23 +84,16 @@
       <scope>compile</scope>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>io.toolisticon.kotlin.generation</groupId>-->
-<!--      <artifactId>kotlin-code-generation-test</artifactId>-->
-<!--      <scope>compile</scope>-->
-<!--    </dependency>-->
-
     <!-- logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
-      <version>${slf4j.version}</version>
+      <version>2.0.17</version>
       <scope>compile</scope>
     </dependency>
 
