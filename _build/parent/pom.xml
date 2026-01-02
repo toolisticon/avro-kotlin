@@ -14,6 +14,10 @@
   <description>Parent for avro-kotlin summarizing used libraries and versions.</description>
   <packaging>pom</packaging>
 
+  <properties>
+    <dokka.skip>false</dokka.skip>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -72,4 +76,31 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.jetbrains.dokka</groupId>
+          <artifactId>dokka-maven-plugin</artifactId>
+          <version>1.9.20</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>javadocJar</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>${dokka.skip}</skip>
+            <jdkVersion>${jdk.version}</jdkVersion>
+            <reportUndocumented>false</reportUndocumented>
+            <skipEmptyPackages>true</skipEmptyPackages>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
