@@ -17,7 +17,7 @@
   <properties>
     <moneta.version>1.4.5</moneta.version>
     <okio.version>3.9.0</okio.version>
-    <icu4j.version>78.1</icu4j.version>
+    <icu4j.version>78.2</icu4j.version>
   </properties>
 
   <dependencies>
