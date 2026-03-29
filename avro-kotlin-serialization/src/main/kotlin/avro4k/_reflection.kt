@@ -2,6 +2,9 @@ package io.toolisticon.kotlin.avro.serialization.avro4k
 
 import com.github.avrokotlin.avro4k.Avro
 import com.github.avrokotlin.avro4k.AvroDecoder
+import com.github.avrokotlin.avro4k.InternalAvro4kApi
+import com.github.avrokotlin.avro4k.internal.Cache
+import com.github.avrokotlin.avro4k.internal.WeakKeyCache
 import kotlinx.serialization.descriptors.SerialDescriptor
 import org.apache.avro.Schema
 import org.apache.avro.util.WeakIdentityHashMap
@@ -13,8 +16,9 @@ internal val _schemaCacheField = Avro::class.java.getDeclaredField("schemaCache"
 /**
  * Use reflection to inspect the internal avro4 schema cache,
  */
+@OptIn(InternalAvro4kApi::class)
 @Suppress("UNCHECKED_CAST")
-internal fun Avro.schemaCache() = _schemaCacheField.get(this) as WeakHashMap<SerialDescriptor, Schema>
+internal fun Avro.schemaCache() = _schemaCacheField.get(this) as Cache<SerialDescriptor, Schema>
 
 /**
  * We need to differentiate decoding for DIRECT and GENERIC.
