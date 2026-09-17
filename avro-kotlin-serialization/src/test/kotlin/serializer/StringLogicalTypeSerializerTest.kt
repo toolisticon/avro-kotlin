@@ -2,11 +2,18 @@ package serializer
 
 import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.codec.GenericRecordCodec
+import io.toolisticon.kotlin.avro.serialization._test.BarString
+import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
+import io.toolisticon.kotlin.avro.serialization._test.Foo
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.TestStringLogicalType
 import io.toolisticon.kotlin.avro.serialization.serializer._fixtures.avroSerialization
 import kotlinx.serialization.Serializable
+import org.apache.avro.util.ClassSecurityValidator
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import serializer.StringLogicalTypeSerializerTest.StringType
 
 @Serializable
@@ -15,7 +22,28 @@ data class StringData(
   val stringValue: StringType
 )
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StringLogicalTypeSerializerTest {
+
+  private lateinit var previousClassSecurityValidator: ClassSecurityValidator.ClassSecurityPredicate
+
+  @BeforeAll
+  fun trustBankAccountCreated() {
+    previousClassSecurityValidator = ClassSecurityValidator.getGlobal()
+    ClassSecurityValidator.setGlobal(
+      ClassSecurityValidator.composite(
+        ClassSecurityValidator.DEFAULT_TRUSTED_CLASSES,
+        ClassSecurityValidator.builder()
+          .add(StringData::class.java)
+          .build()
+      )
+    )
+  }
+
+  @AfterAll
+  fun restoreClassSecurityValidator() {
+    ClassSecurityValidator.setGlobal(previousClassSecurityValidator)
+  }
 
   data class StringType(val value: String)
 

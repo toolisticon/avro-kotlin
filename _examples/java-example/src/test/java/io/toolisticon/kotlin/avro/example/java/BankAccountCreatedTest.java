@@ -2,7 +2,10 @@ package io.toolisticon.kotlin.avro.example.java;
 
 import io.toolisticon.example.bank.BankAccountCreated;
 import io.toolisticon.kotlin.avro.repository.AvroSchemaResolverMap;
+import org.apache.avro.util.ClassSecurityValidator;
 import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -11,7 +14,28 @@ import static io.toolisticon.kotlin.avro.codec.SpecificRecordCodec.specificRecor
 import static io.toolisticon.kotlin.avro.codec.SpecificRecordCodec.specificRecordSingleObjectEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 class BankAccountCreatedTest {
+
+  private static ClassSecurityValidator.ClassSecurityPredicate previousClassSecurityValidator;
+
+  @BeforeAll
+  static void trustBankAccountCreated() {
+    previousClassSecurityValidator = ClassSecurityValidator.getGlobal();
+    ClassSecurityValidator.setGlobal(
+      ClassSecurityValidator.composite(
+        ClassSecurityValidator.DEFAULT_TRUSTED_CLASSES,
+        ClassSecurityValidator.builder()
+          .add(BankAccountCreated.class)
+          .build()
+      )
+    );
+  }
+
+  @AfterAll
+  static void restoreClassSecurityValidator() {
+    ClassSecurityValidator.setGlobal(previousClassSecurityValidator);
+  }
 
   @Test
   void encodeAndDecodeEventWithMoneyLogicalType() {
