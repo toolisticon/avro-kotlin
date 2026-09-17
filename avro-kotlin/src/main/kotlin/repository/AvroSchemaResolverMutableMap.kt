@@ -15,11 +15,11 @@ value class AvroSchemaResolverMutableMap private constructor(
   private val store: MutableMap<AvroFingerprint, AvroSchema> = ConcurrentHashMap()
 ) : SchemaResolverMap, Map<AvroFingerprint, AvroSchema> by store {
   companion object {
-    val EMPTY = AvroSchemaResolverMutableMap()
+    val EMPTY = {AvroSchemaResolverMutableMap()}
   }
 
   constructor(schema: Schema) : this(AvroSchema(schema))
-  constructor(schema: AvroSchema) : this((EMPTY + schema).store)
+  constructor(schema: AvroSchema) : this((EMPTY() + schema).store)
 
   @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
   @Throws(MissingSchemaException::class)
