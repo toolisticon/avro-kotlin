@@ -4,14 +4,36 @@ import io.toolisticon.kotlin.avro.AvroKotlin.avroSchemaResolver
 import io.toolisticon.kotlin.avro.TestFixtures.BankAccountCreatedFixtures
 import io.toolisticon.kotlin.avro._test.BankAccountCreatedData
 import lib.test.event.BankAccountCreated
+import org.apache.avro.util.ClassSecurityValidator
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.util.*
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SpecificRecordCodecTest {
 
   private val bankAccountId = UUID.randomUUID()
   private val initialBalance = 66
+  private lateinit var previousClassSecurityValidator: ClassSecurityValidator.ClassSecurityPredicate
+
+  @BeforeAll
+  fun trustBankAccountCreated() {
+    previousClassSecurityValidator = ClassSecurityValidator.getGlobal()
+    ClassSecurityValidator.setGlobal(
+      ClassSecurityValidator.composite(
+        ClassSecurityValidator.DEFAULT_TRUSTED_CLASSES,
+        ClassSecurityValidator.builder().add(BankAccountCreated::class.java).build()
+      )
+    )
+  }
+
+  @AfterAll
+  fun restoreClassSecurityValidator() {
+    ClassSecurityValidator.setGlobal(previousClassSecurityValidator)
+  }
 
   @Test
   fun `encode and decode bankAccountCreated`() {

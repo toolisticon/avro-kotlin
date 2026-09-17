@@ -6,12 +6,39 @@ import io.toolisticon.kotlin.avro.serialization._test.BarString
 import io.toolisticon.kotlin.avro.serialization._test.DummyEnum
 import io.toolisticon.kotlin.avro.serialization._test.Foo
 import io.toolisticon.kotlin.avro.serialization._test.barStringSchema
+import org.apache.avro.util.ClassSecurityValidator
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class AvroKotlinSerializationTest {
 
   private val avro = AvroKotlinSerialization()
+
+  private lateinit var previousClassSecurityValidator: ClassSecurityValidator.ClassSecurityPredicate
+
+  @BeforeAll
+  fun trustBankAccountCreated() {
+    previousClassSecurityValidator = ClassSecurityValidator.getGlobal()
+    ClassSecurityValidator.setGlobal(
+      ClassSecurityValidator.composite(
+        ClassSecurityValidator.DEFAULT_TRUSTED_CLASSES,
+        ClassSecurityValidator.builder()
+          .add(Foo::class.java)
+          .add(DummyEnum::class.java)
+          .add(BarString::class.java)
+          .build()
+      )
+    )
+  }
+
+  @AfterAll
+  fun restoreClassSecurityValidator() {
+    ClassSecurityValidator.setGlobal(previousClassSecurityValidator)
+  }
 
   @Test
   fun `read schema from Foo`() {
