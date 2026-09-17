@@ -33,5 +33,5 @@ data class AvroSchemaResolverMap(
     putAll(other)
   })
 
-  fun toMutableMap(): AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY + this
+  fun toMutableMap(): AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY() + this
 }

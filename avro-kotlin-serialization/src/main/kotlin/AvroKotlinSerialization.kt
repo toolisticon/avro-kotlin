@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
 @OptIn(ExperimentalSerializationApi::class, ExperimentalAvro4kApi::class)
 class AvroKotlinSerialization(
   val avro4k: Avro,
-  private val schemaResolver: AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY,
+  private val schemaResolver: AvroSchemaResolverMutableMap = AvroSchemaResolverMutableMap.EMPTY(),
 
   @PublishedApi
   internal val genericData: GenericData = AvroKotlin.genericData
