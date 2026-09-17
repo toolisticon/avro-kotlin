@@ -7,6 +7,10 @@ updates:
     open-pull-requests-limit: 19
     labels:
       - "Type: dependencies"
+    cooldown:
+      exclude:
+        - "io.toolisticon.*"
+
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
